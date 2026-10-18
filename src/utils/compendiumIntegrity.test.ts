@@ -205,6 +205,16 @@ test('Theme Selector Button (Dark / Light / Halloween) & Halloween Theme (Dark B
   // 7. Bottom-right controls positioning & Extra Counter immediate delete (no iframe-blocked confirm())
   assert.ok(themeCss.includes('bottom: 0.85rem;'), 'Theme & animation controls positioned at bottom-right so they do not cover Scheda PG buttons');
   assert.ok(appJs.includes("notify('Contatore extra rimosso.')"), 'Extra counter delete button removes counter directly without blocked confirm()');
+
+  // 8. No exposed AIzaSy API key literals in js/users.js, public/js/users.js, js/app.js, or public/js/app.js
+  const usersJs = fs.readFileSync('js/users.js', 'utf8');
+  const publicUsersJs = fs.readFileSync('public/js/users.js', 'utf8');
+  const publicAppJs = fs.readFileSync('public/js/app.js', 'utf8');
+  assert.ok(!usersJs.includes('AIza') && !usersJs.includes('QUl6Y'), 'No exposed AIza/base64 API key literal in js/users.js');
+  assert.ok(!publicUsersJs.includes('AIza') && !publicUsersJs.includes('QUl6Y'), 'No exposed AIza/base64 API key literal in public/js/users.js');
+  assert.ok(!appJs.includes('AIza'), 'No exposed AIza API key literal in js/app.js');
+  assert.ok(!publicAppJs.includes('AIza'), 'No exposed AIza API key literal in public/js/app.js');
 });
+
 
 

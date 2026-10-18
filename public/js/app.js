@@ -7823,7 +7823,7 @@ function renderGeneratore() {
     var groqRow = document.createElement('div');
     groqRow.className = 'api-key-row';
     var groqInp = document.createElement('input');
-    groqInp.type = 'password'; groqInp.placeholder = 'gsk_...';
+    groqInp.type = 'password'; groqInp.placeholder = 'Inserisci chiave Groq...';
     groqInp.value = state.groqKey || ''; groqInp.autocomplete = 'off';
     groqRow.appendChild(groqInp);
     var groqSave = document.createElement('button');
@@ -7852,7 +7852,7 @@ function renderGeneratore() {
     var apiRow = document.createElement('div');
     apiRow.className = 'api-key-row';
     var apiInp = document.createElement('input');
-    apiInp.type = 'password'; apiInp.placeholder = 'AIzaSy...';
+    apiInp.type = 'password'; apiInp.placeholder = 'Inserisci chiave Gemini...';
     apiInp.value = state.geminiKey || ''; apiInp.autocomplete = 'off';
     apiRow.appendChild(apiInp);
     var apiSave = document.createElement('button');

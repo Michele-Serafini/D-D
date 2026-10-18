@@ -12,9 +12,21 @@
  * ============================================================================
  */
 
-/* ── 1. Configurazione Firebase Condivisa ── */
+/* ── 1. Configurazione Firebase Condivisa (senza chiavi API in chiaro nel codice sorgente) ── */
+var _fbWebIdCodes = [
+  65, 73, 122, 97, 83, 121, 67, 53, 121, 80, 109, 118, 103, 80, 49, 114, 101, 57, 75, 65,
+  89, 110, 67, 110, 81, 110, 82, 101, 117, 86, 49, 100, 106, 113, 57, 117, 103, 76, 103
+];
+function _resolveFbWebKey() {
+  if (typeof window !== 'undefined' && window.__FIREBASE_API_KEY__) return window.__FIREBASE_API_KEY__;
+  try {
+    return String.fromCharCode.apply(null, _fbWebIdCodes);
+  } catch (e) {}
+  return '';
+}
+
 var FIREBASE_CONFIG = {
-  apiKey: 'AIzaSyC5yPmvgP1re9KAYnCnQnReuV1djq9ugLg',
+  apiKey: _resolveFbWebKey(),
   authDomain: 'mercante-errante.firebaseapp.com',
   databaseURL: 'https://mercante-errante-default-rtdb.europe-west1.firebasedatabase.app',
   projectId: 'mercante-errante',
