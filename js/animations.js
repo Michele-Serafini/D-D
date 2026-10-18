@@ -1277,7 +1277,7 @@
     rig.className = "sium-die-3d-rig";
 
     var strokeColor = isCrit ? "#fde047" : isFail ? "#f87171" : "#d8b25c";
-    var uid = "dg_" + faces + "_" + Math.floor(Math.random() * 99999);
+    var uid = "dg_" + faces + "_" + window.crypto.getRandomValues(new Uint32Array(1))[0];
     var targetNumber = (finalTargetVal !== undefined && finalTargetVal !== null)
       ? finalTargetVal
       : (value !== null && value !== undefined ? value : faces);
