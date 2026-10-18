@@ -40,3 +40,17 @@ test("3. 4D Dice Engine, Emporio Relic Showcase, and Grimoire Spell Modal animat
   assert.ok(animCss.includes("@keyframes siumGrimoireUnfold3D"), "Grimoire 3D unfold animation must exist");
   assert.ok(appJs.includes("enhanceSpellModal(overlay, panel, s)"), "_openIncantesimoDetail must invoke enhanceSpellModal");
 });
+
+test("4. Dice element identifiers use cryptographically secure randomness", () => {
+  for (const path of ["js/animations.js", "public/js/animations.js"]) {
+    const animJs = fs.readFileSync(path, "utf8");
+    assert.ok(
+      animJs.includes('window.crypto.getRandomValues(new Uint32Array(1))[0]'),
+      `${path} must use crypto.getRandomValues for dice identifiers`,
+    );
+    assert.ok(
+      !animJs.includes('var uid = "dg_" + faces + "_" + Math.floor(Math.random()'),
+      `${path} must not use Math.random for dice identifiers`,
+    );
+  }
+});
