@@ -1,0 +1,6 @@
+{
+  "name": "Mercante Errante — Compendium & VTT per D&D",
+  "description": "Compendium interattivo, gestore di campagna, emporio oggetti, bestiario, schede personaggio multi-sistema, regia sonora e tavolo virtuale per Dungeons & Dragons.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

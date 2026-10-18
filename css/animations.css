@@ -1,0 +1,986 @@
+/**
+ * ============================================================================
+ * 3. FOGLIO DI STILE DELLE ANIMAZIONI — EFFETTI MAGICI, PORTALE, DADI 3D E SEZIONI
+ * ============================================================================
+ * Contiene tutte le animazioni del sito (facilmente configurabili via variabili):
+ * 1. Loader iniziale scenografico con rune e D20 rotante
+ * 2. Cerimonia di Login "Portale Runico & Doppio Battente" (zero esplosione di luce bianca)
+ * 3. Transizione scenografica al click sulle sezioni (Araldo Runico + Pergamena 3D)
+ * 4. Arena Dadi 3D Poliedrica (d4, d6, d8, d10, d12, d20, d100 con rimbalzo 3D e onda d'urto)
+ * 5. Ingresso scaglionato (staggered scroll-reveal) universale per tutte le 15 sezioni
+ * 6. Atmosfera: canvas particelle, nebbia arcana, torce tremolanti e scintille al click
+ * 7. Hover 3D tilt e bagliore "oggetto rarissimo" (Leggendario/Divino/Unico)
+ * 8. Rispetto rigoroso di `prefers-reduced-motion` e toggle `[data-fx="off"]`
+ * ============================================================================
+ */
+
+/* ── 1. Loader Scenografico Iniziale ── */
+#sium-arcane-loader {
+  position: fixed;
+  inset: 0;
+  z-index: 99999;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: radial-gradient(circle at 50% 50%, #1a120b 0%, #070504 85%);
+  color: #f3d586;
+  transition: opacity 0.65s var(--anim-ease-out), visibility 0.65s var(--anim-ease-out);
+  pointer-events: none;
+}
+
+#sium-arcane-loader.hidden {
+  opacity: 0;
+  visibility: hidden;
+}
+
+.loader-rune-ring {
+  position: relative;
+  width: 112px;
+  height: 112px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.loader-rune-ring svg.outer-ring {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  animation: siumSpinSlow 12s linear infinite;
+  filter: drop-shadow(0 0 12px rgba(216, 178, 92, 0.45));
+}
+
+.loader-rune-ring svg.inner-d20 {
+  width: 56px;
+  height: 56px;
+  animation: siumD20Pulse 2.2s var(--anim-ease-in-out) infinite;
+  filter: drop-shadow(0 0 16px rgba(245, 217, 142, 0.7));
+}
+
+.loader-title {
+  margin-top: 1.2rem;
+  font-family: var(--font-display);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+  color: #f3d586;
+  animation: siumInkReveal 1.1s var(--anim-ease-out) both;
+}
+
+/* ── 2. Cerimonia di Login: Portale Runico & Doppio Battente (Senza Whiteout) ── */
+.login-burst,
+.login-whiteout {
+  display: none !important;
+  opacity: 0 !important;
+  animation: none !important;
+}
+
+#login-overlay.opening .login-scene {
+  animation: siumLoginScenePortal 1.45s cubic-bezier(0.22, 1, 0.36, 1) forwards !important;
+  filter: none !important;
+}
+
+#login-overlay.opening .login-form-area {
+  animation: siumLoginFormDissolve 0.38s var(--anim-ease-out) forwards !important;
+  pointer-events: none;
+}
+
+.sium-login-portal {
+  position: fixed;
+  inset: 0;
+  z-index: 10020;
+  pointer-events: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  perspective: 1400px;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.25s ease, visibility 0.25s ease;
+}
+
+#login-overlay.opening .sium-login-portal {
+  opacity: 1;
+  visibility: visible;
+}
+
+.portal-door {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 50.5%;
+  background:
+    radial-gradient(circle at 50% 50%, rgba(216, 178, 92, 0.08) 0%, transparent 70%),
+    linear-gradient(180deg, #16100b 0%, #0b0806 50%, #140e09 100%);
+  border-top: 2px solid rgba(216, 178, 92, 0.45);
+  border-bottom: 2px solid rgba(216, 178, 92, 0.45);
+  box-shadow: inset 0 0 60px rgba(0, 0, 0, 0.9), 0 0 40px rgba(0, 0, 0, 0.95);
+  transform-style: preserve-3d;
+  will-change: transform, opacity;
+}
+
+.portal-door-left {
+  left: 0;
+  border-right: 2px solid #d8b25c;
+  transform-origin: left center;
+}
+
+.portal-door-right {
+  right: 0;
+  border-left: 2px solid #d8b25c;
+  transform-origin: right center;
+}
+
+.portal-door-filigree {
+  position: absolute;
+  inset: 1.5rem;
+  border: 1px solid rgba(216, 178, 92, 0.28);
+  border-radius: 8px;
+  background:
+    radial-gradient(circle at 100% 50%, rgba(216, 178, 92, 0.12), transparent 55%),
+    repeating-linear-gradient(
+      45deg,
+      rgba(216, 178, 92, 0.02) 0px,
+      rgba(216, 178, 92, 0.02) 2px,
+      transparent 2px,
+      transparent 14px
+    );
+}
+
+.portal-door-right .portal-door-filigree {
+  background:
+    radial-gradient(circle at 0% 50%, rgba(216, 178, 92, 0.12), transparent 55%),
+    repeating-linear-gradient(
+      -45deg,
+      rgba(216, 178, 92, 0.02) 0px,
+      rgba(216, 178, 92, 0.02) 2px,
+      transparent 2px,
+      transparent 14px
+    );
+}
+
+#login-overlay.opening .portal-door-left {
+  animation: siumPortalDoorLeft 1.42s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+#login-overlay.opening .portal-door-right {
+  animation: siumPortalDoorRight 1.42s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+.portal-seal-center {
+  position: relative;
+  z-index: 5;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+#login-overlay.opening .portal-seal-center {
+  animation: siumPortalSealUnlock 1.38s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+.portal-seal-rings {
+  position: relative;
+  width: 176px;
+  height: 176px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.portal-seal-rings .seal-ring-outer {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  filter: drop-shadow(0 0 18px rgba(216, 178, 92, 0.65));
+  animation: siumSpinSlow 6s linear infinite;
+}
+
+.portal-seal-rings .seal-ring-inner {
+  width: 112px;
+  height: 112px;
+  filter: drop-shadow(0 0 22px rgba(245, 217, 142, 0.75));
+  animation: siumSpinReverse 4s linear infinite;
+}
+
+.portal-seal-crest {
+  position: absolute;
+  font-size: 2.3rem;
+  color: #f5d98e;
+  text-shadow: 0 0 20px rgba(245, 217, 142, 0.9);
+}
+
+.portal-welcome-box {
+  margin-top: 1rem;
+  padding: 0.75rem 1.8rem;
+  background: linear-gradient(180deg, rgba(22, 16, 11, 0.95), rgba(11, 8, 5, 0.96));
+  border: 1px solid rgba(245, 217, 142, 0.65);
+  border-radius: 999px;
+  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.9), 0 0 28px rgba(216, 178, 92, 0.35);
+}
+
+.portal-welcome-sub {
+  font-family: var(--font-display);
+  font-size: 9.5px;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: #d8b25c;
+}
+
+.portal-welcome-name {
+  font-family: var(--font-display);
+  font-size: 20px;
+  font-weight: 900;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #f5d98e;
+  margin-top: 2px;
+}
+
+.portal-welcome-role {
+  font-family: var(--font-editorial);
+  font-style: italic;
+  font-size: 13px;
+  color: #cbb89d;
+}
+
+/* ── 3. Atmosfera di Sfondo: Canvas Particelle, Torce e Nebbia ── */
+#sium-particles-canvas {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  z-index: 1;
+  opacity: var(--particles-opacity, 0.75);
+  transition: opacity 0.5s ease;
+}
+
+.sium-torch-vignette {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 2;
+  background:
+    radial-gradient(circle at 3% 20%, rgba(255, 136, 34, 0.09), transparent 38%),
+    radial-gradient(circle at 97% 25%, rgba(255, 120, 24, 0.08), transparent 38%),
+    radial-gradient(circle at 50% 100%, rgba(216, 178, 92, 0.06), transparent 45%);
+  animation: siumTorchFlicker 4.2s ease-in-out infinite alternate;
+}
+
+[data-theme="light"] .sium-torch-vignette {
+  background:
+    radial-gradient(circle at 5% 15%, rgba(216, 155, 60, 0.09), transparent 40%),
+    radial-gradient(circle at 95% 85%, rgba(160, 90, 25, 0.07), transparent 40%);
+}
+
+.sium-mist-layer {
+  position: fixed;
+  left: -10%;
+  right: -10%;
+  bottom: -5%;
+  height: 28vh;
+  pointer-events: none;
+  z-index: 1;
+  background: radial-gradient(ellipse at 50% 100%, rgba(216, 178, 92, 0.06) 0%, transparent 70%);
+  filter: blur(22px);
+  animation: siumMistDrift 16s ease-in-out infinite alternate;
+}
+
+.app-shell {
+  position: relative;
+  z-index: 5;
+}
+
+/* ── 4. Transizione di Sezione al Click (Araldo Runico + Srotolamento 3D) ── */
+.sium-section-herald {
+  position: fixed;
+  top: 1.15rem;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 960;
+  pointer-events: none;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.48rem 1.35rem;
+  background: linear-gradient(180deg, rgba(26, 19, 13, 0.94), rgba(14, 10, 7, 0.96));
+  border: 1px solid var(--border-gold-strong);
+  border-radius: 999px;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.8), 0 0 22px var(--gold-glow);
+  animation: siumHeraldBanner 0.78s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+[data-theme="light"] .sium-section-herald {
+  background: linear-gradient(180deg, rgba(251, 245, 233, 0.96), rgba(235, 223, 199, 0.98));
+}
+
+.sium-section-herald .herald-icon {
+  font-size: 1.15rem;
+  filter: drop-shadow(0 0 8px var(--gold-glow));
+  animation: siumD20Pulse 0.8s ease-out;
+}
+
+.sium-section-herald .herald-text {
+  font-family: var(--font-display);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--gold-bright);
+}
+
+.sium-section-herald .herald-wing {
+  width: 28px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--gold), transparent);
+}
+
+.main-content.sium-section-transition {
+  animation: siumSectionUnroll3D 0.56s cubic-bezier(0.16, 1, 0.3, 1) both;
+  transform-origin: 50% 0%;
+}
+
+.sium-subtab-transition {
+  animation: siumSubtabSlideIn 0.38s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+/* Fiammata / Fendente dorato quando si clicca una voce della Sidebar */
+.nav-item.active {
+  animation: siumNavActiveGlow 0.45s var(--anim-ease-out);
+}
+
+.nav-item.active svg {
+  animation: siumNavIconPop 0.45s var(--anim-ease-spring);
+}
+
+/* ── 5. Ingresso Scaglionato (Scroll-Reveal Stagger) e Titoli Runici ── */
+.sium-reveal {
+  animation: siumCardStaggerIn var(--anim-duration-slow) var(--anim-ease-out) both;
+  animation-delay: var(--stagger-delay, 0ms);
+}
+
+.sium-title-reveal {
+  animation: siumInkReveal 0.72s var(--anim-ease-out) both;
+}
+
+/* ── 6. Arena Dadi 3D Poliedrica (Sezione Lancio Dadi + Modale Rapido) ── */
+.sium-3d-dice-arena {
+  position: relative;
+  width: 100%;
+  min-height: 255px;
+  margin: 0.75rem 0 1rem;
+  padding: 1.35rem 1rem 1.6rem;
+  border-radius: 16px;
+  background:
+    radial-gradient(ellipse at 50% 45%, rgba(165, 38, 28, 0.16) 0%, rgba(22, 14, 10, 0.94) 68%, #090604 100%);
+  border: 2px solid var(--border-gold);
+  box-shadow:
+    inset 0 0 42px rgba(0, 0, 0, 0.92),
+    inset 0 0 0 4px rgba(216, 178, 92, 0.08),
+    0 16px 36px rgba(0, 0, 0, 0.65);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  perspective: 1100px;
+  overflow: hidden;
+  cursor: pointer;
+  user-select: none;
+  transition: border-color 0.25s ease, box-shadow 0.25s ease;
+}
+
+.sium-3d-dice-arena:hover {
+  border-color: var(--border-gold-strong);
+  box-shadow:
+    inset 0 0 45px rgba(0, 0, 0, 0.88),
+    0 18px 40px rgba(0, 0, 0, 0.75),
+    0 0 24px var(--gold-glow);
+}
+
+/* Cerchio runico inciso sul velluto del vassoio dadi */
+.sium-arena-rune-floor {
+  position: absolute;
+  width: 240px;
+  height: 240px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) rotateX(52deg);
+  pointer-events: none;
+  opacity: 0.28;
+  transition: opacity 0.35s ease, transform 0.5s ease;
+}
+
+.sium-3d-dice-arena.is-rolling .sium-arena-rune-floor {
+  opacity: 0.65;
+  animation: siumArenaFloorSpin 1.2s linear infinite;
+}
+
+.sium-dice-3d-stage-wrap {
+  position: relative;
+  z-index: 3;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px;
+  align-items: center;
+  justify-content: center;
+  min-height: 145px;
+  padding: 0.5rem;
+  transform-style: preserve-3d;
+}
+
+/* Contenitore singolo dado 3D */
+.sium-die-3d-slot {
+  position: relative;
+  width: 112px;
+  height: 112px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  perspective: 900px;
+  transform-style: preserve-3d;
+}
+
+/* Ombra dinamica sul panno sotto il dado */
+.sium-die-3d-shadow {
+  position: absolute;
+  bottom: 2px;
+  width: 74px;
+  height: 22px;
+  background: radial-gradient(ellipse at center, rgba(0, 0, 0, 0.82) 0%, transparent 72%);
+  border-radius: 50%;
+  transform: rotateX(70deg);
+  filter: blur(4px);
+  pointer-events: none;
+}
+
+.sium-die-3d-slot.rolling .sium-die-3d-shadow {
+  animation: siumDieShadowBounce 0.88s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+/* Onda d'urto runica all'impatto del dado */
+.sium-die-shockwave {
+  position: absolute;
+  bottom: -4px;
+  width: 96px;
+  height: 96px;
+  border-radius: 50%;
+  border: 2px solid var(--gold-bright);
+  transform: rotateX(68deg) scale(0.1);
+  opacity: 0;
+  pointer-events: none;
+}
+
+.sium-die-3d-slot.landed .sium-die-shockwave {
+  animation: siumShockwaveExpand 0.65s var(--anim-ease-out) forwards;
+}
+
+.sium-die-3d-slot.crit .sium-die-shockwave {
+  border-color: #fde047;
+  box-shadow: 0 0 24px #fde047;
+}
+
+.sium-die-3d-slot.fumble .sium-die-shockwave {
+  border-color: #ef4444;
+  box-shadow: 0 0 24px #ef4444;
+}
+
+/* Rig 3D del Poliedro (Preserve-3D con piani multipli estrusi) */
+.sium-die-3d-rig {
+  position: relative;
+  width: 96px;
+  height: 96px;
+  transform-style: preserve-3d;
+  transform: rotateX(12deg) rotateY(-14deg) rotateZ(0deg);
+  transition: transform 0.35s var(--anim-ease-out);
+  will-change: transform;
+}
+
+.sium-die-3d-slot:hover .sium-die-3d-rig {
+  transform: rotateX(22deg) rotateY(18deg) translateY(-6px) scale(1.06);
+}
+
+.sium-die-3d-slot.rolling .sium-die-3d-rig {
+  animation: siumDieTumble3D 0.88s cubic-bezier(0.18, 0.89, 0.32, 1.12) forwards;
+}
+
+.sium-die-3d-slot.crit .sium-die-3d-rig {
+  animation: siumDieCrit3D 0.65s var(--anim-ease-spring) forwards;
+}
+
+.sium-die-3d-slot.fumble .sium-die-3d-rig {
+  animation: siumDieFumble3D 0.6s ease-in-out forwards;
+}
+
+/* Strati 3D del Poliedro */
+.sium-poly-layer {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transform-style: preserve-3d;
+  backface-visibility: visible;
+}
+
+.sium-poly-front {
+  transform: translateZ(18px);
+}
+
+.sium-poly-mid {
+  transform: translateZ(0px) scale(1.04);
+  opacity: 0.78;
+}
+
+.sium-poly-back {
+  transform: translateZ(-18px) rotateY(180deg) scale(0.95);
+  opacity: 0.85;
+}
+
+.sium-poly-rib-x {
+  transform: rotateX(68deg) scale(0.92);
+  opacity: 0.42;
+}
+
+.sium-poly-rib-y {
+  transform: rotateY(68deg) scale(0.92);
+  opacity: 0.42;
+}
+
+/* Cubo 3D Reale a 6 Facce per il dado d6 */
+.sium-cube-3d {
+  position: relative;
+  width: 76px;
+  height: 76px;
+  transform-style: preserve-3d;
+}
+
+.sium-cube-face {
+  position: absolute;
+  inset: 0;
+  width: 76px;
+  height: 76px;
+  border-radius: 12px;
+  border: 2px solid var(--gold);
+  background: radial-gradient(circle at 35% 30%, rgba(56, 118, 208, 0.92), rgba(14, 34, 68, 0.96));
+  box-shadow: inset 0 0 14px rgba(255, 255, 255, 0.18), 0 0 12px rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-display);
+  font-size: 28px;
+  font-weight: 900;
+  color: #f5d98e;
+  backface-visibility: visible;
+}
+
+.sium-cube-face.face-front  { transform: rotateY(0deg) translateZ(38px); }
+.sium-cube-face.face-back   { transform: rotateY(180deg) translateZ(38px); }
+.sium-cube-face.face-right  { transform: rotateY(90deg) translateZ(38px); }
+.sium-cube-face.face-left   { transform: rotateY(-90deg) translateZ(38px); }
+.sium-cube-face.face-top    { transform: rotateX(90deg) translateZ(38px); }
+.sium-cube-face.face-bottom { transform: rotateX(-90deg) translateZ(38px); }
+
+/* ── 7. Effetto "Oggetto Rarissimo" (Luce Dorata / Viola / Divina) ── */
+.weapon-card.rarity-Leggendario::before,
+.weapon-card.rarity-Armaunica::before,
+.weapon-card.rarity-Armadivina::before,
+.weapon-card.rarity-Moltoraro::before {
+  border-color: rgba(245, 217, 142, 0.42);
+  animation: siumRuneBorderPulse 3.2s ease-in-out infinite;
+}
+
+.weapon-card.rarity-Leggendario .weapon-img-wrap::after,
+.weapon-card.rarity-Armaunica .weapon-img-wrap::after,
+.weapon-card.rarity-Armadivina .weapon-img-wrap::after {
+  content: '';
+  position: absolute;
+  inset: -40%;
+  background: linear-gradient(
+    115deg,
+    transparent 35%,
+    rgba(255, 235, 160, 0.26) 50%,
+    transparent 65%
+  );
+  transform: translateX(-120%) rotate(12deg);
+  animation: siumLegendarySheen 5.5s ease-in-out infinite;
+  pointer-events: none;
+}
+
+/* ── 8. Scia Magica del Cursore & Onda Runica al Click ── */
+.sium-cursor-spark {
+  position: fixed;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: radial-gradient(circle, #fff6d6 0%, #d8b25c 60%, transparent 100%);
+  box-shadow: 0 0 8px #f5d98e;
+  pointer-events: none;
+  z-index: 9998;
+  animation: siumSparkFade 0.65s var(--anim-ease-out) forwards;
+}
+
+.sium-click-ripple {
+  position: fixed;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  border: 1.5px solid var(--gold-bright);
+  box-shadow: 0 0 12px var(--gold);
+  pointer-events: none;
+  z-index: 9997;
+  transform: translate(-50%, -50%) scale(0.2);
+  animation: siumClickRippleOut 0.52s var(--anim-ease-out) forwards;
+}
+
+.sium-click-ember {
+  position: fixed;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: #f5d98e;
+  box-shadow: 0 0 8px #d8b25c;
+  pointer-events: none;
+  z-index: 9998;
+  animation: siumClickEmberFly 0.58s var(--anim-ease-out) forwards;
+}
+
+/* ── 9. Modale D20 3D Rapido & Easter Egg Forziere ── */
+.sium-d20-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(6, 4, 3, 0.78);
+  backdrop-filter: blur(8px);
+  animation: siumFadeIn 0.22s var(--anim-ease-out) both;
+}
+
+.sium-d20-modal {
+  position: relative;
+  width: min(440px, 92vw);
+  padding: 1.85rem 1.6rem;
+  background: linear-gradient(165deg, var(--bg-elevated) 0%, var(--bg-primary) 100%);
+  border: 1px solid var(--border-gold-strong);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-elevated);
+  text-align: center;
+  animation: siumModalPop 0.36s var(--anim-ease-spring) both;
+}
+
+.sium-d20-stage {
+  width: 156px;
+  height: 156px;
+  margin: 0.75rem auto 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  perspective: 900px;
+  transform-style: preserve-3d;
+  cursor: pointer;
+}
+
+.sium-d20-stage svg {
+  width: 128px;
+  height: 128px;
+  filter: drop-shadow(0 8px 20px rgba(0, 0, 0, 0.7)) drop-shadow(0 0 18px var(--gold-glow));
+  transition: transform 0.3s var(--anim-ease-out);
+}
+
+.sium-d20-stage:hover svg {
+  transform: scale(1.06) rotateZ(6deg);
+}
+
+.sium-d20-stage.rolling svg {
+  animation: siumD20Roll3D 0.85s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.sium-d20-stage.crit svg {
+  filter: drop-shadow(0 0 28px rgba(253, 224, 71, 0.95));
+  animation: siumCritBounce 0.6s var(--anim-ease-spring);
+}
+
+.sium-d20-stage.fumble svg {
+  filter: drop-shadow(0 0 28px rgba(239, 68, 68, 0.95));
+  animation: siumFumbleShake 0.55s ease-in-out;
+}
+
+/* ── Keyframes ── */
+@keyframes siumSpinSlow {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+@keyframes siumSpinReverse {
+  from { transform: rotate(360deg); }
+  to   { transform: rotate(0deg); }
+}
+
+@keyframes siumArenaFloorSpin {
+  from { transform: translate(-50%, -50%) rotateX(52deg) rotateZ(0deg); }
+  to   { transform: translate(-50%, -50%) rotateX(52deg) rotateZ(360deg); }
+}
+
+@keyframes siumLoginFormDissolve {
+  0%   { opacity: 1; transform: scale(1) translateY(0); }
+  100% { opacity: 0; transform: scale(0.88) translateY(-14px); }
+}
+
+@keyframes siumLoginScenePortal {
+  0%   { transform: scale(1); opacity: 1; }
+  55%  { transform: scale(1.04); opacity: 1; }
+  100% { transform: scale(1.12); opacity: 0; }
+}
+
+@keyframes siumPortalDoorLeft {
+  0%   { transform: translateX(0) rotateY(0deg); opacity: 0; }
+  18%  { transform: translateX(0) rotateY(0deg); opacity: 1; }
+  45%  { transform: translateX(0) rotateY(0deg); opacity: 1; }
+  100% { transform: translateX(-105%) rotateY(-22deg); opacity: 0.95; }
+}
+
+@keyframes siumPortalDoorRight {
+  0%   { transform: translateX(0) rotateY(0deg); opacity: 0; }
+  18%  { transform: translateX(0) rotateY(0deg); opacity: 1; }
+  45%  { transform: translateX(0) rotateY(0deg); opacity: 1; }
+  100% { transform: translateX(105%) rotateY(22deg); opacity: 0.95; }
+}
+
+@keyframes siumPortalSealUnlock {
+  0%   { opacity: 0; transform: scale(0.72) rotate(-25deg); }
+  25%  { opacity: 1; transform: scale(1.05) rotate(0deg); }
+  55%  { opacity: 1; transform: scale(1) rotate(8deg); }
+  100% { opacity: 0; transform: scale(1.38) rotate(24deg); }
+}
+
+@keyframes siumHeraldBanner {
+  0%   { opacity: 0; transform: translate(-50%, -18px) scale(0.9); }
+  22%  { opacity: 1; transform: translate(-50%, 0) scale(1); }
+  78%  { opacity: 1; transform: translate(-50%, 0) scale(1); }
+  100% { opacity: 0; transform: translate(-50%, -10px) scale(0.96); }
+}
+
+@keyframes siumSectionUnroll3D {
+  0% {
+    opacity: 0.08;
+    transform: perspective(1200px) rotateX(3.5deg) translateY(16px) scale(0.99);
+  }
+  100% {
+    opacity: 1;
+    transform: perspective(1200px) rotateX(0deg) translateY(0) scale(1);
+  }
+}
+
+@keyframes siumSubtabSlideIn {
+  0% {
+    opacity: 0;
+    transform: translateY(12px) scale(0.985);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes siumNavActiveGlow {
+  0%   { box-shadow: 0 0 0 0 rgba(245, 217, 142, 0.55); }
+  50%  { box-shadow: 0 0 22px 4px rgba(245, 217, 142, 0.35); }
+  100% { box-shadow: inset 0 0 16px rgba(216, 178, 92, 0.12), 0 4px 12px rgba(0, 0, 0, 0.25); }
+}
+
+@keyframes siumNavIconPop {
+  0%   { transform: scale(0.8) rotate(-12deg); }
+  55%  { transform: scale(1.25) rotate(8deg); }
+  100% { transform: scale(1) rotate(0deg); }
+}
+
+@keyframes siumDieTumble3D {
+  0% {
+    transform: translate3d(-45px, -78px, 90px) rotateX(0deg) rotateY(0deg) rotateZ(-40deg) scale(0.72);
+  }
+  28% {
+    transform: translate3d(26px, 6px, 0px) rotateX(340deg) rotateY(260deg) rotateZ(120deg) scale(1.08);
+  }
+  52% {
+    transform: translate3d(-16px, -36px, 48px) rotateX(640deg) rotateY(510deg) rotateZ(250deg) scale(0.98);
+  }
+  76% {
+    transform: translate3d(8px, 4px, 0px) rotateX(920deg) rotateY(680deg) rotateZ(340deg) scale(1.04);
+  }
+  90% {
+    transform: translate3d(-3px, -8px, 14px) rotateX(1040deg) rotateY(710deg) rotateZ(355deg) scale(1.01);
+  }
+  100% {
+    transform: translate3d(0px, 0px, 0px) rotateX(1092deg) rotateY(706deg) rotateZ(360deg) scale(1);
+  }
+}
+
+@keyframes siumDieShadowBounce {
+  0%   { transform: rotateX(70deg) translateX(-45px) scale(0.45); opacity: 0.25; }
+  28%  { transform: rotateX(70deg) translateX(26px) scale(1.12); opacity: 0.88; }
+  52%  { transform: rotateX(70deg) translateX(-16px) scale(0.65); opacity: 0.45; }
+  76%  { transform: rotateX(70deg) translateX(8px) scale(1.05); opacity: 0.85; }
+  100% { transform: rotateX(70deg) translateX(0px) scale(1); opacity: 0.82; }
+}
+
+@keyframes siumShockwaveExpand {
+  0%   { transform: rotateX(68deg) scale(0.2); opacity: 0.95; }
+  100% { transform: rotateX(68deg) scale(1.85); opacity: 0; }
+}
+
+@keyframes siumDieCrit3D {
+  0%   { transform: scale(0.85) rotateX(0deg) rotateY(0deg); }
+  45%  { transform: scale(1.24) rotateX(18deg) rotateY(-18deg) translateY(-10px); }
+  100% { transform: scale(1.05) rotateX(12deg) rotateY(-14deg) translateY(0); }
+}
+
+@keyframes siumDieFumble3D {
+  0%, 100% { transform: rotateX(12deg) rotateY(-14deg) translateX(0); }
+  20%, 60% { transform: rotateX(18deg) rotateY(-28deg) translateX(-10px) rotateZ(-8deg); }
+  40%, 80% { transform: rotateX(6deg) rotateY(12deg) translateX(10px) rotateZ(8deg); }
+}
+
+@keyframes siumClickRippleOut {
+  0%   { transform: translate(-50%, -50%) scale(0.3); opacity: 0.9; }
+  100% { transform: translate(-50%, -50%) scale(3.2); opacity: 0; }
+}
+
+@keyframes siumClickEmberFly {
+  0%   { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+  100% { opacity: 0; transform: translate(calc(-50% + var(--tx, 20px)), calc(-50% + var(--ty, -24px))) scale(0.15); }
+}
+
+@keyframes siumD20Pulse {
+  0%, 100% { transform: scale(0.96) rotate(-3deg); opacity: 0.85; }
+  50%      { transform: scale(1.06) rotate(3deg); opacity: 1; }
+}
+
+@keyframes siumInkReveal {
+  0% {
+    opacity: 0;
+    transform: translateY(8px) scale(0.985);
+    filter: blur(4px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    filter: blur(0);
+  }
+}
+
+@keyframes siumCardStaggerIn {
+  0% {
+    opacity: 0;
+    transform: translateY(18px) scale(0.975);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes siumTorchFlicker {
+  0%   { opacity: calc(0.75 * var(--torch-intensity, 0.85)); transform: scale(1); }
+  33%  { opacity: calc(0.92 * var(--torch-intensity, 0.85)); transform: scale(1.015); }
+  66%  { opacity: calc(0.68 * var(--torch-intensity, 0.85)); transform: scale(0.99); }
+  100% { opacity: calc(0.98 * var(--torch-intensity, 0.85)); transform: scale(1.02); }
+}
+
+@keyframes siumMistDrift {
+  0%   { transform: translateX(-3%) scaleY(0.95); opacity: 0.45; }
+  100% { transform: translateX(3%) scaleY(1.08); opacity: 0.8; }
+}
+
+@keyframes siumRuneBorderPulse {
+  0%, 100% { opacity: 0.55; }
+  50%      { opacity: 1; }
+}
+
+@keyframes siumLegendarySheen {
+  0%, 72% { transform: translateX(-130%) rotate(12deg); }
+  100%    { transform: translateX(160%) rotate(12deg); }
+}
+
+@keyframes siumSparkFade {
+  0%   { opacity: 0.95; transform: translate(-50%, -50%) scale(1); }
+  100% { opacity: 0; transform: translate(-50%, calc(-50% - 18px)) scale(0.15); }
+}
+
+@keyframes siumD20Roll3D {
+  0%   { transform: rotateX(0deg) rotateY(0deg) rotateZ(0deg) scale(0.82); }
+  35%  { transform: rotateX(220deg) rotateY(160deg) rotateZ(95deg) scale(1.16); }
+  70%  { transform: rotateX(410deg) rotateY(310deg) rotateZ(240deg) scale(1.06); }
+  100% { transform: rotateX(360deg) rotateY(360deg) rotateZ(360deg) scale(1); }
+}
+
+@keyframes siumCritBounce {
+  0%   { transform: scale(0.85); }
+  45%  { transform: scale(1.22) rotate(6deg); }
+  100% { transform: scale(1) rotate(0deg); }
+}
+
+@keyframes siumFumbleShake {
+  0%, 100% { transform: translateX(0); }
+  20%, 60% { transform: translateX(-9px) rotate(-5deg); }
+  40%, 80% { transform: translateX(9px) rotate(5deg); }
+}
+
+@keyframes siumFadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes siumModalPop {
+  from { opacity: 0; transform: translateY(16px) scale(0.94); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+/* ============================================================================
+   ACCESSIBILITÀ E CONTROLLO EFFETTI PESANTI
+   Rispetta `prefers-reduced-motion` e il pulsante utente `[data-fx="off"]`
+   ============================================================================ */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  #sium-particles-canvas,
+  .sium-torch-vignette,
+  .sium-mist-layer,
+  .sium-cursor-spark,
+  .sium-click-ripple,
+  .sium-click-ember {
+    display: none !important;
+  }
+}
+
+html[data-fx="off"] #sium-particles-canvas,
+html[data-fx="off"] .sium-torch-vignette,
+html[data-fx="off"] .sium-mist-layer,
+html[data-fx="off"] .sium-cursor-spark,
+html[data-fx="off"] .sium-click-ripple,
+html[data-fx="off"] .sium-click-ember,
+html[data-fx="off"] .sium-section-herald {
+  display: none !important;
+}
+
+html[data-fx="off"] .sium-reveal,
+html[data-fx="off"] .sium-title-reveal,
+html[data-fx="off"] .main-content.sium-section-transition,
+html[data-fx="off"] .sium-subtab-transition {
+  animation: none !important;
+}

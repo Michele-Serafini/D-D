@@ -1,0 +1,564 @@
+/**
+ * ============================================================================
+ * 2. STILE PRINCIPALE DEL COMPENDIUM — LAYOUT, CARD, SIDEBAR E COMPONENTI
+ * ============================================================================
+ * Sovrascrive e arricchisce il layout originale con un'estetica da vero
+ * grimorio / tavolo da gioco fantasy moderno:
+ * - Texture sottili su pergamena/pietra, cornici metalliche cesellate
+ * - Tipografia gerarchica (Cinzel + Cormorant Garamond + Plus Jakarta Sans)
+ * - Card con rilievo, angoli runici, stati hover e focus accessibili
+ * - Barra superiore rapida (Tema, FX On/Off, Dado D20 3D, Scarica ZIP)
+ * ============================================================================
+ */
+
+/* Transizione fluida al cambio tema */
+html,
+body,
+.app-shell,
+.sidebar,
+.main-content,
+.weapon-card,
+.best-card,
+.pet-card,
+.libro-card,
+.scena-card,
+.modal-box {
+  transition:
+    background-color var(--anim-duration-normal) var(--anim-ease-out),
+    color var(--anim-duration-normal) var(--anim-ease-out),
+    border-color var(--anim-duration-normal) var(--anim-ease-out),
+    box-shadow var(--anim-duration-normal) var(--anim-ease-out);
+}
+
+body {
+  font-family: var(--font-body);
+  background-color: var(--bg-primary);
+  background-image: var(--torch-ambient), var(--surface-gradient);
+  background-attachment: fixed;
+  color: var(--text-primary);
+  line-height: 1.6;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Numeri allineati in tabelle, contatori, statistiche e dadi */
+.stat-val,
+.combat-num,
+.dice-num,
+.price-tag,
+input[type="number"],
+table td {
+  font-variant-numeric: tabular-nums;
+}
+
+/* ── Top Arcane Quick-Bar (Fissa in alto a destra sopra il contenuto) ── */
+.sium-top-controls {
+  position: fixed;
+  top: 0.75rem;
+  right: 1rem;
+  z-index: 950;
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.35rem 0.55rem;
+  background: var(--bg-glass);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid var(--border-gold);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-card);
+}
+
+.sium-ctrl-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.38rem;
+  padding: 0.38rem 0.68rem;
+  font-family: var(--font-display);
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+  background: rgba(216, 178, 92, 0.07);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-xs);
+  cursor: pointer;
+  white-space: nowrap;
+  flex-shrink: 0;
+  transition:
+    transform var(--anim-duration-fast) var(--anim-ease-out),
+    background-color var(--anim-duration-fast) var(--anim-ease-out),
+    border-color var(--anim-duration-fast) var(--anim-ease-out),
+    color var(--anim-duration-fast) var(--anim-ease-out),
+    box-shadow var(--anim-duration-fast) var(--anim-ease-out);
+}
+
+.sium-ctrl-btn:hover {
+  color: var(--gold-bright);
+  background: rgba(216, 178, 92, 0.16);
+  border-color: var(--border-gold-strong);
+  box-shadow: 0 0 14px var(--gold-glow);
+  transform: translateY(-1px);
+}
+
+.sium-ctrl-btn:active {
+  transform: translateY(0) scale(0.97);
+}
+
+.sium-ctrl-btn.active {
+  color: var(--gold-bright);
+  border-color: var(--gold);
+  background: rgba(216, 178, 92, 0.2);
+}
+
+.sium-ctrl-btn svg {
+  width: 14px;
+  height: 14px;
+  flex-shrink: 0;
+}
+
+/* ── Spostamento non-sovrapposto per user-badge e gear-btn originali ── */
+#user-badge-el {
+  top: 0.75rem !important;
+  right: auto !important;
+  left: 252px !important;
+  z-index: 940 !important;
+  backdrop-filter: blur(10px);
+}
+
+.btn-gear-top {
+  z-index: 945 !important;
+}
+
+/* ── Sidebar Ridipinta: Grimorio / Legno Intarsiato & Bronzo ── */
+.sidebar {
+  background: linear-gradient(180deg, var(--bg-secondary) 0%, var(--bg-primary) 100%) !important;
+  border-right: 1px solid var(--border-gold) !important;
+  box-shadow: 6px 0 32px rgba(0, 0, 0, 0.55);
+}
+
+.sidebar::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 2px;
+  background: linear-gradient(180deg, transparent, var(--gold), transparent);
+  opacity: 0.45;
+  pointer-events: none;
+}
+
+.sidebar-brand {
+  position: relative;
+  padding: 1.35rem 1rem 1.15rem !important;
+  border-bottom: 1px solid var(--border-subtle) !important;
+  background: radial-gradient(circle at 50% 25%, var(--gold-glow), transparent 72%);
+  cursor: pointer;
+  user-select: none;
+}
+
+.brand-rune {
+  font-size: 2rem !important;
+  color: var(--gold-bright) !important;
+  text-shadow: 0 0 18px var(--gold-glow);
+  transition: transform var(--anim-duration-normal) var(--anim-ease-spring);
+}
+
+.sidebar-brand:hover .brand-rune {
+  transform: scale(1.14) rotate(8deg);
+}
+
+.brand-name {
+  font-family: var(--font-display) !important;
+  letter-spacing: 0.16em !important;
+  color: var(--text-primary) !important;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+}
+
+/* Link della Sidebar con indicatore runico */
+.nav-item {
+  position: relative;
+  display: flex !important;
+  align-items: center !important;
+  height: auto !important;
+  min-height: 40px !important;
+  margin: 0.18rem 0.55rem !important;
+  padding: 0.55rem 0.85rem !important;
+  border-radius: var(--radius-sm) !important;
+  font-family: var(--font-display) !important;
+  font-size: 11px !important;
+  line-height: 1.28 !important;
+  letter-spacing: 0.06em !important;
+  color: var(--text-secondary) !important;
+  border: 1px solid transparent !important;
+  overflow: visible !important;
+  transition:
+    color var(--anim-duration-fast) var(--anim-ease-out),
+    background-color var(--anim-duration-fast) var(--anim-ease-out),
+    border-color var(--anim-duration-fast) var(--anim-ease-out),
+    transform var(--anim-duration-fast) var(--anim-ease-out) !important;
+}
+
+.nav-item span {
+  white-space: normal !important;
+  line-height: 1.25 !important;
+  overflow: visible !important;
+}
+
+.nav-item:hover {
+  color: var(--gold-bright) !important;
+  background: rgba(216, 178, 92, 0.09) !important;
+  border-color: var(--border-subtle) !important;
+  transform: translateX(3px);
+}
+
+.nav-item.active {
+  color: var(--gold-bright) !important;
+  background: linear-gradient(90deg, rgba(216, 178, 92, 0.20) 0%, rgba(216, 178, 92, 0.04) 100%) !important;
+  border-color: var(--border-gold) !important;
+  box-shadow: inset 0 0 16px rgba(216, 178, 92, 0.12), 0 4px 12px rgba(0, 0, 0, 0.25);
+}
+
+.nav-item.active::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 0.32rem;
+  width: 5px;
+  height: 5px;
+  background: var(--gold-bright);
+  transform: translateY(-50%) rotate(45deg);
+  box-shadow: 0 0 8px var(--gold);
+}
+
+/* ── Intestazioni di Pagina con Ornamenti Runici ── */
+.main-content header h1 {
+  font-family: var(--font-display) !important;
+  letter-spacing: 0.12em !important;
+  text-wrap: balance;
+  position: relative;
+  display: block;
+}
+
+.ornate-divider {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.85rem;
+  margin: 0.75rem auto 1.25rem;
+  color: var(--gold);
+  font-family: Georgia, serif;
+  font-size: 12px;
+  letter-spacing: 0.22em;
+  opacity: 0.85;
+}
+
+.ornate-divider::before,
+.ornate-divider::after {
+  content: '';
+  flex: 1;
+  max-width: 140px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--border-gold-strong), transparent);
+}
+
+/* ── Card Oggetti, Bestiario, Pet, Incantesimi, Libri e Scene ── */
+.weapon-card,
+.best-card,
+.pet-card,
+.libro-card,
+.scena-card {
+  position: relative;
+  background: var(--bg-card) !important;
+  background-image: var(--card-sheen) !important;
+  border: 1px solid var(--border-subtle) !important;
+  border-radius: var(--radius-md) !important;
+  box-shadow: var(--shadow-card) !important;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  overflow: hidden;
+  transform-style: preserve-3d;
+  will-change: transform, box-shadow;
+}
+
+/* Angoli metallici decorativi sulle card */
+.weapon-card::before,
+.best-card::before {
+  content: '';
+  position: absolute;
+  inset: 4px;
+  border: 1px solid rgba(216, 178, 92, 0.08);
+  border-radius: calc(var(--radius-md) - 3px);
+  pointer-events: none;
+  z-index: 1;
+  transition: border-color var(--anim-duration-normal) var(--anim-ease-out);
+}
+
+.weapon-card:hover::before,
+.best-card:hover::before {
+  border-color: rgba(216, 178, 92, 0.28);
+}
+
+/* Spotlight dinamico che segue il cursore dentro la card */
+.weapon-card::after,
+.best-card::after,
+.pet-card::after,
+.libro-card::after,
+.scena-card::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    360px circle at var(--mouse-x, 50%) var(--mouse-y, 50%),
+    rgba(245, 217, 142, 0.13),
+    transparent 65%
+  );
+  opacity: 0;
+  pointer-events: none;
+  z-index: 2;
+  transition: opacity var(--anim-duration-normal) var(--anim-ease-out);
+}
+
+.weapon-card:hover::after,
+.best-card:hover::after,
+.pet-card:hover::after,
+.libro-card:hover::after,
+.scena-card:hover::after {
+  opacity: 1;
+}
+
+/* ── Effetti "Oggetto Rarissimo" in base alla Rarità D&D ── */
+.weapon-card.rarity-Comune {
+  border-color: rgba(156, 163, 175, 0.28) !important;
+}
+.weapon-card.rarity-Noncomune {
+  border-color: rgba(52, 211, 153, 0.40) !important;
+  box-shadow: 0 10px 28px -6px rgba(0, 0, 0, 0.72), 0 0 14px rgba(52, 211, 153, 0.12) !important;
+}
+.weapon-card.rarity-Raro {
+  border-color: rgba(96, 165, 250, 0.48) !important;
+  box-shadow: 0 10px 28px -6px rgba(0, 0, 0, 0.72), 0 0 18px rgba(96, 165, 250, 0.18) !important;
+}
+.weapon-card.rarity-Moltoraro {
+  border-color: rgba(192, 132, 252, 0.58) !important;
+  box-shadow: 0 12px 32px -6px rgba(0, 0, 0, 0.76), 0 0 24px rgba(192, 132, 252, 0.26) !important;
+}
+.weapon-card.rarity-Leggendario {
+  border-color: rgba(245, 158, 11, 0.72) !important;
+  box-shadow: 0 12px 34px -6px rgba(0, 0, 0, 0.8), 0 0 28px rgba(245, 158, 11, 0.34) !important;
+}
+.weapon-card.rarity-Armaunica {
+  border-color: rgba(244, 63, 94, 0.75) !important;
+  box-shadow: 0 12px 36px -6px rgba(0, 0, 0, 0.82), 0 0 30px rgba(244, 63, 94, 0.38) !important;
+}
+.weapon-card.rarity-Armadivina {
+  border-color: rgba(253, 224, 71, 0.85) !important;
+  box-shadow: 0 14px 38px -6px rgba(0, 0, 0, 0.85), 0 0 34px rgba(253, 224, 71, 0.45) !important;
+}
+
+/* ── Contrasto Elevato per Tema Chiaro ("Pergamena Antica") ── */
+[data-theme="light"] button {
+  color: var(--text-primary);
+}
+
+[data-theme="light"] .rarity-badge {
+  background: rgba(33, 23, 14, 0.86) !important;
+  border-color: rgba(140, 93, 25, 0.55) !important;
+  font-weight: 700 !important;
+}
+
+[data-theme="light"] .sium-ctrl-btn {
+  color: #3a2816;
+  background: rgba(140, 93, 25, 0.10);
+  border-color: rgba(140, 93, 25, 0.32);
+}
+
+[data-theme="light"] .sium-ctrl-btn.active,
+[data-theme="light"] .sium-ctrl-btn:hover {
+  color: #1f1308;
+  background: rgba(140, 93, 25, 0.24);
+  border-color: #6e450c;
+}
+
+/* ── Bottoni Forgiati Metallici / Magici ── */
+.btn-primary,
+.btn-secondary,
+.login-btn {
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--radius-sm) !important;
+  font-family: var(--font-display) !important;
+  letter-spacing: 0.09em !important;
+  transition:
+    transform var(--anim-duration-fast) var(--anim-ease-out),
+    box-shadow var(--anim-duration-fast) var(--anim-ease-out),
+    border-color var(--anim-duration-fast) var(--anim-ease-out),
+    background-color var(--anim-duration-fast) var(--anim-ease-out) !important;
+}
+
+.btn-primary::after,
+.login-btn::after {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -120%;
+  width: 65%;
+  height: 200%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 245, 210, 0.28),
+    transparent
+  );
+  transform: skewX(-24deg);
+  transition: left 0.55s var(--anim-ease-out);
+  pointer-events: none;
+}
+
+.btn-primary:hover::after,
+.login-btn:hover::after {
+  left: 145%;
+}
+
+.btn-primary:hover {
+  transform: translateY(-1.5px);
+  box-shadow: 0 6px 20px rgba(216, 178, 92, 0.32) !important;
+}
+
+.btn-secondary:hover {
+  transform: translateY(-1px);
+  border-color: var(--gold) !important;
+  box-shadow: 0 4px 14px rgba(216, 178, 92, 0.16) !important;
+}
+
+/* ── Input, Select e Barre di Ricerca ── */
+input[type="text"],
+input[type="number"],
+input[type="password"],
+input[type="url"],
+select,
+textarea {
+  border-radius: var(--radius-sm) !important;
+  transition:
+    border-color var(--anim-duration-fast) var(--anim-ease-out),
+    box-shadow var(--anim-duration-fast) var(--anim-ease-out),
+    background-color var(--anim-duration-fast) var(--anim-ease-out) !important;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+  outline: none !important;
+  border-color: var(--gold) !important;
+  box-shadow: 0 0 0 3px var(--gold-glow) !important;
+}
+
+/* ── Modali con Ingresso Scenografico ── */
+.modal-backdrop,
+.detail-modal-backdrop {
+  backdrop-filter: blur(8px) !important;
+  -webkit-backdrop-filter: blur(8px) !important;
+}
+
+.modal-box,
+.detail-modal-card {
+  border: 1px solid var(--border-gold) !important;
+  border-radius: var(--radius-lg) !important;
+  box-shadow: var(--shadow-elevated) !important;
+}
+
+/* ── Cornice Grimorio per il Login e Pulsanti Rapidi Demo ── */
+#login-overlay {
+  background: radial-gradient(circle at 50% 42%, rgba(48, 32, 16, 0.55) 0%, #060403 78%) !important;
+}
+
+#login-overlay .login-form-area {
+  background: linear-gradient(165deg, rgba(24, 18, 13, 0.95) 0%, rgba(12, 9, 6, 0.97) 100%) !important;
+  border: 1px solid rgba(216, 178, 92, 0.52) !important;
+  border-radius: 14px !important;
+  padding: 1.5rem 1.35rem !important;
+  box-shadow: 0 24px 64px rgba(0, 0, 0, 0.92), 0 0 36px rgba(216, 178, 92, 0.18) !important;
+}
+
+.login-divider {
+  font-family: Georgia, serif !important;
+}
+
+.sium-quick-login-bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  margin-top: 0.35rem;
+  padding-top: 0.55rem;
+  border-top: 1px solid rgba(201, 165, 92, 0.22);
+  width: 100%;
+}
+
+.sium-quick-login-btn {
+  padding: 0.32rem 0.65rem;
+  font-family: var(--font-display);
+  font-size: 9.5px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #f3d586;
+  background: rgba(201, 165, 92, 0.14);
+  border: 1px solid rgba(201, 165, 92, 0.38);
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 150ms ease;
+}
+
+.sium-quick-login-btn:hover {
+  background: rgba(201, 165, 92, 0.28);
+  border-color: #f3d586;
+  transform: translateY(-1px);
+}
+
+/* ── Scrollbar Personalizzata in Bronzo Anticato ── */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.2);
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(216, 178, 92, 0.32);
+  border-radius: 99px;
+  border: 2px solid transparent;
+  background-clip: padding-box;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(216, 178, 92, 0.58);
+  border: 2px solid transparent;
+  background-clip: padding-box;
+}
+
+/* ── Responsive Mobile & Tablet ── */
+@media (max-width: 900px) {
+  .sium-top-controls {
+    top: 0.6rem;
+    right: 3.5rem;
+    padding: 0.25rem 0.4rem;
+    gap: 0.28rem;
+  }
+  .sium-ctrl-btn {
+    padding: 0.36rem 0.5rem;
+  }
+  .sium-ctrl-btn span.ctrl-label {
+    display: none;
+  }
+  #user-badge-el {
+    left: 3.1rem !important;
+    top: 0.68rem !important;
+    max-width: 112px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+}

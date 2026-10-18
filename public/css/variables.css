@@ -1,0 +1,150 @@
+/**
+ * ============================================================================
+ * 1. VARIABILI CSS CENTRALIZZATE — TEMI, TIPOGRAFIA, SPAZIATURE E ANIMAZIONI
+ * ============================================================================
+ * Modifica questo file per personalizzare l'intero aspetto del sito da un
+ * unico punto:
+ * - Palette colori Tema Scuro ("Taverna / Dungeon") e Tema Chiaro ("Pergamena")
+ * - Font per titoli (Display), sottotitoli (Editorial), corpo (Body) e numeri
+ * - Raggi dei bordi, ombre, texture e spessori
+ * - Durate, curve di easing e intensità di tutte le animazioni
+ * ============================================================================
+ */
+
+:root {
+  /* ── Tipografia ── */
+  --font-display: 'Cinzel', 'Cinzel Decorative', Georgia, serif;
+  --font-editorial: 'Cormorant Garamond', 'Crimson Pro', Georgia, serif;
+  --font-body: 'Plus Jakarta Sans', 'Crimson Pro', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+
+  /* ── Spaziature e Raggi ── */
+  --radius-xs: 4px;
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 14px;
+  --radius-xl: 20px;
+  --space-xs: 0.375rem;
+  --space-sm: 0.75rem;
+  --space-md: 1.25rem;
+  --space-lg: 2rem;
+  --space-xl: 3rem;
+
+  /* ── Parametri Centralizzati delle Animazioni ── */
+  --anim-duration-fast: 160ms;
+  --anim-duration-normal: 320ms;
+  --anim-duration-slow: 620ms;
+  --anim-stagger-step: 42ms;
+  --anim-ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --anim-ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --anim-ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --card-tilt-max: 6.5deg;
+  --card-glow-opacity: 0.32;
+  --particles-opacity: 0.75;
+  --torch-intensity: 0.85;
+
+  /* ── Colori Rarità D&D (usati per bordi, aure e particelle sulle card) ── */
+  --rarity-common: #9ca3af;
+  --rarity-common-glow: rgba(156, 163, 175, 0.22);
+  --rarity-uncommon: #34d399;
+  --rarity-uncommon-glow: rgba(52, 211, 153, 0.32);
+  --rarity-rare: #60a5fa;
+  --rarity-rare-glow: rgba(96, 165, 250, 0.38);
+  --rarity-very-rare: #c084fc;
+  --rarity-very-rare-glow: rgba(192, 132, 252, 0.45);
+  --rarity-legendary: #f59e0b;
+  --rarity-legendary-glow: rgba(245, 158, 11, 0.55);
+  --rarity-unique: #f43f5e;
+  --rarity-unique-glow: rgba(244, 63, 94, 0.58);
+  --rarity-divine: #fde047;
+  --rarity-divine-glow: rgba(253, 224, 71, 0.68);
+}
+
+/* ============================================================================
+   TEMA SCURO — "TAVERNA / DUNGEON ARCANO" (Default)
+   Pietra ossidiana, cuoio scuro, oro forgiato, braci cremisi
+   ============================================================================ */
+:root,
+[data-theme="dark"] {
+  --bg-primary: #0b0907;
+  --bg-secondary: #130f0c;
+  --bg-card: rgba(24, 19, 15, 0.88);
+  --bg-card-solid: #18130f;
+  --bg-card-hover: rgba(33, 26, 20, 0.95);
+  --bg-elevated: #211a14;
+  --bg-input: rgba(12, 9, 7, 0.85);
+  --bg-glass: rgba(20, 15, 12, 0.78);
+
+  --text-primary: #f4ead8;
+  --text-secondary: #cbb89d;
+  --text-muted: #8c785c;
+
+  --gold: #d8b25c;
+  --gold-bright: #f5d98e;
+  --gold-dim: #947437;
+  --gold-glow: rgba(216, 178, 92, 0.25);
+
+  --crimson: #c93b2b;
+  --crimson-bright: #ef5340;
+  --crimson-glow: rgba(201, 59, 43, 0.32);
+
+  --arcane: #8b5cf6;
+  --emerald: #2ea063;
+
+  --border-subtle: rgba(216, 178, 92, 0.16);
+  --border-gold: rgba(216, 178, 92, 0.42);
+  --border-gold-strong: rgba(245, 217, 142, 0.72);
+
+  --shadow-card: 0 10px 30px -6px rgba(0, 0, 0, 0.75), 0 0 1px 1px rgba(216, 178, 92, 0.12);
+  --shadow-elevated: 0 22px 48px -10px rgba(0, 0, 0, 0.88), 0 0 24px rgba(216, 178, 92, 0.14);
+  --shadow-glow: 0 0 22px rgba(216, 178, 92, 0.28);
+
+  --surface-gradient: radial-gradient(ellipse at 50% 0%, rgba(56, 38, 20, 0.35) 0%, rgba(11, 9, 7, 0.96) 75%);
+  --card-sheen: linear-gradient(135deg, rgba(245, 217, 142, 0.07) 0%, rgba(255, 255, 255, 0) 50%, rgba(216, 178, 92, 0.04) 100%);
+  --torch-ambient: radial-gradient(circle at 12% 18%, rgba(235, 125, 45, 0.09), transparent 45%),
+                   radial-gradient(circle at 88% 82%, rgba(216, 178, 92, 0.07), transparent 45%);
+}
+
+/* ============================================================================
+   TEMA CHIARO — "PERGAMENA ANTICA / GRIMORIO ILLUMINATO"
+   Pergamena calda, inchiostro ferro-gallico, bronzo brunito, ceralacca
+   ============================================================================ */
+[data-theme="light"] {
+  --bg-primary: #f3ead8;
+  --bg-secondary: #e8dcc4;
+  --bg-card: rgba(251, 245, 233, 0.92);
+  --bg-card-solid: #fbf5e9;
+  --bg-card-hover: rgba(255, 250, 240, 0.98);
+  --bg-elevated: #efe3cc;
+  --bg-input: rgba(255, 252, 245, 0.92);
+  --bg-glass: rgba(246, 237, 220, 0.86);
+
+  --text-primary: #21170e;
+  --text-secondary: #4e3926;
+  --text-muted: #7c6248;
+
+  --gold: #8c5d19;
+  --gold-bright: #6e450c;
+  --gold-dim: #a67c3c;
+  --gold-glow: rgba(140, 93, 25, 0.18);
+
+  --crimson: #9e281d;
+  --crimson-bright: #b83227;
+  --crimson-glow: rgba(158, 40, 29, 0.22);
+
+  --arcane: #6d28d9;
+  --emerald: #1f7a4c;
+
+  --border-subtle: rgba(110, 69, 12, 0.18);
+  --border-gold: rgba(140, 93, 25, 0.42);
+  --border-gold-strong: rgba(110, 69, 12, 0.68);
+
+  --shadow-card: 0 8px 24px -6px rgba(58, 38, 14, 0.16), 0 0 1px 1px rgba(140, 93, 25, 0.18);
+  --shadow-elevated: 0 18px 40px -8px rgba(58, 38, 14, 0.25), 0 0 18px rgba(140, 93, 25, 0.12);
+  --shadow-glow: 0 0 18px rgba(140, 93, 25, 0.22);
+
+  --surface-gradient: radial-gradient(ellipse at 50% 0%, rgba(255, 250, 238, 0.85) 0%, rgba(232, 220, 196, 0.95) 85%);
+  --card-sheen: linear-gradient(135deg, rgba(255, 255, 255, 0.45) 0%, rgba(255, 255, 255, 0) 55%, rgba(140, 93, 25, 0.05) 100%);
+  --torch-ambient: radial-gradient(circle at 15% 15%, rgba(216, 155, 60, 0.10), transparent 50%),
+                   radial-gradient(circle at 85% 85%, rgba(158, 40, 29, 0.06), transparent 50%);
+}
