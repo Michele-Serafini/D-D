@@ -1,0 +1,292 @@
+<!doctype html>
+<html lang="it" data-theme="dark" data-fx="on">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <title>Mercante Errante — Compendium &amp; VTT per D&amp;D</title>
+    <meta
+      name="description"
+      content="Compendium interattivo, gestore di campagna, emporio oggetti, bestiario, schede personaggio multi-sistema, regia sonora e tavolo virtuale per Dungeons &amp; Dragons."
+    />
+    <meta property="og:title" content="Mercante Errante — Compendium &amp; VTT per D&amp;D" />
+    <meta
+      property="og:description"
+      content="Compendium interattivo, gestore di campagna, emporio oggetti, bestiario, schede personaggio multi-sistema, regia sonora e tavolo virtuale per Dungeons &amp; Dragons."
+    />
+    <meta property="og:type" content="website" />
+    <meta name="twitter:card" content="summary_large_image" />
+
+    <!-- Font Display Fantasy (Cinzel, Cormorant Garamond) + Body Leggibile (Plus Jakarta Sans) + Numeri (JetBrains Mono) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700;900&amp;family=Cinzel:wght@400;600;700;900&amp;family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&amp;family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,400&amp;family=JetBrains+Mono:wght@400;600;700&amp;family=Plus+Jakarta+Sans:wght@400;500;600;700&amp;display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Firebase SDK (Realtime Database & Auth) -->
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+
+    <!-- Leaflet Map Engine -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css"
+    />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+
+    <!-- Architettura CSS Modulare (Separata e Centralizzata) -->
+    <link rel="stylesheet" href="css/legacy.css" />
+    <link rel="stylesheet" href="css/variables.css" />
+    <link rel="stylesheet" href="css/theme.css" />
+    <link rel="stylesheet" href="css/animations.css" />
+  </head>
+  <body>
+    <!-- LOADER SCENOGRAFICO INIZIALE (D20 & Rune Arcane) -->
+    <div id="sium-arcane-loader" aria-hidden="true">
+      <div class="loader-rune-ring">
+        <svg class="outer-ring" viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="60" cy="60" r="54" stroke="#d8b25c" stroke-width="1.2" stroke-dasharray="6 4" opacity="0.7" />
+          <circle cx="60" cy="60" r="46" stroke="#c9a55c" stroke-width="0.8" opacity="0.45" />
+          <polygon points="60,6 114,60 60,114 6,60" stroke="#d8b25c" stroke-width="0.9" opacity="0.35" />
+        </svg>
+        <svg class="inner-d20" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <polygon
+            points="50,6 90,28 90,72 50,94 10,72 10,28"
+            fill="rgba(216,178,92,0.14)"
+            stroke="#f5d98e"
+            stroke-width="2.2"
+          />
+          <polygon
+            points="50,22 76,66 24,66"
+            fill="rgba(216,178,92,0.08)"
+            stroke="#d8b25c"
+            stroke-width="1.5"
+          />
+          <text
+            x="50"
+            y="58"
+            text-anchor="middle"
+            font-family="Cinzel, serif"
+            font-weight="900"
+            font-size="19"
+            fill="#f5d98e"
+          >
+            20
+          </text>
+        </svg>
+      </div>
+      <div class="loader-title">Apertura del Grimorio...</div>
+    </div>
+
+    <!-- LOGIN OVERLAY (Forziere del Mercante Errante) -->
+    <div id="login-overlay">
+      <div class="login-scene">
+        <div class="login-form-area">
+          <!-- Login con username/password -->
+          <div
+            id="login-cred-area"
+            style="display:flex;flex-direction:column;align-items:center;gap:1.1rem;width:100%;"
+          >
+            <div
+              class="login-heading"
+              style="font-family:var(--font-display);font-size:13px;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;color:#f3d586;text-align:center;line-height:1.4;"
+            >
+              Accedi al Compendium
+            </div>
+            <div class="login-divider" aria-hidden="true">— ⚜ —</div>
+            <div class="login-field" style="width:100%;">
+              <label class="login-field-label" for="login-username-input">Username</label>
+              <div class="login-input-wrap">
+                <input
+                  id="login-username-input"
+                  type="text"
+                  placeholder="Username..."
+                  autocomplete="username"
+                  onkeydown="if(event.key==='Enter')document.getElementById('login-password-input').focus();"
+                  style="width:100%;"
+                />
+              </div>
+            </div>
+            <div class="login-field" style="width:100%;">
+              <label class="login-field-label" for="login-password-input">Password</label>
+              <div class="login-input-wrap">
+                <input
+                  id="login-password-input"
+                  type="password"
+                  placeholder="Password..."
+                  autocomplete="current-password"
+                  onkeydown="if(event.key==='Enter')doSignIn();"
+                  style="width:100%;"
+                />
+              </div>
+            </div>
+            <button type="button" class="login-btn" onclick="doSignIn()">
+              <span class="login-btn-ico">⚔</span><span>Entra nel Compendium</span>
+            </button>
+            <div
+              class="login-error"
+              id="login-error"
+              style="display:none;text-align:center;"
+            ></div>
+
+            <!-- Accesso Rapido Demo / Ruolo (preserva tutti gli account originali) -->
+            <div class="sium-quick-login-bar">
+              <button
+                type="button"
+                class="sium-quick-login-btn"
+                onclick="window.quickDemoLogin('Matteo', 'Dungeonmaster!')"
+                title="Accedi come Dungeon Master (Matteo)"
+              >
+                👑 Entra come DM (Matteo)
+              </button>
+              <button
+                type="button"
+                class="sium-quick-login-btn"
+                onclick="window.quickDemoLogin('Luca', 'player1')"
+                title="Accedi come Giocatore (Luca)"
+              >
+                🛡 Entra come Giocatore (Luca)
+              </button>
+            </div>
+
+            <button
+              type="button"
+              onclick="toggleCreateAccount()"
+              style="background:transparent;border:none;color:#cbb89d;font-family:var(--font-display);font-size:10px;letter-spacing:0.1em;cursor:pointer;text-decoration:underline;padding:0;"
+            >
+              + Crea nuovo account
+            </button>
+          </div>
+
+          <!-- Form creazione account (nascosto di default) -->
+          <div
+            id="create-account-area"
+            style="display:none;flex-direction:column;align-items:center;gap:0.95rem;width:100%;"
+          >
+            <div
+              class="login-heading"
+              style="font-family:var(--font-display);font-size:13px;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;color:#f3d586;text-align:center;line-height:1.4;"
+            >
+              Crea Account
+            </div>
+            <div class="login-divider" aria-hidden="true">— ⚜ —</div>
+            <div class="login-field" style="width:100%;">
+              <label class="login-field-label" for="new-username">Username</label>
+              <div class="login-input-wrap">
+                <input
+                  id="new-username"
+                  type="text"
+                  placeholder="Scegli username..."
+                  style="width:100%;"
+                />
+              </div>
+            </div>
+            <div class="login-field" style="width:100%;">
+              <label class="login-field-label" for="new-password">Password</label>
+              <div class="login-input-wrap">
+                <input
+                  id="new-password"
+                  type="password"
+                  placeholder="Scegli password..."
+                  style="width:100%;"
+                />
+              </div>
+            </div>
+            <div class="login-field" style="width:100%;">
+              <label class="login-field-label" for="new-password2">Conferma Password</label>
+              <div class="login-input-wrap">
+                <input
+                  id="new-password2"
+                  type="password"
+                  placeholder="Ripeti password..."
+                  onkeydown="if(event.key==='Enter')doCreateAccount();"
+                  style="width:100%;"
+                />
+              </div>
+            </div>
+            <button type="button" class="login-btn" onclick="doCreateAccount()">
+              <span class="login-btn-ico">✦</span><span>Crea Account</span>
+            </button>
+            <div
+              id="create-error"
+              class="login-error"
+              style="display:none;text-align:center;"
+            ></div>
+            <button
+              type="button"
+              onclick="toggleCreateAccount()"
+              style="background:transparent;border:none;color:#cbb89d;font-family:var(--font-display);font-size:10px;letter-spacing:0.1em;cursor:pointer;text-decoration:underline;padding:0;"
+            >
+              ← Torna al login
+            </button>
+          </div>
+        </div>
+
+        <!-- Cerimonia di Accesso: Portale Runico & Sigillo del Grimorio (Senza Whiteout) -->
+        <div id="sium-login-portal" class="sium-login-portal" aria-hidden="true">
+          <div class="portal-door portal-door-left">
+            <div class="portal-door-filigree"></div>
+          </div>
+          <div class="portal-door portal-door-right">
+            <div class="portal-door-filigree"></div>
+          </div>
+          <div class="portal-seal-center">
+            <div class="portal-seal-rings">
+              <svg class="seal-ring-outer" viewBox="0 0 200 200">
+                <circle cx="100" cy="100" r="92" fill="none" stroke="#d8b25c" stroke-width="1.5" stroke-dasharray="8 5" />
+                <circle cx="100" cy="100" r="82" fill="none" stroke="#c93b2b" stroke-width="1" stroke-dasharray="3 6" />
+                <polygon points="100,10 190,100 100,190 10,100" fill="none" stroke="#d8b25c" stroke-width="1.2" opacity="0.55" />
+                <polygon points="100,24 176,100 100,176 24,100" fill="none" stroke="#f5d98e" stroke-width="1" opacity="0.4" transform="rotate(45 100 100)" />
+              </svg>
+              <svg class="seal-ring-inner" viewBox="0 0 120 120">
+                <polygon points="60,8 106,34 106,86 60,112 14,86 14,34" fill="rgba(18,13,9,0.94)" stroke="#f5d98e" stroke-width="2.2" />
+                <polygon points="60,22 92,78 28,78" fill="rgba(216,178,92,0.14)" stroke="#d8b25c" stroke-width="1.4" />
+              </svg>
+              <div class="portal-seal-crest" id="portal-seal-crest">⚜</div>
+            </div>
+            <div class="portal-welcome-box">
+              <div class="portal-welcome-sub">Sigillo Riconosciuto</div>
+              <div class="portal-welcome-name" id="portal-welcome-name">Avventuriero</div>
+              <div class="portal-welcome-role" id="portal-welcome-role">Compendium del Mercante Errante</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CONTENITORE PRINCIPALE DELL'APPLICAZIONE -->
+    <div id="app">
+      <div style="min-height:100vh;display:flex;align-items:center;justify-content:center;">
+        <div style="text-align:center;">
+          <div style="font-size:4rem;color:#f0d490;animation:pulse 1.5s infinite ease-in-out;">⚜</div>
+          <div
+            style="font-family:var(--font-display);font-size:12px;letter-spacing:0.3em;text-transform:uppercase;color:#8b6f3f;margin-top:1rem;"
+          >
+            Caricamento del Compendium...
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 1. Dati Separati (Oggetti, Incantesimi, Bestiario, NPC, Eventi, Audio) -->
+    <script src="data/catalog-data.js"></script>
+    <script src="data/world-data.js"></script>
+
+    <!-- 2. Sistema Unificato Utenti, Ruoli e Autenticazione -->
+    <script src="js/users.js"></script>
+
+    <!-- 3. Logica Applicativa Principale -->
+    <script src="js/app.js"></script>
+
+    <!-- 4. Moduli Schede Personaggio Multi-Sistema -->
+    <script src="js/sheets/brancalonia.js"></script>
+    <script src="js/sheets/sw5e.js"></script>
+    <script src="js/sheets/pokemon.js"></script>
+    <script src="js/sheets/naruto.js"></script>
+
+    <!-- 5. Motore Animazioni, Particelle, 3D Tilt e D20 Interattivo -->
+    <script src="js/animations.js"></script>
+  </body>
+</html>

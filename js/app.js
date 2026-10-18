@@ -1169,7 +1169,7 @@ function _applySnapshot(raw) {
       if (typeof data.doomStage === 'number' && data.doomStage >= 1 && data.doomStage <= 3) state.doomStage = data.doomStage;
       if (typeof data.doomFilled === 'number') state.doomFilled = Math.max(0, Math.min(doomSegmentsForStage(state.doomStage), data.doomFilled));
       if (typeof data.notes === 'string') state.notes = data.notes;
-      if (data.theme === 'dark' || data.theme === 'light') state.theme = data.theme;
+      if (data.theme === 'dark' || data.theme === 'light' || data.theme === 'halloween' || data.theme === 'christmas' || data.theme === 'valentine' || data.theme === 'easter') state.theme = data.theme;
       if (typeof data.geminiKey === 'string') state.geminiKey = data.geminiKey;
       if (typeof data.groqKey === 'string') state.groqKey = data.groqKey;
       if (Array.isArray(data.personaggi)) state.personaggi = data.personaggi;
@@ -2994,11 +2994,64 @@ function renderSidebar() {
   var footer = document.createElement('div');
   footer.className = 'sidebar-footer';
 
+  window.setAppTheme = function(newTheme, fromAnimEngine) {
+    if (newTheme !== 'dark' && newTheme !== 'light' && newTheme !== 'halloween' && newTheme !== 'christmas' && newTheme !== 'valentine' && newTheme !== 'easter') newTheme = 'dark';
+    state.theme = newTheme;
+    document.documentElement.setAttribute('data-theme', newTheme);
+    try {
+      localStorage.setItem('sium_theme_mode', newTheme);
+      localStorage.setItem('theme', newTheme);
+    } catch (e) {}
+    saveToStorage();
+    render();
+    if (!fromAnimEngine && window.SiumAnimations && typeof window.SiumAnimations.onThemeChange === 'function') {
+      window.SiumAnimations.onThemeChange(newTheme);
+    }
+  };
+
+  var footerControlsRow = document.createElement('div');
+  footerControlsRow.style.cssText = 'display:flex;align-items:center;justify-content:center;gap:0.45rem;width:100%;';
+
   var tb = document.createElement('button');
   tb.className = 'theme-toggle';
-  tb.innerHTML = state.theme === 'dark' ? ICON.sun : ICON.moon;
-  tb.onclick = function() { state.theme = (state.theme === 'dark' ? 'light' : 'dark'); saveToStorage(); render(); };
-  footer.appendChild(tb);
+  tb.title = 'Alterna Modalità Chiara / Scura';
+  tb.innerHTML = state.theme === 'light' ? ICON.moon : ICON.sun;
+  tb.onclick = function() {
+    var nextT = state.theme === 'dark' ? 'light' : 'dark';
+    window.setAppTheme(nextT);
+  };
+  footerControlsRow.appendChild(tb);
+
+  var themePickerSidebarBtn = document.createElement('button');
+  themePickerSidebarBtn.type = 'button';
+  themePickerSidebarBtn.className = 'sium-ctrl-btn sium-theme-picker-btn' + ((state.theme === 'halloween' || state.theme === 'christmas' || state.theme === 'valentine' || state.theme === 'easter') ? ' active' : '');
+  themePickerSidebarBtn.style.cssText = 'flex:1;justify-content:center;padding:0.42rem 0.55rem;';
+  var tIcon = state.theme === 'easter' ? '🐰' : (state.theme === 'valentine' ? '💘' : (state.theme === 'christmas' ? '🎄' : (state.theme === 'halloween' ? '🎃' : (state.theme === 'light' ? '☀️' : '🌙'))));
+  var tLabel = state.theme === 'easter' ? 'Tema: Pasqua' : (state.theme === 'valentine' ? 'Tema: S. Valentino' : (state.theme === 'christmas' ? 'Tema: Natale' : (state.theme === 'halloween' ? 'Tema: Halloween' : (state.theme === 'light' ? 'Tema: Chiaro' : 'Tema: Scuro'))));
+  themePickerSidebarBtn.innerHTML = '<span>' + tIcon + '</span><span class="theme-btn-label">' + tLabel + '</span>';
+  themePickerSidebarBtn.onclick = function(e) {
+    e.stopPropagation();
+    if (window.SiumAnimations && typeof window.SiumAnimations.toggleThemePickerMenu === 'function') {
+      window.SiumAnimations.toggleThemePickerMenu(themePickerSidebarBtn);
+    }
+  };
+  footerControlsRow.appendChild(themePickerSidebarBtn);
+  footer.appendChild(footerControlsRow);
+
+  var fxSidebarBtn = document.createElement('button');
+  var isFxOn = !(window.SiumAnimations && typeof window.SiumAnimations.isFxEnabled === 'function' && !window.SiumAnimations.isFxEnabled());
+  fxSidebarBtn.type = 'button';
+  fxSidebarBtn.className = 'sium-ctrl-btn sium-fx-toggle-btn' + (isFxOn ? ' active' : '');
+  fxSidebarBtn.style.cssText = 'width:100%;margin-top:0.45rem;justify-content:center;padding:0.42rem 0.6rem;';
+  fxSidebarBtn.innerHTML = isFxOn
+    ? '<span>✨</span><span class="fx-label">Animazioni: ON</span>'
+    : '<span>💤</span><span class="fx-label">Animazioni: OFF</span>';
+  fxSidebarBtn.onclick = function() {
+    if (window.SiumAnimations && typeof window.SiumAnimations.toggleFx === 'function') {
+      window.SiumAnimations.toggleFx();
+    }
+  };
+  footer.appendChild(fxSidebarBtn);
 
   /* Pulsante Logout \u2014 se loggato con Google */
   if (_authUser) {
@@ -3672,6 +3725,15 @@ function renderDrogaCard(d, ACCENT) {
     foot.appendChild(actions);
   }
   card.appendChild(foot);
+  card.classList.add('sium-grid-card-enter');
+  card.style.cursor = 'pointer';
+  card.onclick = function(ev) {
+    if (ev.target && ev.target.closest && ev.target.closest('button')) return;
+    if (window.SiumAnimations) {
+      if (window.SiumAnimations.triggerCardClickPulse) window.SiumAnimations.triggerCardClickPulse(card, '#7fff7f');
+      if (window.SiumAnimations.openEmporioSubItemModal) window.SiumAnimations.openEmporioSubItemModal('Sostanza Alchemica / Droga', d, '#7fff7f');
+    }
+  };
   return card;
 }
 
@@ -4126,6 +4188,15 @@ function renderVeicoloCard(v, isParty) {
     foot.appendChild(actions2);
   }
   card.appendChild(foot);
+  card.classList.add('sium-grid-card-enter');
+  card.style.cursor = 'pointer';
+  card.onclick = function(ev) {
+    if (ev.target && ev.target.closest && ev.target.closest('button')) return;
+    if (window.SiumAnimations) {
+      if (window.SiumAnimations.triggerCardClickPulse) window.SiumAnimations.triggerCardClickPulse(card, '#f5a623');
+      if (window.SiumAnimations.openEmporioSubItemModal) window.SiumAnimations.openEmporioSubItemModal(isParty ? 'Veicolo del Party' : 'Catalogo Veicoli', v, '#f5a623');
+    }
+  };
   return card;
 }
 
@@ -5186,6 +5257,15 @@ function renderCyberCard(im) {
     foot.appendChild(btnWrap);
   }
   card.appendChild(foot);
+  card.classList.add('sium-grid-card-enter');
+  card.style.cursor = 'pointer';
+  card.onclick = function(ev) {
+    if (ev.target && ev.target.closest && ev.target.closest('button')) return;
+    if (window.SiumAnimations) {
+      if (window.SiumAnimations.triggerCardClickPulse) window.SiumAnimations.triggerCardClickPulse(card, '#00d4ff');
+      if (window.SiumAnimations.openEmporioSubItemModal) window.SiumAnimations.openEmporioSubItemModal('Impianto Cibernetico', im, '#00d4ff');
+    }
+  };
   return card;
 }
 
@@ -5403,14 +5483,24 @@ function updateResults() {
   }
 
   grid.className = 'weapon-grid';
-  filtered.forEach(function(w) { grid.appendChild(renderWeaponCard(w)); });
+  filtered.forEach(function(w, idx) {
+    var c = renderWeaponCard(w);
+    c.style.setProperty('--card-idx', String(idx % 16));
+    c.classList.add('sium-grid-card-enter');
+    grid.appendChild(c);
+  });
 }
 
 function renderWeaponCard(w) {
   var card = document.createElement('article');
   card.className = 'weapon-card';
   card.style.cursor = 'pointer';
-  card.onclick = function() { openDetailModal('arma', w); };
+  card.onclick = function() {
+    if (window.SiumAnimations && window.SiumAnimations.triggerCardClickPulse) {
+      window.SiumAnimations.triggerCardClickPulse(card);
+    }
+    openDetailModal('arma', w);
+  };
 
   var img = document.createElement('div');
   img.className = 'card-image-wrap';
@@ -8556,9 +8646,17 @@ function openDetailModal(type, data) {
   var back = document.createElement('div');
   back.className = 'modal-backdrop';
   back.id = 'detail-modal-root';
-  back.onclick = function(e) { if (e.target === back) { back.remove(); document.removeEventListener('keydown', kh); } };
+  function _closeDetail() {
+    document.removeEventListener('keydown', kh);
+    if (window.SiumAnimations && window.SiumAnimations.closeModalAnimated) {
+      window.SiumAnimations.closeModalAnimated(back);
+    } else {
+      back.remove();
+    }
+  }
+  back.onclick = function(e) { if (e.target === back) _closeDetail(); };
 
-  var kh = function(e) { if (e.key === 'Escape') { back.remove(); document.removeEventListener('keydown', kh); } };
+  var kh = function(e) { if (e.key === 'Escape') _closeDetail(); };
   document.addEventListener('keydown', kh);
 
   var panel = document.createElement('div');
@@ -8589,7 +8687,7 @@ function openDetailModal(type, data) {
   closeBtn.className = 'theme-toggle';
   closeBtn.style.cssText = 'width:38px;height:38px;flex-shrink:0;';
   closeBtn.innerHTML = ICON.x;
-  closeBtn.onclick = function() { back.remove(); document.removeEventListener('keydown', kh); };
+  closeBtn.onclick = function() { _closeDetail(); };
   head.appendChild(headLeft);
   head.appendChild(closeBtn);
   panel.appendChild(head);
@@ -8753,13 +8851,21 @@ function openDetailModal(type, data) {
   panel.appendChild(body);
   back.appendChild(panel);
   document.body.appendChild(back);
+  if (window.SiumAnimations && window.SiumAnimations.enhanceRelicModal) {
+    window.SiumAnimations.enhanceRelicModal(back, type, data);
+  }
 }
 
 function renderBestiarCard(m) {
   var card = document.createElement('article');
-  card.className = 'weapon-card';
+  card.className = 'weapon-card sium-grid-card-enter';
   card.style.cssText = 'cursor:pointer;';
-  card.onclick = function() { openDetailModal('mostro', m); };
+  card.onclick = function() {
+    if (window.SiumAnimations && window.SiumAnimations.triggerCardClickPulse) {
+      window.SiumAnimations.triggerCardClickPulse(card, '#e05050');
+    }
+    openDetailModal('mostro', m);
+  };
 
   /* Immagine */
   var imgWrap = document.createElement('div');
@@ -9568,6 +9674,7 @@ function _renderSchedaList() {
     var grid=document.createElement('div'); grid.style.cssText='display:flex;flex-wrap:wrap;gap:1.5rem;';
     schedeFiltered.forEach(function(sch){
       var card=document.createElement('div');
+      card.className='sium-pg-card';
       card.style.cssText='width:160px;background:#fff;border-radius:6px;box-shadow:0 3px 16px rgba(0,0,0,0.5);overflow:hidden;cursor:pointer;transition:transform 0.15s,box-shadow 0.15s;';
       card.onmouseenter=function(){this.style.transform='translateY(-3px)';this.style.boxShadow='0 6px 24px rgba(0,0,0,0.65)';};
       card.onmouseleave=function(){this.style.transform='';this.style.boxShadow='0 3px 16px rgba(0,0,0,0.5)';};
@@ -9950,16 +10057,19 @@ function renderScheda() {
   },{passive:false});
 
   pgWrap=document.createElement('div');
+  pgWrap.className='sium-pg-sheet-wrap';
   pgWrap.style.cssText='display:flex;flex-direction:column;align-items:center;gap:20px;transform-origin:top center;';
 
   /* ---- HELPERS ---- */
   function makePage(){
     var pg=document.createElement('div');
+    pg.className='sium-pg-page';
     pg.style.cssText='width:760px;min-height:1040px;background:#fff;color:#111;box-shadow:0 3px 20px rgba(0,0,0,0.6);padding:14px 16px;box-sizing:border-box;font-family:Arial,Helvetica,sans-serif;font-size:10px;display:flex;flex-direction:column;';
     return pg;
   }
   function makeTraitBox(label,key,minH,grow){
     var box=document.createElement('div');
+    box.className='sium-pg-trait-box';
     box.style.cssText='border:1px solid #aaa;border-radius:2px;margin-bottom:4px;overflow:hidden;'+(grow?'flex:1;display:flex;flex-direction:column;':'');
     var ta=document.createElement('textarea');
     ta.style.cssText='width:100%;background:transparent;border:none;resize:none;color:#111;font-family:Arial,Helvetica,sans-serif;font-size:9px;outline:none;padding:3px;min-height:'+minH+'px;line-height:1.4;'+(grow?'flex:1;':'');
@@ -9980,12 +10090,15 @@ function renderScheda() {
   }
   function makeBubble(checked,onChange){
     var bub=document.createElement('div');
+    bub.className='sium-pg-bubble';
     bub.style.cssText='width:9px;height:9px;border-radius:50%;border:1.5px solid #555;cursor:pointer;flex-shrink:0;background:'+(checked?'#111':'transparent')+';';
     bub.onclick=function(){var v=this.style.background==='transparent';this.style.background=v?'#111':'transparent';onChange(v);};
     return bub;
   }
   function makeStatBox(name,statKey){
-    var box=document.createElement('div'); box.style.cssText='border:2px solid #555;border-radius:5px;text-align:center;padding:3px 2px;margin-bottom:4px;';
+    var box=document.createElement('div');
+    box.className='sium-pg-stat-box';
+    box.style.cssText='border:2px solid #555;border-radius:5px;text-align:center;padding:3px 2px;margin-bottom:4px;cursor:pointer;';
     var nameLbl=document.createElement('div'); nameLbl.style.cssText='font-size:5.5px;font-weight:bold;text-transform:uppercase;letter-spacing:0.05em;color:#333;'; nameLbl.textContent=name;
     var valInp=document.createElement('input'); valInp.type='number'; valInp.min=1; valInp.max=30; valInp.value=parseInt(s[statKey])||10;
     valInp.style.cssText='width:100%;text-align:center;font-size:20px;font-weight:bold;color:#111;background:transparent;border:none;border-bottom:1px solid #bbb;outline:none;padding:1px;';
@@ -9996,7 +10109,9 @@ function renderScheda() {
     return box;
   }
   function makeTsRow(name,statKey,profKey){
-    var row=document.createElement('div'); row.style.cssText='display:flex;align-items:center;gap:2px;padding:1.5px 0;border-bottom:1px solid rgba(0,0,0,0.07);';
+    var row=document.createElement('div');
+    row.className='sium-pg-ts-row';
+    row.style.cssText='display:flex;align-items:center;gap:2px;padding:1.5px 0;border-bottom:1px solid rgba(0,0,0,0.07);cursor:pointer;';
     var bub=makeBubble(!!s[profKey],function(v){s[profKey]=v;updateSchedaDerived();ss();});
     var val=document.createElement('span'); val.id='pd-ts-'+statKey; val.style.cssText='font-size:9px;font-weight:bold;min-width:18px;text-align:right;'; val.textContent=fsv(s[statKey],s[profKey]);
     var nm=document.createElement('span'); nm.style.cssText='font-size:8px;margin-left:1px;'; nm.textContent=name;
@@ -10004,7 +10119,9 @@ function renderScheda() {
   }
   function makeSkillRow(name,statKey,profKey,idSuffix,abbr){
     var maestKey=profKey+'_m';
-    var row=document.createElement('div'); row.style.cssText='display:flex;align-items:center;gap:2px;padding:1px 0;border-bottom:1px solid rgba(0,0,0,0.06);';
+    var row=document.createElement('div');
+    row.className='sium-pg-skill-row';
+    row.style.cssText='display:flex;align-items:center;gap:2px;padding:1px 0;border-bottom:1px solid rgba(0,0,0,0.06);cursor:pointer;';
     var star=document.createElement('span');
     star.textContent=s[maestKey]?'★':'☆';
     star.title='Maestria (★): raddoppia il bonus di competenza — attiva prima la competenza (●)';
@@ -10028,7 +10145,9 @@ function renderScheda() {
     row.appendChild(star); row.appendChild(bub); row.appendChild(val); row.appendChild(nm); return row;
   }
   function makeHdrCell(label,key,isFirst){
-    var cell=document.createElement('div'); cell.style.cssText=(isFirst?'':'border-left:1px solid #aaa;')+'padding:2px 4px;';
+    var cell=document.createElement('div');
+    cell.className='sium-pg-hdr-cell';
+    cell.style.cssText=(isFirst?'':'border-left:1px solid #aaa;')+'padding:2px 4px;';
     var inp=document.createElement('input'); inp.type='text'; inp.value=s[key]||''; inp.style.cssText='width:100%;border:none;background:transparent;color:#111;font-size:11px;outline:none;';
     (function(k){inp.oninput=function(){s[k]=this.value;ss();};})(key);
     cell.appendChild(inp); cell.appendChild(cellLbl(label)); return cell;
@@ -10704,13 +10823,19 @@ function renderScheda() {
         
         var trDel = document.createElement('button');
         trDel.type = 'button';
+        trDel.title = 'Elimina contatore';
+        trDel.setAttribute('aria-label', 'Elimina contatore');
         trDel.innerHTML = '✖';
-        trDel.style.cssText = 'position:absolute; top:4px; right:4px; background:transparent; border:none; color:#a33; font-size:12px; cursor:pointer; font-weight:bold;';
+        trDel.style.cssText = 'position:absolute; top:4px; right:4px; z-index:5; width:24px; height:24px; display:flex; align-items:center; justify-content:center; background:rgba(170,51,51,0.10); border:1px solid rgba(170,51,51,0.35); border-radius:4px; color:#b71c1c; font-size:13px; cursor:pointer; font-weight:bold; transition:all 0.15s ease;';
+        trDel.onmouseover = function() { this.style.background = '#b71c1c'; this.style.color = '#fff'; };
+        trDel.onmouseout = function() { this.style.background = 'rgba(170,51,51,0.10)'; this.style.color = '#b71c1c'; };
         trDel.onclick = function(e) {
           e.preventDefault();
-          if(confirm('Eliminare questo contatore?')) {
-            s.customTrackers.splice(i, 1); ss(); renderMain();
-          }
+          e.stopPropagation();
+          s.customTrackers.splice(i, 1);
+          ss();
+          renderMain();
+          if (typeof notify === 'function') notify('Contatore extra rimosso.');
         };
         trk.appendChild(trDel);
         
@@ -10969,28 +11094,48 @@ function _openIncantesimoDetail(s) {
   if (old) old.remove();
   var overlay = document.createElement('div');
   overlay.id = 'inc-detail-overlay';
-  overlay.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.85);z-index:2000;display:flex;align-items:center;justify-content:center;padding:1.5rem;';
-  overlay.onclick = function(e){ if(e.target===overlay) overlay.remove(); };
+  overlay.className = 'sium-spell-modal-backdrop modal-backdrop';
+  function _closeIncModal() {
+    document.removeEventListener('keydown', _incEsc);
+    if (window.SiumAnimations && window.SiumAnimations.closeModalAnimated) {
+      window.SiumAnimations.closeModalAnimated(overlay);
+    } else {
+      overlay.remove();
+    }
+  }
+  var _incEsc = function(e) { if (e.key === 'Escape') _closeIncModal(); };
+  document.addEventListener('keydown', _incEsc);
+  overlay.onclick = function(e){ if(e.target===overlay) _closeIncModal(); };
   var panel = document.createElement('div');
-  panel.style.cssText = 'background:var(--bg-card);border:1px solid var(--border-gold);max-width:700px;width:100%;max-height:90vh;overflow-y:auto;';
+  panel.className = 'sium-spell-modal-panel';
   panel.onclick = function(e){ e.stopPropagation(); };
   // Header
   var hdr = document.createElement('div');
-  hdr.style.cssText = 'padding:1.25rem 1.5rem 1rem;border-bottom:1px solid var(--border-gold);background:var(--bg-card);';
+  hdr.style.cssText = 'position:relative;z-index:2;padding:1.35rem 1.5rem 1rem;border-bottom:1px solid var(--border-gold);background:transparent;';
   var topRow = document.createElement('div'); topRow.style.cssText = 'display:flex;align-items:flex-start;justify-content:space-between;gap:1rem;';
   var nameBlock = document.createElement('div');
   var lvlBadge = document.createElement('div');
-  lvlBadge.style.cssText = 'font-size:11px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--gold);border:1px solid var(--border-gold);padding:0.15rem 0.55rem;display:inline-block;margin-bottom:0.5rem;';
-  lvlBadge.textContent = s.livello == 0 ? 'Trucchetto' : 'Livello ' + s.livello;
+  lvlBadge.style.cssText = 'font-size:11px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--spell-color, var(--gold));border:1px solid var(--spell-color, var(--border-gold));padding:0.15rem 0.55rem;display:inline-block;margin-bottom:0.5rem;';
+  lvlBadge.textContent = s.livello == 0 ? '✦ Trucchetto' : '✦ Livello ' + s.livello;
+  var orbsWrap = document.createElement('span');
+  orbsWrap.className = 'sium-spell-level-orbs';
+  var orbCount = Math.max(1, Math.min(9, Number(s.livello) || 1));
+  for (var oi = 0; oi < orbCount; oi++) {
+    var orb = document.createElement('span');
+    orb.className = 'sium-spell-orb';
+    orb.style.setProperty('--orb-i', String(oi));
+    orbsWrap.appendChild(orb);
+  }
   nameBlock.appendChild(lvlBadge);
+  nameBlock.appendChild(orbsWrap);
   var nameEl = document.createElement('div');
   nameEl.style.cssText = 'font-family:\'Cinzel\',serif;font-size:26px;font-weight:900;color:var(--text-primary);letter-spacing:0.04em;line-height:1.15;';
   nameEl.textContent = s.nome || '';
   nameBlock.appendChild(nameEl);
-  if (s.scuola) { var scuolaEl = document.createElement('div'); scuolaEl.style.cssText = 'font-size:13px;color:var(--text-muted);font-style:italic;margin-top:0.25rem;'; scuolaEl.textContent = s.scuola; nameBlock.appendChild(scuolaEl); }
+  if (s.scuola) { var scuolaEl = document.createElement('div'); scuolaEl.style.cssText = 'font-size:13px;color:var(--spell-color, var(--text-muted));font-style:italic;margin-top:0.25rem;'; scuolaEl.textContent = 'Scuola di ' + s.scuola; nameBlock.appendChild(scuolaEl); }
   topRow.appendChild(nameBlock);
   var closeBtn = document.createElement('button'); closeBtn.className = 'btn-dark'; closeBtn.style.cssText = 'padding:0.35rem 0.75rem;font-size:18px;flex-shrink:0;line-height:1;'; closeBtn.textContent = '✕';
-  closeBtn.onclick = function(){ overlay.remove(); };
+  closeBtn.onclick = function(){ _closeIncModal(); };
   topRow.appendChild(closeBtn);
   hdr.appendChild(topRow);
   var tagRow = document.createElement('div'); tagRow.style.cssText = 'display:flex;flex-wrap:wrap;gap:0.35rem;margin-top:0.75rem;';
@@ -11027,19 +11172,37 @@ function _openIncantesimoDetail(s) {
     var alLbl2=document.createElement('div'); alLbl2.style.cssText='font-size:11px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--gold-dim);margin-bottom:0.5rem;'; alLbl2.textContent='Ai Livelli Superiori'; body2.appendChild(alLbl2);
     var alTxt2=document.createElement('div'); alTxt2.style.cssText='font-size:15px;color:var(--text-secondary);line-height:1.8;white-space:pre-wrap;'; alTxt2.textContent=s.altiLivelli; body2.appendChild(alTxt2);
   }
+  body2.style.position = 'relative';
+  body2.style.zIndex = '2';
   panel.appendChild(body2);
   overlay.appendChild(panel);
   document.body.appendChild(overlay);
+  if (window.SiumAnimations && window.SiumAnimations.enhanceSpellModal) {
+    window.SiumAnimations.enhanceSpellModal(overlay, panel, s);
+  }
 }
 
 function renderIncantatesimoCard(s) {
-  var card = document.createElement('div'); card.className = 'panel-glass'; card.style.cssText = 'padding:0;overflow:hidden;';
+  var spTheme = (window.SiumAnimations && window.SiumAnimations.getSpellSchoolTheme)
+    ? window.SiumAnimations.getSpellSchoolTheme(s.scuola)
+    : { color: '#d8b25c', glow: 'rgba(216,178,92,0.28)', icon: '✨' };
+  var card = document.createElement('div');
+  card.className = 'panel-glass sium-spell-card sium-grid-card-enter';
+  card.style.cssText = 'padding:0;overflow:hidden;';
+  card.style.setProperty('--spell-color', spTheme.color);
+  card.style.setProperty('--spell-glow', spTheme.glow);
+  function _handleSpellCardClick() {
+    if (window.SiumAnimations && window.SiumAnimations.triggerCardClickPulse) {
+      window.SiumAnimations.triggerCardClickPulse(card, spTheme.color);
+    }
+    _openIncantesimoDetail(s);
+  }
 
   // Head
   var head = document.createElement('div');
   head.style.cssText = 'padding:1rem 1.2rem 0.7rem;border-bottom:1px solid var(--border-subtle);cursor:pointer;';
-  head.title = 'Clicca per aprire la scheda';
-  head.onclick = function(){ _openIncantesimoDetail(s); };
+  head.title = 'Clicca per consultare il Grimorio';
+  head.onclick = _handleSpellCardClick;
   // Level badge + name
   var topRow = document.createElement('div'); topRow.style.cssText = 'display:flex;align-items:flex-start;justify-content:space-between;gap:0.5rem;';
   var nameCol = document.createElement('div');
@@ -11071,7 +11234,7 @@ function renderIncantatesimoCard(s) {
 
   // Body
   var body = document.createElement('div'); body.style.cssText = 'padding:0.8rem 1.2rem;cursor:pointer;';
-  body.onclick = function(){ _openIncantesimoDetail(s); };
+  body.onclick = _handleSpellCardClick;
   function statLine(lbl, val) {
     if (!val) return;
     var d = document.createElement('div'); d.style.cssText = 'display:flex;gap:0.5rem;margin-bottom:0.3rem;align-items:baseline;';
@@ -13075,18 +13238,7 @@ function _synthCoin() {
   });
 }
 function _synthDiceRoll() {
-  var ctx = _getWACtx(); if (!ctx) return;
-  for (var k = 0; k < 5; k++) {
-    (function(delay) {
-      var sr = ctx.sampleRate, dur = 0.07, buf = ctx.createBuffer(1, Math.floor(sr * dur), sr);
-      var d = buf.getChannelData(0);
-      for (var i = 0; i < d.length; i++) d[i] = (Math.random() * 2 - 1) * (1 - i / d.length);
-      var src = ctx.createBufferSource(), g = ctx.createGain();
-      src.buffer = buf; src.connect(g); g.connect(ctx.destination);
-      g.gain.setValueAtTime(0.3, ctx.currentTime + delay);
-      src.start(ctx.currentTime + delay); src.stop(ctx.currentTime + delay + dur);
-    })(k * 0.05 + Math.random() * 0.03);
-  }
+  /* Suono sintetico del lancio dadi rimosso su richiesta dell utente */
 }
 function _playSynth(sfxId) {
   if (sfxId === 'campana') _synthBell();
@@ -13790,6 +13942,7 @@ function renderSchedePG() {
   filtered.forEach(function(item) {
     var ch = item.char;
     var card = document.createElement('div');
+    card.className = 'sium-pg-card';
     card.style.cssText = 'background:var(--bg-card);border:1px solid var(--border-subtle);border-radius:6px;overflow:hidden;cursor:pointer;transition:border-color 0.15s,box-shadow 0.15s;';
     card.onmouseenter = function() { card.style.borderColor = 'var(--gold-dim)'; card.style.boxShadow = '0 4px 16px rgba(0,0,0,0.35)'; };
     card.onmouseleave = function() { card.style.borderColor = 'var(--border-subtle)'; card.style.boxShadow = 'none'; };
@@ -13859,7 +14012,7 @@ function renderDadi() {
   hc.innerHTML =
     "<div class=\"header-eyebrow mb-3\"><span>Sala dei Dadi &amp; Destino 3D</span></div>" +
     "<h1 class=\"header-title\">Lanciatore di Dadi 3D</h1>" +
-    "<p class=\"font-script italic mt-2 text-lg\" style=\"color:var(--text-muted);\">I poliedri del destino rotolano in tre dimensioni sul velluto del Mercante Errante.</p>";
+    "<p class=\"font-script italic mt-2 text-lg\" style=\"color:var(--text-muted);\">I poliedri del destino vengono lanciati e rimbalzano in 4 dimensioni con nucleo Tesseract ed echi temporali.</p>";
   header.appendChild(hc);
   wrap.appendChild(header);
 
@@ -13879,7 +14032,7 @@ function renderDadi() {
   var diceTitle = document.createElement("div");
   diceTitle.style.cssText =
     "font-family:var(--font-display);font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:0.25em;color:var(--gold);margin-bottom:0.85rem;";
-  diceTitle.textContent = "Seleziona il Poliedro 3D";
+  diceTitle.textContent = "Seleziona il Poliedro 4D";
   diceBox.appendChild(diceTitle);
 
   /* 2. Griglia Tipi Dado (d4, d6, d8, d10, d12, d20, d100) */
@@ -13896,7 +14049,7 @@ function renderDadi() {
         b.classList.remove("active");
       });
       btn.classList.add("active");
-      rollBtn.innerHTML = "🎲 Lancia " + (diceCount > 1 ? diceCount : "") + "d" + d + " in 3D";
+      rollBtn.innerHTML = "🎲 Lancia " + (diceCount > 1 ? diceCount : "") + "d" + d + " in 4D";
       renderIdle3DDice();
     };
     diceGrid.appendChild(btn);
@@ -13922,7 +14075,7 @@ function renderDadi() {
         b.classList.remove("active");
       });
       qBtn.classList.add("active");
-      rollBtn.innerHTML = "🎲 Lancia " + (diceCount > 1 ? diceCount : "") + "d" + state.diceType + " in 3D";
+      rollBtn.innerHTML = "🎲 Lancia " + (diceCount > 1 ? diceCount : "") + "d" + state.diceType + " in 4D";
       renderIdle3DDice();
     };
     qBtn.setAttribute("data-qbtn", String(cnt));
@@ -14029,7 +14182,7 @@ function renderDadi() {
   var arenaHint = document.createElement("div");
   arenaHint.style.cssText =
     "position:relative;z-index:3;font-family:var(--font-display);font-size:10px;letter-spacing:0.18em;text-transform:uppercase;color:var(--text-muted);margin-top:0.35rem;";
-  arenaHint.textContent = "— Clicca sul vassoio 3D o premi Lancia —";
+  arenaHint.textContent = "— Clicca sul vassoio 4D o premi Lancia —";
   arena.appendChild(arenaHint);
 
   diceBox.appendChild(arena);
@@ -14041,17 +14194,9 @@ function renderDadi() {
     "text-align:center;font-family:var(--font-display);font-size:21px;font-weight:900;color:var(--gold-bright);min-height:32px;margin-bottom:0.35rem;letter-spacing:0.06em;";
   diceBox.appendChild(totalLbl);
 
-  /* Info trucco DM */
-  var truccoInfo = document.createElement("div");
-  truccoInfo.id = "dice-trucco-info";
-  truccoInfo.style.cssText =
-    "font-family:var(--font-display);font-size:9px;text-transform:uppercase;letter-spacing:0.15em;color:rgba(201,165,92,0.45);margin-bottom:0.75rem;min-height:1em;text-align:center;";
-  if (isDM()) truccoInfo.textContent = "⚔ Modalità vantaggio segreta DM attiva sul d20";
-  diceBox.appendChild(truccoInfo);
-
-  function createDie3DNode(faces, val, rolling, isCrit, isFail) {
+  function createDie3DNode(faces, val, rolling, isCrit, isFail, targetVal) {
     if (window.SiumAnimations && typeof window.SiumAnimations.build3DDieElement === "function") {
-      return window.SiumAnimations.build3DDieElement(faces, val, rolling, isCrit, isFail);
+      return window.SiumAnimations.build3DDieElement(faces, val, rolling, isCrit, isFail, targetVal);
     }
     var fallback = document.createElement("div");
     fallback.textContent = val !== null ? String(val) : "🎲";
@@ -14062,35 +14207,40 @@ function renderDadi() {
     diceVisual.innerHTML = "";
     var previewCount = Math.min(diceCount, 4);
     for (var i = 0; i < previewCount; i++) {
-      diceVisual.appendChild(createDie3DNode(state.diceType, state.diceType, false, false, false));
+      diceVisual.appendChild(createDie3DNode(state.diceType, state.diceType, false, false, false, state.diceType));
     }
   }
 
   renderIdle3DDice();
 
   function _showRoll3D(rolls, faces, total, mod, detailNote) {
-    if (typeof _synthDiceRoll === "function") {
-      try {
-        _synthDiceRoll();
-      } catch (e) {}
-    }
     arena.classList.add("is-rolling");
     diceVisual.innerHTML = "";
-    totalLbl.textContent = "Lancio 3D in corso...";
+    totalLbl.textContent = "✦ Il dado 3D sta rotolando sul panno... ✦";
     totalLbl.style.color = "var(--text-secondary)";
 
-    rolls.forEach(function () {
-      diceVisual.appendChild(createDie3DNode(faces, null, true, false, false));
+    var thrownNodes = [];
+    rolls.forEach(function (v) {
+      var startFace = Math.floor(Math.random() * faces) + 1;
+      var node = createDie3DNode(faces, startFace, true, false, false, v);
+      diceVisual.appendChild(node);
+      thrownNodes.push({ node: node, val: v });
     });
 
     var isFast = !!(navigator.webdriver || /HeadlessChrome/i.test(navigator.userAgent || ""));
     setTimeout(function () {
       arena.classList.remove("is-rolling");
-      diceVisual.innerHTML = "";
-      rolls.forEach(function (v) {
+      thrownNodes.forEach(function (item) {
+        var v = item.val;
+        var slot = item.node;
         var isCrit = faces === 20 && v === 20;
         var isFail = faces === 20 && v === 1;
-        diceVisual.appendChild(createDie3DNode(faces, v, false, isCrit, isFail));
+        slot.classList.remove("is-rolling");
+        slot.classList.add("is-settled");
+        if (isCrit) slot.classList.add("is-crit");
+        if (isFail) slot.classList.add("is-fail");
+        var numEl = slot.querySelector(".face-front .sium-die-svg-num") || slot.querySelector(".sium-die-svg-num") || slot.querySelector(".face-front");
+        if (numEl) numEl.textContent = String(v);
       });
 
       var breakdown = rolls.join(" + ");
@@ -14114,7 +14264,7 @@ function renderDadi() {
         totalLbl.style.color = "var(--gold-bright)";
         totalLbl.textContent = fullText;
       }
-    }, isFast ? 50 : 820);
+    }, isFast ? 50 : 1000);
   }
 
   function executeDiceRoll() {
@@ -14155,8 +14305,8 @@ function renderDadi() {
       }
     }
 
+    /* Probabilità 100% equa e uniforme per TUTTI gli account (nessun bonus o vantaggio nascosto per account) */
     var dtype = state.diceType || 20;
-    var usaTrucco = isDM() && dtype === 20 && diceRollMode === "normale" && diceCount === 1;
     var rollsArr = [];
     var sum = 0;
     var detailNote = "";
@@ -14168,12 +14318,6 @@ function renderDadi() {
       rollsArr = [chosen];
       sum = chosen + diceMod;
       detailNote = "[" + diceRollMode.toUpperCase() + ": " + a1 + ", " + a2 + " → " + chosen + "]";
-    } else if (usaTrucco) {
-      var r1 = Math.floor(Math.random() * 20) + 1;
-      var r2 = Math.floor(Math.random() * 20) + 1;
-      var best = Math.max(r1, r2);
-      rollsArr = [best];
-      sum = best + diceMod;
     } else {
       for (var c = 0; c < diceCount; c++) {
         var val = Math.floor(Math.random() * dtype) + 1;
@@ -14191,8 +14335,7 @@ function renderDadi() {
     state.diceHistory.unshift({
       value: sum,
       diceType: dtype,
-      username: state.currentUser ? state.currentUser.username : "?",
-      trucco: usaTrucco
+      username: state.currentUser ? state.currentUser.username : "?"
     });
     if (state.diceHistory.length > 20) state.diceHistory.pop();
 
@@ -14221,7 +14364,7 @@ function renderDadi() {
   var rollBtn = document.createElement("button");
   rollBtn.type = "button";
   rollBtn.className = "dice-roll-btn";
-  rollBtn.innerHTML = "🎲 Lancia " + (diceCount > 1 ? diceCount : "") + "d" + state.diceType + " in 3D";
+  rollBtn.innerHTML = "🎲 Lancia " + (diceCount > 1 ? diceCount : "") + "d" + state.diceType + " in 4D";
   rollBtn.onclick = executeDiceRoll;
   diceBox.appendChild(rollBtn);
 
