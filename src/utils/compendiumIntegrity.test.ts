@@ -152,6 +152,7 @@ test('Theme Selector Button (Dark / Light / Halloween) & Halloween Theme (Dark B
   const varCss = fs.readFileSync('css/variables.css', 'utf8');
   const themeCss = fs.readFileSync('css/theme.css', 'utf8');
   const animCss = fs.readFileSync('css/animations.css', 'utf8');
+  const html = fs.readFileSync('index.html', 'utf8');
 
   // 1. Theme Selector button & menu in top bar and sidebar
   assert.ok(animJs.includes('sium-theme-picker-btn'), 'Theme Picker button present in js/animations.js');
@@ -214,7 +215,12 @@ test('Theme Selector Button (Dark / Light / Halloween) & Halloween Theme (Dark B
   assert.ok(!publicUsersJs.includes('AIza') && !publicUsersJs.includes('QUl6Y'), 'No exposed AIza/base64 API key literal in public/js/users.js');
   assert.ok(!appJs.includes('AIza'), 'No exposed AIza API key literal in js/app.js');
   assert.ok(!publicAppJs.includes('AIza'), 'No exposed AIza API key literal in public/js/app.js');
+  assert.ok(usersJs.includes('window.__FIREBASE_CONFIG__'), 'js/users.js uses runtime Firebase configuration');
+  assert.ok(publicUsersJs.includes('window.__FIREBASE_CONFIG__'), 'public/js/users.js uses runtime Firebase configuration');
+  assert.ok(html.includes('src="js/firebase-config.js"'), 'index.html includes runtime firebase config script');
+  const publicHtml = fs.readFileSync('public/index.html', 'utf8');
+  assert.ok(publicHtml.includes('src="js/firebase-config.js"'), 'public/index.html includes runtime firebase config script');
+  assert.ok(fs.existsSync('js/firebase-config.template.js'), 'js/firebase-config.template.js exists');
+  assert.ok(fs.existsSync('public/js/firebase-config.template.js'), 'public/js/firebase-config.template.js exists');
 });
-
-
 

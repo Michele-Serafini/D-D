@@ -12,29 +12,31 @@
  * ============================================================================
  */
 
-/* ── 1. Configurazione Firebase Condivisa (senza chiavi API in chiaro nel codice sorgente) ── */
-var _fbWebIdCodes = [
-  65, 73, 122, 97, 83, 121, 67, 53, 121, 80, 109, 118, 103, 80, 49, 114, 101, 57, 75, 65,
-  89, 110, 67, 110, 81, 110, 82, 101, 117, 86, 49, 100, 106, 113, 57, 117, 103, 76, 103
-];
-function _resolveFbWebKey() {
-  if (typeof window !== 'undefined' && window.__FIREBASE_API_KEY__) return window.__FIREBASE_API_KEY__;
-  try {
-    return String.fromCharCode.apply(null, _fbWebIdCodes);
-  } catch (e) {}
-  return '';
+/* ── 1. Configurazione Firebase Runtime (fornita esternamente, non committata) ── */
+function _resolveFirebaseConfig() {
+  if (typeof window === 'undefined') return null;
+  var cfg = window.__FIREBASE_CONFIG__;
+  if (!cfg || typeof cfg !== 'object') return null;
+  if (!cfg.apiKey || !cfg.authDomain || !cfg.databaseURL || !cfg.projectId || !cfg.appId) return null;
+  return {
+    apiKey: cfg.apiKey,
+    authDomain: cfg.authDomain,
+    databaseURL: cfg.databaseURL,
+    projectId: cfg.projectId,
+    storageBucket: cfg.storageBucket || '',
+    messagingSenderId: cfg.messagingSenderId || '',
+    appId: cfg.appId,
+    measurementId: cfg.measurementId || ''
+  };
 }
 
-var FIREBASE_CONFIG = {
-  apiKey: _resolveFbWebKey(),
-  authDomain: 'mercante-errante.firebaseapp.com',
-  databaseURL: 'https://mercante-errante-default-rtdb.europe-west1.firebasedatabase.app',
-  projectId: 'mercante-errante',
-  storageBucket: 'mercante-errante.firebasestorage.app',
-  messagingSenderId: '1079281517271',
-  appId: '1:1079281517271:web:24bd4c8ef039079eece692',
-  measurementId: 'G-R9CKK7NMNW'
-};
+var FIREBASE_CONFIG = _resolveFirebaseConfig();
+var _firebaseConfigWarningShown = false;
+function _warnMissingFirebaseConfig() {
+  if (_firebaseConfigWarningShown) return;
+  _firebaseConfigWarningShown = true;
+  console.warn('[UserManager] Config Firebase assente: crea js/firebase-config.js da js/firebase-config.template.js oppure imposta window.__FIREBASE_CONFIG__. Avvio in modalità offline.');
+}
 
 var _firebaseApp = null;
 var _db = null;
@@ -76,6 +78,10 @@ var UserManager = {
     if (_db) return _db;
     try {
       if (typeof firebase !== 'undefined') {
+        if (!FIREBASE_CONFIG) {
+          _warnMissingFirebaseConfig();
+          return null;
+        }
         if (!_firebaseApp) {
           _firebaseApp = firebase.apps && firebase.apps.length
             ? firebase.app()
