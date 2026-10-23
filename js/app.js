@@ -1302,6 +1302,76 @@ function escapeHtml(s) {
   return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
 }
 function nl2br(s) { return s ? s.replace(/\n/g,'<br>') : ''; }
+function safeImageUrl(value) {
+  if (typeof value !== 'string') return '';
+  var candidate = value.trim();
+  if (!candidate) return '';
+  if (/^data:image\/(?:gif|jpe?g|png|webp);base64,/i.test(candidate)) return encodeURI(candidate);
+  try {
+    var parsed = new URL(candidate, window.location.href);
+    return (parsed.protocol === 'http:' || parsed.protocol === 'https:') ? encodeURI(parsed.href) : '';
+  } catch (e) {
+    return '';
+  }
+}
+function safeLinkUrl(value) {
+  if (typeof value !== 'string') return '';
+  try {
+    var parsed = new URL(value, window.location.href);
+    return (parsed.protocol === 'http:' || parsed.protocol === 'https:' || parsed.protocol === 'mailto:')
+      ? encodeURI(parsed.href) : '';
+  } catch (e) {
+    return '';
+  }
+}
+function sanitizeRichText(html) {
+  var parsed = new DOMParser().parseFromString(String(html || ''), 'text/html');
+  var allowed = {
+    a: 1, b: 1, blockquote: 1, br: 1, code: 1, div: 1, em: 1,
+    h1: 1, h2: 1, h3: 1, i: 1, li: 1, ol: 1, p: 1, pre: 1,
+    s: 1, span: 1, strong: 1, u: 1, ul: 1
+  };
+  function copy(node) {
+    if (node.nodeType === 3) return document.createTextNode(node.nodeValue);
+    if (node.nodeType !== 1) return null;
+    var tag = node.tagName.toLowerCase();
+    if (!allowed[tag]) {
+      var unwrapped = document.createDocumentFragment();
+      Array.prototype.forEach.call(node.childNodes, function(child) {
+        var cleanChild = copy(child);
+        if (cleanChild) unwrapped.appendChild(cleanChild);
+      });
+      return unwrapped;
+    }
+    var clean = document.createElement(tag);
+    if (tag === 'a') {
+      var href = safeLinkUrl(node.getAttribute('href'));
+      if (href) {
+        clean.setAttribute('href', href);
+        clean.setAttribute('target', '_blank');
+        clean.setAttribute('rel', 'noopener noreferrer');
+      }
+    }
+    if (tag === 'span') {
+      if (node.classList.contains('storia-map-link')) clean.className = 'storia-map-link';
+      var markerId = node.getAttribute('data-marker-id');
+      if (markerId && /^[A-Za-z0-9_-]+$/.test(markerId)) clean.dataset.markerId = markerId;
+      var npcName = node.getAttribute('data-storia-npc');
+      if (npcName) clean.dataset.storiaNpc = npcName;
+    }
+    Array.prototype.forEach.call(node.childNodes, function(child) {
+      var cleanChild = copy(child);
+      if (cleanChild) clean.appendChild(cleanChild);
+    });
+    return clean;
+  }
+  var fragment = document.createDocumentFragment();
+  Array.prototype.forEach.call(parsed.body.childNodes, function(child) {
+    var cleanChild = copy(child);
+    if (cleanChild) fragment.appendChild(cleanChild);
+  });
+  return fragment;
+}
 function _textScore() {
   var score = 0;
   for (var i = 0; i < arguments.length; i++) {
@@ -2554,7 +2624,7 @@ function renderLibri() {
     var favTitle = document.createElement('h2');
     favTitle.textContent = 'I Tuoi Preferiti';
     favTitle.style.cssText = 'font-family:\'Cinzel\',serif;font-size:16px;font-weight:700;letter-spacing:0.1em;color:#f5c842;margin-bottom:1rem;display:flex;align-items:center;gap:0.5rem;';
-    favTitle.innerHTML = '⭐ ' + favTitle.textContent;
+    favTitle.textContent = '⭐ I Tuoi Preferiti';
     favSec.appendChild(favTitle);
     
     var favGrid = document.createElement('div');
@@ -3875,7 +3945,9 @@ function _buildVehicleImageEditor(form, ACCENT) {
       imgs.forEach(function(src, i) {
         var t = document.createElement('div');
         t.style.cssText = 'position:relative;width:72px;height:72px;border:1px solid rgba(245,166,35,0.4);overflow:hidden;flex-shrink:0;background:#111;';
-        var im = document.createElement('img'); im.src = src; im.alt = '';
+        var im = document.createElement('img');
+        if (/^(?:https?:\/\/|data:image\/(?:gif|jpe?g|png|webp);base64,)/i.test(src)) im.src = encodeURI(src);
+        im.alt = '';
         im.style.cssText = 'width:100%;height:100%;object-fit:cover;display:block;';
         im.onerror = function(){ im.style.display='none'; t.style.background='rgba(245,166,35,0.08)'; };
         var del = document.createElement('button');
@@ -4128,9 +4200,13 @@ function renderVeicoloCard(v, isParty) {
     var statsRow=document.createElement('div'); statsRow.style.cssText='display:grid;grid-template-columns:repeat(6,1fr);gap:4px;text-align:center;';
     [['FOR',v.stFor],['DES',v.stDes],['COS',v.stCos],['INT',v.stInt],['SAG',v.stSag],['CAR',v.stCar]].forEach(function(st){
       var cell=document.createElement('div'); cell.style.cssText='border:1px solid rgba(245,166,35,0.25);padding:4px 2px;';
-      cell.innerHTML='<div style="font-size:9px;font-weight:700;color:#c87d10;letter-spacing:0.08em;">'+st[0]+'</div>'
-        +'<div style="font-size:15px;font-weight:700;color:#ffd080;">'+(st[1]||'—')+'</div>'
-        +(st[1]?'<div style="font-size:10px;color:rgba(255,208,128,0.6);">'+_statMod(st[1])+'</div>':'');
+      var statName=document.createElement('div'); statName.style.cssText='font-size:9px;font-weight:700;color:#c87d10;letter-spacing:0.08em;'; statName.textContent=st[0];
+      var statValue=document.createElement('div'); statValue.style.cssText='font-size:15px;font-weight:700;color:#ffd080;'; statValue.textContent=st[1]||'—';
+      cell.appendChild(statName); cell.appendChild(statValue);
+      if (st[1]) {
+        var statMod=document.createElement('div'); statMod.style.cssText='font-size:10px;color:rgba(255,208,128,0.6);'; statMod.textContent=_statMod(st[1]);
+        cell.appendChild(statMod);
+      }
       statsRow.appendChild(cell);
     });
     body.appendChild(statsRow);
@@ -5521,7 +5597,10 @@ function renderWeaponCard(w) {
   }
   var rt = document.createElement('div');
   rt.style.cssText = 'position:absolute;top:12px;right:12px;z-index:2;';
-  rt.innerHTML = '<span class="rarity-tag ' + rarityClass(w.rarita) + '">' + escapeHtml(w.rarita) + '</span>';
+  var rarityTag = document.createElement('span');
+  rarityTag.className = 'rarity-tag ' + rarityClass(w.rarita);
+  rarityTag.textContent = w.rarita || '';
+  rt.appendChild(rarityTag);
   img.appendChild(rt);
   card.appendChild(img);
 
@@ -9277,8 +9356,8 @@ function renderBestiarForm() {
   imgInp.placeholder='URL immagine o carica file'; imgInp.value=form.immagine||'';
   var prevImg = document.createElement('img');
   prevImg.style.cssText='max-width:70px;max-height:55px;border-radius:3px;border:1px solid var(--border-soft);'+(form.immagine?'':'display:none;');
-  if (form.immagine) prevImg.src=form.immagine;
-  imgInp.oninput=function(){ form.immagine=this.value; if(this.value){prevImg.src=this.value;prevImg.style.display='block';}else{prevImg.style.display='none';} };
+  if (form.immagine) prevImg.src=safeImageUrl(form.immagine);
+  imgInp.oninput=function(){ form.immagine=this.value; var imageUrl=safeImageUrl(this.value); if(imageUrl){prevImg.src=imageUrl;prevImg.style.display='block';}else{prevImg.removeAttribute('src');prevImg.style.display='none';} };
   var fI=document.createElement('input'); fI.type='file'; fI.accept='image/*'; fI.style.display='none';
   var fBtn=document.createElement('button'); fBtn.type='button'; fBtn.className='btn-dark';
   fBtn.style.cssText='white-space:nowrap;font-size:11px;flex-shrink:0;'; fBtn.textContent='📁 File';
@@ -13401,7 +13480,7 @@ function apriModaleImmagineScena(scenaId, scenaNome) {
   var currentUrl = state.regiaImmagini[scenaId] || '';
   if (currentUrl) {
     preview = document.createElement('img');
-    preview.className = 'regia-img-preview'; preview.src = currentUrl;
+    preview.className = 'regia-img-preview'; preview.src = safeImageUrl(currentUrl);
     box.appendChild(preview);
   }
 
@@ -13414,10 +13493,10 @@ function apriModaleImmagineScena(scenaId, scenaNome) {
   urlInp.placeholder = 'https://esempio.com/immagine.jpg';
   urlInp.value = currentUrl;
   urlInp.oninput = function() {
-    if (preview) { preview.src = this.value; }
+    if (preview) { var imageUrl = safeImageUrl(this.value); if (imageUrl) preview.src = imageUrl; else preview.removeAttribute('src'); }
     else if (this.value) {
       preview = document.createElement('img');
-      preview.className = 'regia-img-preview'; preview.src = this.value;
+      preview.className = 'regia-img-preview'; preview.src = safeImageUrl(this.value);
       box.insertBefore(preview, urlLbl);
     }
   };
@@ -14475,7 +14554,7 @@ function _openSecondaryMapView(fid) {
   var centerCol = document.createElement('div');
   centerCol.style.cssText = 'flex:1;position:relative;overflow:hidden;background:#0a0602;';
 
-  if (f.mappaSec) {
+  if (safeImageUrl(f.mappaSec)) {
     var zScale = 1, zPanX = 0, zPanY = 0;
     var zDrag = false, zSX, zSY, zSPX, zSPY;
 
@@ -14483,7 +14562,7 @@ function _openSecondaryMapView(fid) {
     imgWrap.style.cssText = 'width:100%;height:100%;overflow:hidden;cursor:grab;display:flex;align-items:center;justify-content:center;';
 
     var secImg = document.createElement('img');
-    secImg.src = f.mappaSec;
+    secImg.src = safeImageUrl(f.mappaSec);
     secImg.draggable = false;
     secImg.style.cssText = 'max-width:100%;max-height:100%;user-select:none;pointer-events:none;transform-origin:center center;transform:translate(0px,0px) scale(1);';
 
@@ -14900,9 +14979,9 @@ function renderMappaFlagPanel(panel, fid, inSecView) {
       /* immagine mappa zona */
       var secImgLbl = document.createElement('span'); secImgLbl.className = 'mappa-field-lbl'; secImgLbl.textContent = 'Immagine mappa zona';
       secSec.appendChild(secImgLbl);
-      if (f.mappaSec) {
+      if (safeImageUrl(f.mappaSec)) {
         var secPrev = document.createElement('img');
-        secPrev.src = f.mappaSec;
+        secPrev.src = safeImageUrl(f.mappaSec);
         secPrev.style.cssText = 'width:100%;max-height:70px;object-fit:cover;border-radius:4px;margin-bottom:0.4rem;border:1px solid rgba(201,165,92,0.25);';
         secSec.appendChild(secPrev);
       }
@@ -15009,8 +15088,8 @@ function renderMappaFlagPanel(panel, fid, inSecView) {
       body.appendChild(gradPg);
     }
 
-    if (f.immagine) {
-      var img2 = document.createElement('img'); img2.src = f.immagine; img2.className = 'mappa-impresa-img';
+    if (safeImageUrl(f.immagine)) {
+      var img2 = document.createElement('img'); img2.src = safeImageUrl(f.immagine); img2.className = 'mappa-impresa-img';
       body.appendChild(img2);
     }
 
@@ -15243,10 +15322,17 @@ function _ovFinishDraw() {
   if (hint2) {
     var facNome = (ld.factions && ld.factions[fid] && ld.factions[fid].nome) ? ld.factions[fid].nome : '';
     hint2.style.display = 'block';
-    hint2.innerHTML =
-      '<span style="color:#90ee90;">✅ Zona salvata' + (facNome ? ' per &ldquo;' + facNome + '&rdquo;' : '') + '!</span>' +
-      '<span style="color:var(--text-muted);font-size:11px;margin-left:8px;">Per una zona staccata della stessa fazione →</span>' +
-      '<button onclick="_ovStartDraw(\'' + lk + '\',\'' + fid + '\')" style="margin-left:8px;background:rgba(201,165,92,0.15);border:1px solid var(--gold-dim);color:var(--gold);border-radius:4px;padding:4px 12px;cursor:pointer;font-size:11px;font-family:inherit;vertical-align:middle;">✏ Altra Zona</button>';
+    var savedNotice = document.createElement('span');
+    savedNotice.style.cssText = 'color:#90ee90;';
+    savedNotice.textContent = '✅ Zona salvata' + (facNome ? ' per “' + facNome + '”' : '') + '!';
+    var detachedNotice = document.createElement('span');
+    detachedNotice.style.cssText = 'color:var(--text-muted);font-size:11px;margin-left:8px;';
+    detachedNotice.textContent = 'Per una zona staccata della stessa fazione →';
+    var anotherZone = document.createElement('button');
+    anotherZone.style.cssText = 'margin-left:8px;background:rgba(201,165,92,0.15);border:1px solid var(--gold-dim);color:var(--gold);border-radius:4px;padding:4px 12px;cursor:pointer;font-size:11px;font-family:inherit;vertical-align:middle;';
+    anotherZone.textContent = '✏ Altra Zona';
+    anotherZone.onclick = function() { _ovStartDraw(lk, fid); };
+    hint2.replaceChildren(savedNotice, detachedNotice, anotherZone);
     setTimeout(function() {
       var h2 = document.querySelector('.mappa-draw-hint');
       if (h2 && !_ovDrawActive) h2.style.display = 'none';
@@ -16171,7 +16257,7 @@ function createBacheEl(item) {
   var face = document.createElement('div');
   face.className = 'bache-face';
   var img = document.createElement('img');
-  img.src = item.dataUrl || item.url || '';
+  img.src = safeImageUrl(item.dataUrl || item.url || '');
   img.alt = 'Manifesto'; img.draggable = false;
   img.onerror = function() {
     this.style.display = 'none';
@@ -16314,7 +16400,7 @@ function createBacheEl(item) {
     overlay.className = 'bache-lightbox-overlay';
     var lbImg = document.createElement('img');
     lbImg.className = 'bache-lightbox-img';
-    lbImg.src = src;
+    lbImg.src = safeImageUrl(src);
     overlay.appendChild(lbImg);
     overlay.addEventListener('click', function() { overlay.remove(); });
     document.body.appendChild(overlay);
@@ -16662,7 +16748,7 @@ function showStoriaTooltip(e, npc) {
   tt.innerHTML = '';
   if (npc.immagine) {
     var img = document.createElement('img');
-    img.src = npc.immagine; img.className = 'sntt-img';
+    img.src = safeImageUrl(npc.immagine); img.className = 'sntt-img';
     img.onerror = function(){ this.className='sntt-img-ph'; this.alt=npc.nome||''; };
     tt.appendChild(img);
   } else {
@@ -17229,7 +17315,7 @@ function renderStoria() {
             if (edWrap2) {
               edWrap2.style.display = '';
               var ed2 = document.getElementById('storia-editor');
-              if (ed2) { ed2.innerHTML = state.storia.content || '<p><br></p>'; }
+              if (ed2) { ed2.replaceChildren(sanitizeRichText(state.storia.content || '<p><br></p>')); }
             }
             refreshStoriaMarkers();
           };
@@ -17301,7 +17387,7 @@ function renderStoria() {
           if (edWrap2) {
             edWrap2.style.display = '';
             var ed2 = document.getElementById('storia-editor');
-            if (ed2) { ed2.innerHTML = state.storia.content || '<p><br></p>'; }
+            if (ed2) { ed2.replaceChildren(sanitizeRichText(state.storia.content || '<p><br></p>')); }
           }
           refreshStoriaMarkers();
         };
@@ -17318,7 +17404,7 @@ function renderStoria() {
   var editor = document.createElement('div');
   editor.contentEditable = 'true'; editor.className = 'storia-editor'; editor.id = 'storia-editor';
   editor.setAttribute('spellcheck', 'false');
-  if (state.storia.content) editor.innerHTML = state.storia.content;
+  if (state.storia.content) editor.replaceChildren(sanitizeRichText(state.storia.content));
   else editor.innerHTML = '<p><br></p>';
 
   editor.oninput = storiaScheduleSave;
@@ -17374,7 +17460,7 @@ function renderStoria() {
   _allNpcs.forEach(function(npc) {
     var item = document.createElement('div'); item.className = 'storia-npc-item';
     if (npc.immagine) {
-      var av = document.createElement('img'); av.src = npc.immagine; av.className = 'storia-npc-avatar';
+      var av = document.createElement('img'); av.src = safeImageUrl(npc.immagine); av.className = 'storia-npc-avatar';
       av.onerror = function(){ this.style.display='none'; }; item.appendChild(av);
     } else {
       var ph = document.createElement('div'); ph.className = 'storia-npc-avatar-ph';
@@ -17734,10 +17820,13 @@ function renderArchivio() {
         var cell = document.createElement('div');
         cell.style.cssText = 'position:relative;';
         var img = document.createElement('img');
-        img.src = src;
+        img.src = safeImageUrl(src);
         img.style.cssText = 'width:110px;height:110px;object-fit:cover;border-radius:6px;' +
           'border:1px solid var(--border-gold);cursor:zoom-in;display:block;';
-        img.onclick = function() { window.open(src,'_blank'); };
+        img.onclick = function() {
+          var imageUrl = safeImageUrl(src);
+          if (imageUrl) window.open(imageUrl, '_blank', 'noopener,noreferrer');
+        };
         var xBtn = document.createElement('button');
         xBtn.textContent = '✕';
         xBtn.style.cssText = 'position:absolute;top:3px;right:3px;width:19px;height:19px;' +
