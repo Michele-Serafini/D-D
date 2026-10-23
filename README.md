@@ -22,6 +22,7 @@ Benvenuto nella versione completamente ridisegnata, animata e riorganizzata del 
 │   └── database_npc.json       # Backup JSON originale degli NPC
 ├── js/
 │   ├── users.js                # ⭐ SISTEMA UTENTI UNIFICATO (Account, Ruoli, Login, Impostazioni)
+│   ├── firebase-config.template.js # Template config Firebase runtime (copia locale non committata)
 │   ├── app.js                  # Logica applicativa suddivisa in 15 sezioni commentate + Dadi 3D
 │   ├── animations.js           # ⭐ Motore Particelle, Dadi Poliedrici 3D, Araldo Sezioni, Tilt 3D
 │   └── sheets/                 # Schede personaggio multi-sistema
@@ -51,6 +52,22 @@ var DEFAULT_USERS = [
   { username: 'NuovoPG',  password: 'segreta',        role: 'Giocatore', dmPriv: false, crest: '🐉', title: 'Avventuriero' }
 ];
 ```
+
+---
+
+## 🔐 1.b Configurazione Firebase runtime (senza chiavi nel repository)
+
+`js/users.js` e `public/js/users.js` leggono la configurazione Firebase da `window.__FIREBASE_CONFIG__`.
+
+1. Copia il template:
+   - `js/firebase-config.template.js` → `js/firebase-config.js`
+   - `public/js/firebase-config.template.js` → `public/js/firebase-config.js`
+2. Inserisci i valori reali del tuo progetto Firebase nei file locali.
+3. I file `js/firebase-config.js` e `public/js/firebase-config.js` sono ignorati da git e **non vanno committati**.
+
+Se la configurazione non è presente, l'app continua in fallback/offline e mostra un warning in console.
+
+> Sicurezza: la sicurezza reale deve essere applicata da **Firebase Authentication** e **Firebase Security Rules** lato server. Non usare password in chiaro nel database e non considerare affidabili i controlli ruolo solo lato client.
 
 ---
 

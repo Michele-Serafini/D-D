@@ -16496,7 +16496,9 @@ try {
     // Inizializza Firebase + Auth listener (gestirà lui login/logout)
     try {
       if (!_firebaseApp) {
-        _firebaseApp = firebase.initializeApp(FIREBASE_CONFIG);
+        if (typeof firebase === 'undefined') throw new Error('SDK Firebase non caricato');
+        if (!FIREBASE_CONFIG) throw new Error('Configurazione Firebase runtime assente');
+        _firebaseApp = firebase.apps && firebase.apps.length ? firebase.app() : firebase.initializeApp(FIREBASE_CONFIG);
         _db = firebase.database();
       }
       initAuth();
