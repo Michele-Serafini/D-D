@@ -13381,6 +13381,18 @@ function apriModaleUrlAudio(scenaId, scenaNome) {
   document.body.appendChild(modal);
 }
 
+function getSafeSceneImageUrl(value) {
+  if (typeof value !== 'string') return '';
+  var url = value.trim();
+  if (/^data:image\/(?:jpeg|png|gif|webp);base64,[a-z0-9+/]+=*$/i.test(url)) return url;
+  try {
+    var parsed = new URL(url, document.baseURI);
+    return parsed.protocol === 'http:' || parsed.protocol === 'https:' ? parsed.href : '';
+  } catch (e) {
+    return '';
+  }
+}
+
 /* Modale modifica immagine scena — stile Emporio */
 function apriModaleImmagineScena(scenaId, scenaNome) {
   var existing = document.getElementById('regia-img-modal');
@@ -13398,7 +13410,7 @@ function apriModaleImmagineScena(scenaId, scenaNome) {
 
   /* Anteprima */
   var preview = null;
-  var currentUrl = state.regiaImmagini[scenaId] || '';
+  var currentUrl = getSafeSceneImageUrl(state.regiaImmagini[scenaId]);
   if (currentUrl) {
     preview = document.createElement('img');
     preview.className = 'regia-img-preview'; preview.src = currentUrl;
@@ -13414,10 +13426,13 @@ function apriModaleImmagineScena(scenaId, scenaNome) {
   urlInp.placeholder = 'https://esempio.com/immagine.jpg';
   urlInp.value = currentUrl;
   urlInp.oninput = function() {
-    if (preview) { preview.src = this.value; }
-    else if (this.value) {
+    var safeUrl = getSafeSceneImageUrl(this.value);
+    if (preview) {
+      if (safeUrl) preview.src = safeUrl;
+      else preview.removeAttribute('src');
+    } else if (safeUrl) {
       preview = document.createElement('img');
-      preview.className = 'regia-img-preview'; preview.src = this.value;
+      preview.className = 'regia-img-preview'; preview.src = safeUrl;
       box.insertBefore(preview, urlLbl);
     }
   };
@@ -13462,7 +13477,7 @@ function apriModaleImmagineScena(scenaId, scenaNome) {
   var btnSave = document.createElement('button'); btnSave.className = 'btn-regia-save';
   btnSave.textContent = 'Salva';
   btnSave.onclick = function() {
-    var val = urlInp.value.trim();
+    var val = getSafeSceneImageUrl(urlInp.value);
     if (val) { state.regiaImmagini[scenaId] = val; }
     else { delete state.regiaImmagini[scenaId]; }
     saveToStorage();

@@ -54,3 +54,13 @@ test("4. Dice element identifiers use cryptographically secure randomness", () =
     );
   }
 });
+
+test("5. Scene image previews validate user-provided URLs", () => {
+  for (const path of ["js/app.js", "public/js/app.js"]) {
+    const appCode = fs.readFileSync(path, "utf8");
+    assert.ok(appCode.includes("function getSafeSceneImageUrl(value)"), `${path} must validate scene image URLs`);
+    assert.ok(appCode.includes("parsed.protocol === 'http:' || parsed.protocol === 'https:'"), `${path} must reject unsafe URL protocols`);
+    assert.ok(appCode.includes("var safeUrl = getSafeSceneImageUrl(this.value)"), `${path} must sanitize URL input before previewing`);
+    assert.ok(appCode.includes("var val = getSafeSceneImageUrl(urlInp.value)"), `${path} must sanitize URL input before saving`);
+  }
+});
