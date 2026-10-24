@@ -50,13 +50,10 @@ var _fbListeners = [];
 var ADMIN_EMAIL = 'chitarra1000@gmail.com';
 
 var DEFAULT_USERS = [
-  { username: 'Matteo',   password: 'Dungeonmaster!', role: 'DM',        dmPriv: true,  crest: '👑', title: 'Dungeon Master' },
-  { username: 'Luca',     password: 'player1',        role: 'Giocatore', dmPriv: false, crest: '🛡', title: 'Avventuriero' },
-  { username: 'Michele',  password: 'player2',        role: 'Giocatore', dmPriv: false, crest: '⚔', title: 'Avventuriero' },
-  { username: 'Silvia',   password: 'player3',        role: 'Giocatore', dmPriv: false, crest: '✨', title: 'Avventuriera' },
-  { username: 'Giada',    password: 'player4',        role: 'Giocatore', dmPriv: false, crest: '🏹', title: 'Avventuriera' },
-  { username: 'Enrico',   password: 'player5',        role: 'Giocatore', dmPriv: false, crest: '🪓', title: 'Avventuriero' },
-  { username: 'Chiliano', password: 'player6',        role: 'Giocatore', dmPriv: false, crest: '🔮', title: 'Avventuriero' }
+  { username: 'Sebastiano',   password: 'Dungeonmaster!', role: 'DM',        dmPriv: true,  crest: '👑', title: 'Dungeon Master' },
+  { username: 'Fabio',     password: 'player',        role: 'Giocatore', dmPriv: false, crest: '🛡', title: 'Avventuriero' },
+  { username: 'Michele',  password: 'player',        role: 'Giocatore', dmPriv: false, crest: '⚔', title: 'Avventuriero' },
+  { username: 'Montre',   password: 'player',        role: 'Giocatore', dmPriv: false, crest: '✨', title: 'Avventuriera' },
 ];
 
 /* Stato globale di autenticazione e presenza (sincronizzato con Firebase) */
