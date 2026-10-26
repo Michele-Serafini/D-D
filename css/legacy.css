@@ -3784,7 +3784,7 @@
     position: relative;
     width:  min(100vw, calc(100vh * 1024 / 507));
     height: min(100vh, calc(100vw * 507 / 1024));
-    background-image: url('img/Strade_della_città.png');
+    background-image: url('../img/Strade_della_città.png');
     background-size: 100% 100%;
     background-position: center;
     background-repeat: no-repeat;
@@ -3956,7 +3956,7 @@
     .login-scene {
       width: 100vw;
       height: 100vh;
-      background-image: url('img/login_tablet.jpg');
+      background-image: url('../img/login_tablet.jpg');
       background-size: cover;
       background-position: center 40%;
       animation: none;
@@ -4004,7 +4004,7 @@
     .login-scene {
       width: 100vw;
       height: 100vh;
-      background-image: url('img/login_mobile.jpg');
+      background-image: url('../img/login_mobile.jpg');
       background-size: cover;
       background-position: center 20%;
       animation: none;        /* rimuove transform:scale che rompe position:fixed su Safari */

@@ -36,20 +36,71 @@ Benvenuto nella versione completamente ridisegnata, animata e riorganizzata del 
 
 ---
 
-## 👤 1. Come Modificare o Aggiungere Utenti e Ruoli (`js/users.js`)
+## 👤 1. Account e amministrazione
 
-Tutta la gestione degli utenti, delle password, dei ruoli (`DM` vs `Giocatore`), del login e del pannello impostazioni è ora **unificata in un singolo file chiarissimo**: **`js/users.js`**.
+Il database Firebase è l'unica fonte autorevole per gli account. `DEFAULT_USERS`
+in `js/users.js` serve esclusivamente al reset iniziale; non ricrea gli utenti
+rimossi e non permette di usare una vecchia password dopo un cambio.
 
-Per aggiungere un nuovo amico al party o cambiare una password predefinita, apri `js/users.js` e modifica l'array `DEFAULT_USERS` in cima al file:
+| Account | Password iniziale | Ruolo |
+| --- | --- | --- |
+| sebastiano | dungeonmaster | Dungeon Master |
+| michele | player | Giocatore |
+| montre | player | Giocatore |
+| alessio | player | Giocatore |
 
-```javascript
-var DEFAULT_USERS = [
-  { username: 'Matteo',   password: 'Dungeonmaster!', role: 'DM',        dmPriv: true,  crest: '👑', title: 'Dungeon Master' },
-  { username: 'Luca',     password: 'player1',        role: 'Giocatore', dmPriv: false, crest: '🛡', title: 'Avventuriero' },
-  { username: 'Michele',  password: 'player2',        role: 'Giocatore', dmPriv: false, crest: '⚔', title: 'Avventuriero' },
-  // Aggiungi qui nuovi utenti:
-  { username: 'NuovoPG',  password: 'segreta',        role: 'Giocatore', dmPriv: false, crest: '🐉', title: 'Avventuriero' }
-];
+Apri `admin.html` con `admin` / `admin` per consultare il database, aggiungere
+un giocatore dal modulo e rimuoverlo con il relativo pulsante. Il master può
+accedere alla stessa pagina. L'account di manutenzione `admin` è separato dai
+quattro utenti del party. I nomi vengono normalizzati in minuscolo.
+La rimozione revoca l'accesso anche nella sessione aperta e conserva eventuali
+mappe/worldbuilding personali. Il master non è rimovibile dal pulsante giocatori.
+Il visualizzatore legge un percorso alla volta, con massimo 25 elementi,
+maschera password e chiavi e abbrevia i contenuti lunghi.
+
+**Limite dell'architettura attuale:** il progetto usa autenticazione nel browser
+su Firebase Realtime Database, senza verifiche server dell'identità. Il login
+admin controlla l'interfaccia, ma non costituisce una barriera di sicurezza per
+le API Firebase. Anche le password degli utenti seguono il formato in chiaro
+preesistente. Per esporre il database a utenti non fidati occorre migrare a
+Firebase Authentication e distribuire regole di accesso sul server; tali regole
+non sono gestite da questo repository. La pagina non modifica le regole Firebase.
+
+### Reset iniziale (una sola volta)
+
+Il reset sostituisce `users`, cancella `schedePG` (inclusi i companion),
+`presence` e `state/pet`, e imposta `meta/partyResetVersion`.
+Oggetti, libri, librerie, bestiario, NPC, mappe e altri nodi restano invariati.
+Le mappe/worldbuilding presenti nei vecchi account vengono conservate in
+`state/legacyUserContent`, senza le vecchie credenziali.
+
+Da terminale:
+
+```sh
+npm run reset:party               # mostra il piano, senza scrivere
+npm run reset:party -- --apply    # backup privato e reset condizionale con ETag
+```
+
+I backup completi sono salvati in `work/party-backups/` (esclusi da Git).
+Il comando interrompe la scrittura se un altro client ha modificato il database
+nel frattempo. Se le regole richiedono un token, passarlo nella variabile
+`PARTY_DATABASE_TOKEN`, mai nei file versionati.
+La pagina admin offre la stessa operazione, con transazione atomica e download
+del backup. Dopo il primo reset il pulsante è disattivato: riaprire la pagina o
+ridistribuire il sito non cancella i nuovi dati.
+
+### Sorgenti e build
+
+I file canonici sono nella radice (`js/`, `css/`, `data/`, `img/`, `audio/`,
+`schede/`). Non esiste più una seconda copia in `public/`. Vite serve direttamente
+questi sorgenti in sviluppo; il plugin `scripts/static-assets.mjs` include gli
+stessi file in `dist/`, compresa `admin.html`.
+
+```sh
+npm install
+npm run dev
+npm run build
+npm run test:party
 ```
 
 ---

@@ -34,7 +34,8 @@ var _localWrite = { iniziativa: false, caos: false, armi: false, bestiario: fals
    SEZIONE 1: SINCRONIZZAZIONE FIREBASE REALTIME & SALVATAGGIO CLOUD
    ============================================================================ */
 function setupRealtimeListeners() {
-  if (!_db) return;
+  if (!_db || setupRealtimeListeners.started) return;
+  setupRealtimeListeners.started = true;
 
   // ---- INIZIATIVA ----
   _db.ref('state/iniziativa').on('value', function(snap) {
@@ -272,16 +273,8 @@ function setupRealtimeListeners() {
     }
   });
 
-  // ---- USERS ----
-  _db.ref('users').on('value', function(snap) {
-    var v = snap.val() || {};
-    if (typeof DEFAULT_USERS !== 'undefined') {
-      DEFAULT_USERS.forEach(function(du) {
-        if (!v[du.username]) v[du.username] = { password: du.password, role: du.role, dmPriv: !!du.dmPriv };
-      });
-    }
-    _remoteUsers = v;
-  });
+  // Account e revoca delle sessioni sono gestiti solo da UserManager.
+  UserManager.watchUsers();
 
   // ---- PRESENCE ----
   _db.ref('presence').on('value', function(snap) {
@@ -292,11 +285,8 @@ function setupRealtimeListeners() {
 
 
   _db.ref('state/pet').on('value', function(snap) {
-    var v = snap.val();
-    if (v && Array.isArray(v)) {
-      state.pet = v;
-      if (state.section === 'bestiario') renderMain();
-    }
+    state.pet = Array.isArray(snap.val()) ? snap.val() : [];
+    if (state.section === 'bestiario') renderMain();
   });
 
   _db.ref('state/incantesimiAggiuntivi').on('value', function(snap) {
@@ -1174,7 +1164,7 @@ function _applySnapshot(raw) {
       if (typeof data.groqKey === 'string') state.groqKey = data.groqKey;
       if (Array.isArray(data.personaggi)) state.personaggi = data.personaggi;
       if (Array.isArray(data.bestiario)) state.bestiario = data.bestiario;
-      if (Array.isArray(data.pet)) state.pet = data.pet;
+      if (data.partyResetVersion === PARTY_RESET_VERSION && Array.isArray(data.pet)) state.pet = data.pet;
       if (Array.isArray(data.worldbuilding)) state.worldbuilding = data.worldbuilding;
       if (data.bestSearch !== undefined) state.bestSearch = data.bestSearch;
       if (data.regiaImmagini && typeof data.regiaImmagini === 'object') state.regiaImmagini = data.regiaImmagini;
@@ -1240,6 +1230,7 @@ function saveToStorage() {
       groqKey: state.groqKey,
       personaggi: state.personaggi,
       bestiario: state.bestiario,
+      partyResetVersion: PARTY_RESET_VERSION,
       pet: state.pet,
       worldbuilding: state.worldbuilding,
       worldbuildingMapId: state.mappaActiveId || '',

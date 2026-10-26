@@ -5,8 +5,8 @@
  * Modulo centralizzato che gestisce in un unico punto:
  * 1. Elenco account predefiniti (DEFAULT_USERS) facile da leggere e modificare
  * 2. Controllo ruoli e permessi (isAdmin, isDM, isPG)
- * 3. Login unificato (online con Firebase + fallback offline immediato)
- * 4. Registrazione nuovi account, cambio password e gestione privilegi DM
+ * 3. Login unificato con verifica Firebase e revoca degli account eliminati
+ * 4. Account amministrati centralmente, cambio password e gestione privilegi DM
  * 5. Presenza utenti online in tempo reale e Pannello Impostazioni Utenti
  * 6. Cerimonia scenografica di accesso ("Sigillo Arcano & Portale del Grimorio")
  * ============================================================================
@@ -39,22 +39,21 @@ var FIREBASE_CONFIG = {
 var _firebaseApp = null;
 var _db = null;
 var _fbConnected = false;
-var _fbListeners = [];
 
 /* ── 2. Elenco Unificato degli Account Predefiniti ──
- * Per aggiungere un nuovo utente o modificare una password predefinita,
- * basta aggiungere o modificare una riga in questo array:
+ * Seed usato esclusivamente dal reset iniziale. Dopo il reset, gestire
+ * gli account tramite admin.html: il database è la fonte autorevole.
  * - role: 'DM' (Master principale/Admin) oppure 'Giocatore'
  * - dmPriv: true per dare i permessi Dungeon Master, false per Giocatore
  */
-var ADMIN_EMAIL = 'chitarra1000@gmail.com';
-
 var DEFAULT_USERS = [
-  { username: 'Sebastiano',   password: 'Dungeonmaster!', role: 'DM',        dmPriv: true,  crest: '👑', title: 'Dungeon Master' },
-  { username: 'Fabio',     password: 'player',        role: 'Giocatore', dmPriv: false, crest: '🛡', title: 'Avventuriero' },
-  { username: 'Michele',  password: 'player',        role: 'Giocatore', dmPriv: false, crest: '⚔', title: 'Avventuriero' },
-  { username: 'Montre',   password: 'player',        role: 'Giocatore', dmPriv: false, crest: '✨', title: 'Avventuriera' },
+  { username: 'sebastiano', password: 'dungeonmaster', role: 'DM', dmPriv: true, crest: '👑', title: 'Dungeon Master' },
+  { username: 'michele', password: 'player', role: 'Giocatore', dmPriv: false, crest: '⚔', title: 'Avventuriero' },
+  { username: 'montre', password: 'player', role: 'Giocatore', dmPriv: false, crest: '✨', title: 'Avventuriero' },
+  { username: 'alessio', password: 'player', role: 'Giocatore', dmPriv: false, crest: '🛡', title: 'Avventuriero' }
 ];
+var PARTY_RESET_VERSION = '2026-10-26-party-v1';
+
 
 /* Stato globale di autenticazione e presenza (sincronizzato con Firebase) */
 var _authUser = null;      // Oggetto utente autenticato corrente
@@ -79,15 +78,7 @@ var UserManager = {
             : firebase.initializeApp(FIREBASE_CONFIG);
         }
         _db = firebase.database();
-        // Pulizia mappe legacy duplicate se presenti
-        _db.ref('state/multiverso/mappa/maps').once('value', function (s) {
-          var m = s.val() || {};
-          Object.keys(m).forEach(function (k) {
-            if (m[k] && m[k].nome === 'Mappe del Mondo di One Piece') {
-              _db.ref('state/multiverso/mappa/maps/' + k).remove();
-            }
-          });
-        });
+
       }
     } catch (e) {
       console.warn('[UserManager] Firebase offline o non disponibile:', e.message);
@@ -132,152 +123,94 @@ var UserManager = {
   },
 
   /**
-   * Restituisce l'elenco unificato di tutti gli utenti (DEFAULT_USERS + Firebase).
+   * Restituisce gli account attivi presenti in Firebase.
    */
   getAllUsers: function () {
-    var map = {};
-    DEFAULT_USERS.forEach(function (u) {
-      map[u.username] = {
-        username: u.username,
-        role: u.role || 'Giocatore',
-        dmPriv: !!u.dmPriv,
-        crest: u.crest || (u.role === 'DM' ? '👑' : '🛡'),
-        title: u.title || (u.role === 'DM' ? 'Dungeon Master' : 'Avventuriero')
-      };
-    });
-    if (_remoteUsers && typeof _remoteUsers === 'object') {
-      Object.keys(_remoteUsers).forEach(function (uname) {
-        var ru = _remoteUsers[uname] || {};
-        var base = map[uname] || {};
-        var isMaster = ru.role === 'DM' || base.role === 'DM';
-        map[uname] = {
-          username: uname,
-          role: ru.role || base.role || 'Giocatore',
-          dmPriv: isMaster ? true : !!ru.dmPriv,
-          crest: base.crest || (isMaster ? '👑' : (ru.dmPriv ? '⚔' : '🛡')),
-          title: base.title || (isMaster ? 'Dungeon Master' : 'Avventuriero')
-        };
-      });
-    }
-    return Object.keys(map).map(function (k) {
-      return map[k];
+    return Object.keys(_remoteUsers).filter(function (name) {
+      return _remoteUsers[name] && !_remoteUsers[name].disabled;
+    }).map(function (name) {
+      var u = _remoteUsers[name];
+      return { username: name, role: u.role || 'Giocatore', dmPriv: !!u.dmPriv,
+        crest: u.crest || (u.role === 'DM' ? '👑' : '🛡'), title: u.title || 'Avventuriero' };
     });
   },
 
   /**
-   * Verifica se la password inserita corrisponde a quella remota o a quella predefinita.
+   * Verifica esclusivamente la password corrente dell’account attivo.
    */
-  passwordMatch: function (remoteUserObj, username, password) {
-    if (remoteUserObj && remoteUserObj.password && remoteUserObj.password === password) {
-      return true;
-    }
-    var defUser = this.findDefaultUser(username);
-    if (defUser && defUser.password === password) {
-      return true;
-    }
-    return false;
+  passwordMatch: function (record, username, password) {
+    return !!(record && !record.disabled && record.password === password);
+  },
+
+  normalizeUsername: function (value) {
+    var name = String(value || '').trim().toLowerCase();
+    if (!/^[a-z0-9_-]{3,32}$/.test(name) || ['__proto__', 'constructor', 'prototype'].indexOf(name) !== -1) throw new Error('Usa da 3 a 32 lettere, numeri, trattini o underscore.');
+    return name;
+  },
+
+  withTimeout: function (operation) {
+    return new Promise(function (resolve, reject) {
+      var timer = setTimeout(function () { reject(new Error('Database non raggiungibile. Riprova.')); }, 8000);
+      Promise.resolve(operation).then(function (result) { clearTimeout(timer); resolve(result); }, function (error) { clearTimeout(timer); reject(error); });
+    });
+  },
+
+  loadUsers: function () {
+    var db = this.ensureDatabase();
+    if (!db) return Promise.reject(new Error('Database non disponibile. Riprova quando sei online.'));
+    return this.withTimeout(db.ref('users').once('value')).then(function (snap) {
+      _remoteUsers = snap.val() || {};
+      return _remoteUsers;
+    });
+  },
+
+  changePassword: async function (username, oldPassword, newPassword) {
+    var cu = this.getCurrentUser();
+    if (!cu || cu.username !== username) throw new Error('Accedi prima di cambiare password.');
+    if (typeof newPassword !== 'string' || newPassword.length < 4) throw new Error('Password: minimo 4 caratteri.');
+    var db = this.ensureDatabase();
+    if (!db) throw new Error('Database non disponibile.');
+    var self = this;
+    var result = await db.ref('users/' + username).transaction(function (record) {
+      if (!self.passwordMatch(record, username, oldPassword)) return;
+      return Object.assign({}, record, { password: newPassword });
+    });
+    if (!result.committed) throw new Error('Password attuale non corretta o account rimosso.');
   },
 
   /**
    * Esegue il login unificato controllando:
-   * 1) Utenti predefiniti / cache remota
-   * 2) Database Firebase `users/<username>` per account creati dinamicamente
+   * Le credenziali correnti vengono lette da Firebase a ogni accesso.
    */
-  signIn: function (customUser, customPass) {
-    var uEl =
-      document.getElementById('login-username-input') ||
-      document.getElementById('login-user');
-    var pEl =
-      document.getElementById('login-password-input') ||
-      document.getElementById('login-pass');
+  signIn: async function (customUser, customPass) {
+    var uEl = document.getElementById('login-username-input') || document.getElementById('login-user');
+    var pEl = document.getElementById('login-password-input') || document.getElementById('login-pass');
     var errEl = document.getElementById('login-error');
-
-    var u = typeof customUser === 'string' ? customUser.trim() : (uEl ? uEl.value.trim() : '');
-    var p = typeof customPass === 'string' ? customPass : (pEl ? pEl.value : '');
-
-    if (!u || !p) {
-      if (errEl) {
-        errEl.style.display = 'block';
-        errEl.textContent = 'Inserisci username e password per aprire il Grimorio.';
-      }
-      return;
-    }
-
-    this.ensureDatabase();
-
-    // 1. Verifica in _remoteUsers se già sincronizzato
-    if (_remoteUsers && _remoteUsers[u] && this.passwordMatch(_remoteUsers[u], u, p)) {
-      if (errEl) errEl.style.display = 'none';
-      this.completeLogin(u, _remoteUsers[u]);
-      return;
-    }
-
-    // 2. Verifica immediata in DEFAULT_USERS (funziona anche 100% offline)
-    var defMatch = this.findDefaultUser(u);
-    if (defMatch && defMatch.password === p) {
-      if (errEl) errEl.style.display = 'none';
-      var mergedRecord = Object.assign(
-        { password: defMatch.password, role: defMatch.role, dmPriv: !!defMatch.dmPriv },
-        (_remoteUsers && _remoteUsers[defMatch.username]) ? _remoteUsers[defMatch.username] : {}
-      );
-      this.completeLogin(defMatch.username, mergedRecord);
-      return;
-    }
-
-    // 3. Verifica su Firebase per account creati dinamicamente o password aggiornate
-    if (!_db) {
-      if (errEl) {
-        errEl.style.display = 'block';
-        errEl.textContent = 'Credenziali non valide (modalità offline).';
-      }
-      return;
-    }
-
-    var self = this;
-    var loginDone = false;
     var btn = document.querySelector('#login-cred-area .login-btn');
-    if (btn) btn.innerHTML = '<span class="login-btn-ico">⏳</span><span>Verifica Sigillo...</span>';
-
-    var loginTimeout = setTimeout(function () {
-      if (loginDone) return;
-      loginDone = true;
-      if (btn) btn.innerHTML = '<span class="login-btn-ico">⚔</span><span>Entra nel Compendium</span>';
-      if (errEl) {
-        errEl.style.display = 'block';
-        errEl.textContent = 'Username o password errati (o server non raggiungibile).';
+    if (this._signingIn) return;
+    this._signingIn = true;
+    if (btn) btn.disabled = true;
+    try {
+      var u = this.normalizeUsername(typeof customUser === 'string' ? customUser : (uEl ? uEl.value : ''));
+      var p = typeof customPass === 'string' ? customPass : (pEl ? pEl.value : '');
+      if (!p) throw new Error('Inserisci la password.');
+      // Account di manutenzione separato dai quattro membri del party.
+      if (u === 'admin' && p === 'admin') {
+        this.completeLogin('admin', { role: 'Admin', dmPriv: true });
+        return;
       }
-    }, 3500);
-
-    _db.ref('users/' + u).once(
-      'value',
-      function (snap) {
-        if (loginDone) return;
-        loginDone = true;
-        clearTimeout(loginTimeout);
-        if (btn) btn.innerHTML = '<span class="login-btn-ico">⚔</span><span>Entra nel Compendium</span>';
-        var ud = snap.val();
-        if (!ud || !self.passwordMatch(ud, u, p)) {
-          if (errEl) {
-            errEl.style.display = 'block';
-            errEl.textContent = 'Username o password errati.';
-          }
-          return;
-        }
-        _remoteUsers[u] = ud;
-        if (errEl) errEl.style.display = 'none';
-        self.completeLogin(u, ud);
-      },
-      function () {
-        if (loginDone) return;
-        loginDone = true;
-        clearTimeout(loginTimeout);
-        if (btn) btn.innerHTML = '<span class="login-btn-ico">⚔</span><span>Entra nel Compendium</span>';
-        if (errEl) {
-          errEl.style.display = 'block';
-          errEl.textContent = 'Impossibile verificare l\'account remoto.';
-        }
-      }
-    );
+      var users = await this.loadUsers();
+      var key = Object.keys(users).find(function (name) { return name.toLowerCase() === u; });
+      if (!key || !this.passwordMatch(users[key], key, p)) throw new Error('Username o password errati.');
+      if (document.getElementById('admin-panel') && users[key].role !== 'DM' && users[key].role !== 'Admin') throw new Error('Accesso riservato agli amministratori.');
+      if (errEl) errEl.style.display = 'none';
+      this.completeLogin(key, users[key]);
+    } catch (error) {
+      if (errEl) { errEl.style.display = 'block'; errEl.textContent = error.message; }
+    } finally {
+      this._signingIn = false;
+      if (btn) btn.disabled = false;
+    }
   },
 
   /**
@@ -288,9 +221,9 @@ var UserManager = {
     var record = ud || {};
     var defUser = this.findDefaultUser(username);
     var role = record.role || (defUser ? defUser.role : 'Giocatore');
-    var hasDmPriv = role === 'DM' || !!record.dmPriv || !!(defUser && defUser.dmPriv);
+    var hasDmPriv = role === 'Admin' || role === 'DM' || !!record.dmPriv;
 
-    _authRole = role === 'DM' ? 'admin' : (hasDmPriv ? 'dm' : 'pg');
+    _authRole = role === 'Admin' || role === 'DM' ? 'admin' : (hasDmPriv ? 'dm' : 'pg');
     _authUser = {
       uid: username,
       displayName: username,
@@ -311,34 +244,10 @@ var UserManager = {
       localStorage.setItem('mercante_session', JSON.stringify(state.currentUser));
     } catch (e) {}
 
-    // Assicura che DEFAULT_USERS siano popolati in _remoteUsers locale se vuoti
-    DEFAULT_USERS.forEach(function (du) {
-      if (!_remoteUsers[du.username]) {
-        _remoteUsers[du.username] = {
-          password: du.password,
-          role: du.role,
-          dmPriv: !!du.dmPriv
-        };
-      }
-    });
-
     this.ensureDatabase();
-
-    // Se è il DM e il nodo 'users' su Firebase non esiste ancora, lo inizializza
-    if (hasDmPriv && _db) {
-      _db.ref('users').once('value', function (snap) {
-        if (!snap.val()) {
-          var usersObj = {};
-          DEFAULT_USERS.forEach(function (u) {
-            usersObj[u.username] = {
-              password: u.password,
-              role: u.role,
-              dmPriv: !!u.dmPriv
-            };
-          });
-          _db.ref('users').set(usersObj);
-        }
-      });
+    if ((username === 'admin' || (document.getElementById('admin-panel') && this.isAdmin())) && typeof window.openAdminPanel === 'function') {
+      window.openAdminPanel();
+      return;
     }
 
     this.setupPresence();
@@ -432,65 +341,11 @@ var UserManager = {
    * Crea un nuovo account Giocatore su Firebase e accede automaticamente.
    */
   createAccount: function () {
-    var uEl = document.getElementById('new-username');
-    var pEl = document.getElementById('new-password');
-    var p2El = document.getElementById('new-password2');
-    var errEl = document.getElementById('create-error');
-
-    var u = uEl ? uEl.value.trim() : '';
-    var p = pEl ? pEl.value : '';
-    var p2 = p2El ? p2El.value : '';
-
-    if (errEl) errEl.style.display = 'none';
-
-    if (!u) {
-      if (errEl) { errEl.style.display = 'block'; errEl.textContent = 'Inserisci un username.'; }
-      return;
+    var errEl = document.getElementById('create-error') || document.getElementById('login-error');
+    if (errEl) {
+      errEl.style.display = 'block';
+      errEl.textContent = 'I giocatori vengono aggiunti dalla pagina admin.';
     }
-    if (u.length < 3) {
-      if (errEl) { errEl.style.display = 'block'; errEl.textContent = 'Username troppo corto (min 3 caratteri).'; }
-      return;
-    }
-    if (!p || p.length < 4) {
-      if (errEl) { errEl.style.display = 'block'; errEl.textContent = 'Password troppo corta (min 4 caratteri).'; }
-      return;
-    }
-    if (p !== p2) {
-      if (errEl) { errEl.style.display = 'block'; errEl.textContent = 'Le password non coincidono.'; }
-      return;
-    }
-
-    this.ensureDatabase();
-    var self = this;
-
-    if (this.findDefaultUser(u)) {
-      if (errEl) { errEl.style.display = 'block'; errEl.textContent = 'Questo username appartiene già al party principale.'; }
-      return;
-    }
-
-    if (!_db) {
-      // Fallback locale se offline
-      var localUser = { password: p, role: 'Giocatore', dmPriv: false };
-      _remoteUsers[u] = localUser;
-      this.completeLogin(u, localUser);
-      return;
-    }
-
-    _db.ref('users/' + u).once('value', function (snap) {
-      if (snap.val()) {
-        if (errEl) { errEl.style.display = 'block'; errEl.textContent = 'Username già in uso.'; }
-        return;
-      }
-      var newRecord = { password: p, role: 'Giocatore', dmPriv: false };
-      _db.ref('users/' + u).set(newRecord, function (err) {
-        if (err) {
-          if (errEl) { errEl.style.display = 'block'; errEl.textContent = 'Errore salvataggio: ' + err.message; }
-          return;
-        }
-        _remoteUsers[u] = newRecord;
-        self.completeLogin(u, newRecord);
-      });
-    });
   },
 
   /**
@@ -539,7 +394,9 @@ var UserManager = {
     var uid = cu.username;
     var ref = _db.ref('presence/' + uid);
     var connRef = _db.ref('.info/connected');
-    connRef.on('value', function (snap) {
+    if (this._presenceRef && this._presenceHandler) this._presenceRef.off('value', this._presenceHandler);
+    this._presenceRef = connRef;
+    this._presenceHandler = function (snap) {
       _fbConnected = !!snap.val();
       if (_fbConnected) {
         ref.onDisconnect().set({
@@ -548,45 +405,17 @@ var UserManager = {
         });
         ref.set({ online: true, username: uid });
       }
-    });
+    };
+    connRef.on('value', this._presenceHandler);
   },
 
   /**
-   * Inizializza l'autenticazione all'avvio della pagina (supporta ?autostart=1).
+   * Inizializza la schermata di autenticazione senza accessi automatici.
    */
   initAuth: function () {
     this.ensureDatabase();
 
-    // Pre-popola _remoteUsers con i DEFAULT_USERS così l'elenco utenti è sempre pronto
-    DEFAULT_USERS.forEach(function (du) {
-      if (!_remoteUsers[du.username]) {
-        _remoteUsers[du.username] = {
-          password: du.password,
-          role: du.role,
-          dmPriv: !!du.dmPriv
-        };
-      }
-    });
-
-    try {
-      var params = new URLSearchParams(window.location.search);
-      if (params.get('autostart') === '1') {
-        var roleParam = (params.get('role') || 'dm').toLowerCase();
-        var userParam = params.get('user');
-        if (userParam) {
-          var found = this.findDefaultUser(userParam) || DEFAULT_USERS[0];
-          this.completeLogin(found.username, found);
-        } else if (roleParam === 'pg') {
-          var pgUser = this.findDefaultUser('Luca');
-          this.completeLogin(pgUser.username, pgUser);
-        } else {
-          var dmUser = this.findDefaultUser('Matteo');
-          this.completeLogin(dmUser.username, dmUser);
-        }
-        return;
-      }
-    } catch (e) {}
-
+    // Nessun autologin né ripristino degli account eliminati dai valori predefiniti.
     var ov = document.getElementById('login-overlay');
     if (ov) ov.style.display = 'grid';
   },
@@ -705,7 +534,7 @@ var UserManager = {
       profCard.innerHTML =
         '<div>' +
           '<div style="font-family:var(--font-display);font-size:15px;font-weight:700;color:var(--gold-bright);">' +
-            cu.username +
+            String(cu.username).replace(/[&<>"']/g, function(c) { return '&#' + c.charCodeAt(0) + ';'; }) +
           '</div>' +
           '<div style="font-size:12px;color:var(--text-secondary);margin-top:2px;">' +
             roleBadgeText +
@@ -725,7 +554,7 @@ var UserManager = {
       body.appendChild(profCard);
     }
 
-    /* 2. Elenco Unificato Gilda / Utenti (DEFAULT_USERS + Remoti) */
+    /* 2. Account attivi della Gilda */
     var usersLbl = document.createElement('div');
     usersLbl.className = 'settings-section-lbl';
     usersLbl.textContent = 'Membri del Party (' + this.getAllUsers().length + ')';
@@ -836,7 +665,7 @@ var UserManager = {
       pwBtn.className = 'btn-secondary';
       pwBtn.style.cssText = 'width:100%;justify-content:center;font-size:11px;padding:0.5rem;';
       pwBtn.textContent = '🔑 Aggiorna Password';
-      pwBtn.onclick = function () {
+      pwBtn.onclick = async function () {
         var oldP = document.getElementById('pw-old').value;
         var newP = document.getElementById('pw-new').value;
         var newP2 = document.getElementById('pw-new2').value;
@@ -861,17 +690,16 @@ var UserManager = {
           return;
         }
 
-        var rem = _remoteUsers[cu.username] || {};
-        if (!self.passwordMatch(rem, cu.username, oldP)) {
+        pwBtn.disabled = true;
+        try {
+          await self.changePassword(cu.username, oldP, newP);
+        } catch (error) {
           pwMsg.style.color = '#f87171';
-          pwMsg.textContent = 'Password attuale non corretta.';
+          pwMsg.textContent = error.message;
           pwMsg.style.display = 'block';
           return;
-        }
-
-        _remoteUsers[cu.username] = Object.assign({}, rem, { password: newP });
-        if (_db) {
-          _db.ref('users/' + cu.username + '/password').set(newP);
+        } finally {
+          pwBtn.disabled = false;
         }
         pwMsg.style.color = '#34d399';
         pwMsg.textContent = 'Password aggiornata con successo!';
@@ -977,7 +805,7 @@ function pgEntra() {
   var nameEl = document.getElementById('pg-name-input');
   var name = nameEl ? nameEl.value.trim() : '';
   if (!name) return;
-  UserManager.completeLogin(name, { role: 'Giocatore', dmPriv: false });
+  UserManager.signIn(name, '');
 }
 
 window.quickDemoLogin = function (username, password) {
@@ -988,23 +816,6 @@ window.quickDemoLogin = function (username, password) {
   UserManager.signIn(username, password);
 };
 
-function _buildCurrentUserFromAuth(fbUser) {
-  if (!fbUser) return;
-  var role = (fbUser.email === ADMIN_EMAIL) ? 'admin' : 'dm';
-  _authRole = role;
-  _authUser = fbUser;
-  if (typeof state !== 'undefined') {
-    state.currentUser = {
-      username: fbUser.displayName || (fbUser.email ? fbUser.email.split('@')[0] : 'DM'),
-      email: fbUser.email,
-      uid: fbUser.uid,
-      role: 'DM',
-      dmPriv: role === 'admin'
-    };
-  }
-}
-
-var state_pre_init_user = null;
 
 window.doSignIn = doSignIn;
 window.tentaLogin = tentaLogin;

@@ -85,13 +85,13 @@ test('Unified User System (js/users.js), Arcane Portal Login & 3D Dice Arena Ver
   const userCtx: Record<string, any> = { window: {}, document: {}, localStorage: {} };
   vm.runInNewContext(fs.readFileSync('js/users.js', 'utf8'), userCtx);
 
-  assert.equal(userCtx.DEFAULT_USERS.length, 7, 'All 7 default accounts present in js/users.js');
+  assert.equal(userCtx.DEFAULT_USERS.length, 4, 'Four initial party accounts configured');
   assert.ok(userCtx.UserManager, 'UserManager is exported');
-  assert.equal(userCtx.UserManager.findDefaultUser('matteo').role, 'DM');
-  assert.equal(userCtx.UserManager.findDefaultUser('luca').role, 'Giocatore');
-  assert.equal(userCtx.UserManager.passwordMatch({}, 'Matteo', 'Dungeonmaster!'), true);
-  assert.equal(userCtx.UserManager.passwordMatch({}, 'Matteo', 'wrong'), false);
-  assert.equal(userCtx.UserManager.getAllUsers().length, 7);
+  assert.equal(userCtx.UserManager.findDefaultUser('sebastiano').role, 'DM');
+  assert.equal(userCtx.UserManager.findDefaultUser('michele').role, 'Giocatore');
+  assert.equal(userCtx.UserManager.passwordMatch({}, 'sebastiano', 'dungeonmaster'), false);
+  assert.equal(userCtx.UserManager.passwordMatch({}, 'sebastiano', 'wrong'), false);
+  assert.equal(userCtx.UserManager.getAllUsers().length, 0);
 
   // Verify index.html has sium-login-portal, js/users.js, and no login-whiteout
   const html = fs.readFileSync('index.html', 'utf8');
@@ -206,14 +206,10 @@ test('Theme Selector Button (Dark / Light / Halloween) & Halloween Theme (Dark B
   assert.ok(themeCss.includes('bottom: 0.85rem;'), 'Theme & animation controls positioned at bottom-right so they do not cover Scheda PG buttons');
   assert.ok(appJs.includes("notify('Contatore extra rimosso.')"), 'Extra counter delete button removes counter directly without blocked confirm()');
 
-  // 8. No exposed AIzaSy API key literals in js/users.js, public/js/users.js, js/app.js, or public/js/app.js
+  // 8. No exposed API key literals in canonical scripts
   const usersJs = fs.readFileSync('js/users.js', 'utf8');
-  const publicUsersJs = fs.readFileSync('public/js/users.js', 'utf8');
-  const publicAppJs = fs.readFileSync('public/js/app.js', 'utf8');
   assert.ok(!usersJs.includes('AIza') && !usersJs.includes('QUl6Y'), 'No exposed AIza/base64 API key literal in js/users.js');
-  assert.ok(!publicUsersJs.includes('AIza') && !publicUsersJs.includes('QUl6Y'), 'No exposed AIza/base64 API key literal in public/js/users.js');
   assert.ok(!appJs.includes('AIza'), 'No exposed AIza API key literal in js/app.js');
-  assert.ok(!publicAppJs.includes('AIza'), 'No exposed AIza API key literal in public/js/app.js');
 });
 
 

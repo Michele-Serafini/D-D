@@ -131,97 +131,9 @@
               style="display:none;text-align:center;"
             ></div>
 
-            <!-- Accesso Rapido Demo / Ruolo (preserva tutti gli account originali) -->
-            <div class="sium-quick-login-bar">
-              <button
-                type="button"
-                class="sium-quick-login-btn"
-                onclick="window.quickDemoLogin('Matteo', 'Dungeonmaster!')"
-                title="Accedi come Dungeon Master (Matteo)"
-              >
-                👑 Entra come DM (Matteo)
-              </button>
-              <button
-                type="button"
-                class="sium-quick-login-btn"
-                onclick="window.quickDemoLogin('Luca', 'player1')"
-                title="Accedi come Giocatore (Luca)"
-              >
-                🛡 Entra come Giocatore (Luca)
-              </button>
-            </div>
-
-            <button
-              type="button"
-              onclick="toggleCreateAccount()"
-              style="background:transparent;border:none;color:#cbb89d;font-family:var(--font-display);font-size:10px;letter-spacing:0.1em;cursor:pointer;text-decoration:underline;padding:0;"
-            >
-              + Crea nuovo account
-            </button>
+            <a href="admin.html" style="color:#cbb89d">Amministrazione database</a>
           </div>
 
-          <!-- Form creazione account (nascosto di default) -->
-          <div
-            id="create-account-area"
-            style="display:none;flex-direction:column;align-items:center;gap:0.95rem;width:100%;"
-          >
-            <div
-              class="login-heading"
-              style="font-family:var(--font-display);font-size:13px;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;color:#f3d586;text-align:center;line-height:1.4;"
-            >
-              Crea Account
-            </div>
-            <div class="login-divider" aria-hidden="true">— ⚜ —</div>
-            <div class="login-field" style="width:100%;">
-              <label class="login-field-label" for="new-username">Username</label>
-              <div class="login-input-wrap">
-                <input
-                  id="new-username"
-                  type="text"
-                  placeholder="Scegli username..."
-                  style="width:100%;"
-                />
-              </div>
-            </div>
-            <div class="login-field" style="width:100%;">
-              <label class="login-field-label" for="new-password">Password</label>
-              <div class="login-input-wrap">
-                <input
-                  id="new-password"
-                  type="password"
-                  placeholder="Scegli password..."
-                  style="width:100%;"
-                />
-              </div>
-            </div>
-            <div class="login-field" style="width:100%;">
-              <label class="login-field-label" for="new-password2">Conferma Password</label>
-              <div class="login-input-wrap">
-                <input
-                  id="new-password2"
-                  type="password"
-                  placeholder="Ripeti password..."
-                  onkeydown="if(event.key==='Enter')doCreateAccount();"
-                  style="width:100%;"
-                />
-              </div>
-            </div>
-            <button type="button" class="login-btn" onclick="doCreateAccount()">
-              <span class="login-btn-ico">✦</span><span>Crea Account</span>
-            </button>
-            <div
-              id="create-error"
-              class="login-error"
-              style="display:none;text-align:center;"
-            ></div>
-            <button
-              type="button"
-              onclick="toggleCreateAccount()"
-              style="background:transparent;border:none;color:#cbb89d;font-family:var(--font-display);font-size:10px;letter-spacing:0.1em;cursor:pointer;text-decoration:underline;padding:0;"
-            >
-              ← Torna al login
-            </button>
-          </div>
         </div>
 
         <!-- Cerimonia di Accesso: Portale Runico & Sigillo del Grimorio (Senza Whiteout) -->
@@ -276,6 +188,7 @@
 
     <!-- 2. Sistema Unificato Utenti, Ruoli e Autenticazione -->
     <script src="js/users.js"></script>
+    <script src="js/party-admin.js"></script>
 
     <!-- 3. Logica Applicativa Principale -->
     <script src="js/app.js"></script>
