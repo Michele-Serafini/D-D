@@ -1,18 +1,10 @@
-import tailwindcss from '@tailwindcss/vite';
-import react from '@vitejs/plugin-react';
-import path from 'path';
 import {defineConfig} from 'vite';
 import {staticAssets} from './scripts/static-assets.mjs';
 
 export default defineConfig(() => {
   return {
     publicDir: false as const,
-    plugins: [react(), tailwindcss(), staticAssets()],
-    resolve: {
-      alias: {
-        '@': path.resolve(import.meta.dirname, '.'),
-      },
-    },
+    plugins: [staticAssets()],
     server: {
       // HMR is disabled in AI Studio via DISABLE_HMR env var.
       // Do not modify—file watching is disabled to prevent flickering during agent edits.

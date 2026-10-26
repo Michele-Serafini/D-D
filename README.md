@@ -60,7 +60,7 @@ maschera password e chiavi e abbrevia i contenuti lunghi.
 
 ### Nuovo progetto Firebase
 
-**Stato operativo:** progetto e utenti Auth creati. Il passaggio in produzione richiede ancora importazione dei contenuti e distribuzione delle regole RTDB: l’endpoint remoto restituisce timeout/HTTP 500 da questo ambiente. Non usare questa configurazione sul sito attuale finché i controlli remoti non passano.
+**Stato operativo:** il codice su `main` punta al nuovo progetto e gli utenti Auth sono già creati. Importazione dei contenuti e pubblicazione delle regole RTDB restano da completare: il relativo endpoint restituisce timeout/HTTP 500 da questo ambiente. Il merge del codice non conferma la migrazione del database remoto.
 
 Il nuovo progetto predisposto è **mercante-errante-dd-2026**, dell’account Google del proprietario.
 La configurazione Web pubblica si trova in `js/firebase-config.js` e viene caricata
@@ -95,8 +95,9 @@ rimangono esclusi da Git in `work/`.
 
 ### Sorgenti e build
 
-I file canonici sono nella radice (`js/`, `css/`, `data/`, `img/`, `audio/`,
-`schede/`). Non esiste più una seconda copia in `public/`. Vite serve direttamente
+I file canonici sono in `js/`, `css/`, `data/`, `img/`, `audio/` e `schede/`.
+Anche i vecchi URL dei JSON e delle schede vengono generati da queste sorgenti,
+senza ulteriori copie da modificare. Non esiste più una seconda copia in `public/`. Vite serve direttamente
 questi sorgenti in sviluppo; il plugin `scripts/static-assets.mjs` include gli
 stessi file in `dist/`, compresa `admin.html`.
 
@@ -152,3 +153,11 @@ Apri **`css/variables.css`**: tutte le scelte cromatiche e tipografiche sono rac
 - **Arena Dadi 3D Poliedrica**: nella sezione **Lanciatore Dadi** (`renderDadi` in `js/app.js` + `build3DDieElement` in `js/animations.js`) tutti i dadi (`d4, d6, d8, d10, d12, d20, d100`) vengono lanciati in 3D con rimbalzo fisico, ombra dinamica sul velluto e onda d'urto runica all'impatto.
 - **Transizioni al Click sulle Sezioni**: ogni volta che clicchi su una sezione del menu laterale, compare l'**Araldo Runico** della sezione (`SECTION_HERALDS` in `js/animations.js`), la pagina si srotola in 3D (`siumSectionUnroll3D`) e tutti gli elementi entrano con animazione scaglionata (`sium-reveal`).
 - **Pulsante Rapido `✦ FX ON / OFF`**: presente nella barra in alto a destra e nel footer della sidebar per disattivare gli effetti pesanti su dispositivi lenti.
+
+### Manutenzione
+
+- La gestione account, privilegi, presenza e listener è in `js/users.js`; `js/party-admin.js` gestisce l’interfaccia di amministrazione.
+- `render()` e `renderMain()` condividono lo stesso instradamento delle sezioni e la pulizia dei listener.
+- Il sito usa JavaScript e CSS statici; il vecchio scaffold React/SSR e le relative dipendenze sono stati rimossi.
+- `npm test` include anche i controlli TypeScript sui contenuti.
+- Le espressioni di autorizzazione RTDB si mantengono in `scripts/build-database-rules.mjs`. `npm run rules:build` rigenera `database.rules.json`; il deploy Firebase lo esegue automaticamente.

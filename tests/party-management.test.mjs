@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import vm from 'node:vm';
 import fs from 'node:fs';
-import { staticAssets } from '../scripts/static-assets.mjs';
+import { staticAssets, assetAliases } from '../scripts/static-assets.mjs';
 
 function setup() {
   const error = { style: {}, textContent: '' }, profiles = { michele: { uid: 'michele', role: 'Giocatore' } };
@@ -31,6 +31,7 @@ function setup() {
     async set(value){if(path.endsWith('/disabled'))profiles[path.split('/')[1]].disabled=value;},
     async transaction(fn){const key=path.split('/')[1];const next=fn(profiles[key]?structuredClone(profiles[key]):null);if(next===undefined)return{committed:false};profiles[key]=next;return{committed:true};},
     on(event,callback){listeners.set(path,callback);},
+    off(event,callback){if(listeners.get(path)===callback)listeners.delete(path);},
   };}};
   return{ctx,manager:ctx.UserManager,error,profiles,passwords,auth,listeners,writes,get secondaryDeleted(){return secondaryDeleted;}};
 }
@@ -43,7 +44,7 @@ test('login requires Firebase Auth, resolves UID and rejects disabled users with
  profiles.michele.disabled=true;await manager.signIn('michele','current');assert.equal(signed.length,1);
  delete profiles.michele;await manager.signIn('michele','current');assert.equal(signed.length,1);
  await manager.signIn('admin','wrong');assert.equal(signed.length,1);
- await manager.signIn('admin','admin');assert.equal(signed[1].record.role,'Admin');assert.equal(ctx._firebaseUid,'admin');
+ await manager.signIn('admin','admin');assert.equal(signed[1].record.role,'Admin');assert.equal(ctx.firebase.auth().currentUser.uid,'admin');
 });
 
 test('admin creates a separate Firebase Auth identity and publishes metadata without passwords',async()=>{
@@ -67,6 +68,9 @@ test('removal revokes a live session, protects the master and supports reactivat
  ctx.state.currentUser={username:'michele'};let revoked=0;manager.signOut=()=>revoked++;
  manager.watchUsers();listeners.get('users/michele')({val:()=>profiles.michele});assert.equal(revoked,1);
  await manager.reactivatePlayer('michele');assert.equal(profiles.michele.disabled,false);
+ manager.stopWatchingUsers();assert.equal(listeners.size,0);
+ manager.watchUsers();assert.equal(listeners.size,2);
+ manager.watchUsers();assert.equal(listeners.size,2);
 });
 
 test('password changes reauthenticate in Firebase Auth and never write credentials into the database',async()=>{
@@ -81,7 +85,7 @@ test('password changes reauthenticate in Firebase Auth and never write credentia
 test('production assets include the new config, admin, catalogs and original media without duplicates',()=>{
  const emitted=new Map();staticAssets().generateBundle.call({emitFile(asset){emitted.set(asset.fileName,asset.source);}});
  for(const name of ['admin.html','js/firebase-config.js','js/users.js','js/party-admin.js','data/catalog-data.js','database_armi.json','css/legacy.css','img/login_mobile.jpg','schede/7th_sea.webp']){
- assert.ok(emitted.has(name),name);assert.deepEqual(emitted.get(name),fs.readFileSync(name));}
+ assert.ok(emitted.has(name),name);assert.deepEqual(emitted.get(name),fs.readFileSync(assetAliases[name] || name));}
  assert.equal(fs.existsSync('public/js/users.js'),false);
  assert.equal(fs.existsSync('scripts/reset-party.mjs'),false);
 });

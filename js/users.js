@@ -14,7 +14,6 @@
 
 /* Configurazione caricata da js/firebase-config.js prima di questo modulo. */
 var FIREBASE_CONFIG = window.__FIREBASE_CONFIG__ || {};
-var _firebaseUid = null;
 
 var _firebaseApp = null;
 var _db = null;
@@ -36,7 +35,7 @@ var PARTY_RESET_VERSION = '2026-10-26-party-v1';
 /* Stato globale di autenticazione e presenza (sincronizzato con Firebase) */
 var _authUser = null;      // Oggetto utente autenticato corrente
 var _authRole = null;      // 'admin' | 'dm' | 'pg' | null
-var _remoteUsers = {};     // { username: { password, role, dmPriv } } da Firebase
+var _remoteUsers = {};     // Profili Firebase, senza password
 var _presenceMap = {};     // { username: { online, lastSeen } } da Firebase
 
 /* ============================================================================
@@ -50,6 +49,7 @@ var UserManager = {
     if (_db) return _db;
     try {
       if (typeof firebase !== 'undefined') {
+        if (!FIREBASE_CONFIG.projectId || !FIREBASE_CONFIG.apiKey || !FIREBASE_CONFIG.databaseURL) throw new Error('Configurazione Firebase non disponibile.');
         if (!_firebaseApp) {
           _firebaseApp = firebase.apps && firebase.apps.length
             ? firebase.app()
@@ -103,12 +103,12 @@ var UserManager = {
   /**
    * Restituisce gli account attivi presenti in Firebase.
    */
-  getAllUsers: function () {
+  getAllUsers: function (includeDisabled) {
     return Object.keys(_remoteUsers).filter(function (name) {
-      return _remoteUsers[name] && !_remoteUsers[name].disabled;
+      return _remoteUsers[name] && (includeDisabled || !_remoteUsers[name].disabled);
     }).map(function (name) {
       var u = _remoteUsers[name];
-      return { username: name, role: u.role || 'Giocatore', dmPriv: !!u.dmPriv,
+      return { username: name, role: u.role || 'Giocatore', dmPriv: !!u.dmPriv, disabled: !!u.disabled,
         crest: u.crest || (u.role === 'DM' ? '👑' : '🛡'), title: u.title || 'Avventuriero' };
     });
   },
@@ -134,6 +134,94 @@ var UserManager = {
       _remoteUsers = snap.val() || {};
       return _remoteUsers;
     });
+  },
+
+  getPrivileges: function (profile) {
+    var role = profile.role || 'Giocatore';
+    var dmPriv = role === 'Admin' || role === 'DM' || !!profile.dmPriv;
+    return { role: role, dmPriv: dmPriv, authRole: role === 'Admin' || role === 'DM' ? 'admin' : (dmPriv ? 'dm' : 'pg') };
+  },
+
+  requireAdminDatabase: function () {
+    if (!this.isAdmin()) throw new Error('Accesso riservato agli amministratori.');
+    var db = this.ensureDatabase();
+    if (!db) throw new Error('Database non disponibile.');
+    return db;
+  },
+
+  watchUsers: function () {
+    if (!_db || this._userWatchers) return;
+    var manager = this;
+    this._userWatchers = [];
+    function watch(path, handler) {
+      var ref = _db.ref(path);
+      manager._userWatchers.push({ ref: ref, handler: handler });
+      ref.on('value', handler);
+    }
+    watch('users', function (snap) {
+      _remoteUsers = snap.val() || {};
+      if (typeof window.refreshAdminUsers === 'function') window.refreshAdminUsers();
+    });
+    var current = this.getCurrentUser();
+    if (current && current.username !== 'admin') {
+      // Own profile remains readable after removal, so the session can be revoked.
+      watch('users/' + current.username, function (snap) {
+        var profile = snap.val();
+        if (!profile || profile.disabled) { manager.signOut(); return; }
+        var privileges = manager.getPrivileges(profile);
+        var changed = _authRole !== privileges.authRole;
+        _authRole = privileges.authRole;
+        current.role = privileges.role;
+        current.dmPriv = privileges.dmPriv;
+        if (changed && typeof render === 'function') render();
+      });
+    }
+  },
+
+  stopWatchingUsers: function () {
+    (this._userWatchers || []).forEach(function (watcher) { watcher.ref.off('value', watcher.handler); });
+    this._userWatchers = null;
+  },
+
+  addPlayer: async function (name, password) {
+    var db = this.requireAdminDatabase();
+    name = this.normalizeUsername(name);
+    if (name === 'admin') throw new Error('Nome riservato.');
+    if (typeof password !== 'string' || password.length < 6) throw new Error('Password: minimo 6 caratteri.');
+    var existing = (await this.withTimeout(db.ref('users/' + name).once('value'))).val();
+    if (existing) throw new Error('Nome già utilizzato. Per riattivare un account usa il suo pulsante Riattiva.');
+    // L’app secondaria crea l’identità senza disconnettere l’amministratore.
+    var secondary = firebase.initializeApp(FIREBASE_CONFIG, 'create-player-' + Date.now());
+    var created;
+    try {
+      created = (await secondary.auth().createUserWithEmailAndPassword(name + '@dd.local', password)).user;
+      var changes = {};
+      changes['users/' + name] = { uid: created.uid, role: 'Giocatore', dmPriv: false, disabled: false };
+      changes['userAccess/' + created.uid] = name;
+      await db.ref().update(changes);
+    } catch (error) {
+      if (created) { try { await created.delete(); } catch (_) {} }
+      throw error;
+    } finally {
+      try { await secondary.auth().signOut(); } catch (_) {}
+      await secondary.delete();
+    }
+  },
+  reactivatePlayer: async function (name) {
+    var db = this.requireAdminDatabase();
+    name = this.normalizeUsername(name);
+    await db.ref('users/' + name + '/disabled').set(false);
+  },
+  removePlayer: async function (name) {
+    var db = this.requireAdminDatabase();
+    name = this.normalizeUsername(name);
+    var result = await db.ref('users/' + name).transaction(function (record) {
+      if (!record || record.role === 'DM' || record.role === 'Admin') return;
+      // Conserva mappe e altro contenuto personale; disabilita solo l'accesso.
+      record.disabled = true;
+      return record;
+    });
+    if (!result.committed) throw new Error('Puoi rimuovere solo i giocatori.');
   },
 
   changePassword: async function (username, oldPassword, newPassword) {
@@ -162,15 +250,15 @@ var UserManager = {
       var u = this.normalizeUsername(typeof customUser === 'string' ? customUser : (uEl ? uEl.value : ''));
       var p = typeof customPass === 'string' ? customPass : (pEl ? pEl.value : '');
       if (!p) throw new Error('Inserisci la password.');
-      this.ensureDatabase();
+      if (!this.ensureDatabase()) throw new Error('Database non disponibile. Riprova.');
       var credential = await this.withTimeout(firebase.auth().signInWithEmailAndPassword(u + '@dd.local', p));
-      _firebaseUid = credential.user.uid;
+      var firebaseUid = credential.user.uid;
       var record;
-      if (_firebaseUid === 'admin') {
+      if (firebaseUid === 'admin') {
         u = 'admin';
         record = { role: 'Admin', dmPriv: true };
       } else {
-        var mapping = await this.withTimeout(_db.ref('userAccess/' + _firebaseUid).once('value'));
+        var mapping = await this.withTimeout(_db.ref('userAccess/' + firebaseUid).once('value'));
         u = mapping.val();
         if (!u) throw new Error('Account non abilitato al party.');
         var profile = await this.withTimeout(_db.ref('users/' + u).once('value'));
@@ -197,14 +285,14 @@ var UserManager = {
   completeLogin: function (username, ud) {
     var record = ud || {};
     var defUser = this.findDefaultUser(username);
-    var role = record.role || (defUser ? defUser.role : 'Giocatore');
-    var hasDmPriv = role === 'Admin' || role === 'DM' || !!record.dmPriv;
-
-    _authRole = role === 'Admin' || role === 'DM' ? 'admin' : (hasDmPriv ? 'dm' : 'pg');
+    var privileges = this.getPrivileges(record);
+    var role = privileges.role;
+    var hasDmPriv = privileges.dmPriv;
+    _authRole = privileges.authRole;
     _authUser = {
       uid: username,
       displayName: username,
-      email: username.toLowerCase() + '@mercante.local'
+      email: username.toLowerCase() + '@dd.local'
     };
 
     if (typeof state !== 'undefined') {
@@ -315,36 +403,13 @@ var UserManager = {
   },
 
   /**
-   * Crea un nuovo account Giocatore su Firebase e accede automaticamente.
-   */
-  createAccount: function () {
-    var errEl = document.getElementById('create-error') || document.getElementById('login-error');
-    if (errEl) {
-      errEl.style.display = 'block';
-      errEl.textContent = 'I giocatori vengono aggiunti dalla pagina admin.';
-    }
-  },
-
-  /**
-   * Alterna tra la schermata di Login e quella di Creazione Account.
-   */
-  toggleCreateAccount: function () {
-    var loginArea = document.getElementById('login-cred-area');
-    var createArea = document.getElementById('create-account-area');
-    if (!loginArea || !createArea) return;
-    var showing = createArea.style.display === 'flex';
-    loginArea.style.display = showing ? 'flex' : 'none';
-    createArea.style.display = showing ? 'none' : 'flex';
-    var lErr = document.getElementById('login-error');
-    var cErr = document.getElementById('create-error');
-    if (lErr) lErr.style.display = 'none';
-    if (cErr) cErr.style.display = 'none';
-  },
-
-  /**
    * Disconnette l'utente corrente e riporta al portale di accesso.
    */
   signOut: async function () {
+    if (this._signingOut) return;
+    this._signingOut = true;
+    this.stopWatchingUsers();
+    if (this._presenceRef && this._presenceHandler) this._presenceRef.off('value', this._presenceHandler);
     if (_db && state && state.currentUser) {
       try {
         _db.ref('presence/' + state.currentUser.username).set({
@@ -354,7 +419,6 @@ var UserManager = {
       } catch (e) {}
     }
     try { await firebase.auth().signOut(); } catch (_) {}
-    _firebaseUid = null;
     _authUser = null;
     _authRole = null;
     if (typeof state !== 'undefined') state.currentUser = null;
@@ -759,47 +823,9 @@ function dmRef(path) {
   return _db.ref('users/' + _authUser.uid + '/' + path);
 }
 
-function doSignIn()            { UserManager.signIn(); }
-function tentaLogin()          { UserManager.signIn(); }
-function googleSignIn()        { UserManager.signIn(); }
-function dmLocalSignIn()       { UserManager.signIn(); }
-function _completeLogin(u, ud) { UserManager.completeLogin(u, ud); }
-function doSignOut()           { UserManager.signOut(); }
-function googleSignOut()       { UserManager.signOut(); }
-function toggleCreateAccount() { UserManager.toggleCreateAccount(); }
-function doCreateAccount()     { UserManager.createAccount(); }
-function setupPresence()       { UserManager.setupPresence(); }
+function doSignIn()            { return UserManager.signIn(); }
+function doSignOut()           { return UserManager.signOut(); }
 function renderUserBadge()     { UserManager.renderUserBadge(); }
 function renderSettingsPanel() { UserManager.renderSettingsPanel(); }
 function getAllUsers()         { return UserManager.getAllUsers(); }
 function initAuth()            { UserManager.initAuth(); }
-
-function initFirebase() {
-  UserManager.ensureDatabase();
-  UserManager.initAuth();
-}
-
-function pgEntra() {
-  var nameEl = document.getElementById('pg-name-input');
-  var name = nameEl ? nameEl.value.trim() : '';
-  if (!name) return;
-  UserManager.signIn(name, '');
-}
-
-window.quickDemoLogin = function (username, password) {
-  var uEl = document.getElementById('login-username-input');
-  var pEl = document.getElementById('login-password-input');
-  if (uEl) uEl.value = username;
-  if (pEl) pEl.value = password;
-  UserManager.signIn(username, password);
-};
-
-
-window.doSignIn = doSignIn;
-window.tentaLogin = tentaLogin;
-window.doSignOut = doSignOut;
-window.toggleCreateAccount = toggleCreateAccount;
-window.doCreateAccount = doCreateAccount;
-window.getAllUsers = getAllUsers;
-window.renderUserBadge = renderUserBadge;
-window.renderSettingsPanel = renderSettingsPanel;

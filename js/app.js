@@ -1461,7 +1461,39 @@ function getFilteredArmi() {
 /* ============================================================================
    SEZIONE 2: MOTORE DI RENDERING PRINCIPALE (render & renderMain)
    ============================================================================ */
+function renderActiveSection() {
+  var dmSections = ['worldbuilding', 'storia', 'archivio', 'schedepg'];
+  if (dmSections.indexOf(state.section) !== -1 && !isDM()) return renderDadi();
+  if (state.section === 'scheda' || (state.section === 'schedepg' && state.schedePGViewMode)) return _buildSchedaWithLavagna();
+  if (state.section === 'tavolo') {
+    var table = renderTavolo();
+    table.style.height = 'calc(100vh - 120px)';
+    return table;
+  }
+  var renderers = {
+    emporio: renderEmporio, iniziativa: renderIniziativa, note: renderNote,
+    caos: renderCaos, generatore: renderGeneratore, dadi: renderDadi,
+    mappa: renderMappa, bestiario: renderBestiario, incantesimi: renderIncantesimiAggiuntivi,
+    worldbuilding: renderWorldbuilding, bacheca: renderBacheca, storia: renderStoria,
+    archivio: renderArchivio, schedepg: renderSchedePG, libri: renderLibri
+  };
+  try { return renderers[state.section] ? renderers[state.section]() : document.createDocumentFragment(); }
+  catch (error) {
+    if (state.section !== 'storia') throw error;
+    var message = document.createElement('pre');
+    message.style.cssText = 'padding:2rem;color:#ff9c9c;font-size:13px;';
+    message.textContent = 'Errore Storia: ' + String(error);
+    return message;
+  }
+}
+
+function cleanupActiveSection() {
+  if (_sectionCleanup) { _sectionCleanup(); _sectionCleanup = null; }
+  if (_tavoloRef) { _tavoloRef.off('value'); _tavoloRef = null; }
+}
+
 function render() {
+  cleanupActiveSection();
   document.documentElement.setAttribute('data-theme', state.theme);
   var app = document.getElementById('app');
   app.innerHTML = '';
@@ -1491,24 +1523,7 @@ function render() {
 
   var main = document.createElement('main');
   main.className = 'main-content';
-  if (state.section === 'emporio') main.appendChild(renderEmporio());
-  else if (state.section === 'iniziativa') main.appendChild(renderIniziativa());
-  else if (state.section === 'note') main.appendChild(renderNote());
-  else if (state.section === 'caos') main.appendChild(renderCaos());
-  else if (state.section === 'generatore') main.appendChild(renderGeneratore());
-  else if (state.section === 'dadi') main.appendChild(renderDadi());
-  else if (state.section === 'mappa') main.appendChild(renderMappa());
-  
-  else if (state.section === 'scheda') { main.appendChild(_buildSchedaWithLavagna()); }
-  else if (state.section === 'bestiario') main.appendChild(renderBestiario());
-  else if (state.section === 'incantesimi') main.appendChild(renderIncantesimiAggiuntivi());
-  else if (state.section === 'worldbuilding') { if (isDM()) main.appendChild(renderWorldbuilding()); else main.appendChild(renderDadi()); }
-  else if (state.section === 'bacheca') main.appendChild(renderBacheca());
-  else if (state.section === 'storia') { if (isDM()) { try { main.appendChild(renderStoria()); } catch(e) { var _se=document.createElement('div');_se.style.cssText='padding:2rem;color:#ff9c9c;font-family:monospace;font-size:13px;';_se.innerHTML='<b>Errore Storia:</b><br><pre>'+String(e)+'</pre>';main.appendChild(_se); } } else main.appendChild(renderDadi()); }
-  else if (state.section === 'archivio') { if (isDM()) main.appendChild(renderArchivio()); else main.appendChild(renderDadi()); }
-  else if (state.section === 'schedepg') { if (isDM()) { if(state.schedePGViewMode) main.appendChild(_buildSchedaWithLavagna()); else main.appendChild(renderSchedePG()); } else main.appendChild(renderDadi()); }
-  else if (state.section === 'libri') main.appendChild(renderLibri());
-  else if (state.section === 'tavolo') { var _twrap=renderTavolo();_twrap.style.height='calc(100vh - 120px)';main.appendChild(_twrap); }
+  main.appendChild(renderActiveSection());
   contentWrap.appendChild(main);
 
   if (state.regiaActive) {
@@ -1525,7 +1540,10 @@ function render() {
   renderUserBadge();
   if (window.SiumAnimations && window.SiumAnimations.onRender) window.SiumAnimations.onRender(false);
   } catch(_renderErr) {
-    app.innerHTML = '<div style="padding:2rem;color:#ff9c9c;font-family:monospace;font-size:13px;background:#1a0a0a;min-height:100vh;"><b>ERRORE RENDER:</b><br><pre>' + String(_renderErr) + '\n' + (_renderErr.stack||'') + '</pre></div>';
+    var failure = document.createElement('pre');
+    failure.style.cssText = 'padding:2rem;color:#ff9c9c;font-family:monospace;font-size:13px;background:#1a0a0a;min-height:100vh;';
+    failure.textContent = 'ERRORE RENDER:\n' + String(_renderErr) + '\n' + (_renderErr.stack || '');
+    app.replaceChildren(failure);
   }
 }
 
@@ -1544,27 +1562,9 @@ function renderMain() {
     var _ed = document.getElementById('storia-editor');
     if (_ed) { state.storia.content = _ed.innerHTML; }
   }
-  if(_sectionCleanup){_sectionCleanup();_sectionCleanup=null;}
-  if(_tavoloRef){_tavoloRef.off('value');_tavoloRef=null;}
+  cleanupActiveSection();
   main.innerHTML = '';
-  if (state.section === 'emporio') main.appendChild(renderEmporio());
-  else if (state.section === 'iniziativa') main.appendChild(renderIniziativa());
-  else if (state.section === 'note') main.appendChild(renderNote());
-  else if (state.section === 'caos') main.appendChild(renderCaos());
-  else if (state.section === 'generatore') main.appendChild(renderGeneratore());
-  else if (state.section === 'dadi') main.appendChild(renderDadi());
-  else if (state.section === 'mappa') main.appendChild(renderMappa());
-  
-  else if (state.section === 'scheda') { main.appendChild(_buildSchedaWithLavagna()); }
-  else if (state.section === 'bestiario') main.appendChild(renderBestiario());
-  else if (state.section === 'incantesimi') main.appendChild(renderIncantesimiAggiuntivi());
-  else if (state.section === 'worldbuilding') { if (isDM()) main.appendChild(renderWorldbuilding()); else main.appendChild(renderDadi()); }
-  else if (state.section === 'bacheca') main.appendChild(renderBacheca());
-  else if (state.section === 'storia') { if (isDM()) { try { main.appendChild(renderStoria()); } catch(e) { var _se2=document.createElement('div');_se2.style.cssText='padding:2rem;color:#ff9c9c;font-family:monospace;font-size:13px;';_se2.innerHTML='<b>Errore Storia:</b><br><pre>'+String(e)+'</pre>';main.appendChild(_se2); } } else main.appendChild(renderDadi()); }
-  else if (state.section === 'archivio') { if (isDM()) main.appendChild(renderArchivio()); else main.appendChild(renderDadi()); }
-  else if (state.section === 'schedepg') { if (isDM()) { if(state.schedePGViewMode) main.appendChild(_buildSchedaWithLavagna()); else main.appendChild(renderSchedePG()); } else main.appendChild(renderDadi()); }
-  else if (state.section === 'libri') main.appendChild(renderLibri());
-  else if (state.section === 'tavolo') { var _twrap=renderTavolo();_twrap.style.height='calc(100vh - 120px)';main.appendChild(_twrap); }
+  main.appendChild(renderActiveSection());
 
   var sb = document.querySelector('.sidebar');
   if (sb) sb.replaceWith(renderSidebar());
@@ -16572,10 +16572,6 @@ try {
     document.getElementById('login-overlay').style.display = 'flex';
     // Inizializza Firebase + Auth listener (gestirà lui login/logout)
     try {
-      if (!_firebaseApp) {
-        _firebaseApp = firebase.initializeApp(FIREBASE_CONFIG);
-        _db = firebase.database();
-      }
       initAuth();
     } catch(e) {
       console.warn('[Mercante] Firebase non disponibile:', e.message);
@@ -17911,8 +17907,4 @@ function renderArchivio() {
 window.state = state;
 window.render = render;
 window.renderMain = renderMain;
-window.doSignIn = doSignIn;
-window.doSignOut = doSignOut;
-window.toggleCreateAccount = toggleCreateAccount;
-window.doCreateAccount = doCreateAccount;
 window.notify = notify;
