@@ -12,45 +12,23 @@
  * ============================================================================
  */
 
-/* ── 1. Configurazione Firebase Condivisa (senza chiavi API in chiaro nel codice sorgente) ── */
-var _fbWebIdCodes = [
-  65, 73, 122, 97, 83, 121, 67, 53, 121, 80, 109, 118, 103, 80, 49, 114, 101, 57, 75, 65,
-  89, 110, 67, 110, 81, 110, 82, 101, 117, 86, 49, 100, 106, 113, 57, 117, 103, 76, 103
-];
-function _resolveFbWebKey() {
-  if (typeof window !== 'undefined' && window.__FIREBASE_API_KEY__) return window.__FIREBASE_API_KEY__;
-  try {
-    return String.fromCharCode.apply(null, _fbWebIdCodes);
-  } catch (e) {}
-  return '';
-}
-
-var FIREBASE_CONFIG = {
-  apiKey: _resolveFbWebKey(),
-  authDomain: 'mercante-errante.firebaseapp.com',
-  databaseURL: 'https://mercante-errante-default-rtdb.europe-west1.firebasedatabase.app',
-  projectId: 'mercante-errante',
-  storageBucket: 'mercante-errante.firebasestorage.app',
-  messagingSenderId: '1079281517271',
-  appId: '1:1079281517271:web:24bd4c8ef039079eece692',
-  measurementId: 'G-R9CKK7NMNW'
-};
+/* Configurazione caricata da js/firebase-config.js prima di questo modulo. */
+var FIREBASE_CONFIG = window.__FIREBASE_CONFIG__ || {};
+var _firebaseUid = null;
 
 var _firebaseApp = null;
 var _db = null;
 var _fbConnected = false;
 
-/* ── 2. Elenco Unificato degli Account Predefiniti ──
- * Seed usato esclusivamente dal reset iniziale. Dopo il reset, gestire
- * gli account tramite admin.html: il database è la fonte autorevole.
- * - role: 'DM' (Master principale/Admin) oppure 'Giocatore'
- * - dmPriv: true per dare i permessi Dungeon Master, false per Giocatore
+/* Profili iniziali usati soltanto per icone e titoli.
+ * Le identità e le password sono gestite esclusivamente da Firebase Authentication.
+ * Nessun fallback di accesso e nessuna ricreazione automatica degli utenti rimossi.
  */
 var DEFAULT_USERS = [
-  { username: 'sebastiano', password: 'dungeonmaster', role: 'DM', dmPriv: true, crest: '👑', title: 'Dungeon Master' },
-  { username: 'michele', password: 'player', role: 'Giocatore', dmPriv: false, crest: '⚔', title: 'Avventuriero' },
-  { username: 'montre', password: 'player', role: 'Giocatore', dmPriv: false, crest: '✨', title: 'Avventuriero' },
-  { username: 'alessio', password: 'player', role: 'Giocatore', dmPriv: false, crest: '🛡', title: 'Avventuriero' }
+  { username: 'sebastiano', role: 'DM', dmPriv: true, crest: '👑', title: 'Dungeon Master' },
+  { username: 'michele', role: 'Giocatore', dmPriv: false, crest: '⚔', title: 'Avventuriero' },
+  { username: 'montre', role: 'Giocatore', dmPriv: false, crest: '✨', title: 'Avventuriero' },
+  { username: 'alessio', role: 'Giocatore', dmPriv: false, crest: '🛡', title: 'Avventuriero' }
 ];
 var PARTY_RESET_VERSION = '2026-10-26-party-v1';
 
@@ -135,13 +113,7 @@ var UserManager = {
     });
   },
 
-  /**
-   * Verifica esclusivamente la password corrente dell’account attivo.
-   */
-  passwordMatch: function (record, username, password) {
-    return !!(record && !record.disabled && record.password === password);
-  },
-
+  /** Normalizza il nome del giocatore prima dell'accesso. */
   normalizeUsername: function (value) {
     var name = String(value || '').trim().toLowerCase();
     if (!/^[a-z0-9_-]{3,32}$/.test(name) || ['__proto__', 'constructor', 'prototype'].indexOf(name) !== -1) throw new Error('Usa da 3 a 32 lettere, numeri, trattini o underscore.');
@@ -165,17 +137,13 @@ var UserManager = {
   },
 
   changePassword: async function (username, oldPassword, newPassword) {
+    var user = firebase.auth().currentUser;
     var cu = this.getCurrentUser();
-    if (!cu || cu.username !== username) throw new Error('Accedi prima di cambiare password.');
-    if (typeof newPassword !== 'string' || newPassword.length < 4) throw new Error('Password: minimo 4 caratteri.');
-    var db = this.ensureDatabase();
-    if (!db) throw new Error('Database non disponibile.');
-    var self = this;
-    var result = await db.ref('users/' + username).transaction(function (record) {
-      if (!self.passwordMatch(record, username, oldPassword)) return;
-      return Object.assign({}, record, { password: newPassword });
-    });
-    if (!result.committed) throw new Error('Password attuale non corretta o account rimosso.');
+    if (!user || !cu || cu.username !== username) throw new Error('Accedi prima di cambiare password.');
+    if (typeof newPassword !== 'string' || newPassword.length < 6) throw new Error('Password: minimo 6 caratteri.');
+    var credential = firebase.auth.EmailAuthProvider.credential(user.email, oldPassword);
+    await user.reauthenticateWithCredential(credential);
+    await user.updatePassword(newPassword);
   },
 
   /**
@@ -194,19 +162,28 @@ var UserManager = {
       var u = this.normalizeUsername(typeof customUser === 'string' ? customUser : (uEl ? uEl.value : ''));
       var p = typeof customPass === 'string' ? customPass : (pEl ? pEl.value : '');
       if (!p) throw new Error('Inserisci la password.');
-      // Account di manutenzione separato dai quattro membri del party.
-      if (u === 'admin' && p === 'admin') {
-        this.completeLogin('admin', { role: 'Admin', dmPriv: true });
-        return;
+      this.ensureDatabase();
+      var credential = await this.withTimeout(firebase.auth().signInWithEmailAndPassword(u + '@dd.local', p));
+      _firebaseUid = credential.user.uid;
+      var record;
+      if (_firebaseUid === 'admin') {
+        u = 'admin';
+        record = { role: 'Admin', dmPriv: true };
+      } else {
+        var mapping = await this.withTimeout(_db.ref('userAccess/' + _firebaseUid).once('value'));
+        u = mapping.val();
+        if (!u) throw new Error('Account non abilitato al party.');
+        var profile = await this.withTimeout(_db.ref('users/' + u).once('value'));
+        record = profile.val();
+        if (!record || record.disabled) throw new Error('Account rimosso o disabilitato.');
       }
-      var users = await this.loadUsers();
-      var key = Object.keys(users).find(function (name) { return name.toLowerCase() === u; });
-      if (!key || !this.passwordMatch(users[key], key, p)) throw new Error('Username o password errati.');
-      if (document.getElementById('admin-panel') && users[key].role !== 'DM' && users[key].role !== 'Admin') throw new Error('Accesso riservato agli amministratori.');
+      if (document.getElementById('admin-panel') && record.role !== 'DM' && record.role !== 'Admin') throw new Error('Accesso riservato agli amministratori.');
       if (errEl) errEl.style.display = 'none';
-      this.completeLogin(key, users[key]);
+      this.completeLogin(u, record);
     } catch (error) {
-      if (errEl) { errEl.style.display = 'block'; errEl.textContent = error.message; }
+      try { if (typeof firebase !== 'undefined' && firebase.auth) await firebase.auth().signOut(); } catch (_) {}
+      var message = /^auth\//.test(error.code || '') ? 'Accesso non riuscito. Verifica username e password o riprova.' : error.message;
+      if (errEl) { errEl.style.display = 'block'; errEl.textContent = message; }
     } finally {
       this._signingIn = false;
       if (btn) btn.disabled = false;
@@ -367,7 +344,7 @@ var UserManager = {
   /**
    * Disconnette l'utente corrente e riporta al portale di accesso.
    */
-  signOut: function () {
+  signOut: async function () {
     if (_db && state && state.currentUser) {
       try {
         _db.ref('presence/' + state.currentUser.username).set({
@@ -376,6 +353,8 @@ var UserManager = {
         });
       } catch (e) {}
     }
+    try { await firebase.auth().signOut(); } catch (_) {}
+    _firebaseUid = null;
     _authUser = null;
     _authRole = null;
     if (typeof state !== 'undefined') state.currentUser = null;
@@ -677,7 +656,7 @@ var UserManager = {
           pwMsg.style.display = 'block';
           return;
         }
-        if (newP.length < 4) {
+        if (newP.length < 6) {
           pwMsg.style.color = '#f87171';
           pwMsg.textContent = 'La nuova password deve avere almeno 4 caratteri.';
           pwMsg.style.display = 'block';
@@ -793,7 +772,6 @@ function setupPresence()       { UserManager.setupPresence(); }
 function renderUserBadge()     { UserManager.renderUserBadge(); }
 function renderSettingsPanel() { UserManager.renderSettingsPanel(); }
 function getAllUsers()         { return UserManager.getAllUsers(); }
-function passwordMatch(r,u,p)  { return UserManager.passwordMatch(r, u, p); }
 function initAuth()            { UserManager.initAuth(); }
 
 function initFirebase() {

@@ -20,6 +20,12 @@
       if (typeof window.refreshAdminUsers === 'function') window.refreshAdminUsers();
     };
     _db.ref('users').on('value', this._usersHandler);
+    var current = manager.getCurrentUser();
+    if (current && current.username !== 'admin') {
+      _db.ref('users/' + current.username).on('value', function (snap) {
+        if (!snap.val() || snap.val().disabled) manager.signOut();
+      });
+    }
   };
   function requireAdmin() {
     if (!manager.isAdmin()) throw new Error('Accesso riservato agli amministratori.');
@@ -31,15 +37,30 @@
     var db = requireAdmin();
     name = manager.normalizeUsername(name);
     if (name === 'admin') throw new Error('Nome riservato.');
-    if (typeof password !== 'string' || password.length < 4) throw new Error('Password: minimo 4 caratteri.');
-    var result = await db.ref('users').transaction(function (users) {
-      users = users || {};
-      var duplicate = Object.keys(users).some(function (key) { return key.toLowerCase() === name && !users[key].disabled; });
-      if (duplicate) return;
-      users[name] = Object.assign({}, users[name] || {}, { password: password, role: 'Giocatore', dmPriv: false, disabled: false });
-      return users;
-    });
-    if (!result.committed) throw new Error('Giocatore già presente.');
+    if (typeof password !== 'string' || password.length < 6) throw new Error('Password: minimo 6 caratteri.');
+    var existing = (await manager.withTimeout(db.ref('users/' + name).once('value'))).val();
+    if (existing) throw new Error('Nome già utilizzato. Per riattivare un account usa il suo pulsante Riattiva.');
+    // L’app secondaria crea l’identità senza disconnettere l’amministratore.
+    var secondary = firebase.initializeApp(FIREBASE_CONFIG, 'create-player-' + Date.now());
+    var created;
+    try {
+      created = (await secondary.auth().createUserWithEmailAndPassword(name + '@dd.local', password)).user;
+      var changes = {};
+      changes['users/' + name] = { uid: created.uid, role: 'Giocatore', dmPriv: false, disabled: false };
+      changes['userAccess/' + created.uid] = name;
+      await db.ref().update(changes);
+    } catch (error) {
+      if (created) { try { await created.delete(); } catch (_) {} }
+      throw error;
+    } finally {
+      try { await secondary.auth().signOut(); } catch (_) {}
+      await secondary.delete();
+    }
+  };
+  manager.reactivatePlayer = async function (name) {
+    var db = requireAdmin();
+    name = manager.normalizeUsername(name);
+    await db.ref('users/' + name + '/disabled').set(false);
   };
   manager.removePlayer = async function (name) {
     var db = requireAdmin();
@@ -84,12 +105,12 @@
     var list = document.getElementById('admin-users');
     if (!list || !manager.isAdmin()) return;
     list.replaceChildren();
-    manager.getAllUsers().forEach(function (u) {
+    Object.keys(_remoteUsers).map(function (name) { return Object.assign({ username: name }, _remoteUsers[name]); }).forEach(function (u) {
       var row = document.createElement('li');
       var text = document.createElement('span');
-      text.textContent = u.username + ' · ' + u.role;
+      text.textContent = u.username + ' · ' + u.role + (u.disabled ? ' (rimosso)' : '');
       row.appendChild(text);
-      if (u.role === 'Giocatore') row.appendChild(button('Rimuovi', function () { return manager.removePlayer(u.username); }));
+      if (u.role === 'Giocatore') row.appendChild(button(u.disabled ? 'Riattiva' : 'Rimuovi', function () { return u.disabled ? manager.reactivatePlayer(u.username) : manager.removePlayer(u.username); }));
       list.appendChild(row);
     });
   };
@@ -122,8 +143,8 @@
       if (!markerRef) {
         markerRef = db.ref('meta/partyResetVersion');
         markerHandler = function (snap) {
-          var done = snap.val() === PartyReset.version;
-          document.getElementById('reset-party').disabled = done;
+          var done = snap.val() === PARTY_RESET_VERSION;
+          document.getElementById('reset-party').disabled = true;
           document.getElementById('reset-party').textContent = done ? 'Reset iniziale già eseguito' : 'Esegui reset iniziale e scarica backup';
         };
         markerRef.on('value', markerHandler, function (error) { status(error.message, true); });
@@ -145,22 +166,6 @@
         status('Giocatore aggiunto.');
       } catch (error) { status(error.message, true); }
       finally { submit.disabled = false; }
-    };
-    document.getElementById('reset-party').onclick = async function () {
-      var el = this;
-      el.disabled = true;
-      try {
-        var db = requireAdmin(), previous;
-        var result = await db.ref().transaction(function (current) {
-          var next = PartyReset.plan(current, DEFAULT_USERS);
-          if (!next) return;
-          previous = current;
-          return next;
-        }, undefined, false);
-        if (!result.committed) throw new Error('Reset già eseguito: nessun dato modificato.');
-        downloadBackup(previous);
-        status('Reset completato: quattro utenti pronti, pet e schede vuoti. Backup scaricato.');
-      } catch (error) { status(error.message, true); el.disabled = false; }
     };
     document.getElementById('export-backup').onclick = async function () {
       try { downloadBackup((await requireAdmin().ref().once('value')).val()); }

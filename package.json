@@ -10,8 +10,7 @@
     "clean": "rm -rf dist server.js",
     "lint": "tsc --noEmit",
     "test": "node --test tests/*.test.mjs",
-    "test:party": "node --test tests/party-management.test.mjs",
-    "reset:party": "node scripts/reset-party.mjs"
+    "test:party": "node --test tests/party-management.test.mjs"
   },
   "dependencies": {
     "@google/genai": "^2.4.0",

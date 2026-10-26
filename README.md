@@ -39,8 +39,8 @@ Benvenuto nella versione completamente ridisegnata, animata e riorganizzata del 
 ## 👤 1. Account e amministrazione
 
 Il database Firebase è l'unica fonte autorevole per gli account. `DEFAULT_USERS`
-in `js/users.js` serve esclusivamente al reset iniziale; non ricrea gli utenti
-rimossi e non permette di usare una vecchia password dopo un cambio.
+in `js/users.js` contiene solo i profili iniziali per icone e titoli. Non contiene
+password, non ricrea gli utenti rimossi e non offre un accesso alternativo a Firebase Auth.
 
 | Account | Password iniziale | Ruolo |
 | --- | --- | --- |
@@ -58,36 +58,40 @@ mappe/worldbuilding personali. Il master non è rimovibile dal pulsante giocator
 Il visualizzatore legge un percorso alla volta, con massimo 25 elementi,
 maschera password e chiavi e abbrevia i contenuti lunghi.
 
-**Limite dell'architettura attuale:** il progetto usa autenticazione nel browser
-su Firebase Realtime Database, senza verifiche server dell'identità. Il login
-admin controlla l'interfaccia, ma non costituisce una barriera di sicurezza per
-le API Firebase. Anche le password degli utenti seguono il formato in chiaro
-preesistente. Per esporre il database a utenti non fidati occorre migrare a
-Firebase Authentication e distribuire regole di accesso sul server; tali regole
-non sono gestite da questo repository. La pagina non modifica le regole Firebase.
+### Nuovo progetto Firebase
 
-### Reset iniziale (una sola volta)
+**Stato operativo:** progetto e utenti Auth creati. Il passaggio in produzione richiede ancora importazione dei contenuti e distribuzione delle regole RTDB: l’endpoint remoto restituisce timeout/HTTP 500 da questo ambiente. Non usare questa configurazione sul sito attuale finché i controlli remoti non passano.
 
-Il reset sostituisce `users`, cancella `schedePG` (inclusi i companion),
-`presence` e `state/pet`, e imposta `meta/partyResetVersion`.
-Oggetti, libri, librerie, bestiario, NPC, mappe e altri nodi restano invariati.
-Le mappe/worldbuilding presenti nei vecchi account vengono conservate in
-`state/legacyUserContent`, senza le vecchie credenziali.
+Il nuovo progetto predisposto è **mercante-errante-dd-2026**, dell’account Google del proprietario.
+La configurazione Web pubblica si trova in `js/firebase-config.js` e viene caricata
+prima di `js/users.js`. Nessun token CLI, refresh token o account di servizio viene
+salvato nel repository.
 
-Da terminale:
+L’accesso usa **Firebase Authentication email/password**, con alias interni
+`<username>@dd.local`; nell’interfaccia continui a inserire solo username e password.
+L’account admin è una vera identità Firebase separata dai quattro membri del party.
+Le password non sono memorizzate in Realtime Database e non vengono confrontate
+nel browser. Per le nuove password Firebase richiede almeno 6 caratteri.
+
+`users/<nome>` contiene solo profilo e privilegi; `userAccess/<uid>` collega
+l’identità Auth al nome. Le regole server impediscono l’accesso agli utenti non
+abilitati o rimossi e impediscono ai player di assegnarsi privilegi amministrativi.
+L’admin può aggiungere, rimuovere e riattivare un giocatore; rimuoverlo conserva
+i contenuti personali ma revoca l’accesso al database.
+
+Il database è in `europe-west1`. Il piano di migrazione mantiene libri, oggetti, bestiario,
+NPC e gli altri contenuti; pet e schede PG sono vuoti. Le mappe/worldbuilding dei
+vecchi account rimangono in `state/legacyUserContent`, accessibile agli amministratori.
+Il vecchio progetto non è stato eliminato o riconfigurato.
+
+Per distribuire configurazione Auth e regole sul progetto nuovo:
 
 ```sh
-npm run reset:party               # mostra il piano, senza scrivere
-npm run reset:party -- --apply    # backup privato e reset condizionale con ETag
+npx -y firebase-tools@latest deploy --only auth,database --project mercante-errante-dd-2026
 ```
 
-I backup completi sono salvati in `work/party-backups/` (esclusi da Git).
-Il comando interrompe la scrittura se un altro client ha modificato il database
-nel frattempo. Se le regole richiedono un token, passarlo nella variabile
-`PARTY_DATABASE_TOKEN`, mai nei file versionati.
-La pagina admin offre la stessa operazione, con transazione atomica e download
-del backup. Dopo il primo reset il pulsante è disattivato: riaprire la pagina o
-ridistribuire il sito non cancella i nuovi dati.
+Il reset legacy che scriveva password nel database è stato rimosso. I backup locali
+rimangono esclusi da Git in `work/`.
 
 ### Sorgenti e build
 

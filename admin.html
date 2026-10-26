@@ -8,6 +8,7 @@
   </style>
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
 </head>
 <body>
   <h1>Amministrazione database</h1><a href="index.html">← Torna al Compendium</a>
@@ -24,12 +25,12 @@
     <section><h2>Giocatori</h2><ul id="admin-users"></ul>
       <form id="add-player">
         <label>Nome del giocatore<input id="player-name" pattern="[a-zA-Z0-9_-]{3,32}" minlength="3" maxlength="32" required></label>
-        <label>Password<input id="player-password" type="password" value="player" minlength="4" autocomplete="new-password" required></label>
+        <label>Password<input id="player-password" type="password" value="player" minlength="6" autocomplete="new-password" required></label>
         <button type="submit">Aggiungi giocatore</button>
       </form>
     </section>
     <section><h2>Preparazione del party</h2>
-      <p>Il reset iniziale sostituisce gli utenti con sebastiano, michele, montre e alessio; svuota pet e schede PG. Conserva libri, oggetti, cataloghi e gli altri contenuti. Si può eseguire una sola volta.</p>
+      <p>Il nuovo progetto usa Firebase Authentication. Il party iniziale è già pronto: sebastiano, michele, montre e alessio. Pet e schede PG partono vuoti; libri e cataloghi sono conservati.</p>
       <button id="reset-party" type="button">Esegui reset iniziale e scarica backup</button>
     </section>
     <section><h2>Database</h2><button id="export-backup" type="button">Scarica backup completo</button>
@@ -43,6 +44,7 @@
     <button id="admin-logout" type="button">Esci</button>
   </main>
   <script>var state = {currentUser:null};</script>
-  <script src="js/users.js"></script><script src="js/party-reset.js"></script><script src="js/party-admin.js"></script>
+  <script src="js/firebase-config.js"></script>
+    <script src="js/users.js"></script><script src="js/party-admin.js"></script>
 </body>
 </html>

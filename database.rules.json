@@ -1,0 +1,86 @@
+{
+  "rules": {
+    ".read": "auth != null && (auth.uid === 'admin' || (auth != null && (auth.uid === 'admin' || (root.child('userAccess').child(auth.uid).isString() && root.child('users').child(root.child('userAccess').child(auth.uid).val()).exists() && root.child('users').child(root.child('userAccess').child(auth.uid).val()).child('disabled').val() !== true)) && root.child('users').child(root.child('userAccess').child(auth.uid).val()).child('role').val() === 'DM'))",
+    ".write": "auth != null && (auth.uid === 'admin' || (auth != null && (auth.uid === 'admin' || (root.child('userAccess').child(auth.uid).isString() && root.child('users').child(root.child('userAccess').child(auth.uid).val()).exists() && root.child('users').child(root.child('userAccess').child(auth.uid).val()).child('disabled').val() !== true)) && root.child('users').child(root.child('userAccess').child(auth.uid).val()).child('role').val() === 'DM'))",
+    "userAccess": {
+      "$uid": {
+        ".read": "auth != null && auth.uid === $uid"
+      }
+    },
+    "users": {
+      ".read": "auth != null && (auth.uid === 'admin' || (root.child('userAccess').child(auth.uid).isString() && root.child('users').child(root.child('userAccess').child(auth.uid).val()).exists() && root.child('users').child(root.child('userAccess').child(auth.uid).val()).child('disabled').val() !== true))",
+      "$name": {
+        ".read": "auth != null && root.child('userAccess').child(auth.uid).val() === $name",
+        ".write": "(auth != null && (auth.uid === 'admin' || (root.child('userAccess').child(auth.uid).isString() && root.child('users').child(root.child('userAccess').child(auth.uid).val()).exists() && root.child('users').child(root.child('userAccess').child(auth.uid).val()).child('disabled').val() !== true))) && (auth != null && root.child('userAccess').child(auth.uid).val() === $name) && newData.child('role').val() === data.child('role').val() && newData.child('dmPriv').val() === data.child('dmPriv').val() && newData.child('disabled').val() === data.child('disabled').val() && newData.child('uid').val() === data.child('uid').val()",
+        "password": {
+          ".validate": false
+        }
+      }
+    },
+    "schedePG": {
+      "$name": {
+        ".read": "(auth != null && (auth.uid === 'admin' || (root.child('userAccess').child(auth.uid).isString() && root.child('users').child(root.child('userAccess').child(auth.uid).val()).exists() && root.child('users').child(root.child('userAccess').child(auth.uid).val()).child('disabled').val() !== true))) && (auth != null && root.child('userAccess').child(auth.uid).val() === $name)",
+        ".write": "(auth != null && (auth.uid === 'admin' || (root.child('userAccess').child(auth.uid).isString() && root.child('users').child(root.child('userAccess').child(auth.uid).val()).exists() && root.child('users').child(root.child('userAccess').child(auth.uid).val()).child('disabled').val() !== true))) && (auth != null && root.child('userAccess').child(auth.uid).val() === $name)"
+      },
+      ".read": "(auth != null && (auth.uid === 'admin' || (auth != null && (auth.uid === 'admin' || (root.child('userAccess').child(auth.uid).isString() && root.child('users').child(root.child('userAccess').child(auth.uid).val()).exists() && root.child('users').child(root.child('userAccess').child(auth.uid).val()).child('disabled').val() !== true)) && root.child('users').child(root.child('userAccess').child(auth.uid).val()).child('role').val() === 'DM'))) || ((auth != null && (auth.uid === 'admin' || (root.child('userAccess').child(auth.uid).isString() && root.child('users').child(root.child('userAccess').child(auth.uid).val()).exists() && root.child('users').child(root.child('userAccess').child(auth.uid).val()).child('disabled').val() !== true))) && root.child('users').child(root.child('userAccess').child(auth.uid).val()).child('dmPriv').val() === true)"
+    },
+    "presence": {
+      ".read": "auth != null && (auth.uid === 'admin' || (root.child('userAccess').child(auth.uid).isString() && root.child('users').child(root.child('userAccess').child(auth.uid).val()).exists() && root.child('users').child(root.child('userAccess').child(auth.uid).val()).child('disabled').val() !== true))",
+      "$name": {
+        ".write": "(auth != null && (auth.uid === 'admin' || (root.child('userAccess').child(auth.uid).isString() && root.child('users').child(root.child('userAccess').child(auth.uid).val()).exists() && root.child('users').child(root.child('userAccess').child(auth.uid).val()).child('disabled').val() !== true))) && (auth != null && root.child('userAccess').child(auth.uid).val() === $name)"
+      }
+    },
+    "libri": {
+      ".read": "auth != null && (auth.uid === 'admin' || (root.child('userAccess').child(auth.uid).isString() && root.child('users').child(root.child('userAccess').child(auth.uid).val()).exists() && root.child('users').child(root.child('userAccess').child(auth.uid).val()).child('disabled').val() !== true))",
+      "preferiti": {
+        "$name": {
+          ".write": "(auth != null && (auth.uid === 'admin' || (root.child('userAccess').child(auth.uid).isString() && root.child('users').child(root.child('userAccess').child(auth.uid).val()).exists() && root.child('users').child(root.child('userAccess').child(auth.uid).val()).child('disabled').val() !== true))) && (auth != null && root.child('userAccess').child(auth.uid).val() === $name)"
+        }
+      },
+      "books": {
+        ".write": "(auth != null && (auth.uid === 'admin' || (auth != null && (auth.uid === 'admin' || (root.child('userAccess').child(auth.uid).isString() && root.child('users').child(root.child('userAccess').child(auth.uid).val()).exists() && root.child('users').child(root.child('userAccess').child(auth.uid).val()).child('disabled').val() !== true)) && root.child('users').child(root.child('userAccess').child(auth.uid).val()).child('role').val() === 'DM'))) || ((auth != null && (auth.uid === 'admin' || (root.child('userAccess').child(auth.uid).isString() && root.child('users').child(root.child('userAccess').child(auth.uid).val()).exists() && root.child('users').child(root.child('userAccess').child(auth.uid).val()).child('disabled').val() !== true))) && root.child('users').child(root.child('userAccess').child(auth.uid).val()).child('dmPriv').val() === true)"
+      }
+    },
+    "state": {
+      "$section": {
+        ".read": "(auth != null && (auth.uid === 'admin' || (root.child('userAccess').child(auth.uid).isString() && root.child('users').child(root.child('userAccess').child(auth.uid).val()).exists() && root.child('users').child(root.child('userAccess').child(auth.uid).val()).child('disabled').val() !== true))) && $section !== 'config' && $section !== 'legacyUserContent'",
+        ".write": "((auth != null && (auth.uid === 'admin' || (auth != null && (auth.uid === 'admin' || (root.child('userAccess').child(auth.uid).isString() && root.child('users').child(root.child('userAccess').child(auth.uid).val()).exists() && root.child('users').child(root.child('userAccess').child(auth.uid).val()).child('disabled').val() !== true)) && root.child('users').child(root.child('userAccess').child(auth.uid).val()).child('role').val() === 'DM'))) || ((auth != null && (auth.uid === 'admin' || (root.child('userAccess').child(auth.uid).isString() && root.child('users').child(root.child('userAccess').child(auth.uid).val()).exists() && root.child('users').child(root.child('userAccess').child(auth.uid).val()).child('disabled').val() !== true))) && root.child('users').child(root.child('userAccess').child(auth.uid).val()).child('dmPriv').val() === true)) || ((auth != null && (auth.uid === 'admin' || (root.child('userAccess').child(auth.uid).isString() && root.child('users').child(root.child('userAccess').child(auth.uid).val()).exists() && root.child('users').child(root.child('userAccess').child(auth.uid).val()).child('disabled').val() !== true))) && ($section === 'iniziativa' || $section === 'caos' || $section === 'notes' || $section === 'tavolo'))"
+      }
+    },
+    "diceRolls": {
+      ".read": "auth != null && (auth.uid === 'admin' || (root.child('userAccess').child(auth.uid).isString() && root.child('users').child(root.child('userAccess').child(auth.uid).val()).exists() && root.child('users').child(root.child('userAccess').child(auth.uid).val()).child('disabled').val() !== true))",
+      ".write": "auth != null && (auth.uid === 'admin' || (root.child('userAccess').child(auth.uid).isString() && root.child('users').child(root.child('userAccess').child(auth.uid).val()).exists() && root.child('users').child(root.child('userAccess').child(auth.uid).val()).child('disabled').val() !== true))"
+    },
+    "meta": {
+      ".read": "auth != null && (auth.uid === 'admin' || (root.child('userAccess').child(auth.uid).isString() && root.child('users').child(root.child('userAccess').child(auth.uid).val()).exists() && root.child('users').child(root.child('userAccess').child(auth.uid).val()).child('disabled').val() !== true))"
+    },
+    "groups": {
+      ".read": "auth != null && (auth.uid === 'admin' || (root.child('userAccess').child(auth.uid).isString() && root.child('users').child(root.child('userAccess').child(auth.uid).val()).exists() && root.child('users').child(root.child('userAccess').child(auth.uid).val()).child('disabled').val() !== true))"
+    },
+    "archivioIdee": {
+      ".read": "auth != null && (auth.uid === 'admin' || (root.child('userAccess').child(auth.uid).isString() && root.child('users').child(root.child('userAccess').child(auth.uid).val()).exists() && root.child('users').child(root.child('userAccess').child(auth.uid).val()).child('disabled').val() !== true))"
+    },
+    "storia_private": {
+      "$name": {
+        ".read": "(auth != null && (auth.uid === 'admin' || (root.child('userAccess').child(auth.uid).isString() && root.child('users').child(root.child('userAccess').child(auth.uid).val()).exists() && root.child('users').child(root.child('userAccess').child(auth.uid).val()).child('disabled').val() !== true))) && (auth != null && root.child('userAccess').child(auth.uid).val() === $name)",
+        ".write": "(auth != null && (auth.uid === 'admin' || (root.child('userAccess').child(auth.uid).isString() && root.child('users').child(root.child('userAccess').child(auth.uid).val()).exists() && root.child('users').child(root.child('userAccess').child(auth.uid).val()).child('disabled').val() !== true))) && (auth != null && root.child('userAccess').child(auth.uid).val() === $name)"
+      }
+    },
+    "storie_private": {
+      "$name": {
+        ".read": "(auth != null && (auth.uid === 'admin' || (root.child('userAccess').child(auth.uid).isString() && root.child('users').child(root.child('userAccess').child(auth.uid).val()).exists() && root.child('users').child(root.child('userAccess').child(auth.uid).val()).child('disabled').val() !== true))) && (auth != null && root.child('userAccess').child(auth.uid).val() === $name)",
+        ".write": "(auth != null && (auth.uid === 'admin' || (root.child('userAccess').child(auth.uid).isString() && root.child('users').child(root.child('userAccess').child(auth.uid).val()).exists() && root.child('users').child(root.child('userAccess').child(auth.uid).val()).child('disabled').val() !== true))) && (auth != null && root.child('userAccess').child(auth.uid).val() === $name)"
+      }
+    },
+    "storia_markers_private": {
+      "$name": {
+        ".read": "(auth != null && (auth.uid === 'admin' || (root.child('userAccess').child(auth.uid).isString() && root.child('users').child(root.child('userAccess').child(auth.uid).val()).exists() && root.child('users').child(root.child('userAccess').child(auth.uid).val()).child('disabled').val() !== true))) && (auth != null && root.child('userAccess').child(auth.uid).val() === $name)",
+        ".write": "(auth != null && (auth.uid === 'admin' || (root.child('userAccess').child(auth.uid).isString() && root.child('users').child(root.child('userAccess').child(auth.uid).val()).exists() && root.child('users').child(root.child('userAccess').child(auth.uid).val()).child('disabled').val() !== true))) && (auth != null && root.child('userAccess').child(auth.uid).val() === $name)"
+      }
+    },
+    "dmConfig": {
+      ".read": "(auth != null && (auth.uid === 'admin' || (auth != null && (auth.uid === 'admin' || (root.child('userAccess').child(auth.uid).isString() && root.child('users').child(root.child('userAccess').child(auth.uid).val()).exists() && root.child('users').child(root.child('userAccess').child(auth.uid).val()).child('disabled').val() !== true)) && root.child('users').child(root.child('userAccess').child(auth.uid).val()).child('role').val() === 'DM'))) || ((auth != null && (auth.uid === 'admin' || (root.child('userAccess').child(auth.uid).isString() && root.child('users').child(root.child('userAccess').child(auth.uid).val()).exists() && root.child('users').child(root.child('userAccess').child(auth.uid).val()).child('disabled').val() !== true))) && root.child('users').child(root.child('userAccess').child(auth.uid).val()).child('dmPriv').val() === true)",
+      ".write": "(auth != null && (auth.uid === 'admin' || (auth != null && (auth.uid === 'admin' || (root.child('userAccess').child(auth.uid).isString() && root.child('users').child(root.child('userAccess').child(auth.uid).val()).exists() && root.child('users').child(root.child('userAccess').child(auth.uid).val()).child('disabled').val() !== true)) && root.child('users').child(root.child('userAccess').child(auth.uid).val()).child('role').val() === 'DM'))) || ((auth != null && (auth.uid === 'admin' || (root.child('userAccess').child(auth.uid).isString() && root.child('users').child(root.child('userAccess').child(auth.uid).val()).exists() && root.child('users').child(root.child('userAccess').child(auth.uid).val()).child('disabled').val() !== true))) && root.child('users').child(root.child('userAccess').child(auth.uid).val()).child('dmPriv').val() === true)"
+    }
+  }
+}
