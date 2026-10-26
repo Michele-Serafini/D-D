@@ -81,7 +81,7 @@ function setupRealtimeListeners() {
   });
 
   // ---- SCHEDE PG ----
-  _db.ref('schedePG').on('value', function(snap) {
+  if (isDM()) _db.ref('schedePG').on('value', function(snap) {
     state.schedePGAll = snap.val() || {};
       
     if (state.section === 'schedepg') renderMain();

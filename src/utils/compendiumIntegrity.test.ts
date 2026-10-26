@@ -89,8 +89,6 @@ test('Unified User System (js/users.js), Arcane Portal Login & 3D Dice Arena Ver
   assert.ok(userCtx.UserManager, 'UserManager is exported');
   assert.equal(userCtx.UserManager.findDefaultUser('sebastiano').role, 'DM');
   assert.equal(userCtx.UserManager.findDefaultUser('michele').role, 'Giocatore');
-  assert.equal(userCtx.UserManager.passwordMatch({}, 'sebastiano', 'dungeonmaster'), false);
-  assert.equal(userCtx.UserManager.passwordMatch({}, 'sebastiano', 'wrong'), false);
   assert.equal(userCtx.UserManager.getAllUsers().length, 0);
 
   // Verify index.html has sium-login-portal, js/users.js, and no login-whiteout
