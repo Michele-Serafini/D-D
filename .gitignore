@@ -8,3 +8,6 @@ coverage/
 !.env.example
 
 work/
+
+# Firebase web config is generated from deployment environment settings.
+js/firebase-config.js

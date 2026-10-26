@@ -11,12 +11,15 @@
     "lint": "tsc --noEmit",
     "test": "node --import tsx --test tests/*.test.mjs src/utils/*.test.ts",
     "test:party": "node --test tests/party-management.test.mjs",
-    "rules:build": "node scripts/build-database-rules.mjs"
+    "rules:build": "node scripts/build-database-rules.mjs",
+    "check:secrets": "node scripts/check-secrets.mjs",
+    "prebuild": "npm run check:secrets"
   },
   "devDependencies": {
     "@types/node": "^22.14.0",
     "tsx": "^4.21.0",
     "typescript": "^7.0.2",
-    "vite": "^8.3.0"
+    "vite": "^8.3.0",
+    "rolldown": "^1.2.15"
   }
 }

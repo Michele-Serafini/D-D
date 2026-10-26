@@ -83,9 +83,9 @@ test('password changes reauthenticate in Firebase Auth and never write credentia
 });
 
 test('production assets include the new config, admin, catalogs and original media without duplicates',()=>{
- const emitted=new Map();staticAssets().generateBundle.call({emitFile(asset){emitted.set(asset.fileName,asset.source);}});
+ const emitted=new Map();staticAssets(process.cwd(), {firebaseApiKey:'unit-test-key', optimize:false}).generateBundle.call({emitFile(asset){emitted.set(asset.fileName,asset.source);}});
  for(const name of ['admin.html','js/firebase-config.js','js/users.js','js/party-admin.js','data/catalog-data.js','database_armi.json','css/legacy.css','img/login_mobile.jpg','schede/7th_sea.webp']){
- assert.ok(emitted.has(name),name);assert.deepEqual(emitted.get(name),fs.readFileSync(assetAliases[name] || name));}
+ assert.ok(emitted.has(name),name);if(name!=='js/firebase-config.js') assert.deepEqual(emitted.get(name),fs.readFileSync(assetAliases[name] || name));}
  assert.equal(fs.existsSync('public/js/users.js'),false);
  assert.equal(fs.existsSync('scripts/reset-party.mjs'),false);
 });

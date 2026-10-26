@@ -63,9 +63,10 @@ maschera password e chiavi e abbrevia i contenuti lunghi.
 **Stato operativo:** il codice su `main` punta al nuovo progetto e gli utenti Auth sono già creati. Importazione dei contenuti e pubblicazione delle regole RTDB restano da completare: il relativo endpoint restituisce timeout/HTTP 500 da questo ambiente. Il merge del codice non conferma la migrazione del database remoto.
 
 Il nuovo progetto predisposto è **mercante-errante-dd-2026**, dell’account Google del proprietario.
-La configurazione Web pubblica si trova in `js/firebase-config.js` e viene caricata
-prima di `js/users.js`. Nessun token CLI, refresh token o account di servizio viene
-salvato nel repository.
+I metadati Web pubblici sono in `config/firebase.web.json`. La chiave viene letta
+dalla variabile `FIREBASE_WEB_API_KEY`; `js/firebase-config.js` viene generato da Vite
+in sviluppo e durante la build, senza essere versionato. Nessun token CLI,
+refresh token o account di servizio viene salvato nel repository.
 
 L’accesso usa **Firebase Authentication email/password**, con alias interni
 `<username>@dd.local`; nell’interfaccia continui a inserire solo username e password.
@@ -103,6 +104,8 @@ stessi file in `dist/`, compresa `admin.html`.
 
 ```sh
 npm install
+cp .env.example .env.local
+# Imposta FIREBASE_WEB_API_KEY in .env.local prima di avviare il sito.
 npm run dev
 npm run build
 npm run test:party
@@ -161,3 +164,34 @@ Apri **`css/variables.css`**: tutte le scelte cromatiche e tipografiche sono rac
 - Il sito usa JavaScript e CSS statici; il vecchio scaffold React/SSR e le relative dipendenze sono stati rimossi.
 - `npm test` include anche i controlli TypeScript sui contenuti.
 - Le espressioni di autorizzazione RTDB si mantengono in `scripts/build-database-rules.mjs`. `npm run rules:build` rigenera `database.rules.json`; il deploy Firebase lo esegue automaticamente.
+
+### Configurazione e alert sulle chiavi
+
+Impostare `FIREBASE_WEB_API_KEY` in `.env.local` per lo sviluppo e nell’ambiente
+della piattaforma che esegue la build per la produzione. La build si interrompe
+se la variabile manca; non usa chiavi predefinite o valori codificati nel sorgente.
+La configurazione generata resta visibile al browser, come richiesto dall’SDK Web
+Firebase: la protezione dei dati dipende da Authentication, regole server e
+restrizioni della chiave sui servizi Google consentiti.
+
+La chiave del nuovo progetto segnalata in `js/firebase-config.js` è stata sostituita
+e revocata. La nuova chiave è limitata a Identity Toolkit, Secure Token e Realtime
+Database. L’account collegato non ha permessi sul vecchio progetto `mercante-errante`:
+la relativa chiave storica deve essere revocata dal suo proprietario in Google Cloud.
+
+La rimozione di un valore dal commit corrente non elimina un alert storico di
+GitHub. Dopo la revoca, risolvere l’alert con motivo **Revoked**. L’integrazione
+GitHub attuale non dispone dei permessi per leggere o modificare questi alert.
+Non è stata riscritta la cronologia Git.
+
+`npm run check:secrets` controlla i file versionabili e stampa solo percorso e
+numero di riga. Viene eseguito automaticamente prima della build e nelle verifiche
+GitHub Actions. Le verifiche CI usano una chiave fittizia e non pubblicano gli
+artefatti generati; non richiedono credenziali reali. La build da distribuire deve
+ricevere `FIREBASE_WEB_API_KEY` dall’ambiente della piattaforma di pubblicazione.
+Il valore della nuova chiave è disponibile in Google Cloud, progetto
+`mercante-errante-dd-2026`, Credenziali, **Mercante Errante browser runtime**.
+
+La build compatta JSON e JavaScript, mantenendo nomi globali, proprietà, nomi delle
+funzioni e URL compatibili. I sorgenti restano leggibili e i file multimediali
+conservano i contenuti originali.
