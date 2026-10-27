@@ -1,4 +1,4 @@
-import { test, expect, login } from './fixtures.mjs';
+import { test, expect, login, expectViewportFits } from './fixtures.mjs';
 
 test('admin manages profiles, DM privileges, additions and removal from one page', async ({
   page,
@@ -24,7 +24,7 @@ test('admin manages profiles, DM privileges, additions and removal from one page
   await row.getByRole('button', { name: 'Riattiva' }).click();
   await expect(row.getByRole('button', { name: 'Rimuovi', exact: true })).toBeVisible();
   await page.setViewportSize({ width: 390, height: 844 });
-  expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
+  await expectViewportFits(page);
   expect(errors).toEqual([]);
 });
 
@@ -35,7 +35,7 @@ test('player navigation, catalog search and every character-sheet system work', 
   page.on('pageerror', (error) => errors.push(error.message));
   await login(page, 'MICHELE');
   await page.setViewportSize({ width: 390, height: 844 });
-  expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
+  await expectViewportFits(page);
   expect(await page.locator('.weapon-card img[loading="lazy"]').count()).toBeGreaterThan(0);
   await page.setViewportSize({ width: 1280, height: 720 });
   for (const section of [

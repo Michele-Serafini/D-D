@@ -168,6 +168,13 @@ export const test = base.extend({
 });
 export { expect };
 
+export async function expectViewportFits(page) {
+  // WebKit can acknowledge the resize before the responsive layout is painted.
+  await expect
+    .poll(() => page.evaluate(() => document.documentElement.scrollWidth <= innerWidth))
+    .toBe(true);
+}
+
 export async function login(page, username = 'michele', admin = false) {
   await page.goto('/D-D/' + (admin ? 'admin.html' : 'index.html'));
   await page.locator('#login-username-input').fill(username);
