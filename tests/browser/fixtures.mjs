@@ -169,73 +169,23 @@ export const test = base.extend({
 export { expect };
 
 export async function expectViewportFits(page) {
-  // WebKit can acknowledge the resize before the responsive layout is painted.
-  try {
-    await expect
-      .poll(() => page.evaluate(() => document.documentElement.scrollWidth <= innerWidth))
-      .toBe(true);
-  } catch (error) {
-    console.log(
-      'Responsive layout diagnostics:',
-      await page.evaluate(() => {
-        const header = document.querySelector('.header-title');
-        const cssRules = [];
-        function inspect(rules, conditions = []) {
-          for (const rule of rules) {
-            if (rule.selectorText === '.header-title')
-              cssRules.push({ font: rule.style.fontSize, conditions });
-            if (rule.cssRules)
-              inspect(
-                rule.cssRules,
-                rule.conditionText
-                  ? [
-                      ...conditions,
-                      {
-                        query: rule.conditionText,
-                        matches: matchMedia(rule.conditionText).matches,
-                      },
-                    ]
-                  : conditions
-              );
-          }
-        }
-        for (const sheet of document.styleSheets) {
-          try {
-            inspect(sheet.cssRules);
-          } catch {}
-        }
-        const originalFont = header && getComputedStyle(header).fontSize;
-        document.documentElement.style.setProperty('-webkit-text-size-adjust', 'none', 'important');
-        const noAutosizeFont = header && getComputedStyle(header).fontSize;
-        for (const sheet of document.styleSheets) {
-          sheet.disabled = true;
-          sheet.disabled = false;
-        }
-        const refreshedFont = header && getComputedStyle(header).fontSize;
+  // Wait for the final responsive layout and report useful dimensions on failure.
+  await expect
+    .poll(() =>
+      page.evaluate(() => {
+        const viewport = innerWidth;
+        const scroll = document.documentElement.scrollWidth;
+        if (scroll <= viewport) return null;
+        const title = document.querySelector('.header-title');
         return {
-          viewport: innerWidth,
-          client: document.documentElement.clientWidth,
-          scroll: document.documentElement.scrollWidth,
+          viewport,
+          scroll,
+          titleFont: title && getComputedStyle(title).fontSize,
           mobileQuery: matchMedia('(max-width: 600px)').matches,
-          rootFont: getComputedStyle(document.documentElement).fontSize,
-          titleFont: originalFont,
-          noAutosizeFont,
-          refreshedFont,
-          cssRules,
-          overflow: [...document.querySelectorAll('body *')]
-            .map((node) => ({
-              tag: node.tagName,
-              class: node.className?.baseVal ?? node.className,
-              right: Math.round(node.getBoundingClientRect().right),
-              width: Math.round(node.getBoundingClientRect().width),
-            }))
-            .filter((node) => node.right > innerWidth + 1 && node.width > 0)
-            .slice(0, 15),
         };
       })
-    );
-    throw error;
-  }
+    )
+    .toBeNull();
 }
 
 export async function login(page, username = 'michele', admin = false) {
