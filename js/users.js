@@ -24,10 +24,10 @@ var _fbConnected = false;
  * Nessun fallback di accesso e nessuna ricreazione automatica degli utenti rimossi.
  */
 var DEFAULT_USERS = [
-  { username: 'sebastiano', role: 'DM', dmPriv: true, crest: '👑', title: 'Dungeon Master' },
-  { username: 'michele', role: 'Giocatore', dmPriv: false, crest: '⚔', title: 'Avventuriero' },
-  { username: 'montre', role: 'Giocatore', dmPriv: false, crest: '✨', title: 'Avventuriero' },
-  { username: 'alessio', role: 'Giocatore', dmPriv: false, crest: '🛡', title: 'Avventuriero' }
+  { username: 'Master', role: 'DM', dmPriv: true, crest: '👑', title: 'Dungeon Master' },
+  { username: 'player1', role: 'Giocatore', dmPriv: false, crest: '⚔', title: 'Avventuriero' },
+  { username: 'player2', role: 'Giocatore', dmPriv: false, crest: '✨', title: 'Avventuriero' },
+  { username: 'player3', role: 'Giocatore', dmPriv: false, crest: '🛡', title: 'Avventuriero' }
 ];
 var PARTY_RESET_VERSION = '2026-10-26-party-v1';
 
