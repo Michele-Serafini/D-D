@@ -170,9 +170,36 @@ export { expect };
 
 export async function expectViewportFits(page) {
   // WebKit can acknowledge the resize before the responsive layout is painted.
-  await expect
-    .poll(() => page.evaluate(() => document.documentElement.scrollWidth <= innerWidth))
-    .toBe(true);
+  try {
+    await expect
+      .poll(() => page.evaluate(() => document.documentElement.scrollWidth <= innerWidth))
+      .toBe(true);
+  } catch (error) {
+    console.log(
+      'Responsive layout diagnostics:',
+      await page.evaluate(() => {
+        const header = document.querySelector('.header-title');
+        return {
+          viewport: innerWidth,
+          client: document.documentElement.clientWidth,
+          scroll: document.documentElement.scrollWidth,
+          mobileQuery: matchMedia('(max-width: 600px)').matches,
+          rootFont: getComputedStyle(document.documentElement).fontSize,
+          titleFont: header && getComputedStyle(header).fontSize,
+          overflow: [...document.querySelectorAll('body *')]
+            .map((node) => ({
+              tag: node.tagName,
+              class: node.className?.baseVal ?? node.className,
+              right: Math.round(node.getBoundingClientRect().right),
+              width: Math.round(node.getBoundingClientRect().width),
+            }))
+            .filter((node) => node.right > innerWidth + 1 && node.width > 0)
+            .slice(0, 15),
+        };
+      })
+    );
+    throw error;
+  }
 }
 
 export async function login(page, username = 'michele', admin = false) {
