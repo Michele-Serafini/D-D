@@ -1,0 +1,2341 @@
+@keyframes bache-lb-zoom {
+  from {
+    transform: scale(0.6);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+/* ============================================================
+     SCHEDA D&D — BOOK VIEWER (3 pagine sfogliabili)
+     ============================================================ */
+.dnd-book-container {
+  position: relative;
+  width: 100%;
+  max-width: 100%;
+  margin: 0 auto;
+}
+.dnd-book-pages {
+  position: relative;
+  overflow: hidden;
+  border-radius: 4px;
+  border: 2px solid var(--border-gold);
+  box-shadow: 0 8px 40px rgba(0, 0, 0, 0.55);
+  background: #f5f0e8;
+}
+.dnd-page {
+  display: none;
+  width: 100%;
+  background: #f5f0e8;
+  padding: 10px 12px 14px;
+  font-family:
+    EB Garamond,
+    Georgia,
+    serif;
+  color: #111;
+  position: relative;
+  animation: pageFlipR 0.2s ease;
+}
+.dnd-page.active {
+  display: block;
+}
+@keyframes pageFlipR {
+  from {
+    opacity: 0;
+    transform: translateX(15px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+@keyframes pageFlipL {
+  from {
+    opacity: 0;
+    transform: translateX(-15px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+.dnd-page.flip-left {
+  animation: pageFlipL 0.2s ease;
+}
+.dnd-book-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.4rem 0.5rem 0.3rem;
+  background: var(--bg-card);
+  border-top: 1px solid var(--border-gold);
+}
+.dnd-nav-btn {
+  background: linear-gradient(180deg, var(--bg-card-elevated), var(--bg-card));
+  border: 1px solid var(--border-gold);
+  color: var(--gold);
+  font-family: Cinzel, serif;
+  font-size: 9px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  padding: 0.28rem 0.7rem;
+  border-radius: 3px;
+  cursor: pointer;
+  transition: all 0.18s;
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+.dnd-nav-btn:hover {
+  background: rgba(201, 165, 92, 0.15);
+  color: var(--gold-bright);
+}
+.dnd-nav-btn:disabled {
+  opacity: 0.28;
+  cursor: default;
+}
+.dnd-page-dots {
+  display: flex;
+  gap: 0.4rem;
+  align-items: center;
+}
+.dnd-page-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  border: 1px solid var(--border-gold);
+  background: transparent;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.dnd-page-dot.active {
+  background: var(--gold);
+}
+.dnd-page-label {
+  font-family: Cinzel, serif;
+  font-size: 8.5px;
+  font-weight: 700;
+  color: var(--gold-dim);
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+}
+
+/* parchment base */
+.dnd-parchment {
+  background: #f5f0e8;
+  color: #111;
+}
+
+/* banner intestazione */
+.dnd-header-banner {
+  display: flex;
+  align-items: stretch;
+  border: 1.5px solid #333;
+  background: #fff;
+  margin-bottom: 6px;
+}
+.dnd-banner-name-col {
+  flex: 1.2;
+  border-right: 1px solid #555;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+}
+.dnd-banner-name-label {
+  font-family: Cinzel, serif;
+  font-size: 5.5px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  color: #555;
+  padding: 1px 5px 0;
+}
+.dnd-banner-name-input {
+  border: none;
+  outline: none;
+  font-family:
+    EB Garamond,
+    serif;
+  font-size: 14px;
+  font-weight: 600;
+  padding: 1px 5px 3px;
+  background: transparent;
+  width: 100%;
+  color: #111;
+  border-top: 1px solid #bbb;
+}
+.dnd-banner-fields {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  flex: 2;
+}
+.dnd-banner-field {
+  border-right: 1px solid #bbb;
+  border-bottom: 1px solid #bbb;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 1px 4px 2px;
+}
+.dnd-banner-field:nth-child(3n) {
+  border-right: none;
+}
+.dnd-banner-field:nth-child(4),
+.dnd-banner-field:nth-child(5),
+.dnd-banner-field:nth-child(6) {
+  border-bottom: none;
+}
+.dnd-banner-field-lbl {
+  font-family: Cinzel, serif;
+  font-size: 5px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: #666;
+}
+.dnd-banner-field-inp {
+  border: none;
+  outline: none;
+  border-top: 1px solid #ccc;
+  font-family:
+    EB Garamond,
+    serif;
+  font-size: 10.5px;
+  padding: 1px 2px;
+  background: transparent;
+  width: 100%;
+  color: #111;
+}
+
+/* stat boxes */
+.dnd-stats-col {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  width: 60px;
+  flex-shrink: 0;
+}
+.dnd-stat-box {
+  border: 1.5px solid #444;
+  border-radius: 3px;
+  background: #fff;
+  text-align: center;
+  padding: 2px 2px 2px;
+}
+.dnd-stat-lbl {
+  font-family: Cinzel, serif;
+  font-size: 5px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #333;
+  line-height: 1;
+  margin-bottom: 1px;
+}
+.dnd-stat-score {
+  font-family:
+    EB Garamond,
+    serif;
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 1;
+  color: #111;
+  border: none;
+  outline: none;
+  background: transparent;
+  width: 100%;
+  text-align: center;
+  -moz-appearance: textfield;
+}
+.dnd-stat-score::-webkit-inner-spin-button,
+.dnd-stat-score::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+}
+.dnd-stat-mod {
+  font-family:
+    EB Garamond,
+    serif;
+  font-size: 12px;
+  font-weight: 700;
+  color: #111;
+  border: 1.5px solid #444;
+  border-radius: 50%;
+  width: 22px;
+  height: 22px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #fff;
+  margin: 2px auto 0;
+  pointer-events: none;
+}
+
+/* middle column */
+.dnd-mid-col {
+  flex: 0 0 190px;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  min-width: 0;
+}
+.dnd-insp-comp-row {
+  display: flex;
+  gap: 3px;
+  align-items: stretch;
+}
+.dnd-insp-box {
+  border: 1.5px solid #444;
+  background: #fff;
+  width: 26px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  cursor: pointer;
+  border-radius: 2px;
+}
+.dnd-insp-lbl-wrap {
+  border: 1.5px solid #444;
+  background: #fff;
+  border-radius: 2px;
+  padding: 2px 5px;
+  display: flex;
+  align-items: center;
+}
+.dnd-insp-lbl {
+  font-family: Cinzel, serif;
+  font-size: 6px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: #333;
+}
+.dnd-competenza-wrap {
+  border: 1.5px solid #444;
+  background: #fff;
+  border-radius: 2px;
+  padding: 2px 5px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  flex: 1;
+}
+.dnd-comp-num {
+  font-family:
+    EB Garamond,
+    serif;
+  font-size: 16px;
+  font-weight: 700;
+  width: 26px;
+  height: 26px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1.5px solid #444;
+  border-radius: 50%;
+  color: #111;
+  border: none;
+  outline: none;
+  background: transparent;
+  text-align: center;
+  -moz-appearance: textfield;
+}
+.dnd-comp-num::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+}
+.dnd-comp-lbl {
+  font-family: Cinzel, serif;
+  font-size: 6px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: #333;
+}
+
+/* saves & skills */
+.dnd-border-box {
+  border: 1.5px solid #444;
+  background: #fff;
+  padding: 3px 5px 4px;
+  border-radius: 2px;
+}
+.dnd-box-title {
+  font-family: Cinzel, serif;
+  font-size: 6.5px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: #222;
+  text-align: center;
+  border-top: 1px solid #888;
+  margin-top: 3px;
+  padding-top: 2px;
+}
+.dnd-skill-row {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  font-family:
+    EB Garamond,
+    serif;
+  font-size: 10px;
+  color: #111;
+  line-height: 1.3;
+}
+.dnd-skill-circle {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  border: 1.5px solid #444;
+  background: transparent;
+  flex-shrink: 0;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+.dnd-skill-circle.filled {
+  background: #333;
+}
+.dnd-skill-val {
+  width: 18px;
+  font-weight: 700;
+  text-align: right;
+  flex-shrink: 0;
+  font-size: 10px;
+  border: none;
+  outline: none;
+  background: transparent;
+  -moz-appearance: textfield;
+}
+.dnd-skill-val::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+}
+.dnd-skill-name {
+  flex: 1;
+}
+.dnd-skill-attr {
+  color: #777;
+  font-size: 8.5px;
+}
+
+/* right traits col */
+.dnd-traits-col {
+  width: 178px;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+.dnd-trait-box {
+  border: 1.5px solid #444;
+  background: #fff;
+  border-radius: 2px;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+.dnd-trait-lbl {
+  font-family: Cinzel, serif;
+  font-size: 6px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: #333;
+  text-align: center;
+  border-bottom: 1px solid #bbb;
+  padding: 2px 4px 1px;
+  background: #f0ece0;
+}
+.dnd-trait-ta {
+  flex: 1;
+  border: none;
+  outline: none;
+  background: transparent;
+  font-family:
+    EB Garamond,
+    serif;
+  font-size: 11px;
+  color: #111;
+  padding: 3px 4px;
+  resize: none;
+  min-height: 48px;
+  line-height: 1.4;
+  display: block;
+  box-sizing: border-box;
+}
+
+/* page1 layout */
+.dnd-page1-body {
+  display: flex;
+  gap: 8px;
+}
+
+/* combat row */
+.dnd-combat-row {
+  display: flex;
+  gap: 3px;
+  align-items: center;
+  margin-bottom: 3px;
+}
+.dnd-shield-ca {
+  position: relative;
+  width: 50px;
+  height: 56px;
+  flex-shrink: 0;
+}
+.dnd-shield-path {
+  fill: #fff;
+  stroke: #333;
+  stroke-width: 2;
+}
+.dnd-shield-inp {
+  position: absolute;
+  top: 44%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-family:
+    EB Garamond,
+    serif;
+  font-size: 18px;
+  font-weight: 700;
+  border: none;
+  outline: none;
+  background: transparent;
+  text-align: center;
+  width: 34px;
+  color: #111;
+  -moz-appearance: textfield;
+}
+.dnd-shield-inp::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+}
+.dnd-shield-lbl {
+  position: absolute;
+  bottom: 4px;
+  left: 0;
+  right: 0;
+  font-family: Cinzel, serif;
+  font-size: 5px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #444;
+  text-align: center;
+}
+.dnd-combat-blob {
+  border: 1.5px solid #444;
+  background: #fff;
+  border-radius: 3px;
+  text-align: center;
+  padding: 2px 4px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex: 1;
+}
+.dnd-combat-blob-inp {
+  border: none;
+  outline: none;
+  background: transparent;
+  font-family:
+    EB Garamond,
+    serif;
+  font-size: 18px;
+  font-weight: 700;
+  color: #111;
+  width: 100%;
+  text-align: center;
+  border-bottom: 1.5px solid #999;
+  -moz-appearance: textfield;
+}
+.dnd-combat-blob-inp::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+}
+.dnd-combat-lbl {
+  font-family: Cinzel, serif;
+  font-size: 5px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #444;
+  margin-top: 1px;
+}
+
+/* HP */
+.dnd-hp-section {
+  border: 1.5px solid #444;
+  background: #fff;
+  border-radius: 2px;
+  padding: 3px 5px;
+  margin-bottom: 3px;
+}
+.dnd-hp-max-row {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  font-family:
+    EB Garamond,
+    serif;
+  font-size: 9.5px;
+  color: #555;
+  margin-bottom: 1px;
+}
+.dnd-hp-max-inp {
+  border: none;
+  border-bottom: 1px solid #aaa;
+  outline: none;
+  background: transparent;
+  font-family:
+    EB Garamond,
+    serif;
+  font-size: 9.5px;
+  color: #111;
+  width: 38px;
+  text-align: center;
+  -moz-appearance: textfield;
+}
+.dnd-hp-max-inp::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+}
+.dnd-hp-cur-inp {
+  border: none;
+  outline: none;
+  background: transparent;
+  font-family:
+    EB Garamond,
+    serif;
+  font-size: 20px;
+  font-weight: 700;
+  color: #111;
+  width: 100%;
+  text-align: center;
+  border-bottom: 1.5px solid #666;
+  display: block;
+  margin: 0 auto;
+  -moz-appearance: textfield;
+}
+.dnd-hp-cur-inp::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+}
+.dnd-hp-lbl {
+  font-family: Cinzel, serif;
+  font-size: 6px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: #333;
+  text-align: center;
+  border-top: 1px solid #bbb;
+  margin-top: 3px;
+  padding-top: 1px;
+}
+
+/* dadi vita + ts contro morte */
+.dnd-dice-death-row {
+  display: flex;
+  gap: 3px;
+  margin-bottom: 3px;
+}
+.dnd-dice-block {
+  border: 1.5px solid #444;
+  background: #fff;
+  border-radius: 2px;
+  flex: 1;
+  padding: 2px 4px;
+  display: flex;
+  flex-direction: column;
+}
+.dnd-dice-inp {
+  border: none;
+  border-bottom: 1px solid #aaa;
+  outline: none;
+  background: transparent;
+  font-family:
+    EB Garamond,
+    serif;
+  font-size: 11px;
+  color: #111;
+  width: 100%;
+}
+.dnd-dice-lbl {
+  font-family: Cinzel, serif;
+  font-size: 5.5px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: #333;
+  text-align: center;
+  border-top: 1px solid #bbb;
+  margin-top: 2px;
+  padding-top: 1px;
+}
+.dnd-death-block {
+  border: 1.5px solid #444;
+  background: #fff;
+  border-radius: 2px;
+  flex: 1;
+  padding: 2px 4px;
+}
+.dnd-death-row2 {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  margin: 1px 0;
+}
+.dnd-death-lbl2 {
+  font-family: Cinzel, serif;
+  font-size: 6px;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: #333;
+  width: 50px;
+  flex-shrink: 0;
+}
+.dnd-death-circles {
+  display: flex;
+  gap: 3px;
+}
+.dnd-death-circle {
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+  border: 1.5px solid #444;
+  cursor: pointer;
+  background: transparent;
+  transition: background 0.15s;
+}
+.dnd-death-circle.filled {
+  background: #333;
+}
+
+/* attacks */
+.dnd-attacks-section {
+  border: 1.5px solid #444;
+  background: #fff;
+  border-radius: 2px;
+  margin-bottom: 3px;
+  overflow: hidden;
+}
+.dnd-attacks-thead {
+  display: grid;
+  grid-template-columns: 1fr 54px 86px;
+  background: #f0ece0;
+  border-bottom: 1px solid #aaa;
+}
+.dnd-attacks-th {
+  font-family: Cinzel, serif;
+  font-size: 5.5px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #444;
+  padding: 2px 3px;
+  border-right: 1px solid #ccc;
+}
+.dnd-attacks-th:last-child {
+  border-right: none;
+}
+.dnd-attacks-tr {
+  display: grid;
+  grid-template-columns: 1fr 54px 86px;
+  border-bottom: 1px solid #e8e3d8;
+}
+.dnd-attacks-tr:last-child {
+  border-bottom: none;
+}
+.dnd-attacks-td {
+  border-right: 1px solid #e8e3d8;
+  padding: 1px 3px;
+}
+.dnd-attacks-td:last-child {
+  border-right: none;
+}
+.dnd-atk-inp {
+  border: none;
+  outline: none;
+  background: transparent;
+  font-family:
+    EB Garamond,
+    serif;
+  font-size: 10.5px;
+  color: #111;
+  width: 100%;
+  padding: 1px 1px;
+}
+.dnd-atk-inp::placeholder {
+  color: #ccc;
+  font-style: italic;
+  font-size: 9.5px;
+}
+.dnd-attacks-foot {
+  font-family: Cinzel, serif;
+  font-size: 6px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: #444;
+  text-align: center;
+  padding: 2px;
+  border-top: 1px solid #bbb;
+  background: #f0ece0;
+}
+.dnd-atk-add-btn {
+  display: block;
+  width: 100%;
+  background: transparent;
+  border: 1px dashed #ccc;
+  color: #aaa;
+  font-family: Cinzel, serif;
+  font-size: 7px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  padding: 2px;
+  cursor: pointer;
+  transition: all 0.15s;
+  margin-top: 2px;
+  border-radius: 2px;
+}
+.dnd-atk-add-btn:hover {
+  color: #555;
+  border-color: #888;
+  background: #f0ece0;
+}
+
+/* azioni section */
+.dnd-azioni-section {
+  border: 1.5px solid #444;
+  background: #fff;
+  border-radius: 2px;
+  overflow: hidden;
+}
+.dnd-azioni-head {
+  font-family: Cinzel, serif;
+  font-size: 6px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: #333;
+  background: #f0ece0;
+  border-bottom: 1px solid #bbb;
+  padding: 2px 4px;
+}
+.dnd-azioni-ta {
+  border: none;
+  outline: none;
+  background: transparent;
+  font-family:
+    EB Garamond,
+    serif;
+  font-size: 10.5px;
+  color: #111;
+  width: 100%;
+  min-height: 70px;
+  padding: 3px 4px;
+  resize: vertical;
+  line-height: 1.4;
+  display: block;
+  box-sizing: border-box;
+}
+.dnd-azioni-ta::placeholder {
+  color: #ccc;
+  font-style: italic;
+}
+
+/* passive perc */
+.dnd-perc-row {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  border: 1.5px solid #444;
+  background: #fff;
+  padding: 2px 5px;
+  border-radius: 20px;
+  margin-bottom: 3px;
+}
+.dnd-perc-val {
+  font-family:
+    EB Garamond,
+    serif;
+  font-size: 16px;
+  font-weight: 700;
+  width: 30px;
+  height: 30px;
+  border: 1.5px solid #444;
+  border-radius: 50%;
+  background: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  color: #111;
+}
+.dnd-perc-lbl {
+  font-family: Cinzel, serif;
+  font-size: 6px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: #333;
+}
+
+/* page 2 */
+.dnd-page2-body {
+  display: flex;
+  gap: 8px;
+}
+.dnd-page2-left {
+  width: 230px;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.dnd-page2-right {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.dnd-big-box {
+  border: 1.5px solid #444;
+  background: #fff;
+  border-radius: 2px;
+  display: flex;
+  flex-direction: column;
+}
+.dnd-big-box-lbl {
+  font-family: Cinzel, serif;
+  font-size: 6px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: #333;
+  text-align: center;
+  border-top: 1px solid #bbb;
+  padding: 2px 4px;
+  background: #f0ece0;
+}
+.dnd-big-box-ta {
+  flex: 1;
+  border: none;
+  outline: none;
+  background: transparent;
+  font-family:
+    EB Garamond,
+    serif;
+  font-size: 11px;
+  color: #111;
+  padding: 3px 4px;
+  resize: none;
+  min-height: 80px;
+  line-height: 1.4;
+  display: block;
+  box-sizing: border-box;
+}
+.dnd-big-box-ta::placeholder {
+  color: #ccc;
+  font-style: italic;
+}
+.dnd-appearance-frame {
+  width: 100%;
+  aspect-ratio: 3/4;
+  border: 1.5px solid #444;
+  background: #fff;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  cursor: pointer;
+  border-radius: 2px;
+}
+.dnd-appearance-frame img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+.dnd-appearance-ph {
+  color: #bbb;
+  font-family: Cinzel, serif;
+  font-size: 7px;
+  text-align: center;
+  padding: 8px;
+}
+
+/* page 3 — spells */
+.dnd-page3-body {
+  display: flex;
+  gap: 4px;
+}
+.dnd-spell-col {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  min-width: 0;
+}
+.dnd-spell-header-strip {
+  display: flex;
+  gap: 4px;
+  margin-bottom: 4px;
+}
+.dnd-spell-header-blob {
+  flex: 1;
+  border: 1.5px solid #444;
+  background: #fff;
+  border-radius: 2px;
+  padding: 2px 4px;
+  text-align: center;
+}
+.dnd-spell-blob-inp {
+  border: none;
+  border-bottom: 1px solid #aaa;
+  outline: none;
+  background: transparent;
+  font-family:
+    EB Garamond,
+    serif;
+  font-size: 13px;
+  font-weight: 700;
+  color: #111;
+  width: 100%;
+  text-align: center;
+  -moz-appearance: textfield;
+}
+.dnd-spell-blob-inp::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+}
+.dnd-spell-blob-lbl {
+  font-family: Cinzel, serif;
+  font-size: 4.5px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #555;
+  margin-top: 1px;
+  line-height: 1.2;
+}
+.dnd-classefrom-lbl {
+  font-family: Cinzel, serif;
+  font-size: 5.5px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #555;
+  text-align: center;
+  margin-bottom: 2px;
+}
+.dnd-spell-slot-header {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+}
+.dnd-spell-level-badge {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  border: 1.5px solid #444;
+  background: #fff;
+  font-family:
+    EB Garamond,
+    serif;
+  font-size: 15px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  color: #111;
+}
+.dnd-spell-slots-info {
+  flex: 1;
+  border: 1.5px solid #444;
+  background: #fff;
+  border-radius: 2px;
+  padding: 2px 4px;
+}
+.dnd-spell-slots-lbl {
+  font-family: Cinzel, serif;
+  font-size: 5px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #666;
+  line-height: 1.1;
+}
+.dnd-spell-slots-row {
+  display: flex;
+  gap: 3px;
+  margin-top: 1px;
+}
+.dnd-spell-slots-inp {
+  border: none;
+  border-bottom: 1px solid #aaa;
+  outline: none;
+  background: transparent;
+  font-family:
+    EB Garamond,
+    serif;
+  font-size: 10.5px;
+  color: #111;
+  width: 28px;
+  text-align: center;
+  -moz-appearance: textfield;
+}
+.dnd-spell-slots-inp::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+}
+.dnd-spell-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0px;
+}
+.dnd-spell-row {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  font-family:
+    EB Garamond,
+    serif;
+  font-size: 10.5px;
+  color: #111;
+  line-height: 1.25;
+}
+.dnd-spell-circle {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  border: 1.5px solid #444;
+  background: transparent;
+  flex-shrink: 0;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+.dnd-spell-circle.filled {
+  background: #333;
+}
+.dnd-spell-inp {
+  flex: 1;
+  border: none;
+  border-bottom: 1px solid #ddd;
+  outline: none;
+  background: transparent;
+  font-family:
+    EB Garamond,
+    serif;
+  font-size: 10.5px;
+  color: #111;
+  padding: 0 1px;
+}
+.dnd-spell-inp::placeholder {
+  color: #ccc;
+}
+.dnd-trucchi-section {
+  border: 1.5px solid #444;
+  background: #fff;
+  border-radius: 2px;
+  padding: 2px 4px;
+  margin-bottom: 3px;
+}
+.dnd-trucchi-lbl {
+  font-family: Cinzel, serif;
+  font-size: 6px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: #444;
+  text-align: center;
+  padding-bottom: 2px;
+  border-bottom: 1px solid #bbb;
+  margin-bottom: 2px;
+}
+
+/* ============================================================
+     STORIA DELLA CAMPAGNA
+     ============================================================ */
+.storia-wrap {
+  display: flex;
+  flex-direction: column;
+  height: calc(100vh - 64px);
+  overflow: hidden;
+  background: var(--bg-base);
+}
+.storia-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.45rem 0.8rem;
+  background: var(--bg-card);
+  border-bottom: 1px solid var(--border-subtle);
+  flex-wrap: wrap;
+  flex-shrink: 0;
+  min-height: 44px;
+}
+.storia-fmt-btn {
+  background: var(--bg-card-elevated);
+  border: 1px solid var(--border-subtle);
+  color: var(--text-secondary);
+  border-radius: 4px;
+  padding: 0.2rem 0.45rem;
+  cursor: pointer;
+  font-size: 13px;
+  min-width: 26px;
+  text-align: center;
+  line-height: 1.4;
+  transition:
+    background 0.12s,
+    border-color 0.12s,
+    color 0.12s;
+  flex-shrink: 0;
+}
+.storia-fmt-btn:hover {
+  border-color: var(--gold-dim);
+  color: var(--gold-bright);
+}
+.storia-sep {
+  width: 1px;
+  height: 20px;
+  background: var(--border-subtle);
+  margin: 0 0.15rem;
+  flex-shrink: 0;
+}
+.storia-map-toggle {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  background: var(--bg-card-elevated);
+  border: 1px solid var(--border-subtle);
+  color: var(--text-secondary);
+  border-radius: 5px;
+  padding: 0.25rem 0.65rem;
+  cursor: pointer;
+  font-size: 11px;
+  font-family: Cinzel, serif;
+  letter-spacing: 0.07em;
+  transition: all 0.15s;
+  flex-shrink: 0;
+}
+.storia-map-toggle:hover,
+.storia-map-toggle.active {
+  border-color: var(--gold);
+  color: var(--gold-bright);
+  background: rgba(201, 165, 92, 0.1);
+}
+.storia-anchor-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  background: rgba(60, 120, 200, 0.1);
+  border: 1px solid rgba(100, 160, 240, 0.25);
+  color: #88b0e8;
+  border-radius: 5px;
+  padding: 0.25rem 0.65rem;
+  cursor: pointer;
+  font-size: 11px;
+  font-family: Cinzel, serif;
+  letter-spacing: 0.07em;
+  transition: all 0.15s;
+  flex-shrink: 0;
+}
+.storia-anchor-btn:hover {
+  border-color: #88b0e8;
+}
+.storia-anchor-btn.active {
+  background: rgba(60, 120, 200, 0.25);
+  border-color: #aacaff;
+  color: #aacaff;
+}
+.storia-save-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  background: rgba(201, 165, 92, 0.15);
+  border: 1px solid var(--gold);
+  color: var(--gold-bright);
+  border-radius: 5px;
+  padding: 0.25rem 0.75rem;
+  cursor: pointer;
+  font-size: 11px;
+  font-family: Cinzel, serif;
+  letter-spacing: 0.07em;
+  transition: all 0.15s;
+  flex-shrink: 0;
+  margin-left: 0.5rem;
+}
+.storia-save-btn:hover {
+  background: rgba(201, 165, 92, 0.3);
+}
+.storia-save-btn:disabled {
+  opacity: 0.7;
+  cursor: default;
+}
+
+.storia-main {
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+}
+
+/* Editor */
+.storia-editor-wrap {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  min-width: 0;
+}
+.storia-editor {
+  flex: 1;
+  overflow-y: auto;
+  padding: 2.5rem 3rem;
+  color: var(--text-primary);
+  font-family:
+    EB Garamond,
+    Georgia,
+    serif;
+  font-size: 17px;
+  line-height: 1.8;
+  outline: none;
+  word-break: break-word;
+}
+.storia-editor:focus {
+  outline: none;
+}
+.storia-editor [data-storia-npc] {
+  text-decoration: underline;
+  text-decoration-color: var(--gold);
+  text-underline-offset: 3px;
+  cursor: pointer;
+}
+.storia-editor [data-storia-npc]:hover {
+  color: var(--gold-bright);
+}
+.storia-editor .storia-map-link {
+  background: rgba(100, 160, 240, 0.12);
+  border-bottom: 2px solid rgba(100, 160, 240, 0.5);
+  cursor: pointer;
+  border-radius: 2px;
+  padding: 0 2px;
+}
+.storia-editor .storia-map-link:hover {
+  background: rgba(100, 160, 240, 0.22);
+}
+
+/* NPC panel */
+.storia-npc-panel {
+  width: 200px;
+  flex-shrink: 0;
+  border-left: 1px solid var(--border-subtle);
+  background: var(--bg-card);
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+}
+.storia-npc-header {
+  padding: 0.65rem 0.9rem 0.4rem;
+  font-family: Cinzel, serif;
+  font-size: 9px;
+  color: var(--gold-dim);
+  letter-spacing: 0.18em;
+  border-bottom: 1px solid var(--border-subtle);
+  flex-shrink: 0;
+}
+.storia-npc-item {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.45rem 0.7rem;
+  cursor: pointer;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+  transition: background 0.12s;
+}
+.storia-npc-item:hover {
+  background: rgba(201, 165, 92, 0.07);
+}
+.storia-npc-avatar {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  object-fit: cover;
+  flex-shrink: 0;
+  border: 1px solid var(--border-subtle);
+}
+.storia-npc-avatar-ph {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: var(--bg-card-elevated);
+  border: 1px solid var(--border-subtle);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  color: var(--text-faint);
+  flex-shrink: 0;
+}
+.storia-npc-nome {
+  font-size: 11px;
+  color: var(--text-secondary);
+  font-family: Cinzel, serif;
+  line-height: 1.3;
+}
+
+/* NPC tooltip */
+#storia-npc-tooltip {
+  position: fixed;
+  z-index: 9999;
+  pointer-events: none;
+  display: none;
+  width: 250px;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.7);
+  border: 1px solid var(--border-subtle);
+}
+.sntt-img {
+  width: 250px;
+  height: 150px;
+  object-fit: cover;
+  display: block;
+}
+.sntt-img-ph {
+  width: 250px;
+  height: 70px;
+  background: var(--bg-card-elevated);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-faint);
+  font-size: 12px;
+}
+.sntt-body {
+  background: var(--bg-card);
+  padding: 0.55rem 0.75rem;
+}
+.sntt-nome {
+  font-family: Cinzel, serif;
+  font-size: 11px;
+  color: var(--gold-bright);
+  margin-bottom: 0.25rem;
+}
+.sntt-bg {
+  font-size: 11px;
+  color: var(--text-muted);
+  line-height: 1.5;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 4;
+  -webkit-box-orient: vertical;
+}
+
+/* Map panel */
+.storia-map-panel {
+  width: 0;
+  overflow: hidden;
+  transition: width 0.3s ease;
+  flex-shrink: 0;
+  border-left: 1px solid var(--border-subtle);
+  display: flex;
+  flex-direction: column;
+}
+.storia-map-panel.open {
+  width: 50%;
+}
+.storia-map-toolbar {
+  padding: 0.35rem 0.65rem;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  flex-shrink: 0;
+  border-bottom: 1px solid var(--border-subtle);
+  background: var(--bg-card);
+  font-size: 10px;
+  color: var(--text-faint);
+  font-family: Cinzel, serif;
+  letter-spacing: 0.06em;
+}
+.storia-map-mode-btn {
+  background: var(--bg-card-elevated);
+  border: 1px solid var(--border-subtle);
+  color: var(--text-secondary);
+  border-radius: 4px;
+  padding: 0.15rem 0.45rem;
+  cursor: pointer;
+  font-size: 10px;
+  font-family: Cinzel, serif;
+  letter-spacing: 0.05em;
+  transition: all 0.12s;
+}
+.storia-map-mode-btn.active {
+  background: rgba(201, 165, 92, 0.15);
+  border-color: var(--gold);
+  color: var(--gold-bright);
+}
+#storia-map-container {
+  flex: 1;
+  position: relative;
+  overflow: hidden;
+}
+#storia-leaflet-map {
+  width: 100%;
+  height: 100%;
+}
+
+/* Marker panel — modal centrato sulla mappa */
+.storia-marker-panel {
+  position: absolute;
+  inset: 0;
+  z-index: 1000;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.45);
+}
+.storia-marker-panel.open {
+  display: flex;
+}
+.storia-marker-inner {
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: 10px;
+  padding: 1.5rem 1.8rem;
+  width: 620px;
+  max-width: 95%;
+  max-height: 88%;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+  box-shadow: 0 12px 48px rgba(0, 0, 0, 0.8);
+}
+.storia-marker-close-btn {
+  background: none;
+  border: none;
+  color: var(--text-faint);
+  cursor: pointer;
+  align-self: flex-end;
+  font-size: 16px;
+  padding: 0;
+  line-height: 1;
+}
+.storia-marker-field-lbl {
+  font-size: 9px;
+  color: var(--gold-dim);
+  font-family: Cinzel, serif;
+  letter-spacing: 0.12em;
+  margin-bottom: 0.15rem;
+  display: block;
+}
+.storia-marker-img-preview {
+  width: 100%;
+  aspect-ratio: 16/9;
+  object-fit: cover;
+  border-radius: 4px;
+  border: 1px solid var(--border-subtle);
+  display: block;
+}
+.storia-marker-textarea {
+  width: 100%;
+  min-height: 220px;
+  background: var(--bg-card-elevated);
+  border: 1px solid var(--border-subtle);
+  color: var(--text-primary);
+  border-radius: 4px;
+  padding: 0.6rem;
+  font-size: 18px;
+  resize: vertical;
+  font-family:
+    EB Garamond,
+    Georgia,
+    serif;
+  box-sizing: border-box;
+  line-height: 1.6;
+}
+.storia-marker-del-btn {
+  background: rgba(200, 60, 60, 0.1);
+  border: 1px solid rgba(200, 60, 60, 0.3);
+  color: #ffa0a0;
+  border-radius: 4px;
+  padding: 0.3rem 0.6rem;
+  cursor: pointer;
+  font-size: 11px;
+  margin-top: 0.2rem;
+  font-family: Cinzel, serif;
+  letter-spacing: 0.05em;
+}
+
+/* =========================================================
+     CYBERPUNK EMPORIO — LABORATORIO CIBERNETICO
+  ========================================================= */
+
+.cyber-wrap {
+  background: var(--cyber-bg);
+  min-height: 100vh;
+  font-family: 'Courier New', Courier, monospace;
+  color: var(--cyber-cyan);
+  position: relative;
+  overflow-x: hidden;
+}
+.cyber-wrap::before {
+  display: none;
+}
+.cyber-header {
+  background: linear-gradient(180deg, rgba(0, 15, 40, 0.98) 0%, rgba(3, 3, 15, 0.95) 100%);
+  border-bottom: 1px solid var(--cyber-border);
+  box-shadow: var(--cyber-glow);
+  position: relative;
+  z-index: 2;
+  padding: 1.5rem 2rem;
+}
+.cyber-title {
+  font-family: 'Cinzel', serif;
+  font-size: 2rem;
+  font-weight: 900;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: #00f5ff;
+  text-shadow: 0 0 10px rgba(0, 245, 255, 0.5);
+}
+.cyber-subtitle {
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  color: #bf5fff;
+  text-transform: uppercase;
+  margin-bottom: 0.4rem;
+}
+.cyber-back-btn {
+  background: rgba(0, 245, 255, 0.08);
+  border: 2px solid rgba(0, 245, 255, 0.5);
+  color: #00f5ff;
+  font-family: 'Courier New', monospace;
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  padding: 0.5rem 1.2rem;
+  cursor: pointer;
+  text-transform: uppercase;
+  transition: all 0.2s;
+}
+.cyber-back-btn:hover {
+  background: rgba(0, 245, 255, 0.18);
+  border-color: #00f5ff;
+  color: #fff;
+}
+.cyber-search-bar {
+  background: rgba(0, 245, 255, 0.04);
+  border: 1px solid var(--cyber-border);
+  color: var(--cyber-cyan);
+  font-family: 'Courier New', monospace;
+  font-size: 14px;
+  padding: 0.6rem 1rem;
+  outline: none;
+  width: 100%;
+  box-sizing: border-box;
+  transition:
+    border-color 0.2s,
+    box-shadow 0.2s;
+}
+.cyber-search-bar:focus {
+  border-color: var(--cyber-cyan);
+  box-shadow: var(--cyber-glow);
+}
+.cyber-search-bar::placeholder {
+  color: rgba(0, 245, 255, 0.55);
+  font-size: 14px;
+}
+.cyber-add-btn {
+  background: rgba(191, 95, 255, 0.15);
+  border: 2px solid #bf5fff;
+  color: #d48fff;
+  font-family: 'Courier New', monospace;
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  padding: 0.55rem 1.2rem;
+  cursor: pointer;
+  text-transform: uppercase;
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+.cyber-add-btn:hover {
+  background: rgba(191, 95, 255, 0.3);
+  color: #f0c8ff;
+}
+.cyber-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1.5rem;
+  padding: 2rem;
+  position: relative;
+  z-index: 1;
+}
+.cyber-grid .card--wide {
+  grid-column: span 2;
+}
+@media (max-width: 700px) {
+  .cyber-grid .card--wide {
+    grid-column: span 1;
+  }
+}
+.cyber-card {
+  background: linear-gradient(135deg, rgba(0, 25, 60, 0.95) 0%, rgba(12, 0, 35, 0.95) 100%);
+  border: 2px solid rgba(0, 245, 255, 0.35);
+  position: relative;
+  overflow: hidden;
+  transition:
+    transform 0.2s,
+    box-shadow 0.2s,
+    border-color 0.2s;
+}
+.cyber-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--cyber-cyan), transparent);
+  opacity: 0.7;
+}
+.cyber-card::after {
+  display: none;
+}
+.cyber-card:hover {
+  transform: translateY(-4px);
+  border-color: rgba(0, 245, 255, 0.7);
+  box-shadow:
+    var(--cyber-glow),
+    inset 0 0 30px rgba(0, 245, 255, 0.05);
+}
+.cyber-card-head {
+  padding: 1rem 1rem 0.5rem;
+  border-bottom: 1px solid rgba(0, 245, 255, 0.15);
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 0.5rem;
+}
+.cyber-card-name {
+  font-family: 'Cinzel', serif;
+  font-size: 22px;
+  font-weight: 700;
+  color: #00f5ff;
+  text-shadow: 0 0 6px rgba(0, 245, 255, 0.4);
+  text-shadow: 0 0 10px var(--cyber-cyan);
+  letter-spacing: 0.05em;
+  line-height: 1.2;
+}
+.cyber-rarity-tag {
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 0.35rem 0.8rem;
+  border: 2px solid;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.cyber-rarity-comune {
+  border-color: #4af;
+  color: #4af;
+}
+.cyber-rarity-non-comune {
+  border-color: #0f9;
+  color: #0f9;
+}
+.cyber-rarity-raro {
+  border-color: #bf5fff;
+  color: #bf5fff;
+  box-shadow: 0 0 6px rgba(191, 95, 255, 0.4);
+}
+.cyber-rarity-molto-raro {
+  border-color: #ff2d78;
+  color: #ff2d78;
+  box-shadow: 0 0 6px rgba(255, 45, 120, 0.4);
+}
+.cyber-rarity-leggendario {
+  border-color: #ffd700;
+  color: #ffd700;
+  box-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+}
+.cyber-card-body {
+  padding: 1rem 1.2rem;
+}
+.cyber-label {
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #d48fff;
+  margin-top: 0.9rem;
+  margin-bottom: 0.3rem;
+}
+.cyber-value {
+  font-size: 17px;
+  color: #c8f0ff;
+  line-height: 1.55;
+  font-weight: 500;
+}
+.cyber-img-wrap {
+  width: 100%;
+  height: 140px;
+  overflow: hidden;
+  position: relative;
+  background: rgba(0, 10, 30, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.cyber-img-wrap img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0.75;
+}
+.cyber-img-placeholder {
+  font-size: 3rem;
+  color: rgba(0, 245, 255, 0.2);
+  text-shadow: 0 0 20px rgba(0, 245, 255, 0.3);
+}
+.cyber-card-foot {
+  padding: 0.6rem 1rem;
+  border-top: 1px solid rgba(0, 245, 255, 0.12);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: rgba(0, 0, 20, 0.4);
+}
+.cyber-price {
+  font-size: 17px;
+  font-weight: 700;
+  color: #00ff88;
+  letter-spacing: 0.05em;
+}
+.cyber-edit-btn {
+  background: rgba(191, 95, 255, 0.1);
+  border: 1px solid rgba(191, 95, 255, 0.4);
+  color: var(--cyber-purple);
+  cursor: pointer;
+  padding: 0.3rem 0.6rem;
+  font-size: 12px;
+  transition: all 0.2s;
+  margin-right: 0.3rem;
+}
+.cyber-edit-btn:hover {
+  background: rgba(191, 95, 255, 0.25);
+  box-shadow: 0 0 8px rgba(191, 95, 255, 0.4);
+}
+.cyber-del-btn {
+  background: rgba(255, 45, 120, 0.08);
+  border: 1px solid rgba(255, 45, 120, 0.35);
+  color: var(--cyber-pink);
+  cursor: pointer;
+  padding: 0.3rem 0.6rem;
+  font-size: 12px;
+  transition: all 0.2s;
+}
+.cyber-del-btn:hover {
+  background: rgba(255, 45, 120, 0.2);
+  box-shadow: 0 0 8px rgba(255, 45, 120, 0.4);
+}
+
+/* CYBER FORM / MODAL */
+.cyber-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 9000;
+  background: rgba(0, 0, 15, 0.88);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+}
+.cyber-modal-panel {
+  background: linear-gradient(135deg, rgba(0, 15, 40, 0.97) 0%, rgba(10, 0, 30, 0.97) 100%);
+  border: 1px solid var(--cyber-border);
+  box-shadow:
+    var(--cyber-glow),
+    0 0 60px rgba(191, 95, 255, 0.2);
+  width: 100%;
+  max-width: 560px;
+  max-height: 90vh;
+  overflow-y: auto;
+  position: relative;
+  animation: cyberFadeIn 0.2s ease;
+}
+@keyframes cyberFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(16px) scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+.cyber-modal-panel::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--cyber-cyan), var(--cyber-purple), var(--cyber-pink));
+}
+.cyber-modal-head {
+  padding: 1.2rem 1.5rem 1rem;
+  border-bottom: 1px solid var(--cyber-border);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.cyber-modal-title {
+  font-family: 'Cinzel', serif;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--cyber-cyan);
+  text-shadow: 0 0 12px var(--cyber-cyan);
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+}
+.cyber-modal-close {
+  background: none;
+  border: 1px solid rgba(255, 45, 120, 0.4);
+  color: var(--cyber-pink);
+  cursor: pointer;
+  padding: 0.3rem 0.6rem;
+  font-size: 14px;
+  transition: all 0.2s;
+  line-height: 1;
+}
+.cyber-modal-close:hover {
+  background: rgba(255, 45, 120, 0.15);
+  box-shadow: 0 0 8px rgba(255, 45, 120, 0.4);
+}
+.cyber-modal-body {
+  padding: 1.2rem 1.5rem;
+}
+.cyber-field-label {
+  font-size: 9px;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--cyber-purple);
+  margin-bottom: 0.3rem;
+  display: block;
+  text-shadow: 0 0 5px var(--cyber-purple);
+}
+.cyber-field {
+  background: rgba(0, 245, 255, 0.04);
+  border: 1px solid rgba(0, 245, 255, 0.25);
+  color: var(--cyber-cyan);
+  font-family: 'Courier New', monospace;
+  font-size: 13px;
+  padding: 0.5rem 0.75rem;
+  width: 100%;
+  box-sizing: border-box;
+  outline: none;
+  transition:
+    border-color 0.2s,
+    box-shadow 0.2s;
+}
+.cyber-field:focus {
+  border-color: var(--cyber-cyan);
+  box-shadow: 0 0 10px rgba(0, 245, 255, 0.25);
+}
+.cyber-field option {
+  background: #03030f;
+}
+.cyber-field-group {
+  margin-bottom: 0.9rem;
+}
+.cyber-save-btn {
+  background: linear-gradient(135deg, rgba(0, 245, 255, 0.15), rgba(0, 200, 220, 0.1));
+  border: 1px solid var(--cyber-cyan);
+  color: var(--cyber-cyan);
+  font-family: 'Courier New', monospace;
+  font-size: 14px;
+  letter-spacing: 0.15em;
+  padding: 0.65rem 2rem;
+  cursor: pointer;
+  text-transform: uppercase;
+  transition: all 0.2s;
+  width: 100%;
+  margin-top: 0.5rem;
+  box-shadow: 0 0 12px rgba(0, 245, 255, 0.2);
+}
+.cyber-save-btn:hover {
+  background: rgba(0, 245, 255, 0.2);
+  box-shadow: var(--cyber-glow);
+  color: #fff;
+}
+.cyber-empty {
+  text-align: center;
+  padding: 4rem 2rem;
+  color: rgba(0, 245, 255, 0.35);
+  font-size: 13px;
+  letter-spacing: 0.1em;
+}
+.cyber-empty .cyber-rune {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+  opacity: 0.3;
+}
+.cyber-tipo-tag {
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #a0eeff;
+  border: 2px solid rgba(0, 245, 255, 0.45);
+  padding: 0.3rem 0.7rem;
+  display: inline-block;
+  margin-bottom: 0.5rem;
+}
+
+/* ================================================================
+     RESPONSIVE — tablet ≤900px e mobile ≤600px
+     Desktop (>900px) non viene toccato da nessuna regola qui sotto.
+     ================================================================ */
+
+/* --- Regia Sonora: bottom sheet su mobile invece di nasconderla --- */
+@media (max-width: 900px) {
+  .content-wrap.regia-split .regia-panel {
+    display: flex !important;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    width: 100% !important;
+    height: 45vh;
+    flex: none !important;
+    z-index: 120;
+    border-top: 2px solid var(--border-gold);
+    border-left: none;
+    box-shadow: 0 -6px 32px rgba(0, 0, 0, 0.7);
+    overflow-y: auto;
+  }
+  .content-wrap.regia-split .main-content {
+    padding-bottom: 45vh;
+  }
+}
+
+/* --- Mappa: info panel full-width da sinistra su mobile --- */
+@media (max-width: 900px) {
+  .mappa-info-panel {
+    width: 100% !important;
+    right: auto;
+    left: 0;
+    top: auto;
+    bottom: 0;
+    height: 60vh;
+    border-left: none;
+    border-top: 2px solid var(--border-gold);
+    transform: translateY(100%);
+  }
+  .mappa-info-panel.open {
+    transform: translateY(0);
+  }
+  .mappa-wrap {
+    height: calc(100vh - 170px);
+    min-height: 300px;
+  }
+  .mappa-layer-bar {
+    bottom: 0.4rem;
+    max-width: 95vw;
+    flex-wrap: wrap;
+    gap: 0.3rem;
+  }
+  .mappa-overlay-panel {
+    width: 100% !important;
+    max-width: 100% !important;
+    height: 50vh;
+    top: auto;
+    bottom: 0;
+    border-left: none;
+    border-top: 2px solid var(--border-gold);
+  }
+}
+
+/* --- Storia: NPC panel nascosto su mobile (tab dedicato) --- */
+@media (max-width: 900px) {
+  .storia-npc-panel {
+    display: none !important;
+  }
+  .storia-editor {
+    padding: 1.25rem 1rem;
+    font-size: 15px;
+  }
+  .storia-toolbar {
+    padding: 0.35rem 0.5rem;
+    gap: 0.2rem;
+    overflow-x: auto;
+  }
+  .storia-fmt-btn {
+    padding: 0.2rem 0.35rem;
+    min-width: 24px;
+  }
+}
+
+/* --- Modali e overlay generici --- */
+@media (max-width: 900px) {
+  .modal-backdrop {
+    align-items: flex-end;
+    padding: 0;
+  }
+  .modal-backdrop > div,
+  .modal-backdrop > .panel-glass {
+    width: 100% !important;
+    max-width: 100% !important;
+    border-radius: 12px 12px 0 0;
+    max-height: 92vh;
+    overflow-y: auto;
+  }
+  /* Modali centrate che non usano modal-backdrop */
+  [style*='position:fixed'][style*='z-index:'] > [style*='max-width:700px'],
+  [style*='position:fixed'][style*='z-index:'] > [style*='max-width:600px'],
+  [style*='position:fixed'][style*='z-index:'] > [style*='max-width:500px'] {
+    max-width: 96vw !important;
+    width: 96vw !important;
+  }
+}
+
+/* --- Archivio Idee: shelf sopra, editor sotto --- */
+@media (max-width: 900px) {
+  .archivio-body-mobile {
+    flex-direction: column !important;
+    height: auto !important;
+    min-height: calc(100vh - 132px);
+  }
+  .archivio-body-mobile > div:first-child {
+    /* shelf: larghezza 100%, altezza fissa */
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    height: 160px !important;
+    min-height: 0 !important;
+    border-right: none !important;
+    border-bottom: 2px solid #5a3a1a;
+    flex-direction: row !important;
+    overflow-x: auto !important;
+    overflow-y: hidden !important;
+  }
+  .archivio-body-mobile > div:first-child > div:nth-child(2) {
+    /* booksWrap: orizzontale */
+    flex-direction: row !important;
+    overflow-x: auto !important;
+    overflow-y: hidden !important;
+    padding: 0.5rem 0.75rem !important;
+  }
+  .archivio-body-mobile > div:last-child {
+    /* editor panel: occupa il resto */
+    flex: 1;
+    min-height: 0;
+    overflow-y: auto;
+  }
+}
+
+/* --- Griglia libri --- */
+@media (max-width: 480px) {
+  .libro-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+}
+
+/* --- Barra selezione mappa PG --- */
+.pg-mappa-selector {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.6rem 1rem;
+  background: var(--bg-panel);
+  border-bottom: 1px solid var(--border-gold);
+  order: -1;
+}
+.pg-mappa-selector-label {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  opacity: 0.6;
+  white-space: nowrap;
+  color: var(--gold-bright);
+}
+.pg-mappa-pill {
+  padding: 0.3rem 0.85rem;
+  border-radius: 20px;
+  border: 1px solid var(--border-gold);
+  background: transparent;
+  color: var(--gold-bright);
+  font-size: 13px;
+  cursor: pointer;
+  transition:
+    background 0.15s,
+    color 0.15s;
+  white-space: nowrap;
+}
+.pg-mappa-pill:hover {
+  background: rgba(200, 150, 50, 0.15);
+}
+.pg-mappa-pill.active {
+  background: var(--gold-bright);
+  color: #1a0e00;
+  font-weight: 600;
+}
+
+/* --- Header titoli --- */
+@media (max-width: 600px) {
+  .header-title {
+    font-size: clamp(1.2rem, 5vw, 1.8rem) !important;
+  }
+  .container-main {
+    padding: 0 0.75rem;
+  }
+  .header-eyebrow {
+    font-size: 9px;
+  }
+}
+
+/* --- Card weapon grid --- */
+@media (max-width: 540px) {
+  .weapon-grid {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+/* --- Bestiario / NPC cards --- */
+@media (max-width: 600px) {
+  .bestie-grid,
+  .npc-grid {
+    grid-template-columns: 1fr !important;
+  }
+  .npc-top-panel {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+/* --- Iniziativa --- */
+@media (max-width: 700px) {
+  .initiative-layout {
+    grid-template-columns: 1fr !important;
+  }
+  .init-combatant {
+    padding: 0.6rem 0.75rem;
+  }
+}
+
+/* --- Emporio tabs --- */
+@media (max-width: 600px) {
+  .emporio-tabs {
+    flex-wrap: wrap;
+    gap: 0.3rem;
+  }
+  .emporio-tab {
+    padding: 0.4rem 0.6rem;
+    font-size: 10px;
+  }
+}
+
+/* --- Scheda PG --- */
+@media (max-width: 600px) {
+  .scheda-grid {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+/* --- Statistiche & Caos --- */
+@media (max-width: 600px) {
+  .caos-wrap {
+    padding: 0 0.5rem;
+  }
+  .caos-grid,
+  .stat-grid {
+    grid-template-columns: 1fr 1fr !important;
+  }
+}
+
+/* --- Generatore NPC --- */
+@media (max-width: 600px) {
+  .generatore-wrap {
+    padding: 0 0.5rem;
+  }
+}
+
+/* --- Main content padding top (hamburger sovrapposto) --- */
+@media (max-width: 900px) {
+  .main-content {
+    padding-top: 3.5rem !important;
+  }
+}
+
+/* --- Sidebar-toggle: sempre top-right su mobile --- */
+@media (max-width: 900px) {
+  .sidebar-toggle {
+    top: 0.65rem;
+    right: 0.75rem;
+    left: auto;
+    width: 44px;
+    height: 44px;
+  }
+}
+
+/* --- Pannello incantesimi modal --- */
+@media (max-width: 700px) {
+  .incantesimo-modal-panel {
+    max-width: 96vw !important;
+    width: 96vw !important;
+  }
+}
+
+/* --- Worldbuilding (pannelli affiancati) --- */
+@media (max-width: 900px) {
+  .wb-layout {
+    flex-direction: column !important;
+  }
+  .wb-sidebar {
+    width: 100% !important;
+    max-height: 40vh;
+    border-right: none;
+    border-bottom: 1px solid var(--border-soft);
+  }
+}
+
+/* --- Tabella iniziativa: scroll orizzontale --- */
+@media (max-width: 600px) {
+  .init-table-wrap {
+    overflow-x: auto;
+  }
+}
+
+/* --- Touch: tap target minimo 44px per pulsanti importanti --- */
+@media (max-width: 900px) {
+  .nav-item {
+    min-height: 44px;
+  }
+  .mappa-btn {
+    min-height: 40px;
+    padding: 0.5rem 0.85rem;
+  }
+  button,
+  .btn,
+  [class*='btn-'] {
+    min-height: 36px;
+  }
+}
+
+/* --- Overlay settings/login su mobile --- */
+@media (max-width: 600px) {
+  #settings-overlay > div,
+  #login-overlay > div {
+    width: 96vw !important;
+    max-width: 96vw !important;
+    margin: auto;
+  }
+}

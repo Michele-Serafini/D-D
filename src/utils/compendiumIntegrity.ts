@@ -35,15 +35,11 @@ export function evaluateD20Roll(
   mod: number
 ): { natural: number; total: number; isCrit: boolean; isFumble: boolean } {
   const natural =
-    mode === 'vantaggio'
-      ? Math.max(r1, r2)
-      : mode === 'svantaggio'
-      ? Math.min(r1, r2)
-      : r1;
+    mode === 'vantaggio' ? Math.max(r1, r2) : mode === 'svantaggio' ? Math.min(r1, r2) : r1;
   return {
     natural,
     total: natural + mod,
     isCrit: natural === 20,
-    isFumble: natural === 1
+    isFumble: natural === 1,
   };
 }

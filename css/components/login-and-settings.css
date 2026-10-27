@@ -1,0 +1,795 @@
+/* =========================================================
+     === DRAG AND DROP INIZIATIVA ===
+     ========================================================= */
+.combatant-card {
+  position: relative;
+}
+.drag-handle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  color: var(--text-faint);
+  cursor: grab;
+  flex-shrink: 0;
+  transition: color 0.2s;
+  padding: 0 2px;
+}
+.drag-handle:active {
+  cursor: grabbing;
+}
+.drag-handle:hover {
+  color: var(--gold-dim);
+}
+.combatant-card.drag-over {
+  border-color: var(--gold) !important;
+  box-shadow:
+    0 0 0 2px var(--gold-glow),
+    var(--shadow-card) !important;
+}
+.combatant-card.dragging {
+  opacity: 0.45;
+  transform: scale(0.98);
+}
+
+.doom-modal-btn.alt {
+  background: linear-gradient(180deg, var(--bg-card-elevated), var(--bg-card));
+  color: var(--gold);
+  border: 1px solid var(--border-soft);
+}
+.doom-modal-btn.alt:hover {
+  color: var(--gold-bright);
+  border-color: var(--border-gold);
+  background: var(--bg-card-elevated);
+}
+
+/* ============================================================
+     SCHERMATA DI LOGIN — Scena fotorealistica come sfondo
+     ============================================================ */
+@keyframes loginSceneEnter {
+  0% {
+    opacity: 0;
+    transform: scale(1.04);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+@keyframes loginPanelEnter {
+  0% {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  60% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+@keyframes loginFleurGlow {
+  0%,
+  100% {
+    filter: drop-shadow(0 0 6px rgba(255, 210, 120, 0.45));
+  }
+  50% {
+    filter: drop-shadow(0 0 14px rgba(255, 220, 140, 0.85));
+  }
+}
+@keyframes loginBtnShimmer {
+  0% {
+    background-position: -120% 0;
+  }
+  100% {
+    background-position: 220% 0;
+  }
+}
+@keyframes loginLightBurst {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.25);
+  }
+  25% {
+    opacity: 1;
+  }
+  55% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(2.2);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(4.5);
+  }
+}
+@keyframes loginWhiteOut {
+  0% {
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+@keyframes loginSceneZoom {
+  0% {
+    transform: scale(1);
+    filter: brightness(1);
+  }
+  100% {
+    transform: scale(1.18);
+    filter: brightness(1.6);
+  }
+}
+
+#login-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background: #07050a;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  font-family: 'EB Garamond', Georgia, serif;
+}
+
+/* Container che mantiene il rapporto 1024:507 dell'immagine */
+.login-scene {
+  position: relative;
+  width: min(100vw, calc(100vh * 1024 / 507));
+  height: min(100vh, calc(100vw * 507 / 1024));
+  background-image: url('../../img/Strade_della_città.png');
+  background-size: 100% 100%;
+  background-position: center;
+  background-repeat: no-repeat;
+  container-type: inline-size;
+  animation: loginSceneEnter 0.9s ease-out;
+}
+
+/* Zona del form posizionata esattamente sopra l'interno del forziere */
+.login-form-area {
+  position: absolute;
+  left: 38.2%;
+  top: 39.8%;
+  width: 23.8%;
+  height: 37%;
+  /* Mascheramento scuro per coprire il form dipinto sotto */
+  background: linear-gradient(180deg, rgba(12, 7, 3, 0.96) 0%, rgba(8, 5, 2, 0.97) 100%);
+  border-radius: 1px;
+  box-shadow: inset 0 0 22px rgba(0, 0, 0, 0.6);
+  padding: 1.1cqw 1.3cqw 1.2cqw;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: 0.55cqw;
+  animation: loginPanelEnter 0.7s ease-out 0.2s both;
+}
+
+.login-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25cqw;
+}
+.login-field-label {
+  font-family: 'Cinzel', serif;
+  font-size: 0.62cqw;
+  letter-spacing: 0.18em;
+  color: #c9a55c;
+  text-transform: uppercase;
+  font-weight: 600;
+  text-shadow: 0 1px 1px rgba(0, 0, 0, 0.7);
+}
+.login-input-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+  background: rgba(6, 3, 1, 0.92);
+  border: 1px solid rgba(201, 165, 92, 0.42);
+  border-radius: 2px;
+  padding: 0.42cqw 0.55cqw;
+  transition:
+    border-color 0.2s,
+    box-shadow 0.2s;
+}
+.login-input-wrap:focus-within {
+  border-color: rgba(232, 200, 120, 0.85);
+  box-shadow: 0 0 0 2px rgba(232, 200, 120, 0.12);
+}
+.login-input-wrap svg.login-input-ico {
+  width: 0.95cqw;
+  height: 0.95cqw;
+  flex-shrink: 0;
+  margin-right: 0.45cqw;
+  opacity: 0.72;
+}
+.login-input-wrap input {
+  flex: 1;
+  min-width: 0;
+  background: none;
+  border: none;
+  outline: none;
+  color: #f0d490;
+  font-family: 'EB Garamond', Georgia, serif;
+  font-size: 0.88cqw;
+  letter-spacing: 0.02em;
+  padding: 0;
+}
+.login-input-wrap input::placeholder {
+  color: rgba(232, 200, 120, 0.35);
+  font-style: italic;
+}
+.login-input-wrap input:-webkit-autofill {
+  -webkit-text-fill-color: #f0d490;
+  -webkit-box-shadow: 0 0 0 30px rgba(6, 3, 1, 0.92) inset;
+}
+
+.login-divider {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5cqw;
+  margin: 0.15cqw 0;
+  color: rgba(201, 165, 92, 0.55);
+  font-size: 0.55cqw;
+  letter-spacing: 0.3em;
+}
+.login-divider::before,
+.login-divider::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(201, 165, 92, 0.4), transparent);
+}
+
+.login-btn {
+  position: relative;
+  overflow: hidden;
+  background:
+    linear-gradient(
+      110deg,
+      transparent 0%,
+      transparent 30%,
+      rgba(255, 240, 200, 0.55) 50%,
+      transparent 70%,
+      transparent 100%
+    ),
+    linear-gradient(180deg, #f5d68c 0%, #d4ac5c 50%, #a37828 100%);
+  background-size:
+    200% 100%,
+    100% 100%;
+  background-position:
+    -120% 0,
+    0 0;
+  border: 1px solid #6a4e1a;
+  color: #2a1808;
+  font-family: 'Cinzel', serif;
+  font-size: 0.82cqw;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  padding: 0.72cqw 1cqw;
+  border-radius: 2px;
+  cursor: pointer;
+  white-space: nowrap;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 240, 200, 0.6),
+    inset 0 -1px 0 rgba(80, 50, 20, 0.4),
+    0 2px 6px rgba(0, 0, 0, 0.7);
+  transition:
+    transform 0.12s,
+    filter 0.12s;
+  margin-top: 0.4cqw;
+  animation: loginBtnShimmer 4s ease-in-out infinite;
+}
+.login-btn:hover {
+  filter: brightness(1.08);
+}
+.login-btn:active {
+  transform: translateY(1px);
+  filter: brightness(0.95);
+}
+.login-btn .login-btn-ico {
+  display: inline-block;
+  margin-right: 0.35em;
+  transform: translateY(-1px);
+}
+.login-btn .login-btn-short {
+  display: none;
+}
+.login-btn .login-btn-full {
+  display: inline;
+}
+
+.login-error {
+  display: none;
+  color: #e25858;
+  font-size: 0.68cqw;
+  text-align: center;
+  margin-top: 0.25cqw;
+  font-style: italic;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.8);
+  letter-spacing: 0.05em;
+}
+
+/* ====== ANIMAZIONE DI APERTURA (login riuscito) ====== */
+.login-burst {
+  position: absolute;
+  left: 50%;
+  top: 47%;
+  width: 32%;
+  height: 64%;
+  transform: translate(-50%, -50%) scale(0.3);
+  background: radial-gradient(
+    circle,
+    rgba(255, 252, 235, 1) 0%,
+    rgba(255, 235, 170, 0.95) 14%,
+    rgba(255, 200, 100, 0.85) 28%,
+    rgba(255, 160, 60, 0.55) 45%,
+    rgba(255, 120, 30, 0.25) 65%,
+    transparent 80%
+  );
+  border-radius: 50%;
+  opacity: 0;
+  pointer-events: none;
+  mix-blend-mode: screen;
+  will-change: transform, opacity;
+}
+.login-whiteout {
+  position: absolute;
+  inset: 0;
+  background: #fffcef;
+  opacity: 0;
+  pointer-events: none;
+}
+#login-overlay.opening .login-scene {
+  animation: loginSceneZoom 1.5s ease-in forwards;
+}
+#login-overlay.opening .login-form-area {
+  animation: none;
+  opacity: 0;
+  transition: opacity 0.3s ease-out;
+}
+#login-overlay.opening .login-burst {
+  animation: loginLightBurst 1.5s cubic-bezier(0.18, 0.7, 0.4, 1) forwards;
+}
+#login-overlay.opening .login-whiteout {
+  animation: loginWhiteOut 0.7s ease-in 1s forwards;
+}
+
+/* ====== MOBILE / TABLET portrait ======
+     L'immagine ha aspect 2:1: su viewport "portrait" non c'è modo di mostrarla
+     intera senza letterbox enormi né di ingrandirla senza tagliare i lati.
+     Soluzione: ingrandiamo la scena tanto quanto serve perché il form occupi
+     spazio verticale sufficiente (~150 px) dentro al forziere.
+     I prop laterali vengono parzialmente tagliati ma il forziere resta centrato. */
+/* ====== TABLET (600px–899px — non si attiva su laptop) ====== */
+@media (min-width: 600px) and (max-width: 899px) {
+  .login-scene {
+    width: 100vw;
+    height: 100vh;
+    background-image: url('../../img/login_tablet.jpg');
+    background-size: cover;
+    background-position: center 40%;
+    animation: none;
+    container-type: normal;
+  }
+  .login-scene::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: rgba(5, 3, 1, 0.55);
+    z-index: 0;
+  }
+  .login-form-area {
+    animation: none;
+    position: absolute;
+    left: 0;
+    right: 0;
+    margin-left: auto;
+    margin-right: auto;
+    top: 50%;
+    transform: translateY(-50%);
+    width: min(80vw, 400px);
+    height: auto;
+    min-height: 0;
+    padding: 2rem 1.8rem 1.6rem;
+    gap: 12px;
+    border-radius: 6px;
+    border: 1px solid rgba(201, 165, 92, 0.4);
+    box-shadow:
+      0 0 0 1px rgba(201, 165, 92, 0.12),
+      0 12px 50px rgba(0, 0, 0, 0.9);
+    z-index: 1;
+    overflow: visible;
+  }
+  .login-field-label {
+    font-size: 11px;
+  }
+  .login-input-wrap {
+    padding: 9px 12px;
+  }
+  .login-input-wrap input {
+    font-size: 16px;
+  }
+  .login-input-wrap svg.login-input-ico {
+    width: 15px;
+    height: 15px;
+    margin-right: 8px;
+  }
+  .login-divider {
+    font-size: 8px;
+  }
+  .login-btn {
+    font-size: 13px;
+    padding: 13px 14px;
+    letter-spacing: 0.12em;
+  }
+  .login-error {
+    font-size: 11px;
+  }
+  .login-heading {
+    font-size: 15px !important;
+    letter-spacing: 0.12em !important;
+  }
+}
+
+/* ====== SMARTPHONE (< 600px) ====== */
+@media (max-width: 599px) {
+  .login-scene {
+    width: 100vw;
+    height: 100vh;
+    background-image: url('../../img/login_mobile.jpg');
+    background-size: cover;
+    background-position: center 20%;
+    animation: none; /* rimuove transform:scale che rompe position:fixed su Safari */
+    container-type: normal; /* rimuove inline-size containment */
+  }
+  .login-scene::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: rgba(4, 2, 1, 0.58);
+    z-index: 0;
+  }
+  /* Centra orizzontalmente senza transform X (evita bug Safari) */
+  .login-form-area {
+    animation: none;
+    position: absolute;
+    left: 0;
+    right: 0;
+    margin-left: auto;
+    margin-right: auto;
+    top: 50%;
+    transform: translateY(-50%);
+    width: min(88vw, 340px);
+    height: auto;
+    min-height: 0;
+    padding: 1.6rem 1.4rem 1.4rem;
+    gap: 10px;
+    border-radius: 6px;
+    border: 1px solid rgba(201, 165, 92, 0.38);
+    box-shadow:
+      0 0 0 1px rgba(201, 165, 92, 0.12),
+      0 8px 40px rgba(0, 0, 0, 0.9);
+    z-index: 1;
+    overflow: visible;
+  }
+  .login-field-label {
+    font-size: 10px;
+    letter-spacing: 0.14em;
+  }
+  .login-input-wrap {
+    padding: 10px 12px;
+    border-radius: 3px;
+  }
+  .login-input-wrap input {
+    font-size: 16px;
+  }
+  .login-input-wrap svg.login-input-ico {
+    width: 15px;
+    height: 15px;
+    margin-right: 7px;
+  }
+  .login-divider {
+    font-size: 8px;
+    gap: 8px;
+    margin: 2px 0;
+  }
+  .login-btn {
+    font-size: 13px;
+    padding: 13px 14px;
+    letter-spacing: 0.1em;
+    margin-top: 4px;
+  }
+  .login-error {
+    font-size: 10px;
+  }
+  .login-heading {
+    font-size: 14px !important;
+    letter-spacing: 0.1em !important;
+  }
+}
+
+/* ============================================================
+     PANNELLO IMPOSTAZIONI
+     ============================================================ */
+#settings-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 99999;
+  background: rgba(0, 0, 0, 0.75);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+}
+.settings-box {
+  background: var(--bg-panel);
+  border: 1px solid var(--border-gold);
+  border-radius: 6px;
+  width: 100%;
+  max-width: 540px;
+  max-height: 88vh;
+  overflow-y: auto;
+  box-shadow: var(--shadow-modal);
+}
+.settings-head {
+  padding: 1.1rem 1.4rem;
+  border-bottom: 1px solid var(--border-subtle);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.settings-title {
+  font-family: 'Cinzel', serif;
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.22em;
+  color: var(--gold-bright);
+}
+.settings-body {
+  padding: 1.25rem 1.4rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+.settings-section-lbl {
+  font-family: 'Cinzel', serif;
+  font-size: 9.5px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.22em;
+  color: var(--gold-dim);
+  border-bottom: 1px solid var(--border-subtle);
+  padding-bottom: 0.3rem;
+  margin-bottom: 0.75rem;
+}
+.settings-user-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.55rem 0.75rem;
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: 3px;
+  margin-bottom: 0.4rem;
+}
+.settings-user-name {
+  font-family: 'Cinzel', serif;
+  font-size: 13px;
+  color: var(--text-strong);
+}
+.settings-user-status {
+  font-family: 'Cinzel', serif;
+  font-size: 9px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  padding: 0.2rem 0.55rem;
+  border-radius: 20px;
+}
+.status-online {
+  background: rgba(60, 180, 80, 0.2);
+  color: #80e890;
+  border: 1px solid rgba(60, 180, 80, 0.4);
+}
+.status-offline {
+  background: rgba(100, 100, 100, 0.15);
+  color: var(--text-faint);
+  border: 1px solid var(--border-subtle);
+}
+
+/* Toggle switch */
+.toggle-switch {
+  position: relative;
+  width: 40px;
+  height: 22px;
+  flex-shrink: 0;
+}
+.toggle-switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+.toggle-slider {
+  position: absolute;
+  cursor: pointer;
+  inset: 0;
+  background: var(--bg-card);
+  border: 1px solid var(--border-soft);
+  border-radius: 22px;
+  transition: 0.25s;
+}
+.toggle-slider:before {
+  content: '';
+  position: absolute;
+  width: 16px;
+  height: 16px;
+  left: 2px;
+  top: 2px;
+  border-radius: 50%;
+  background: var(--text-faint);
+  transition: 0.25s;
+}
+.toggle-switch input:checked + .toggle-slider {
+  background: var(--gold-dim);
+  border-color: var(--gold);
+}
+.toggle-switch input:checked + .toggle-slider:before {
+  transform: translateX(18px);
+  background: var(--gold-bright);
+}
+
+/* Bottone ingranaggio in alto a sinistra */
+.gear-btn {
+  position: fixed;
+  top: 0.75rem;
+  left: 0.75rem;
+  z-index: 500;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: var(--bg-panel-glass);
+  border: 1px solid var(--border-gold);
+  color: var(--gold-dim);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  backdrop-filter: blur(4px);
+}
+.gear-btn:hover {
+  color: var(--gold-bright);
+  transform: rotate(30deg);
+}
+.gear-btn svg {
+  width: 17px;
+  height: 17px;
+}
+
+/* Badge utente corrente */
+.user-badge {
+  position: fixed;
+  top: 0.75rem;
+  left: 3.2rem;
+  z-index: 500;
+  font-family: 'Cinzel', serif;
+  font-size: 9px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--gold-dim);
+  background: var(--bg-panel-glass);
+  border: 1px solid var(--border-subtle);
+  border-radius: 20px;
+  padding: 0.25rem 0.65rem;
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+.user-badge .online-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #80e890;
+  animation: pulse 2s infinite;
+}
+
+/* Form creazione account */
+.create-account-form {
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: 4px;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+  margin-top: 0.5rem;
+}
+.create-account-form input {
+  background: var(--bg-card-elevated);
+  border: 1px solid var(--border-soft);
+  color: var(--text-main);
+  font-family: 'EB Garamond', serif;
+  font-size: 15px;
+  padding: 0.55rem 0.75rem;
+  border-radius: 3px;
+  outline: none;
+  transition: border-color 0.2s;
+}
+.create-account-form input:focus {
+  border-color: var(--border-gold);
+}
+
+/* ============================================================
+     SEZIONE LANCIATORE DI DADI
+     ============================================================ */
+.dice-wrap {
+  max-width: 700px;
+  margin: 0 auto;
+  padding: 2rem 1.5rem;
+}
+.dice-panel {
+  background: linear-gradient(165deg, var(--bg-card-elevated), var(--bg-card));
+  border: 1px solid var(--border-gold);
+  border-radius: 8px;
+  padding: 2rem;
+  box-shadow: var(--shadow-card);
+  text-align: center;
+}
+.dice-result-display {
+  font-family: 'Uncial Antiqua', serif;
+  font-size: 5rem;
+  line-height: 1;
+  background: linear-gradient(180deg, var(--gold-bright), var(--gold) 50%, var(--gold-dim));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  text-shadow: none;
+  margin: 1rem 0;
+  filter: drop-shadow(0 0 20px rgba(201, 165, 92, 0.4));
+  min-height: 6rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+}
+.dice-result-display.crit {
+  background: linear-gradient(180deg, #fff8c0, #ffd060);
+  -webkit-background-clip: text;
+  background-clip: text;
+  filter: drop-shadow(0 0 28px rgba(255, 220, 60, 0.8));
+}
+.dice-result-display.fail {
+  background: linear-gradient(180deg, #ff9090, #c84040);
+  -webkit-background-clip: text;
+  background-clip: text;
+  filter: drop-shadow(0 0 24px rgba(200, 60, 60, 0.7));
+}
+.dice-type-grid {
+  display: flex;
+  gap: 0.6rem;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-bottom: 1.5rem;
+}
+.dice-type-btn {
+  padding: 0.55rem 1.1rem;
+  border-radius: 4px;
+  cursor: pointer;
+  font-family: 'Cinzel', serif;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  border: 1px solid var(--border-soft);
+  color: var(--text-muted);
+  background: var(--bg-card);
+  transition: all 0.2s ease;
+}

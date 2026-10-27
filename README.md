@@ -1,46 +1,59 @@
-# ⚜ Mercante Errante — Compendium & VTT per D&D (Redesign Completo)
+# Mercante Errante — Compendium e VTT per D&D
 
-Benvenuto nella versione completamente ridisegnata, animata e riorganizzata del tuo sito per **Dungeons & Dragons**. Tutti i dati, le 15 sezioni, i 522 oggetti dell'Emporio, i 398 incantesimi, i 365 mostri del Bestiario, i 6 NPC, le 34 tracce audio, le 60 illustrazioni e le 7 tipologie di schede personaggio (D&D 5e, 7th Sea, One Piece, Brancalonia, Star Wars 5e, Pokémon, Naruto) sono stati preservati al 100% e separati in una struttura pulita e facilissima da modificare.
+Compendium per D&D con negozio, combattimento, mappe, libri, regia sonora e schede personaggio multi-sistema.
 
 ---
 
-## 📁 Struttura delle Cartelle
+## Struttura del codice
 
 ```text
-├── index.html                  # Struttura HTML principale (pulita e leggera)
-├── README.md                   # Questa guida rapida
-├── css/
-│   ├── variables.css           # ⭐ TUTTI i colori, font, spaziature e parametri animazioni
-│   ├── theme.css               # Stile grafico moderno (card, bottoni, sidebar, rarità)
-│   ├── animations.css          # ⭐ Portale Login, Dadi 3D, Araldo Sezioni, 3D Tilt e particelle
-│   └── legacy.css              # Stili specifici dei widget complessi (pentacoli, mappe, schede)
-├── data/
-│   ├── catalog-data.js         # ⭐ Oggetti (522), Incantesimi (398), Bestiario (365), NPC (6)
-│   ├── world-data.js           # ⭐ Eventi del Caos, Libri, Nomi NPC, Tracce Regia Sonora
-│   ├── database_armi.json      # Backup JSON originale delle armi/oggetti
-│   ├── database_bestiario.json # Backup JSON originale dei mostri custom
-│   └── database_npc.json       # Backup JSON originale degli NPC
-├── js/
-│   ├── users.js                # ⭐ SISTEMA UTENTI UNIFICATO (Account, Ruoli, Login, Impostazioni)
-│   ├── app.js                  # Logica applicativa suddivisa in 15 sezioni commentate + Dadi 3D
-│   ├── animations.js           # ⭐ Motore Particelle, Dadi Poliedrici 3D, Araldo Sezioni, Tilt 3D
-│   └── sheets/                 # Schede personaggio multi-sistema
-│       ├── brancalonia.js
-│       ├── sw5e.js
-│       ├── pokemon.js
-│       └── naruto.js
-├── img/                        # Tutte le 60 immagini di oggetti, armi e sfondi login
-├── audio/                      # Tutte le 34 tracce MP3 per la Regia Sonora e il Bardo
-└── schede/                     # Tutte le 12 immagini di sfondo per le schede PG
+config/
+  accounts.json          Regole dei nomi, ruoli, titoli e icone predefiniti per ruolo
+  firebase.web.json      Metadati del progetto Firebase, senza chiavi
+  assets.mjs             Ordine dei sorgenti del bundle applicativo
+  browsers.mjs           Target comuni di compilazione JavaScript e CSS
+js/
+  users.js               Autenticazione, profili, privilegi e operazioni sugli account
+  party-admin.js         Interfaccia di amministrazione
+  core/                  Stato, sincronizzazione, storage, IndexedDB e avvio
+  ui/                    Navigazione, filtri e impostazioni dell’account
+  features/              Negozio, combattimento, mappe, libri, NPC, dadi e schede
+  sheets/                Schede Brancalonia, Star Wars, Pokémon e Naruto
+css/
+  variables.css          Variabili di tutti i temi e della palette cyber
+  components/            Stili divisi per area del sito
+  legacy.css             Solo import ordinati dei componenti
+  site.css               Unico ingresso degli stili della pagina principale
+  compatibility.css      Viewport, accessibilità e compatibilità fra browser
+scripts/                 Build, configurazioni generate e controlli dei segreti
+tests/                   Test funzionali e test browser con backend simulato
+data/, img/, audio/, schede/  Cataloghi e risorse originali conservati
 ```
+
+`js/app.js` è **generato**, escluso da Git e non va modificato. Vite unisce i file
+elencati in `config/assets.mjs` mantenendo l’ordine e le funzioni globali richieste
+dalle schede e dai controlli esistenti. Lo sviluppo usa i sorgenti leggibili; la
+produzione riceve un solo bundle compatto. Le parti del bundle non vengono copiate
+una seconda volta in `dist/`.
 
 ---
 
 ## 👤 1. Account e amministrazione
 
-Il database Firebase è l'unica fonte autorevole per gli account. `DEFAULT_USERS`
-in `js/users.js` contiene solo i profili iniziali per icone e titoli. Non contiene
-password, non ricrea gli utenti rimossi e non offre un accesso alternativo a Firebase Auth.
+Il database Firebase è l’unico elenco degli account. Per aggiungere, rimuovere,
+riattivare un giocatore o cambiarne titolo, icona e privilegi, usa **`admin.html`**:
+non occorre modificare alcun file. Le password si cambiano nelle impostazioni
+dell’account e rimangono in Firebase Authentication. Non esiste un elenco di nomi
+predefiniti nei sorgenti.
+
+Cambiare i vecchi nomi descrittivi in `Master`, `player1`, `player2`, `player3`
+non creava o rinominava identità Firebase. I nomi validi per il login sono quelli
+degli account effettivamente creati; il refactoring non rinomina gli account esistenti.
+
+`config/accounts.json` definisce soltanto le regole comuni degli account e i
+valori predefiniti dei ruoli; la stessa configurazione viene usata dal client e
+dal generatore delle regole del database. `database.rules.json` è generato con
+`npm run rules:build`, eseguito anche prima del deploy.
 
 | Account | Password iniziale | Ruolo |
 | --- | --- | --- |
@@ -99,8 +112,8 @@ rimangono esclusi da Git in `work/`.
 I file canonici sono in `js/`, `css/`, `data/`, `img/`, `audio/` e `schede/`.
 Anche i vecchi URL dei JSON e delle schede vengono generati da queste sorgenti,
 senza ulteriori copie da modificare. Non esiste più una seconda copia in `public/`. Vite serve direttamente
-questi sorgenti in sviluppo; il plugin `scripts/static-assets.mjs` include gli
-stessi file in `dist/`, compresa `admin.html`.
+questi sorgenti in sviluppo; il plugin `scripts/static-assets.mjs` include le
+risorse in `dist/`. Vite compila entrambe le pagine, `index.html` e `admin.html`.
 
 ```sh
 npm install
@@ -152,8 +165,8 @@ Apri **`css/variables.css`**: tutte le scelte cromatiche e tipografiche sono rac
 
 ## ✨ 4. Come Regolare le Animazioni (Portale Login, Dadi 3D, Transizioni Sezioni)
 
-- **Cerimonia di Login ("Portale Runico & Doppio Battente")**: definita in `js/users.js` (`playLoginPortalCeremony`) e in `css/animations.css` (`.sium-login-portal`, `.portal-door-left`, `.portal-door-right`). Non usa più alcuna esplosione di luce bianca.
-- **Arena Dadi 3D Poliedrica**: nella sezione **Lanciatore Dadi** (`renderDadi` in `js/app.js` + `build3DDieElement` in `js/animations.js`) tutti i dadi (`d4, d6, d8, d10, d12, d20, d100`) vengono lanciati in 3D con rimbalzo fisico, ombra dinamica sul velluto e onda d'urto runica all'impatto.
+- **Cerimonia di Login ("Portale Runico & Doppio Battente")**: definita in `js/ui/account-panel.js` (`playLoginPortalCeremony`) e in `css/animations.css` (`.sium-login-portal`, `.portal-door-left`, `.portal-door-right`). Non usa più alcuna esplosione di luce bianca.
+- **Arena Dadi 3D Poliedrica**: nella sezione **Lanciatore Dadi** (`renderDadi` in `js/features/dice.js` + `build3DDieElement` in `js/animations.js`) tutti i dadi (`d4, d6, d8, d10, d12, d20, d100`) vengono lanciati in 3D con rimbalzo fisico, ombra dinamica sul velluto e onda d'urto runica all'impatto.
 - **Transizioni al Click sulle Sezioni**: ogni volta che clicchi su una sezione del menu laterale, compare l'**Araldo Runico** della sezione (`SECTION_HERALDS` in `js/animations.js`), la pagina si srotola in 3D (`siumSectionUnroll3D`) e tutti gli elementi entrano con animazione scaglionata (`sium-reveal`).
 - **Pulsante Rapido `✦ FX ON / OFF`**: presente nella barra in alto a destra e nel footer della sidebar per disattivare gli effetti pesanti su dispositivi lenti.
 
@@ -162,7 +175,13 @@ Apri **`css/variables.css`**: tutte le scelte cromatiche e tipografiche sono rac
 - La gestione account, privilegi, presenza e listener è in `js/users.js`; `js/party-admin.js` gestisce l’interfaccia di amministrazione.
 - `render()` e `renderMain()` condividono lo stesso instradamento delle sezioni e la pulizia dei listener.
 - Il sito usa JavaScript e CSS statici; il vecchio scaffold React/SSR e le relative dipendenze sono stati rimossi.
-- `npm test` include anche i controlli TypeScript sui contenuti.
+- `npm test` controlla dati, login, revoca degli account, persistenza e pulizia dei listener.
+- `npm run test:browsers` verifica Chromium, Firefox/Gecko e WebKit con Firebase simulato, senza contattare il database reale. Per installare i browser: `npx playwright install --with-deps chromium firefox webkit`.
+- I test browser usano una chiave fittizia e `dist-test/`, anche con il percorso GitHub Pages `/D-D/`. Coprono utenti, navigazione, negozi, temi, mappe, sette sistemi di schede e IndexedDB.
+- I target di compilazione sono Chrome/Chromium 109+, Firefox 115+ e Safari 16.4+. I test eseguono le versioni dei tre motori fornite da Playwright; non sostituiscono una prova su ogni versione storica.
+- `npm run format` e `npm run format:check` mantengono una formattazione uniforme dei sorgenti scritti a mano.
+- I salvataggi locali ravvicinati vengono raggruppati; cambio scheda e chiusura forzano il salvataggio finale. IndexedDB riusa una connessione e conferma le scritture a transazione completata.
+- Il motore delle mappe viene caricato dal sito solo quando serve. Le immagini delle card usano caricamento differito e decodifica asincrona; gli effetti si fermano a pagina nascosta e rispettano le preferenze di movimento ridotto.
 - Le espressioni di autorizzazione RTDB si mantengono in `scripts/build-database-rules.mjs`. `npm run rules:build` rigenera `database.rules.json`; il deploy Firebase lo esegue automaticamente.
 
 ### Configurazione e alert sulle chiavi

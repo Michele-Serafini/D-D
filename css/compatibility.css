@@ -1,0 +1,59 @@
+/* Shared behavior for Chromium, WebKit/Safari and Gecko/Firefox. */
+:root {
+  color-scheme: dark;
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+  scrollbar-color: #8b6f3f #14100c;
+  scrollbar-width: thin;
+}
+[data-theme='light'] {
+  color-scheme: light;
+}
+.app-shell {
+  min-height: 100vh;
+  min-height: 100dvh;
+}
+.main-content,
+.content-wrap {
+  min-width: 0;
+}
+button,
+a,
+input,
+select,
+textarea {
+  touch-action: manipulation;
+}
+button:focus-visible,
+a:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+  outline: 2px solid var(--gold-bright, #f0d490);
+  outline-offset: 3px;
+}
+.modal-box,
+.sidebar {
+  overscroll-behavior: contain;
+}
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .panel-glass {
+    background: var(--bg-panel, #1c1612);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .sium-section-transition,
+  .sium-pg-page {
+    animation: none !important;
+    transform: none !important;
+    filter: none !important;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

@@ -58,6 +58,15 @@
   --rarity-unique-glow: rgba(244, 63, 94, 0.58);
   --rarity-divine: #fde047;
   --rarity-divine-glow: rgba(253, 224, 71, 0.68);
+  --cyber-cyan: #00f5ff;
+  --cyber-purple: #bf5fff;
+  --cyber-pink: #ff2d78;
+  --cyber-green: #00ff9d;
+  --cyber-bg: #03030f;
+  --cyber-panel: rgba(0, 10, 30, 0.82);
+  --cyber-border: rgba(0, 245, 255, 0.35);
+  --cyber-glow: 0 0 18px rgba(0, 245, 255, 0.45);
+  --cyber-glow-purple: 0 0 18px rgba(191, 95, 255, 0.45);
 }
 
 /* ============================================================================
@@ -65,7 +74,7 @@
    Pietra ossidiana, cuoio scuro, oro forgiato, braci cremisi
    ============================================================================ */
 :root,
-[data-theme="dark"] {
+[data-theme='dark'] {
   --bg-primary: #0b0907;
   --bg-secondary: #130f0c;
   --bg-card: rgba(24, 19, 15, 0.88);
@@ -99,17 +108,45 @@
   --shadow-elevated: 0 22px 48px -10px rgba(0, 0, 0, 0.88), 0 0 24px rgba(216, 178, 92, 0.14);
   --shadow-glow: 0 0 22px rgba(216, 178, 92, 0.28);
 
-  --surface-gradient: radial-gradient(ellipse at 50% 0%, rgba(56, 38, 20, 0.35) 0%, rgba(11, 9, 7, 0.96) 75%);
-  --card-sheen: linear-gradient(135deg, rgba(245, 217, 142, 0.07) 0%, rgba(255, 255, 255, 0) 50%, rgba(216, 178, 92, 0.04) 100%);
-  --torch-ambient: radial-gradient(circle at 12% 18%, rgba(235, 125, 45, 0.09), transparent 45%),
-                   radial-gradient(circle at 88% 82%, rgba(216, 178, 92, 0.07), transparent 45%);
+  --surface-gradient: radial-gradient(
+    ellipse at 50% 0%,
+    rgba(56, 38, 20, 0.35) 0%,
+    rgba(11, 9, 7, 0.96) 75%
+  );
+  --card-sheen: linear-gradient(
+    135deg,
+    rgba(245, 217, 142, 0.07) 0%,
+    rgba(255, 255, 255, 0) 50%,
+    rgba(216, 178, 92, 0.04) 100%
+  );
+  --torch-ambient:
+    radial-gradient(circle at 12% 18%, rgba(235, 125, 45, 0.09), transparent 45%),
+    radial-gradient(circle at 88% 82%, rgba(216, 178, 92, 0.07), transparent 45%);
 }
 
 /* ============================================================================
    TEMA CHIARO — "PERGAMENA ANTICA / GRIMORIO ILLUMINATO"
    Pergamena calda, inchiostro ferro-gallico, bronzo brunito, ceralacca
    ============================================================================ */
-[data-theme="light"] {
+[data-theme='light'] {
+  --vignette: radial-gradient(ellipse at top, rgba(180, 140, 80, 0.18), transparent 55%);
+  --shadow-modal: 0 24px 60px rgba(80, 50, 20, 0.35);
+  --shadow-card-hover: 0 12px 36px rgba(80, 50, 20, 0.22);
+  --shadow-soft: 0 4px 16px rgba(80, 50, 20, 0.12);
+  --platinum: #5a5a78;
+  --silver: #707080;
+  --copper: #a8541c;
+  --blood: #8a2424;
+  --text-faint: #9a8458;
+  --text-main: #3d2e1c;
+  --text-strong: #2a1f12;
+  --border-soft: rgba(120, 85, 40, 0.28);
+  --bg-sidebar: #e0d2b0;
+  --bg-card-elevated: #fdf6e4;
+  --bg-panel-glass: rgba(245, 235, 210, 0.78);
+  --bg-panel: #f5ebd2;
+  --bg-base: #f0e4c8;
+  --bg-deep: #e8dcc0;
   --bg-primary: #f3ead8;
   --bg-secondary: #e8dcc4;
   --bg-card: rgba(251, 245, 233, 0.92);
@@ -143,17 +180,27 @@
   --shadow-elevated: 0 18px 40px -8px rgba(58, 38, 14, 0.25), 0 0 18px rgba(140, 93, 25, 0.12);
   --shadow-glow: 0 0 18px rgba(140, 93, 25, 0.22);
 
-  --surface-gradient: radial-gradient(ellipse at 50% 0%, rgba(255, 250, 238, 0.85) 0%, rgba(232, 220, 196, 0.95) 85%);
-  --card-sheen: linear-gradient(135deg, rgba(255, 255, 255, 0.45) 0%, rgba(255, 255, 255, 0) 55%, rgba(140, 93, 25, 0.05) 100%);
-  --torch-ambient: radial-gradient(circle at 15% 15%, rgba(216, 155, 60, 0.10), transparent 50%),
-                   radial-gradient(circle at 85% 85%, rgba(158, 40, 29, 0.06), transparent 50%);
+  --surface-gradient: radial-gradient(
+    ellipse at 50% 0%,
+    rgba(255, 250, 238, 0.85) 0%,
+    rgba(232, 220, 196, 0.95) 85%
+  );
+  --card-sheen: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.45) 0%,
+    rgba(255, 255, 255, 0) 55%,
+    rgba(140, 93, 25, 0.05) 100%
+  );
+  --torch-ambient:
+    radial-gradient(circle at 15% 15%, rgba(216, 155, 60, 0.1), transparent 50%),
+    radial-gradient(circle at 85% 85%, rgba(158, 40, 29, 0.06), transparent 50%);
 }
 
 /* ============================================================================
    TEMA HALLOWEEN — "NOTTE SPETTRALE (NERO ABISSALE, VIOLA CUPO & ARANCIO ZUCCA)"
    Nero cripta profondo, viola gotico notturno e bagliori di zucca
    ============================================================================ */
-[data-theme="halloween"] {
+[data-theme='halloween'] {
   /* Variabili principali & legacy unificate */
   --bg-deep: #030106;
   --bg-primary: #06030c;
@@ -191,30 +238,47 @@
   --emerald: #9333ea;
 
   --border-subtle: rgba(168, 85, 247, 0.24);
-  --border-soft: rgba(168, 85, 247, 0.40);
+  --border-soft: rgba(168, 85, 247, 0.4);
   --border-gold: rgba(168, 85, 247, 0.62);
   --border-gold-strong: rgba(216, 180, 254, 0.88);
 
   --shadow-soft: 0 4px 24px rgba(0, 0, 5, 0.82);
-  --shadow-card: 0 12px 34px -4px rgba(2, 0, 6, 0.94), 0 0 18px rgba(168, 85, 247, 0.18), inset 0 0 1px 1px rgba(168, 85, 247, 0.26);
+  --shadow-card:
+    0 12px 34px -4px rgba(2, 0, 6, 0.94), 0 0 18px rgba(168, 85, 247, 0.18),
+    inset 0 0 1px 1px rgba(168, 85, 247, 0.26);
   --shadow-card-hover: 0 18px 48px rgba(2, 0, 8, 0.96), 0 0 28px rgba(168, 85, 247, 0.36);
   --shadow-elevated: 0 24px 54px -8px rgba(2, 0, 6, 0.95), 0 0 32px rgba(168, 85, 247, 0.26);
   --shadow-modal: 0 32px 80px rgba(2, 0, 6, 0.96), 0 0 42px rgba(168, 85, 247, 0.28);
   --shadow-glow: 0 0 26px rgba(168, 85, 247, 0.42);
 
-  --vignette: radial-gradient(ellipse at top, rgba(147, 51, 234, 0.16), rgba(20, 8, 38, 0.34) 45%, transparent 72%);
-  --surface-gradient: radial-gradient(ellipse at 50% 0%, rgba(46, 16, 82, 0.52) 0%, rgba(5, 2, 10, 0.98) 76%);
-  --card-sheen: linear-gradient(135deg, rgba(168, 85, 247, 0.12) 0%, rgba(28, 12, 54, 0.22) 50%, rgba(255, 117, 24, 0.06) 100%);
-  --torch-ambient: radial-gradient(circle at 14% 18%, rgba(168, 85, 247, 0.15), transparent 46%),
-                   radial-gradient(circle at 86% 82%, rgba(88, 28, 135, 0.20), transparent 48%),
-                   radial-gradient(circle at 50% 92%, rgba(255, 117, 24, 0.08), transparent 42%);
+  --vignette: radial-gradient(
+    ellipse at top,
+    rgba(147, 51, 234, 0.16),
+    rgba(20, 8, 38, 0.34) 45%,
+    transparent 72%
+  );
+  --surface-gradient: radial-gradient(
+    ellipse at 50% 0%,
+    rgba(46, 16, 82, 0.52) 0%,
+    rgba(5, 2, 10, 0.98) 76%
+  );
+  --card-sheen: linear-gradient(
+    135deg,
+    rgba(168, 85, 247, 0.12) 0%,
+    rgba(28, 12, 54, 0.22) 50%,
+    rgba(255, 117, 24, 0.06) 100%
+  );
+  --torch-ambient:
+    radial-gradient(circle at 14% 18%, rgba(168, 85, 247, 0.15), transparent 46%),
+    radial-gradient(circle at 86% 82%, rgba(88, 28, 135, 0.2), transparent 48%),
+    radial-gradient(circle at 50% 92%, rgba(255, 117, 24, 0.08), transparent 42%);
 }
 
 /* ============================================================================
    TEMA NATALE — "VILLAGGIO DI BABBO NATALE (ABETE, ROSSO CARAMELLA, ORO & NEVE)"
    Verde abete profondo, rosso velluto natalizio, oro lucine calde e bianco neve
    ============================================================================ */
-[data-theme="christmas"] {
+[data-theme='christmas'] {
   --bg-deep: #04130d;
   --bg-primary: #061b12;
   --bg-base: #072016;
@@ -256,25 +320,42 @@
   --border-gold-strong: rgba(255, 242, 184, 0.94);
 
   --shadow-soft: 0 4px 24px rgba(2, 12, 8, 0.75);
-  --shadow-card: 0 12px 34px -4px rgba(2, 10, 6, 0.92), 0 0 18px rgba(239, 35, 60, 0.16), inset 0 0 1px 1px rgba(255, 255, 255, 0.28);
+  --shadow-card:
+    0 12px 34px -4px rgba(2, 10, 6, 0.92), 0 0 18px rgba(239, 35, 60, 0.16),
+    inset 0 0 1px 1px rgba(255, 255, 255, 0.28);
   --shadow-card-hover: 0 18px 48px rgba(2, 10, 6, 0.96), 0 0 30px rgba(255, 213, 107, 0.38);
   --shadow-elevated: 0 24px 54px -8px rgba(2, 10, 6, 0.94), 0 0 32px rgba(239, 35, 60, 0.25);
   --shadow-modal: 0 32px 80px rgba(2, 10, 6, 0.96), 0 0 44px rgba(255, 213, 107, 0.32);
   --shadow-glow: 0 0 26px rgba(255, 213, 107, 0.45);
 
-  --vignette: radial-gradient(ellipse at top, rgba(239, 35, 60, 0.16), rgba(11, 52, 34, 0.32) 45%, transparent 72%);
-  --surface-gradient: radial-gradient(ellipse at 50% 0%, rgba(22, 82, 54, 0.58) 0%, rgba(5, 22, 15, 0.98) 76%);
-  --card-sheen: linear-gradient(135deg, rgba(255, 255, 255, 0.14) 0%, rgba(255, 213, 107, 0.10) 50%, rgba(239, 35, 60, 0.08) 100%);
-  --torch-ambient: radial-gradient(circle at 14% 18%, rgba(239, 35, 60, 0.16), transparent 46%),
-                   radial-gradient(circle at 86% 82%, rgba(255, 213, 107, 0.16), transparent 48%),
-                   radial-gradient(circle at 50% 92%, rgba(255, 255, 255, 0.10), transparent 42%);
+  --vignette: radial-gradient(
+    ellipse at top,
+    rgba(239, 35, 60, 0.16),
+    rgba(11, 52, 34, 0.32) 45%,
+    transparent 72%
+  );
+  --surface-gradient: radial-gradient(
+    ellipse at 50% 0%,
+    rgba(22, 82, 54, 0.58) 0%,
+    rgba(5, 22, 15, 0.98) 76%
+  );
+  --card-sheen: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.14) 0%,
+    rgba(255, 213, 107, 0.1) 50%,
+    rgba(239, 35, 60, 0.08) 100%
+  );
+  --torch-ambient:
+    radial-gradient(circle at 14% 18%, rgba(239, 35, 60, 0.16), transparent 46%),
+    radial-gradient(circle at 86% 82%, rgba(255, 213, 107, 0.16), transparent 48%),
+    radial-gradient(circle at 50% 92%, rgba(255, 255, 255, 0.1), transparent 42%);
 }
 
 /* ============================================================================
    TEMA SAN VALENTINO — "GIARDINO DI CUPIDO (ROSA PASSIONE, RUBINO, VELLUTO & ORO ROSA)"
    Velluto cremisi romantico, rosa confetto luminoso, frecce d'oro di Cupido e cuoricini
    ============================================================================ */
-[data-theme="valentine"] {
+[data-theme='valentine'] {
   --bg-deep: #14030a;
   --bg-primary: #1d050f;
   --bg-base: #230613;
@@ -316,25 +397,42 @@
   --border-gold-strong: rgba(255, 204, 221, 0.94);
 
   --shadow-soft: 0 4px 24px rgba(15, 2, 8, 0.82);
-  --shadow-card: 0 12px 34px -4px rgba(12, 1, 6, 0.94), 0 0 20px rgba(255, 77, 141, 0.22), inset 0 0 1px 1px rgba(255, 179, 209, 0.30);
+  --shadow-card:
+    0 12px 34px -4px rgba(12, 1, 6, 0.94), 0 0 20px rgba(255, 77, 141, 0.22),
+    inset 0 0 1px 1px rgba(255, 179, 209, 0.3);
   --shadow-card-hover: 0 18px 48px rgba(14, 1, 7, 0.96), 0 0 32px rgba(255, 77, 141, 0.45);
-  --shadow-elevated: 0 24px 54px -8px rgba(12, 1, 6, 0.95), 0 0 34px rgba(255, 77, 141, 0.30);
+  --shadow-elevated: 0 24px 54px -8px rgba(12, 1, 6, 0.95), 0 0 34px rgba(255, 77, 141, 0.3);
   --shadow-modal: 0 32px 80px rgba(12, 1, 6, 0.96), 0 0 46px rgba(255, 77, 141, 0.35);
   --shadow-glow: 0 0 28px rgba(255, 77, 141, 0.48);
 
-  --vignette: radial-gradient(ellipse at top, rgba(255, 77, 141, 0.20), rgba(56, 11, 32, 0.36) 45%, transparent 72%);
-  --surface-gradient: radial-gradient(ellipse at 50% 0%, rgba(92, 18, 52, 0.58) 0%, rgba(20, 3, 10, 0.98) 76%);
-  --card-sheen: linear-gradient(135deg, rgba(255, 179, 209, 0.16) 0%, rgba(255, 77, 141, 0.12) 50%, rgba(225, 29, 72, 0.08) 100%);
-  --torch-ambient: radial-gradient(circle at 14% 18%, rgba(255, 77, 141, 0.18), transparent 46%),
-                   radial-gradient(circle at 86% 82%, rgba(244, 114, 182, 0.20), transparent 48%),
-                   radial-gradient(circle at 50% 92%, rgba(225, 29, 72, 0.14), transparent 42%);
+  --vignette: radial-gradient(
+    ellipse at top,
+    rgba(255, 77, 141, 0.2),
+    rgba(56, 11, 32, 0.36) 45%,
+    transparent 72%
+  );
+  --surface-gradient: radial-gradient(
+    ellipse at 50% 0%,
+    rgba(92, 18, 52, 0.58) 0%,
+    rgba(20, 3, 10, 0.98) 76%
+  );
+  --card-sheen: linear-gradient(
+    135deg,
+    rgba(255, 179, 209, 0.16) 0%,
+    rgba(255, 77, 141, 0.12) 50%,
+    rgba(225, 29, 72, 0.08) 100%
+  );
+  --torch-ambient:
+    radial-gradient(circle at 14% 18%, rgba(255, 77, 141, 0.18), transparent 46%),
+    radial-gradient(circle at 86% 82%, rgba(244, 114, 182, 0.2), transparent 48%),
+    radial-gradient(circle at 50% 92%, rgba(225, 29, 72, 0.14), transparent 42%);
 }
 
 /* ============================================================================
    TEMA PASQUA — "PRATO DELLE UOVA & CONIGLIETTI (PRATO PRIMAVERILE, PASTELLO, PULCINO & FIORI)"
    Prato incantato di primavera, giallo pulcino dorato, rosa pesco, azzurro uovo e lilla
    ============================================================================ */
-[data-theme="easter"] {
+[data-theme='easter'] {
   --bg-deep: #07160f;
   --bg-primary: #0b2116;
   --bg-base: #0e281b;
@@ -376,16 +474,62 @@
   --border-gold-strong: rgba(254, 240, 138, 0.95);
 
   --shadow-soft: 0 4px 24px rgba(3, 14, 8, 0.78);
-  --shadow-card: 0 12px 34px -4px rgba(3, 12, 7, 0.92), 0 0 20px rgba(244, 114, 182, 0.20), inset 0 0 1px 1px rgba(134, 239, 172, 0.30);
+  --shadow-card:
+    0 12px 34px -4px rgba(3, 12, 7, 0.92), 0 0 20px rgba(244, 114, 182, 0.2),
+    inset 0 0 1px 1px rgba(134, 239, 172, 0.3);
   --shadow-card-hover: 0 18px 48px rgba(3, 12, 7, 0.95), 0 0 32px rgba(250, 204, 21, 0.42);
   --shadow-elevated: 0 24px 54px -8px rgba(3, 12, 7, 0.94), 0 0 34px rgba(244, 114, 182, 0.28);
   --shadow-modal: 0 32px 80px rgba(3, 12, 7, 0.96), 0 0 46px rgba(250, 204, 21, 0.34);
   --shadow-glow: 0 0 28px rgba(250, 204, 21, 0.46);
 
-  --vignette: radial-gradient(ellipse at top, rgba(244, 114, 182, 0.18), rgba(16, 68, 42, 0.34) 45%, transparent 72%);
-  --surface-gradient: radial-gradient(ellipse at 50% 0%, rgba(34, 98, 62, 0.58) 0%, rgba(8, 25, 17, 0.98) 76%);
-  --card-sheen: linear-gradient(135deg, rgba(254, 240, 138, 0.15) 0%, rgba(244, 114, 182, 0.12) 50%, rgba(56, 189, 248, 0.10) 100%);
-  --torch-ambient: radial-gradient(circle at 14% 18%, rgba(244, 114, 182, 0.18), transparent 46%),
-                   radial-gradient(circle at 86% 82%, rgba(250, 204, 21, 0.18), transparent 48%),
-                   radial-gradient(circle at 50% 92%, rgba(56, 189, 248, 0.14), transparent 42%);
+  --vignette: radial-gradient(
+    ellipse at top,
+    rgba(244, 114, 182, 0.18),
+    rgba(16, 68, 42, 0.34) 45%,
+    transparent 72%
+  );
+  --surface-gradient: radial-gradient(
+    ellipse at 50% 0%,
+    rgba(34, 98, 62, 0.58) 0%,
+    rgba(8, 25, 17, 0.98) 76%
+  );
+  --card-sheen: linear-gradient(
+    135deg,
+    rgba(254, 240, 138, 0.15) 0%,
+    rgba(244, 114, 182, 0.12) 50%,
+    rgba(56, 189, 248, 0.1) 100%
+  );
+  --torch-ambient:
+    radial-gradient(circle at 14% 18%, rgba(244, 114, 182, 0.18), transparent 46%),
+    radial-gradient(circle at 86% 82%, rgba(250, 204, 21, 0.18), transparent 48%),
+    radial-gradient(circle at 50% 92%, rgba(56, 189, 248, 0.14), transparent 42%);
+}
+[data-theme='dark'] {
+  --vignette: radial-gradient(ellipse at top, rgba(201, 165, 92, 0.06), transparent 55%);
+  --shadow-modal: 0 32px 80px rgba(0, 0, 0, 0.85);
+  --shadow-card-hover: 0 16px 48px rgba(0, 0, 0, 0.6), 0 0 32px rgba(232, 200, 120, 0.08);
+  --shadow-card: 0 8px 32px rgba(0, 0, 0, 0.5), 0 2px 8px rgba(0, 0, 0, 0.3);
+  --shadow-soft: 0 4px 24px rgba(0, 0, 0, 0.4);
+  --platinum: #e8e8ff;
+  --silver: #d0d0e0;
+  --copper: #c87a3a;
+  --blood: #8a2e2e;
+  --text-faint: #6a5a45;
+  --text-muted: #9c8a6b;
+  --text-main: #d8c9a8;
+  --text-strong: #f0e4cc;
+  --gold-glow: rgba(232, 200, 120, 0.35);
+  --gold-dim: #8b6f3f;
+  --gold-bright: #f0d490;
+  --gold: #d4b070;
+  --border-gold: rgba(201, 165, 92, 0.45);
+  --border-soft: rgba(201, 165, 92, 0.22);
+  --border-subtle: rgba(201, 165, 92, 0.12);
+  --bg-sidebar: #110d0a;
+  --bg-card-elevated: #2a2018;
+  --bg-card: #221a14;
+  --bg-panel-glass: rgba(28, 22, 18, 0.72);
+  --bg-panel: #1c1612;
+  --bg-base: #14100c;
+  --bg-deep: #0a0807;
 }

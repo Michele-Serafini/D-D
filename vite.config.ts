@@ -1,11 +1,14 @@
-import {defineConfig, loadEnv} from 'vite';
-import {staticAssets} from './scripts/static-assets.mjs';
+import { defineConfig, loadEnv } from 'vite';
+import { staticAssets } from './scripts/static-assets.mjs';
+import { buildTargets, cssTargets } from './config/browsers.mjs';
+import { resolve } from 'node:path';
 
-export default defineConfig(({mode}) => {
+export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd(), 'FIREBASE_');
   const firebaseApiKey = process.env.FIREBASE_WEB_API_KEY || env.FIREBASE_WEB_API_KEY;
   return {
     publicDir: false as const,
+    css: { transformer: 'lightningcss', lightningcss: { targets: cssTargets } },
     plugins: [staticAssets(process.cwd(), { firebaseApiKey })],
     server: {
       // HMR is disabled in AI Studio via DISABLE_HMR env var.
@@ -16,6 +19,10 @@ export default defineConfig(({mode}) => {
     },
     build: {
       copyPublicDir: false,
+      target: buildTargets,
+      cssTarget: buildTargets,
+      cssMinify: 'lightningcss',
+      rolldownOptions: { input: { main: resolve('index.html'), admin: resolve('admin.html') } },
     },
   };
 });

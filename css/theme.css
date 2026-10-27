@@ -46,7 +46,7 @@ body {
 .combat-num,
 .dice-num,
 .price-tag,
-input[type="number"],
+input[type='number'],
 table td {
   font-variant-numeric: tabular-nums;
 }
@@ -217,9 +217,15 @@ table td {
 
 .nav-item.active {
   color: var(--gold-bright) !important;
-  background: linear-gradient(90deg, rgba(216, 178, 92, 0.20) 0%, rgba(216, 178, 92, 0.04) 100%) !important;
+  background: linear-gradient(
+    90deg,
+    rgba(216, 178, 92, 0.2) 0%,
+    rgba(216, 178, 92, 0.04) 100%
+  ) !important;
   border-color: var(--border-gold) !important;
-  box-shadow: inset 0 0 16px rgba(216, 178, 92, 0.12), 0 4px 12px rgba(0, 0, 0, 0.25);
+  box-shadow:
+    inset 0 0 16px rgba(216, 178, 92, 0.12),
+    0 4px 12px rgba(0, 0, 0, 0.25);
 }
 
 .nav-item.active::before {
@@ -335,49 +341,61 @@ table td {
   border-color: rgba(156, 163, 175, 0.28) !important;
 }
 .weapon-card.rarity-Noncomune {
-  border-color: rgba(52, 211, 153, 0.40) !important;
-  box-shadow: 0 10px 28px -6px rgba(0, 0, 0, 0.72), 0 0 14px rgba(52, 211, 153, 0.12) !important;
+  border-color: rgba(52, 211, 153, 0.4) !important;
+  box-shadow:
+    0 10px 28px -6px rgba(0, 0, 0, 0.72),
+    0 0 14px rgba(52, 211, 153, 0.12) !important;
 }
 .weapon-card.rarity-Raro {
   border-color: rgba(96, 165, 250, 0.48) !important;
-  box-shadow: 0 10px 28px -6px rgba(0, 0, 0, 0.72), 0 0 18px rgba(96, 165, 250, 0.18) !important;
+  box-shadow:
+    0 10px 28px -6px rgba(0, 0, 0, 0.72),
+    0 0 18px rgba(96, 165, 250, 0.18) !important;
 }
 .weapon-card.rarity-Moltoraro {
   border-color: rgba(192, 132, 252, 0.58) !important;
-  box-shadow: 0 12px 32px -6px rgba(0, 0, 0, 0.76), 0 0 24px rgba(192, 132, 252, 0.26) !important;
+  box-shadow:
+    0 12px 32px -6px rgba(0, 0, 0, 0.76),
+    0 0 24px rgba(192, 132, 252, 0.26) !important;
 }
 .weapon-card.rarity-Leggendario {
   border-color: rgba(245, 158, 11, 0.72) !important;
-  box-shadow: 0 12px 34px -6px rgba(0, 0, 0, 0.8), 0 0 28px rgba(245, 158, 11, 0.34) !important;
+  box-shadow:
+    0 12px 34px -6px rgba(0, 0, 0, 0.8),
+    0 0 28px rgba(245, 158, 11, 0.34) !important;
 }
 .weapon-card.rarity-Armaunica {
   border-color: rgba(244, 63, 94, 0.75) !important;
-  box-shadow: 0 12px 36px -6px rgba(0, 0, 0, 0.82), 0 0 30px rgba(244, 63, 94, 0.38) !important;
+  box-shadow:
+    0 12px 36px -6px rgba(0, 0, 0, 0.82),
+    0 0 30px rgba(244, 63, 94, 0.38) !important;
 }
 .weapon-card.rarity-Armadivina {
   border-color: rgba(253, 224, 71, 0.85) !important;
-  box-shadow: 0 14px 38px -6px rgba(0, 0, 0, 0.85), 0 0 34px rgba(253, 224, 71, 0.45) !important;
+  box-shadow:
+    0 14px 38px -6px rgba(0, 0, 0, 0.85),
+    0 0 34px rgba(253, 224, 71, 0.45) !important;
 }
 
 /* ── Contrasto Elevato per Tema Chiaro ("Pergamena Antica") ── */
-[data-theme="light"] button {
+[data-theme='light'] button {
   color: var(--text-primary);
 }
 
-[data-theme="light"] .rarity-badge {
+[data-theme='light'] .rarity-badge {
   background: rgba(33, 23, 14, 0.86) !important;
   border-color: rgba(140, 93, 25, 0.55) !important;
   font-weight: 700 !important;
 }
 
-[data-theme="light"] .sium-ctrl-btn {
+[data-theme='light'] .sium-ctrl-btn {
   color: #3a2816;
-  background: rgba(140, 93, 25, 0.10);
+  background: rgba(140, 93, 25, 0.1);
   border-color: rgba(140, 93, 25, 0.32);
 }
 
-[data-theme="light"] .sium-ctrl-btn.active,
-[data-theme="light"] .sium-ctrl-btn:hover {
+[data-theme='light'] .sium-ctrl-btn.active,
+[data-theme='light'] .sium-ctrl-btn:hover {
   color: #1f1308;
   background: rgba(140, 93, 25, 0.24);
   border-color: #6e450c;
@@ -407,12 +425,7 @@ table td {
   left: -120%;
   width: 65%;
   height: 200%;
-  background: linear-gradient(
-    90deg,
-    transparent,
-    rgba(255, 245, 210, 0.28),
-    transparent
-  );
+  background: linear-gradient(90deg, transparent, rgba(255, 245, 210, 0.28), transparent);
   transform: skewX(-24deg);
   transition: left 0.55s var(--anim-ease-out);
   pointer-events: none;
@@ -435,10 +448,10 @@ table td {
 }
 
 /* ── Input, Select e Barre di Ricerca ── */
-input[type="text"],
-input[type="number"],
-input[type="password"],
-input[type="url"],
+input[type='text'],
+input[type='number'],
+input[type='password'],
+input[type='url'],
 select,
 textarea {
   border-radius: var(--radius-sm) !important;
@@ -476,11 +489,17 @@ textarea:focus {
 }
 
 #login-overlay .login-form-area {
-  background: linear-gradient(165deg, rgba(24, 18, 13, 0.95) 0%, rgba(12, 9, 6, 0.97) 100%) !important;
+  background: linear-gradient(
+    165deg,
+    rgba(24, 18, 13, 0.95) 0%,
+    rgba(12, 9, 6, 0.97) 100%
+  ) !important;
   border: 1px solid rgba(216, 178, 92, 0.52) !important;
   border-radius: 14px !important;
   padding: 1.5rem 1.35rem !important;
-  box-shadow: 0 24px 64px rgba(0, 0, 0, 0.92), 0 0 36px rgba(216, 178, 92, 0.18) !important;
+  box-shadow:
+    0 24px 64px rgba(0, 0, 0, 0.92),
+    0 0 36px rgba(216, 178, 92, 0.18) !important;
 }
 
 .login-divider {
@@ -586,7 +605,9 @@ textarea:focus {
   background: var(--bg-card-solid, #14100c);
   border: 1.5px solid var(--border-gold-strong, rgba(216, 178, 92, 0.75));
   border-radius: 12px;
-  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.9), 0 0 28px var(--gold-glow);
+  box-shadow:
+    0 20px 50px rgba(0, 0, 0, 0.9),
+    0 0 28px var(--gold-glow);
   display: none;
   flex-direction: column;
   gap: 0.45rem;
@@ -599,8 +620,14 @@ textarea:focus {
 }
 
 @keyframes siumThemeMenuPop {
-  0%   { opacity: 0; transform: translateY(-8px) scale(0.95); }
-  100% { opacity: 1; transform: translateY(0) scale(1); }
+  0% {
+    opacity: 0;
+    transform: translateY(-8px) scale(0.95);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
 }
 
 .sium-theme-picker-header {
@@ -688,8 +715,8 @@ textarea:focus {
    STILE COMPLETO TEMA HALLOWEEN — RIQUADRI, BORDI STREGATI, RAGNATELE E TOMBE
    Palette: Nero Abissale (#040208 / #080410), Viola Gotico (#a855f7 / #160a2c) & Arancio Zucca (#ff7518)
    ============================================================================ */
-[data-theme="halloween"],
-[data-theme="halloween"] body {
+[data-theme='halloween'],
+[data-theme='halloween'] body {
   background-color: #05020a !important;
   background-image:
     radial-gradient(circle at 15% 18%, rgba(168, 85, 247, 0.16) 0%, transparent 42%),
@@ -701,13 +728,15 @@ textarea:focus {
 }
 
 /* Sidebar stregata con bordo a strisce Halloween (Nero, Viola Gotico, Viola Scuro & Arancio Zucca) */
-[data-theme="halloween"] .sidebar {
+[data-theme='halloween'] .sidebar {
   background: linear-gradient(180deg, #040208 0%, #0d061c 55%, #030106 100%) !important;
   border-right: 3px solid #a855f7 !important;
-  box-shadow: 6px 0 36px rgba(0, 0, 6, 0.96), 2px 0 22px rgba(168, 85, 247, 0.25) !important;
+  box-shadow:
+    6px 0 36px rgba(0, 0, 6, 0.96),
+    2px 0 22px rgba(168, 85, 247, 0.25) !important;
 }
 
-[data-theme="halloween"] .sidebar::after {
+[data-theme='halloween'] .sidebar::after {
   width: 4px !important;
   background: repeating-linear-gradient(
     45deg,
@@ -723,15 +752,18 @@ textarea:focus {
   opacity: 0.95 !important;
 }
 
-[data-theme="halloween"] .sidebar-brand {
-  background:
-    radial-gradient(circle at 50% 25%, rgba(168, 85, 247, 0.26), rgba(14, 6, 28, 0.78) 72%) !important;
+[data-theme='halloween'] .sidebar-brand {
+  background: radial-gradient(
+    circle at 50% 25%,
+    rgba(168, 85, 247, 0.26),
+    rgba(14, 6, 28, 0.78) 72%
+  ) !important;
   border-bottom: 2px solid rgba(255, 117, 24, 0.5) !important;
   box-shadow: inset 0 4px 0 rgba(168, 85, 247, 0.82) !important;
 }
 
-[data-theme="halloween"] .sidebar-brand::after {
-  content: "🎃 🪦 👻 🕷️ 💀 🦇";
+[data-theme='halloween'] .sidebar-brand::after {
+  content: '🎃 🪦 👻 🕷️ 💀 🦇';
   display: block;
   text-align: center;
   font-size: 11px;
@@ -740,20 +772,25 @@ textarea:focus {
   filter: drop-shadow(0 0 8px rgba(168, 85, 247, 0.85));
 }
 
-[data-theme="halloween"] .nav-item {
+[data-theme='halloween'] .nav-item {
   color: #c4b5fd !important;
 }
 
-[data-theme="halloween"] .nav-item:hover {
+[data-theme='halloween'] .nav-item:hover {
   color: #f3e8ff !important;
   background: linear-gradient(90deg, rgba(168, 85, 247, 0.22), rgba(255, 117, 24, 0.14)) !important;
   border-color: rgba(255, 117, 24, 0.55) !important;
   box-shadow: 0 0 14px rgba(168, 85, 247, 0.24);
 }
 
-[data-theme="halloween"] .nav-item.active {
+[data-theme='halloween'] .nav-item.active {
   color: #f5d0fe !important;
-  background: linear-gradient(90deg, rgba(147, 51, 234, 0.34) 0%, rgba(24, 10, 46, 0.68) 70%, rgba(255, 117, 24, 0.24) 100%) !important;
+  background: linear-gradient(
+    90deg,
+    rgba(147, 51, 234, 0.34) 0%,
+    rgba(24, 10, 46, 0.68) 70%,
+    rgba(255, 117, 24, 0.24) 100%
+  ) !important;
   border-color: #a855f7 !important;
   box-shadow:
     inset 0 2px 0 rgba(192, 132, 252, 0.8),
@@ -761,7 +798,7 @@ textarea:focus {
     0 4px 14px rgba(0, 0, 0, 0.72) !important;
 }
 
-[data-theme="halloween"] .nav-item.active::before {
+[data-theme='halloween'] .nav-item.active::before {
   content: '🎃' !important;
   width: auto !important;
   height: auto !important;
@@ -773,32 +810,39 @@ textarea:focus {
 }
 
 /* Riquadri, Card e Pannelli a Tema Halloween (Nero Abissale, Viola Cupo & Arancio Zucca) */
-[data-theme="halloween"] .weapon-card,
-[data-theme="halloween"] .best-card,
-[data-theme="halloween"] .pet-card,
-[data-theme="halloween"] .libro-card,
-[data-theme="halloween"] .scena-card,
-[data-theme="halloween"] .sium-spell-card,
-[data-theme="halloween"] .cyber-card,
-[data-theme="halloween"] .veicolo-card,
-[data-theme="halloween"] .droga-card,
-[data-theme="halloween"] .panel-glass,
-[data-theme="halloween"] .regole-card,
-[data-theme="halloween"] .fazione-card,
-[data-theme="halloween"] .bacheca-item {
+[data-theme='halloween'] .weapon-card,
+[data-theme='halloween'] .best-card,
+[data-theme='halloween'] .pet-card,
+[data-theme='halloween'] .libro-card,
+[data-theme='halloween'] .scena-card,
+[data-theme='halloween'] .sium-spell-card,
+[data-theme='halloween'] .cyber-card,
+[data-theme='halloween'] .veicolo-card,
+[data-theme='halloween'] .droga-card,
+[data-theme='halloween'] .panel-glass,
+[data-theme='halloween'] .regole-card,
+[data-theme='halloween'] .fazione-card,
+[data-theme='halloween'] .bacheca-item {
   background:
-    linear-gradient(155deg, rgba(16, 8, 32, 0.96) 0%, rgba(6, 3, 13, 0.98) 62%, rgba(22, 9, 38, 0.96) 100%) padding-box,
+    linear-gradient(
+        155deg,
+        rgba(16, 8, 32, 0.96) 0%,
+        rgba(6, 3, 13, 0.98) 62%,
+        rgba(22, 9, 38, 0.96) 100%
+      )
+      padding-box,
     repeating-linear-gradient(
-      45deg,
-      #06030c 0px,
-      #06030c 12px,
-      #9333ea 12px,
-      #9333ea 24px,
-      #1b0933 24px,
-      #1b0933 36px,
-      #ff7518 36px,
-      #ff7518 48px
-    ) border-box !important;
+        45deg,
+        #06030c 0px,
+        #06030c 12px,
+        #9333ea 12px,
+        #9333ea 24px,
+        #1b0933 24px,
+        #1b0933 36px,
+        #ff7518 36px,
+        #ff7518 48px
+      )
+      border-box !important;
   border: 2.5px solid transparent !important;
   border-radius: 13px !important;
   /* Bordo superiore viola spettrale e zucca + ombra nera profonda */
@@ -807,29 +851,28 @@ textarea:focus {
     inset 0 9px 14px -2px rgba(255, 117, 24, 0.36),
     0 12px 32px rgba(0, 0, 6, 0.96),
     0 0 20px rgba(147, 51, 234, 0.22),
-    inset 0 0 24px rgba(147, 51, 234, 0.10) !important;
+    inset 0 0 24px rgba(147, 51, 234, 0.1) !important;
 }
 
 /* Cornice interna tratteggiata viola + Tomba RIP con Croce in basso a destra su tutte le card */
-[data-theme="halloween"] .weapon-card::before,
-[data-theme="halloween"] .best-card::before,
-[data-theme="halloween"] .pet-card::before,
-[data-theme="halloween"] .libro-card::before,
-[data-theme="halloween"] .scena-card::before,
-[data-theme="halloween"] .sium-spell-card::before,
-[data-theme="halloween"] .cyber-card::before,
-[data-theme="halloween"] .veicolo-card::before,
-[data-theme="halloween"] .droga-card::before,
-[data-theme="halloween"] .regole-card::before,
-[data-theme="halloween"] .fazione-card::before,
-[data-theme="halloween"] .bacheca-item::before {
+[data-theme='halloween'] .weapon-card::before,
+[data-theme='halloween'] .best-card::before,
+[data-theme='halloween'] .pet-card::before,
+[data-theme='halloween'] .libro-card::before,
+[data-theme='halloween'] .scena-card::before,
+[data-theme='halloween'] .sium-spell-card::before,
+[data-theme='halloween'] .cyber-card::before,
+[data-theme='halloween'] .veicolo-card::before,
+[data-theme='halloween'] .droga-card::before,
+[data-theme='halloween'] .regole-card::before,
+[data-theme='halloween'] .fazione-card::before,
+[data-theme='halloween'] .bacheca-item::before {
   content: '';
   position: absolute;
   inset: 4px;
   border: 1px dashed rgba(168, 85, 247, 0.44) !important;
   border-radius: 9px;
-  background-image:
-    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='56' height='56' viewBox='0 0 56 56'%3E%3Cg opacity='0.82'%3E%3Cpath d='M14,52 L14,24 C14,13 42,13 42,24 L42,52 Z' fill='%23120824' stroke='%23a855f7' stroke-width='1.5'/%3E%3Cpath d='M28,17 L28,29 M23,21 L33,21' stroke='%23ff7518' stroke-width='2' stroke-linecap='round'/%3E%3Ctext x='28' y='41' text-anchor='middle' fill='%23e9d5ff' font-family='serif' font-size='9' font-weight='bold'%3ERIP%3C/text%3E%3Cpath d='M6,52 Q28,48 50,52' stroke='%23a855f7' stroke-width='2' fill='none'/%3E%3C/g%3E%3C/svg%3E");
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='56' height='56' viewBox='0 0 56 56'%3E%3Cg opacity='0.82'%3E%3Cpath d='M14,52 L14,24 C14,13 42,13 42,24 L42,52 Z' fill='%23120824' stroke='%23a855f7' stroke-width='1.5'/%3E%3Cpath d='M28,17 L28,29 M23,21 L33,21' stroke='%23ff7518' stroke-width='2' stroke-linecap='round'/%3E%3Ctext x='28' y='41' text-anchor='middle' fill='%23e9d5ff' font-family='serif' font-size='9' font-weight='bold'%3ERIP%3C/text%3E%3Cpath d='M6,52 Q28,48 50,52' stroke='%23a855f7' stroke-width='2' fill='none'/%3E%3C/g%3E%3C/svg%3E");
   background-repeat: no-repeat;
   background-position: bottom right;
   background-size: 44px 44px;
@@ -837,15 +880,15 @@ textarea:focus {
   z-index: 1;
 }
 
-[data-theme="halloween"] .weapon-card:hover,
-[data-theme="halloween"] .best-card:hover,
-[data-theme="halloween"] .pet-card:hover,
-[data-theme="halloween"] .libro-card:hover,
-[data-theme="halloween"] .scena-card:hover,
-[data-theme="halloween"] .sium-spell-card:hover,
-[data-theme="halloween"] .cyber-card:hover,
-[data-theme="halloween"] .veicolo-card:hover,
-[data-theme="halloween"] .droga-card:hover {
+[data-theme='halloween'] .weapon-card:hover,
+[data-theme='halloween'] .best-card:hover,
+[data-theme='halloween'] .pet-card:hover,
+[data-theme='halloween'] .libro-card:hover,
+[data-theme='halloween'] .scena-card:hover,
+[data-theme='halloween'] .sium-spell-card:hover,
+[data-theme='halloween'] .cyber-card:hover,
+[data-theme='halloween'] .veicolo-card:hover,
+[data-theme='halloween'] .droga-card:hover {
   box-shadow:
     inset 0 6px 0 0 #d8b4fe,
     0 16px 40px rgba(0, 0, 8, 0.97),
@@ -855,11 +898,11 @@ textarea:focus {
 }
 
 /* Spotlight viola cupo e arancio zucca al passaggio del mouse sulle card in Halloween */
-[data-theme="halloween"] .weapon-card::after,
-[data-theme="halloween"] .best-card::after,
-[data-theme="halloween"] .pet-card::after,
-[data-theme="halloween"] .libro-card::after,
-[data-theme="halloween"] .scena-card::after {
+[data-theme='halloween'] .weapon-card::after,
+[data-theme='halloween'] .best-card::after,
+[data-theme='halloween'] .pet-card::after,
+[data-theme='halloween'] .libro-card::after,
+[data-theme='halloween'] .scena-card::after {
   background: radial-gradient(
     360px circle at var(--mouse-x, 50%) var(--mouse-y, 50%),
     rgba(168, 85, 247, 0.22),
@@ -869,18 +912,21 @@ textarea:focus {
 }
 
 /* Intestazioni e Divisori a tema Halloween */
-[data-theme="halloween"] .main-content header h1,
-[data-theme="halloween"] .sium-rune-title {
+[data-theme='halloween'] .main-content header h1,
+[data-theme='halloween'] .sium-rune-title {
   color: #e9d5ff !important;
-  text-shadow: 0 0 18px rgba(168, 85, 247, 0.6), 0 0 28px rgba(255, 117, 24, 0.35), 0 2px 10px rgba(0, 0, 0, 0.95) !important;
+  text-shadow:
+    0 0 18px rgba(168, 85, 247, 0.6),
+    0 0 28px rgba(255, 117, 24, 0.35),
+    0 2px 10px rgba(0, 0, 0, 0.95) !important;
 }
 
-[data-theme="halloween"] .ornate-divider {
+[data-theme='halloween'] .ornate-divider {
   color: #c084fc !important;
 }
 
-[data-theme="halloween"] .ornate-divider::before,
-[data-theme="halloween"] .ornate-divider::after {
+[data-theme='halloween'] .ornate-divider::before,
+[data-theme='halloween'] .ornate-divider::after {
   height: 2px !important;
   background: repeating-linear-gradient(
     90deg,
@@ -894,23 +940,24 @@ textarea:focus {
 }
 
 /* Modali, Input e Bottoni in modalità Halloween con Cornici Stregate Viola/Nero/Arancio */
-[data-theme="halloween"] .detail-modal-panel,
-[data-theme="halloween"] .sium-spell-modal-panel,
-[data-theme="halloween"] .modal-box,
-[data-theme="halloween"] .detail-modal-card {
+[data-theme='halloween'] .detail-modal-panel,
+[data-theme='halloween'] .sium-spell-modal-panel,
+[data-theme='halloween'] .modal-box,
+[data-theme='halloween'] .detail-modal-card {
   background:
     linear-gradient(160deg, #120824 0%, #05020a 65%, #1a0926 100%) padding-box,
     repeating-linear-gradient(
-      45deg,
-      #05020a 0px,
-      #05020a 14px,
-      #9333ea 14px,
-      #9333ea 28px,
-      #1e0a38 28px,
-      #1e0a38 42px,
-      #ff7518 42px,
-      #ff7518 56px
-    ) border-box !important;
+        45deg,
+        #05020a 0px,
+        #05020a 14px,
+        #9333ea 14px,
+        #9333ea 28px,
+        #1e0a38 28px,
+        #1e0a38 42px,
+        #ff7518 42px,
+        #ff7518 56px
+      )
+      border-box !important;
   border: 3px solid transparent !important;
   box-shadow:
     inset 0 6px 0 0 rgba(168, 85, 247, 0.88),
@@ -919,26 +966,28 @@ textarea:focus {
     0 0 24px rgba(255, 117, 24, 0.28) !important;
 }
 
-[data-theme="halloween"] input[type="text"],
-[data-theme="halloween"] input[type="number"],
-[data-theme="halloween"] input[type="password"],
-[data-theme="halloween"] input[type="url"],
-[data-theme="halloween"] select,
-[data-theme="halloween"] textarea {
+[data-theme='halloween'] input[type='text'],
+[data-theme='halloween'] input[type='number'],
+[data-theme='halloween'] input[type='password'],
+[data-theme='halloween'] input[type='url'],
+[data-theme='halloween'] select,
+[data-theme='halloween'] textarea {
   background-color: rgba(6, 3, 14, 0.94) !important;
   border-color: rgba(168, 85, 247, 0.52) !important;
   box-shadow: inset 0 2px 0 rgba(168, 85, 247, 0.35) !important;
   color: #f3e8ff !important;
 }
 
-[data-theme="halloween"] input:focus,
-[data-theme="halloween"] select:focus,
-[data-theme="halloween"] textarea:focus {
+[data-theme='halloween'] input:focus,
+[data-theme='halloween'] select:focus,
+[data-theme='halloween'] textarea:focus {
   border-color: #d8b4fe !important;
-  box-shadow: 0 0 0 3px rgba(255, 117, 24, 0.32), 0 0 14px rgba(168, 85, 247, 0.42) !important;
+  box-shadow:
+    0 0 0 3px rgba(255, 117, 24, 0.32),
+    0 0 14px rgba(168, 85, 247, 0.42) !important;
 }
 
-[data-theme="halloween"] .sium-top-controls {
+[data-theme='halloween'] .sium-top-controls {
   background: linear-gradient(135deg, rgba(8, 3, 18, 0.96), rgba(24, 10, 44, 0.96)) !important;
   border: 1.5px solid rgba(168, 85, 247, 0.72) !important;
   box-shadow:
@@ -947,14 +996,14 @@ textarea:focus {
     0 0 22px rgba(168, 85, 247, 0.28) !important;
 }
 
-[data-theme="halloween"] .sium-ctrl-btn {
+[data-theme='halloween'] .sium-ctrl-btn {
   color: #d8b4fe;
   background: rgba(168, 85, 247, 0.14);
   border-color: rgba(168, 85, 247, 0.44);
 }
 
-[data-theme="halloween"] .sium-ctrl-btn:hover,
-[data-theme="halloween"] .sium-ctrl-btn.active {
+[data-theme='halloween'] .sium-ctrl-btn:hover,
+[data-theme='halloween'] .sium-ctrl-btn.active {
   color: #ffffff;
   background: linear-gradient(135deg, rgba(147, 51, 234, 0.42), rgba(255, 117, 24, 0.32));
   border-color: #d8b4fe;
@@ -962,38 +1011,55 @@ textarea:focus {
 }
 
 /* Arena dei Dadi 3D e Dadi in versione Halloween (Altare del Cimitero Nero, Viola Cupo & Arancio Zucca) */
-[data-theme="halloween"] .sium-3d-dice-arena {
+[data-theme='halloween'] .sium-3d-dice-arena {
   background:
     radial-gradient(ellipse at 50% 42%, rgba(28, 12, 54, 0.95) 0%, rgba(5, 2, 12, 0.99) 76%),
-    repeating-radial-gradient(circle at 50% 50%, rgba(168, 85, 247, 0.08) 0px, rgba(168, 85, 247, 0.08) 1px, transparent 1px, transparent 18px) !important;
+    repeating-radial-gradient(
+      circle at 50% 50%,
+      rgba(168, 85, 247, 0.08) 0px,
+      rgba(168, 85, 247, 0.08) 1px,
+      transparent 1px,
+      transparent 18px
+    ) !important;
   border: 3px solid #a855f7 !important;
   box-shadow:
     inset 0 6px 0 rgba(168, 85, 247, 0.82),
     inset 0 14px 42px rgba(0, 0, 0, 0.96),
-    0 0 30px rgba(168, 85, 247, 0.30),
+    0 0 30px rgba(168, 85, 247, 0.3),
     0 14px 36px rgba(0, 0, 0, 0.88) !important;
 }
 
-[data-theme="halloween"] .sium-die-cube-face {
+[data-theme='halloween'] .sium-die-cube-face {
   background: linear-gradient(135deg, #240d46 0%, #110524 60%, #05020a 100%) !important;
   border-color: #a855f7 !important;
   color: #e9d5ff !important;
-  box-shadow: inset 0 0 16px rgba(168, 85, 247, 0.4), 0 0 12px rgba(255, 117, 24, 0.35) !important;
+  box-shadow:
+    inset 0 0 16px rgba(168, 85, 247, 0.4),
+    0 0 12px rgba(255, 117, 24, 0.35) !important;
 }
 
-[data-theme="halloween"] .sium-die-core-3d {
+[data-theme='halloween'] .sium-die-core-3d {
   background: radial-gradient(circle, #2e1058 0%, #05020a 90%) !important;
   border-color: rgba(168, 85, 247, 0.68) !important;
 }
 
-[data-theme="halloween"] #login-overlay {
+[data-theme='halloween'] #login-overlay {
   background: radial-gradient(circle at 50% 42%, rgba(36, 14, 68, 0.72) 0%, #030106 80%) !important;
 }
 
-[data-theme="halloween"] #login-overlay .login-form-area {
+[data-theme='halloween'] #login-overlay .login-form-area {
   background:
     linear-gradient(165deg, rgba(14, 6, 28, 0.96) 0%, rgba(4, 2, 9, 0.98) 100%) padding-box,
-    repeating-linear-gradient(45deg, #05020a 0px, #05020a 12px, #9333ea 12px, #9333ea 24px, #ff7518 24px, #ff7518 36px) border-box !important;
+    repeating-linear-gradient(
+        45deg,
+        #05020a 0px,
+        #05020a 12px,
+        #9333ea 12px,
+        #9333ea 24px,
+        #ff7518 24px,
+        #ff7518 36px
+      )
+      border-box !important;
   border: 2.5px solid transparent !important;
   box-shadow:
     inset 0 5px 0 rgba(168, 85, 247, 0.85),
@@ -1005,8 +1071,8 @@ textarea:focus {
    STILE COMPLETO TEMA NATALE — CORNICI NATALIZIE, BORDI CARAMELLA & NEVE SUI RIQUADRI
    Palette: Verde Abete (#061b12 / #0e3525), Rosso Natalizio (#ef233c), Oro (#ffd56b) & Neve (#ffffff)
    ============================================================================ */
-[data-theme="christmas"],
-[data-theme="christmas"] body {
+[data-theme='christmas'],
+[data-theme='christmas'] body {
   background-color: #051810 !important;
   background-image:
     radial-gradient(circle at 16% 18%, rgba(239, 35, 60, 0.18) 0%, transparent 44%),
@@ -1018,13 +1084,15 @@ textarea:focus {
 }
 
 /* Sidebar Natalizia con bordo Bastoncino di Zucchero (Candy Cane) e icone natalizie */
-[data-theme="christmas"] .sidebar {
+[data-theme='christmas'] .sidebar {
   background: linear-gradient(180deg, #051810 0%, #0a291c 52%, #1f090d 100%) !important;
   border-right: 3px solid #ef233c !important;
-  box-shadow: 6px 0 36px rgba(0, 8, 5, 0.92), 2px 0 20px rgba(239, 35, 60, 0.24) !important;
+  box-shadow:
+    6px 0 36px rgba(0, 8, 5, 0.92),
+    2px 0 20px rgba(239, 35, 60, 0.24) !important;
 }
 
-[data-theme="christmas"] .sidebar::after {
+[data-theme='christmas'] .sidebar::after {
   width: 4px !important;
   background: repeating-linear-gradient(
     45deg,
@@ -1040,15 +1108,18 @@ textarea:focus {
   opacity: 0.95 !important;
 }
 
-[data-theme="christmas"] .sidebar-brand {
-  background:
-    radial-gradient(circle at 50% 25%, rgba(239, 35, 60, 0.28), rgba(8, 36, 24, 0.72) 74%) !important;
+[data-theme='christmas'] .sidebar-brand {
+  background: radial-gradient(
+    circle at 50% 25%,
+    rgba(239, 35, 60, 0.28),
+    rgba(8, 36, 24, 0.72) 74%
+  ) !important;
   border-bottom: 2px solid rgba(255, 213, 107, 0.5) !important;
   box-shadow: inset 0 4px 0 rgba(255, 255, 255, 0.75) !important;
 }
 
-[data-theme="christmas"] .sidebar-brand::after {
-  content: "🎅 🎄 ⛄ 🍪 🍬 ❄️";
+[data-theme='christmas'] .sidebar-brand::after {
+  content: '🎅 🎄 ⛄ 🍪 🍬 ❄️';
   display: block;
   text-align: center;
   font-size: 11px;
@@ -1057,20 +1128,24 @@ textarea:focus {
   filter: drop-shadow(0 0 8px rgba(255, 213, 107, 0.85));
 }
 
-[data-theme="christmas"] .nav-item {
+[data-theme='christmas'] .nav-item {
   color: #c8f7dc !important;
 }
 
-[data-theme="christmas"] .nav-item:hover {
+[data-theme='christmas'] .nav-item:hover {
   color: #fff2b8 !important;
   background: linear-gradient(90deg, rgba(239, 35, 60, 0.22), rgba(22, 163, 74, 0.16)) !important;
   border-color: rgba(255, 213, 107, 0.55) !important;
   box-shadow: 0 0 14px rgba(255, 213, 107, 0.22);
 }
 
-[data-theme="christmas"] .nav-item.active {
+[data-theme='christmas'] .nav-item.active {
   color: #ffffff !important;
-  background: linear-gradient(90deg, rgba(239, 35, 60, 0.42) 0%, rgba(16, 78, 48, 0.65) 100%) !important;
+  background: linear-gradient(
+    90deg,
+    rgba(239, 35, 60, 0.42) 0%,
+    rgba(16, 78, 48, 0.65) 100%
+  ) !important;
   border-color: #ffd56b !important;
   box-shadow:
     inset 0 2px 0 rgba(255, 255, 255, 0.75),
@@ -1078,7 +1153,7 @@ textarea:focus {
     0 4px 14px rgba(0, 0, 0, 0.6) !important;
 }
 
-[data-theme="christmas"] .nav-item.active::before {
+[data-theme='christmas'] .nav-item.active::before {
   content: '🎄' !important;
   width: auto !important;
   height: auto !important;
@@ -1090,32 +1165,39 @@ textarea:focus {
 }
 
 /* Riquadri, Card e Pannelli a Tema Natale con Cornici Candy-Cane, Neve sui Bordi, Agrifoglio e Caramelle */
-[data-theme="christmas"] .weapon-card,
-[data-theme="christmas"] .best-card,
-[data-theme="christmas"] .pet-card,
-[data-theme="christmas"] .libro-card,
-[data-theme="christmas"] .scena-card,
-[data-theme="christmas"] .sium-spell-card,
-[data-theme="christmas"] .cyber-card,
-[data-theme="christmas"] .veicolo-card,
-[data-theme="christmas"] .droga-card,
-[data-theme="christmas"] .panel-glass,
-[data-theme="christmas"] .regole-card,
-[data-theme="christmas"] .fazione-card,
-[data-theme="christmas"] .bacheca-item {
+[data-theme='christmas'] .weapon-card,
+[data-theme='christmas'] .best-card,
+[data-theme='christmas'] .pet-card,
+[data-theme='christmas'] .libro-card,
+[data-theme='christmas'] .scena-card,
+[data-theme='christmas'] .sium-spell-card,
+[data-theme='christmas'] .cyber-card,
+[data-theme='christmas'] .veicolo-card,
+[data-theme='christmas'] .droga-card,
+[data-theme='christmas'] .panel-glass,
+[data-theme='christmas'] .regole-card,
+[data-theme='christmas'] .fazione-card,
+[data-theme='christmas'] .bacheca-item {
   background:
-    linear-gradient(160deg, rgba(11, 45, 31, 0.95) 0%, rgba(6, 26, 18, 0.97) 62%, rgba(36, 11, 16, 0.94) 100%) padding-box,
+    linear-gradient(
+        160deg,
+        rgba(11, 45, 31, 0.95) 0%,
+        rgba(6, 26, 18, 0.97) 62%,
+        rgba(36, 11, 16, 0.94) 100%
+      )
+      padding-box,
     repeating-linear-gradient(
-      45deg,
-      #ef233c 0px,
-      #ef233c 12px,
-      #ffffff 12px,
-      #ffffff 24px,
-      #16a34a 24px,
-      #16a34a 36px,
-      #ffd56b 36px,
-      #ffd56b 48px
-    ) border-box !important;
+        45deg,
+        #ef233c 0px,
+        #ef233c 12px,
+        #ffffff 12px,
+        #ffffff 24px,
+        #16a34a 24px,
+        #16a34a 36px,
+        #ffd56b 36px,
+        #ffd56b 48px
+      )
+      border-box !important;
   border: 2.5px solid transparent !important;
   border-radius: 13px !important;
   /* Cumulo di neve bianca soffice sul bordo superiore + bagliore natalizio */
@@ -1128,15 +1210,15 @@ textarea:focus {
 }
 
 /* Cornice interna innevata + SVG Agrifoglio, Fiocco di Neve e Caramella Natalizia negli angoli */
-[data-theme="christmas"] .weapon-card::before,
-[data-theme="christmas"] .best-card::before,
-[data-theme="christmas"] .pet-card::before,
-[data-theme="christmas"] .libro-card::before,
-[data-theme="christmas"] .scena-card::before,
-[data-theme="christmas"] .sium-spell-card::before,
-[data-theme="christmas"] .cyber-card::before,
-[data-theme="christmas"] .veicolo-card::before,
-[data-theme="christmas"] .droga-card::before {
+[data-theme='christmas'] .weapon-card::before,
+[data-theme='christmas'] .best-card::before,
+[data-theme='christmas'] .pet-card::before,
+[data-theme='christmas'] .libro-card::before,
+[data-theme='christmas'] .scena-card::before,
+[data-theme='christmas'] .sium-spell-card::before,
+[data-theme='christmas'] .cyber-card::before,
+[data-theme='christmas'] .veicolo-card::before,
+[data-theme='christmas'] .droga-card::before {
   content: '';
   position: absolute;
   inset: 4px;
@@ -1146,21 +1228,25 @@ textarea:focus {
     url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='68' height='68' viewBox='0 0 68 68'%3E%3Cg%3E%3Cpath d='M2,4 Q14,14 26,5 Q38,13 50,4 Q58,10 66,3 L66,0 L0,0 Z' fill='%23ffffff' opacity='0.82'/%3E%3Cpath d='M8,16 C14,8 24,10 26,18 C18,22 10,20 8,16 Z' fill='%2316a34a'/%3E%3Cpath d='M16,8 C22,12 22,22 14,24 C10,18 12,10 16,8 Z' fill='%2315803d'/%3E%3Ccircle cx='12' cy='12' r='3.5' fill='%23ef233c'/%3E%3Ccircle cx='17' cy='10' r='3' fill='%23ef233c'/%3E%3Ccircle cx='10' cy='17' r='3' fill='%23e11d48'/%3E%3Ccircle cx='12' cy='11' r='1' fill='%23ffffff'/%3E%3C/g%3E%3C/svg%3E"),
     url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='44' height='44' viewBox='0 0 44 44'%3E%3Cg stroke='%23ffffff' stroke-width='1.5' stroke-linecap='round' opacity='0.55'%3E%3Cline x1='22' y1='6' x2='22' y2='38'/%3E%3Cline x1='6' y1='22' x2='38' y2='22'/%3E%3Cline x1='11' y1='11' x2='33' y2='33'/%3E%3Cline x1='33' y1='11' x2='11' y2='33'/%3E%3Ccircle cx='22' cy='22' r='4' fill='none' stroke='%23ffd56b'/%3E%3C/g%3E%3C/svg%3E");
   background-repeat: no-repeat, no-repeat;
-  background-position: top left, bottom right;
-  background-size: 54px 54px, 34px 34px;
+  background-position:
+    top left,
+    bottom right;
+  background-size:
+    54px 54px,
+    34px 34px;
   pointer-events: none;
   z-index: 1;
 }
 
-[data-theme="christmas"] .weapon-card:hover,
-[data-theme="christmas"] .best-card:hover,
-[data-theme="christmas"] .pet-card:hover,
-[data-theme="christmas"] .libro-card:hover,
-[data-theme="christmas"] .scena-card:hover,
-[data-theme="christmas"] .sium-spell-card:hover,
-[data-theme="christmas"] .cyber-card:hover,
-[data-theme="christmas"] .veicolo-card:hover,
-[data-theme="christmas"] .droga-card:hover {
+[data-theme='christmas'] .weapon-card:hover,
+[data-theme='christmas'] .best-card:hover,
+[data-theme='christmas'] .pet-card:hover,
+[data-theme='christmas'] .libro-card:hover,
+[data-theme='christmas'] .scena-card:hover,
+[data-theme='christmas'] .sium-spell-card:hover,
+[data-theme='christmas'] .cyber-card:hover,
+[data-theme='christmas'] .veicolo-card:hover,
+[data-theme='christmas'] .droga-card:hover {
   box-shadow:
     inset 0 6px 0 0 #ffffff,
     0 16px 40px rgba(2, 10, 6, 0.96),
@@ -1170,32 +1256,35 @@ textarea:focus {
 }
 
 /* Spotlight caldo dorato e rosso natalizio al passaggio del mouse sulle card */
-[data-theme="christmas"] .weapon-card::after,
-[data-theme="christmas"] .best-card::after,
-[data-theme="christmas"] .pet-card::after,
-[data-theme="christmas"] .libro-card::after,
-[data-theme="christmas"] .scena-card::after {
+[data-theme='christmas'] .weapon-card::after,
+[data-theme='christmas'] .best-card::after,
+[data-theme='christmas'] .pet-card::after,
+[data-theme='christmas'] .libro-card::after,
+[data-theme='christmas'] .scena-card::after {
   background: radial-gradient(
     360px circle at var(--mouse-x, 50%) var(--mouse-y, 50%),
-    rgba(255, 213, 107, 0.20),
-    rgba(239, 35, 60, 0.10) 45%,
+    rgba(255, 213, 107, 0.2),
+    rgba(239, 35, 60, 0.1) 45%,
     transparent 68%
   ) !important;
 }
 
 /* Intestazioni e Divisori a tema Natale con neve e bastoncini di zucchero */
-[data-theme="christmas"] .main-content header h1,
-[data-theme="christmas"] .sium-rune-title {
+[data-theme='christmas'] .main-content header h1,
+[data-theme='christmas'] .sium-rune-title {
   color: #fff2b8 !important;
-  text-shadow: 0 0 18px rgba(255, 213, 107, 0.55), 0 0 28px rgba(239, 35, 60, 0.35), 0 2px 10px rgba(0, 0, 0, 0.9) !important;
+  text-shadow:
+    0 0 18px rgba(255, 213, 107, 0.55),
+    0 0 28px rgba(239, 35, 60, 0.35),
+    0 2px 10px rgba(0, 0, 0, 0.9) !important;
 }
 
-[data-theme="christmas"] .ornate-divider {
+[data-theme='christmas'] .ornate-divider {
   color: #ffd56b !important;
 }
 
-[data-theme="christmas"] .ornate-divider::before,
-[data-theme="christmas"] .ornate-divider::after {
+[data-theme='christmas'] .ornate-divider::before,
+[data-theme='christmas'] .ornate-divider::after {
   height: 2px !important;
   background: repeating-linear-gradient(
     90deg,
@@ -1209,23 +1298,24 @@ textarea:focus {
 }
 
 /* Modali, Input e Bottoni in modalità Natale */
-[data-theme="christmas"] .detail-modal-panel,
-[data-theme="christmas"] .sium-spell-modal-panel,
-[data-theme="christmas"] .modal-box,
-[data-theme="christmas"] .detail-modal-card {
+[data-theme='christmas'] .detail-modal-panel,
+[data-theme='christmas'] .sium-spell-modal-panel,
+[data-theme='christmas'] .modal-box,
+[data-theme='christmas'] .detail-modal-card {
   background:
     linear-gradient(160deg, #09281b 0%, #051710 65%, #24090e 100%) padding-box,
     repeating-linear-gradient(
-      45deg,
-      #ef233c 0px,
-      #ef233c 14px,
-      #ffffff 14px,
-      #ffffff 28px,
-      #16a34a 28px,
-      #16a34a 42px,
-      #ffd56b 42px,
-      #ffd56b 56px
-    ) border-box !important;
+        45deg,
+        #ef233c 0px,
+        #ef233c 14px,
+        #ffffff 14px,
+        #ffffff 28px,
+        #16a34a 28px,
+        #16a34a 42px,
+        #ffd56b 42px,
+        #ffd56b 56px
+      )
+      border-box !important;
   border: 3px solid transparent !important;
   box-shadow:
     inset 0 6px 0 0 rgba(255, 255, 255, 0.9),
@@ -1234,26 +1324,28 @@ textarea:focus {
     0 0 24px rgba(239, 35, 60, 0.28) !important;
 }
 
-[data-theme="christmas"] input[type="text"],
-[data-theme="christmas"] input[type="number"],
-[data-theme="christmas"] input[type="password"],
-[data-theme="christmas"] input[type="url"],
-[data-theme="christmas"] select,
-[data-theme="christmas"] textarea {
+[data-theme='christmas'] input[type='text'],
+[data-theme='christmas'] input[type='number'],
+[data-theme='christmas'] input[type='password'],
+[data-theme='christmas'] input[type='url'],
+[data-theme='christmas'] select,
+[data-theme='christmas'] textarea {
   background-color: rgba(5, 24, 16, 0.92) !important;
   border-color: rgba(255, 213, 107, 0.45) !important;
   box-shadow: inset 0 2px 0 rgba(255, 255, 255, 0.35) !important;
   color: #f7fff9 !important;
 }
 
-[data-theme="christmas"] input:focus,
-[data-theme="christmas"] select:focus,
-[data-theme="christmas"] textarea:focus {
+[data-theme='christmas'] input:focus,
+[data-theme='christmas'] select:focus,
+[data-theme='christmas'] textarea:focus {
   border-color: #fff2b8 !important;
-  box-shadow: 0 0 0 3px rgba(239, 35, 60, 0.32), 0 0 12px rgba(255, 213, 107, 0.35) !important;
+  box-shadow:
+    0 0 0 3px rgba(239, 35, 60, 0.32),
+    0 0 12px rgba(255, 213, 107, 0.35) !important;
 }
 
-[data-theme="christmas"] .sium-top-controls {
+[data-theme='christmas'] .sium-top-controls {
   background: linear-gradient(135deg, rgba(8, 36, 24, 0.94), rgba(38, 10, 15, 0.94)) !important;
   border: 1.5px solid rgba(255, 213, 107, 0.72) !important;
   box-shadow:
@@ -1262,14 +1354,14 @@ textarea:focus {
     0 0 22px rgba(239, 35, 60, 0.28) !important;
 }
 
-[data-theme="christmas"] .sium-ctrl-btn {
+[data-theme='christmas'] .sium-ctrl-btn {
   color: #fff2b8;
   background: rgba(239, 35, 60, 0.16);
   border-color: rgba(255, 213, 107, 0.45);
 }
 
-[data-theme="christmas"] .sium-ctrl-btn:hover,
-[data-theme="christmas"] .sium-ctrl-btn.active {
+[data-theme='christmas'] .sium-ctrl-btn:hover,
+[data-theme='christmas'] .sium-ctrl-btn.active {
   color: #ffffff;
   background: linear-gradient(135deg, rgba(239, 35, 60, 0.48), rgba(22, 163, 74, 0.42));
   border-color: #ffffff;
@@ -1277,10 +1369,16 @@ textarea:focus {
 }
 
 /* Arena dei Dadi 3D e Dadi in versione Natale (Villaggio Innevato, Caramelle & Oro) */
-[data-theme="christmas"] .sium-3d-dice-arena {
+[data-theme='christmas'] .sium-3d-dice-arena {
   background:
     radial-gradient(ellipse at 50% 42%, rgba(16, 64, 42, 0.94) 0%, rgba(6, 24, 16, 0.99) 74%),
-    repeating-radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.07) 0px, rgba(255, 255, 255, 0.07) 1px, transparent 1px, transparent 18px) !important;
+    repeating-radial-gradient(
+      circle at 50% 50%,
+      rgba(255, 255, 255, 0.07) 0px,
+      rgba(255, 255, 255, 0.07) 1px,
+      transparent 1px,
+      transparent 18px
+    ) !important;
   border: 3px solid #ffd56b !important;
   box-shadow:
     inset 0 7px 0 rgba(255, 255, 255, 0.88),
@@ -1289,26 +1387,37 @@ textarea:focus {
     0 14px 36px rgba(0, 0, 0, 0.85) !important;
 }
 
-[data-theme="christmas"] .sium-die-cube-face {
+[data-theme='christmas'] .sium-die-cube-face {
   background: linear-gradient(135deg, #b91c1c 0%, #7f1d1d 58%, #14532d 100%) !important;
   border-color: #ffffff !important;
   color: #fff2b8 !important;
-  box-shadow: inset 0 0 16px rgba(255, 213, 107, 0.42), 0 0 12px rgba(255, 255, 255, 0.35) !important;
+  box-shadow:
+    inset 0 0 16px rgba(255, 213, 107, 0.42),
+    0 0 12px rgba(255, 255, 255, 0.35) !important;
 }
 
-[data-theme="christmas"] .sium-die-core-3d {
+[data-theme='christmas'] .sium-die-core-3d {
   background: radial-gradient(circle, #991b1b 0%, #062819 90%) !important;
   border-color: rgba(255, 255, 255, 0.75) !important;
 }
 
-[data-theme="christmas"] #login-overlay {
+[data-theme='christmas'] #login-overlay {
   background: radial-gradient(circle at 50% 42%, rgba(18, 72, 46, 0.72) 0%, #03100a 80%) !important;
 }
 
-[data-theme="christmas"] #login-overlay .login-form-area {
+[data-theme='christmas'] #login-overlay .login-form-area {
   background:
     linear-gradient(165deg, rgba(9, 40, 26, 0.96) 0%, rgba(28, 8, 12, 0.98) 100%) padding-box,
-    repeating-linear-gradient(45deg, #ef233c 0px, #ef233c 12px, #ffffff 12px, #ffffff 24px, #16a34a 24px, #16a34a 36px) border-box !important;
+    repeating-linear-gradient(
+        45deg,
+        #ef233c 0px,
+        #ef233c 12px,
+        #ffffff 12px,
+        #ffffff 24px,
+        #16a34a 24px,
+        #16a34a 36px
+      )
+      border-box !important;
   border: 2.5px solid transparent !important;
   box-shadow:
     inset 0 5px 0 rgba(255, 255, 255, 0.88),
@@ -1320,8 +1429,8 @@ textarea:focus {
    STILE COMPLETO TEMA SAN VALENTINO — CUPIDO, CUORICINI, PIZZI E BORDI AMOROSI
    Palette: Velluto Rubino (#1d050f / #380b20), Rosa Passione (#ff4d8d), Rosa Confetto (#ffb3d1) & Oro Cupido (#ffd166)
    ============================================================================ */
-[data-theme="valentine"],
-[data-theme="valentine"] body {
+[data-theme='valentine'],
+[data-theme='valentine'] body {
   background-color: #18040c !important;
   background-image:
     radial-gradient(circle at 16% 18%, rgba(255, 77, 141, 0.22) 0%, transparent 44%),
@@ -1333,13 +1442,15 @@ textarea:focus {
 }
 
 /* Sidebar amorosa con bordo a nastro di San Valentino (Rosa Passione, Bianco Pizzo, Rubino & Oro Rosa) */
-[data-theme="valentine"] .sidebar {
+[data-theme='valentine'] .sidebar {
   background: linear-gradient(180deg, #16030b 0%, #2c0718 55%, #120208 100%) !important;
   border-right: 3px solid #ff4d8d !important;
-  box-shadow: 6px 0 36px rgba(12, 1, 6, 0.96), 2px 0 22px rgba(255, 77, 141, 0.30) !important;
+  box-shadow:
+    6px 0 36px rgba(12, 1, 6, 0.96),
+    2px 0 22px rgba(255, 77, 141, 0.3) !important;
 }
 
-[data-theme="valentine"] .sidebar::after {
+[data-theme='valentine'] .sidebar::after {
   width: 4px !important;
   background: repeating-linear-gradient(
     45deg,
@@ -1355,15 +1466,18 @@ textarea:focus {
   opacity: 0.95 !important;
 }
 
-[data-theme="valentine"] .sidebar-brand {
-  background:
-    radial-gradient(circle at 50% 25%, rgba(255, 77, 141, 0.30), rgba(44, 7, 24, 0.80) 72%) !important;
+[data-theme='valentine'] .sidebar-brand {
+  background: radial-gradient(
+    circle at 50% 25%,
+    rgba(255, 77, 141, 0.3),
+    rgba(44, 7, 24, 0.8) 72%
+  ) !important;
   border-bottom: 2px solid rgba(255, 179, 209, 0.6) !important;
   box-shadow: inset 0 4px 0 rgba(255, 179, 209, 0.88) !important;
 }
 
-[data-theme="valentine"] .sidebar-brand::after {
-  content: "💘 💖 🌹 💌 👼 🍫";
+[data-theme='valentine'] .sidebar-brand::after {
+  content: '💘 💖 🌹 💌 👼 🍫';
   display: block;
   text-align: center;
   font-size: 11px;
@@ -1372,28 +1486,37 @@ textarea:focus {
   filter: drop-shadow(0 0 8px rgba(255, 77, 141, 0.9));
 }
 
-[data-theme="valentine"] .nav-item {
+[data-theme='valentine'] .nav-item {
   color: #ffc2d9 !important;
 }
 
-[data-theme="valentine"] .nav-item:hover {
+[data-theme='valentine'] .nav-item:hover {
   color: #ffffff !important;
-  background: linear-gradient(90deg, rgba(255, 77, 141, 0.26), rgba(255, 179, 209, 0.16)) !important;
+  background: linear-gradient(
+    90deg,
+    rgba(255, 77, 141, 0.26),
+    rgba(255, 179, 209, 0.16)
+  ) !important;
   border-color: rgba(255, 179, 209, 0.65) !important;
-  box-shadow: 0 0 14px rgba(255, 77, 141, 0.30);
+  box-shadow: 0 0 14px rgba(255, 77, 141, 0.3);
 }
 
-[data-theme="valentine"] .nav-item.active {
+[data-theme='valentine'] .nav-item.active {
   color: #fff0f6 !important;
-  background: linear-gradient(90deg, rgba(225, 29, 72, 0.42) 0%, rgba(64, 11, 36, 0.72) 70%, rgba(255, 143, 179, 0.28) 100%) !important;
+  background: linear-gradient(
+    90deg,
+    rgba(225, 29, 72, 0.42) 0%,
+    rgba(64, 11, 36, 0.72) 70%,
+    rgba(255, 143, 179, 0.28) 100%
+  ) !important;
   border-color: #ff759f !important;
   box-shadow:
     inset 0 2px 0 rgba(255, 204, 221, 0.88),
-    inset 0 0 18px rgba(255, 77, 141, 0.30),
+    inset 0 0 18px rgba(255, 77, 141, 0.3),
     0 4px 14px rgba(12, 1, 6, 0.75) !important;
 }
 
-[data-theme="valentine"] .nav-item.active::before {
+[data-theme='valentine'] .nav-item.active::before {
   content: '💘' !important;
   width: auto !important;
   height: auto !important;
@@ -1405,38 +1528,45 @@ textarea:focus {
 }
 
 /* Riquadri, Card e Pannelli a Tema San Valentino (Bordi Nastro Amoroso, Glassa Rosa & Cuore Trafitto da Cupido) */
-[data-theme="valentine"] .weapon-card,
-[data-theme="valentine"] .best-card,
-[data-theme="valentine"] .pet-card,
-[data-theme="valentine"] .libro-card,
-[data-theme="valentine"] .scena-card,
-[data-theme="valentine"] .sium-spell-card,
-[data-theme="valentine"] .cyber-card,
-[data-theme="valentine"] .veicolo-card,
-[data-theme="valentine"] .droga-card,
-[data-theme="valentine"] .panel-glass,
-[data-theme="valentine"] .regole-card,
-[data-theme="valentine"] .fazione-card,
-[data-theme="valentine"] .bacheca-item {
+[data-theme='valentine'] .weapon-card,
+[data-theme='valentine'] .best-card,
+[data-theme='valentine'] .pet-card,
+[data-theme='valentine'] .libro-card,
+[data-theme='valentine'] .scena-card,
+[data-theme='valentine'] .sium-spell-card,
+[data-theme='valentine'] .cyber-card,
+[data-theme='valentine'] .veicolo-card,
+[data-theme='valentine'] .droga-card,
+[data-theme='valentine'] .panel-glass,
+[data-theme='valentine'] .regole-card,
+[data-theme='valentine'] .fazione-card,
+[data-theme='valentine'] .bacheca-item {
   background:
-    linear-gradient(155deg, rgba(48, 9, 27, 0.96) 0%, rgba(22, 4, 12, 0.98) 62%, rgba(58, 11, 32, 0.96) 100%) padding-box,
+    linear-gradient(
+        155deg,
+        rgba(48, 9, 27, 0.96) 0%,
+        rgba(22, 4, 12, 0.98) 62%,
+        rgba(58, 11, 32, 0.96) 100%
+      )
+      padding-box,
     repeating-linear-gradient(
-      45deg,
-      #2a0716 0px,
-      #2a0716 12px,
-      #ff4d8d 12px,
-      #ff4d8d 24px,
-      #fff0f5 24px,
-      #fff0f5 32px,
-      #e11d48 32px,
-      #e11d48 44px,
-      #ffb3d1 44px,
-      #ffb3d1 54px
-    ) border-box !important;
+        45deg,
+        #2a0716 0px,
+        #2a0716 12px,
+        #ff4d8d 12px,
+        #ff4d8d 24px,
+        #fff0f5 24px,
+        #fff0f5 32px,
+        #e11d48 32px,
+        #e11d48 44px,
+        #ffb3d1 44px,
+        #ffb3d1 54px
+      )
+      border-box !important;
   border: 2.5px solid transparent !important;
   border-radius: 14px !important;
   box-shadow:
-    inset 0 5px 0 0 rgba(255, 179, 209, 0.90),
+    inset 0 5px 0 0 rgba(255, 179, 209, 0.9),
     inset 0 9px 14px -2px rgba(255, 77, 141, 0.38),
     0 12px 32px rgba(12, 1, 6, 0.95),
     0 0 22px rgba(255, 77, 141, 0.25),
@@ -1444,25 +1574,24 @@ textarea:focus {
 }
 
 /* Cornice interna di pizzo rosa + Cuore trafitto dalla freccia d'oro di Cupido in basso a destra su tutte le card */
-[data-theme="valentine"] .weapon-card::before,
-[data-theme="valentine"] .best-card::before,
-[data-theme="valentine"] .pet-card::before,
-[data-theme="valentine"] .libro-card::before,
-[data-theme="valentine"] .scena-card::before,
-[data-theme="valentine"] .sium-spell-card::before,
-[data-theme="valentine"] .cyber-card::before,
-[data-theme="valentine"] .veicolo-card::before,
-[data-theme="valentine"] .droga-card::before,
-[data-theme="valentine"] .regole-card::before,
-[data-theme="valentine"] .fazione-card::before,
-[data-theme="valentine"] .bacheca-item::before {
+[data-theme='valentine'] .weapon-card::before,
+[data-theme='valentine'] .best-card::before,
+[data-theme='valentine'] .pet-card::before,
+[data-theme='valentine'] .libro-card::before,
+[data-theme='valentine'] .scena-card::before,
+[data-theme='valentine'] .sium-spell-card::before,
+[data-theme='valentine'] .cyber-card::before,
+[data-theme='valentine'] .veicolo-card::before,
+[data-theme='valentine'] .droga-card::before,
+[data-theme='valentine'] .regole-card::before,
+[data-theme='valentine'] .fazione-card::before,
+[data-theme='valentine'] .bacheca-item::before {
   content: '';
   position: absolute;
   inset: 4px;
   border: 1px dashed rgba(255, 179, 209, 0.52) !important;
   border-radius: 10px;
-  background-image:
-    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='56' height='56' viewBox='0 0 56 56'%3E%3Cg opacity='0.88'%3E%3Cline x1='8' y1='46' x2='48' y2='12' stroke='%23ffd166' stroke-width='2.2' stroke-linecap='round'/%3E%3Cpolygon points='49,11 41,13 46,18' fill='%23ffd166'/%3E%3Cpath d='M28,44 C28,44 12,33 12,21 C12,14 18,10 24,13 C26,14 28,17 28,17 C28,17 30,14 32,13 C38,10 44,14 44,21 C44,33 28,44 28,44 Z' fill='%23ff2a6d' stroke='%23ffb3d1' stroke-width='1.5'/%3E%3Ctext x='28' y='29' text-anchor='middle' fill='%23fff0f6' font-family='serif' font-size='7.5' font-weight='bold'%3ELOVE%3C/text%3E%3C/g%3E%3C/svg%3E");
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='56' height='56' viewBox='0 0 56 56'%3E%3Cg opacity='0.88'%3E%3Cline x1='8' y1='46' x2='48' y2='12' stroke='%23ffd166' stroke-width='2.2' stroke-linecap='round'/%3E%3Cpolygon points='49,11 41,13 46,18' fill='%23ffd166'/%3E%3Cpath d='M28,44 C28,44 12,33 12,21 C12,14 18,10 24,13 C26,14 28,17 28,17 C28,17 30,14 32,13 C38,10 44,14 44,21 C44,33 28,44 28,44 Z' fill='%23ff2a6d' stroke='%23ffb3d1' stroke-width='1.5'/%3E%3Ctext x='28' y='29' text-anchor='middle' fill='%23fff0f6' font-family='serif' font-size='7.5' font-weight='bold'%3ELOVE%3C/text%3E%3C/g%3E%3C/svg%3E");
   background-repeat: no-repeat;
   background-position: bottom right;
   background-size: 44px 44px;
@@ -1470,15 +1599,15 @@ textarea:focus {
   z-index: 1;
 }
 
-[data-theme="valentine"] .weapon-card:hover,
-[data-theme="valentine"] .best-card:hover,
-[data-theme="valentine"] .pet-card:hover,
-[data-theme="valentine"] .libro-card:hover,
-[data-theme="valentine"] .scena-card:hover,
-[data-theme="valentine"] .sium-spell-card:hover,
-[data-theme="valentine"] .cyber-card:hover,
-[data-theme="valentine"] .veicolo-card:hover,
-[data-theme="valentine"] .droga-card:hover {
+[data-theme='valentine'] .weapon-card:hover,
+[data-theme='valentine'] .best-card:hover,
+[data-theme='valentine'] .pet-card:hover,
+[data-theme='valentine'] .libro-card:hover,
+[data-theme='valentine'] .scena-card:hover,
+[data-theme='valentine'] .sium-spell-card:hover,
+[data-theme='valentine'] .cyber-card:hover,
+[data-theme='valentine'] .veicolo-card:hover,
+[data-theme='valentine'] .droga-card:hover {
   box-shadow:
     inset 0 6px 0 0 #ffd6e7,
     0 16px 40px rgba(14, 1, 7, 0.96),
@@ -1488,11 +1617,11 @@ textarea:focus {
 }
 
 /* Spotlight rosa passione e oro rosa al passaggio del mouse sulle card in San Valentino */
-[data-theme="valentine"] .weapon-card::after,
-[data-theme="valentine"] .best-card::after,
-[data-theme="valentine"] .pet-card::after,
-[data-theme="valentine"] .libro-card::after,
-[data-theme="valentine"] .scena-card::after {
+[data-theme='valentine'] .weapon-card::after,
+[data-theme='valentine'] .best-card::after,
+[data-theme='valentine'] .pet-card::after,
+[data-theme='valentine'] .libro-card::after,
+[data-theme='valentine'] .scena-card::after {
   background: radial-gradient(
     360px circle at var(--mouse-x, 50%) var(--mouse-y, 50%),
     rgba(255, 77, 141, 0.25),
@@ -1502,18 +1631,21 @@ textarea:focus {
 }
 
 /* Intestazioni e Divisori a tema San Valentino */
-[data-theme="valentine"] .main-content header h1,
-[data-theme="valentine"] .sium-rune-title {
+[data-theme='valentine'] .main-content header h1,
+[data-theme='valentine'] .sium-rune-title {
   color: #ffd6e7 !important;
-  text-shadow: 0 0 18px rgba(255, 77, 141, 0.68), 0 0 28px rgba(225, 29, 72, 0.42), 0 2px 10px rgba(0, 0, 0, 0.92) !important;
+  text-shadow:
+    0 0 18px rgba(255, 77, 141, 0.68),
+    0 0 28px rgba(225, 29, 72, 0.42),
+    0 2px 10px rgba(0, 0, 0, 0.92) !important;
 }
 
-[data-theme="valentine"] .ornate-divider {
+[data-theme='valentine'] .ornate-divider {
   color: #ff8fb3 !important;
 }
 
-[data-theme="valentine"] .ornate-divider::before,
-[data-theme="valentine"] .ornate-divider::after {
+[data-theme='valentine'] .ornate-divider::before,
+[data-theme='valentine'] .ornate-divider::after {
   height: 2px !important;
   background: repeating-linear-gradient(
     90deg,
@@ -1527,51 +1659,54 @@ textarea:focus {
 }
 
 /* Modali, Input e Bottoni in modalità San Valentino con Cornici Amorose */
-[data-theme="valentine"] .detail-modal-panel,
-[data-theme="valentine"] .sium-spell-modal-panel,
-[data-theme="valentine"] .modal-box,
-[data-theme="valentine"] .detail-modal-card {
+[data-theme='valentine'] .detail-modal-panel,
+[data-theme='valentine'] .sium-spell-modal-panel,
+[data-theme='valentine'] .modal-box,
+[data-theme='valentine'] .detail-modal-card {
   background:
     linear-gradient(160deg, #32081c 0%, #16030b 65%, #3d0921 100%) padding-box,
     repeating-linear-gradient(
-      45deg,
-      #2a0716 0px,
-      #2a0716 14px,
-      #ff4d8d 14px,
-      #ff4d8d 28px,
-      #fff0f5 28px,
-      #fff0f5 38px,
-      #e11d48 38px,
-      #e11d48 52px
-    ) border-box !important;
+        45deg,
+        #2a0716 0px,
+        #2a0716 14px,
+        #ff4d8d 14px,
+        #ff4d8d 28px,
+        #fff0f5 28px,
+        #fff0f5 38px,
+        #e11d48 38px,
+        #e11d48 52px
+      )
+      border-box !important;
   border: 3px solid transparent !important;
   box-shadow:
-    inset 0 6px 0 0 rgba(255, 179, 209, 0.90),
+    inset 0 6px 0 0 rgba(255, 179, 209, 0.9),
     0 28px 75px rgba(10, 1, 5, 0.96),
     0 0 42px rgba(255, 77, 141, 0.42),
-    0 0 24px rgba(255, 179, 209, 0.30) !important;
+    0 0 24px rgba(255, 179, 209, 0.3) !important;
 }
 
-[data-theme="valentine"] input[type="text"],
-[data-theme="valentine"] input[type="number"],
-[data-theme="valentine"] input[type="password"],
-[data-theme="valentine"] input[type="url"],
-[data-theme="valentine"] select,
-[data-theme="valentine"] textarea {
+[data-theme='valentine'] input[type='text'],
+[data-theme='valentine'] input[type='number'],
+[data-theme='valentine'] input[type='password'],
+[data-theme='valentine'] input[type='url'],
+[data-theme='valentine'] select,
+[data-theme='valentine'] textarea {
   background-color: rgba(24, 4, 13, 0.94) !important;
   border-color: rgba(255, 117, 159, 0.56) !important;
   box-shadow: inset 0 2px 0 rgba(255, 179, 209, 0.35) !important;
   color: #ffebf1 !important;
 }
 
-[data-theme="valentine"] input:focus,
-[data-theme="valentine"] select:focus,
-[data-theme="valentine"] textarea:focus {
+[data-theme='valentine'] input:focus,
+[data-theme='valentine'] select:focus,
+[data-theme='valentine'] textarea:focus {
   border-color: #ffb3d1 !important;
-  box-shadow: 0 0 0 3px rgba(255, 77, 141, 0.36), 0 0 14px rgba(255, 179, 209, 0.45) !important;
+  box-shadow:
+    0 0 0 3px rgba(255, 77, 141, 0.36),
+    0 0 14px rgba(255, 179, 209, 0.45) !important;
 }
 
-[data-theme="valentine"] .sium-top-controls {
+[data-theme='valentine'] .sium-top-controls {
   background: linear-gradient(135deg, rgba(28, 5, 15, 0.96), rgba(58, 11, 32, 0.96)) !important;
   border: 1.5px solid rgba(255, 117, 159, 0.78) !important;
   box-shadow:
@@ -1580,14 +1715,14 @@ textarea:focus {
     0 0 22px rgba(255, 77, 141, 0.34) !important;
 }
 
-[data-theme="valentine"] .sium-ctrl-btn {
+[data-theme='valentine'] .sium-ctrl-btn {
   color: #ffd6e7;
   background: rgba(255, 77, 141, 0.16);
   border-color: rgba(255, 117, 159, 0.48);
 }
 
-[data-theme="valentine"] .sium-ctrl-btn:hover,
-[data-theme="valentine"] .sium-ctrl-btn.active {
+[data-theme='valentine'] .sium-ctrl-btn:hover,
+[data-theme='valentine'] .sium-ctrl-btn.active {
   color: #ffffff;
   background: linear-gradient(135deg, rgba(225, 29, 72, 0.52), rgba(255, 77, 141, 0.45));
   border-color: #ffd6e7;
@@ -1595,10 +1730,16 @@ textarea:focus {
 }
 
 /* Arena dei Dadi 3D e Dadi in versione San Valentino (Tempio di Cupido, Velluto Rosa & Rubino) */
-[data-theme="valentine"] .sium-3d-dice-arena {
+[data-theme='valentine'] .sium-3d-dice-arena {
   background:
     radial-gradient(ellipse at 50% 42%, rgba(72, 12, 40, 0.95) 0%, rgba(20, 3, 11, 0.99) 76%),
-    repeating-radial-gradient(circle at 50% 50%, rgba(255, 143, 179, 0.08) 0px, rgba(255, 143, 179, 0.08) 1px, transparent 1px, transparent 18px) !important;
+    repeating-radial-gradient(
+      circle at 50% 50%,
+      rgba(255, 143, 179, 0.08) 0px,
+      rgba(255, 143, 179, 0.08) 1px,
+      transparent 1px,
+      transparent 18px
+    ) !important;
   border: 3px solid #ff4d8d !important;
   box-shadow:
     inset 0 6px 0 rgba(255, 179, 209, 0.86),
@@ -1607,26 +1748,37 @@ textarea:focus {
     0 14px 36px rgba(0, 0, 0, 0.88) !important;
 }
 
-[data-theme="valentine"] .sium-die-cube-face {
+[data-theme='valentine'] .sium-die-cube-face {
   background: linear-gradient(135deg, #be185d 0%, #831843 58%, #3b071e 100%) !important;
   border-color: #ffb3d1 !important;
   color: #fff0f6 !important;
-  box-shadow: inset 0 0 16px rgba(255, 179, 209, 0.45), 0 0 12px rgba(255, 77, 141, 0.4) !important;
+  box-shadow:
+    inset 0 0 16px rgba(255, 179, 209, 0.45),
+    0 0 12px rgba(255, 77, 141, 0.4) !important;
 }
 
-[data-theme="valentine"] .sium-die-core-3d {
+[data-theme='valentine'] .sium-die-core-3d {
   background: radial-gradient(circle, #9d174d 0%, #240412 90%) !important;
   border-color: rgba(255, 179, 209, 0.75) !important;
 }
 
-[data-theme="valentine"] #login-overlay {
+[data-theme='valentine'] #login-overlay {
   background: radial-gradient(circle at 50% 42%, rgba(88, 16, 48, 0.74) 0%, #120208 80%) !important;
 }
 
-[data-theme="valentine"] #login-overlay .login-form-area {
+[data-theme='valentine'] #login-overlay .login-form-area {
   background:
     linear-gradient(165deg, rgba(42, 8, 24, 0.96) 0%, rgba(16, 3, 9, 0.98) 100%) padding-box,
-    repeating-linear-gradient(45deg, #ff4d8d 0px, #ff4d8d 12px, #fff0f5 12px, #fff0f5 22px, #e11d48 22px, #e11d48 34px) border-box !important;
+    repeating-linear-gradient(
+        45deg,
+        #ff4d8d 0px,
+        #ff4d8d 12px,
+        #fff0f5 12px,
+        #fff0f5 22px,
+        #e11d48 22px,
+        #e11d48 34px
+      )
+      border-box !important;
   border: 2.5px solid transparent !important;
   box-shadow:
     inset 0 5px 0 rgba(255, 179, 209, 0.88),
@@ -1638,12 +1790,12 @@ textarea:focus {
    STILE COMPLETO TEMA PASQUA — UOVA DI PASQUA DIPINTE, CONIGLIETTI, PULCINI & PRATO FIORITO
    Palette: Prato Primaverile (#0b2116 / #183f2b), Giallo Pulcino (#facc15), Rosa Fiore (#f472b6), Azzurro Uovo (#38bdf8) & Lilla (#c084fc)
    ============================================================================ */
-[data-theme="easter"],
-[data-theme="easter"] body {
+[data-theme='easter'],
+[data-theme='easter'] body {
   background-color: #091c12 !important;
   background-image:
-    radial-gradient(circle at 16% 18%, rgba(244, 114, 182, 0.20) 0%, transparent 44%),
-    radial-gradient(circle at 84% 22%, rgba(250, 204, 21, 0.20) 0%, transparent 46%),
+    radial-gradient(circle at 16% 18%, rgba(244, 114, 182, 0.2) 0%, transparent 44%),
+    radial-gradient(circle at 84% 22%, rgba(250, 204, 21, 0.2) 0%, transparent 46%),
     radial-gradient(circle at 50% 88%, rgba(56, 189, 248, 0.16) 0%, transparent 48%),
     linear-gradient(180deg, #07160f 0%, #112e1f 52%, #091d13 100%) !important;
   background-attachment: fixed !important;
@@ -1651,13 +1803,15 @@ textarea:focus {
 }
 
 /* Sidebar pasquale con bordo a strisce Uovo di Pasqua (Rosa Pastello, Giallo Pulcino, Verde Prato, Azzurro & Lilla) */
-[data-theme="easter"] .sidebar {
+[data-theme='easter'] .sidebar {
   background: linear-gradient(180deg, #081911 0%, #133221 55%, #07150e 100%) !important;
   border-right: 3px solid #facc15 !important;
-  box-shadow: 6px 0 36px rgba(2, 10, 6, 0.94), 2px 0 22px rgba(244, 114, 182, 0.25) !important;
+  box-shadow:
+    6px 0 36px rgba(2, 10, 6, 0.94),
+    2px 0 22px rgba(244, 114, 182, 0.25) !important;
 }
 
-[data-theme="easter"] .sidebar::after {
+[data-theme='easter'] .sidebar::after {
   width: 4px !important;
   background: repeating-linear-gradient(
     45deg,
@@ -1675,15 +1829,18 @@ textarea:focus {
   opacity: 0.96 !important;
 }
 
-[data-theme="easter"] .sidebar-brand {
-  background:
-    radial-gradient(circle at 50% 25%, rgba(250, 204, 21, 0.26), rgba(16, 46, 30, 0.80) 72%) !important;
+[data-theme='easter'] .sidebar-brand {
+  background: radial-gradient(
+    circle at 50% 25%,
+    rgba(250, 204, 21, 0.26),
+    rgba(16, 46, 30, 0.8) 72%
+  ) !important;
   border-bottom: 2px solid rgba(244, 114, 182, 0.65) !important;
   box-shadow: inset 0 4px 0 rgba(134, 239, 172, 0.88) !important;
 }
 
-[data-theme="easter"] .sidebar-brand::after {
-  content: "🐰 🥚 🐣 🌷 🌸 🍫";
+[data-theme='easter'] .sidebar-brand::after {
+  content: '🐰 🥚 🐣 🌷 🌸 🍫';
   display: block;
   text-align: center;
   font-size: 11px;
@@ -1692,20 +1849,29 @@ textarea:focus {
   filter: drop-shadow(0 0 8px rgba(250, 204, 21, 0.85));
 }
 
-[data-theme="easter"] .nav-item {
+[data-theme='easter'] .nav-item {
   color: #d9f99d !important;
 }
 
-[data-theme="easter"] .nav-item:hover {
+[data-theme='easter'] .nav-item:hover {
   color: #ffffff !important;
-  background: linear-gradient(90deg, rgba(244, 114, 182, 0.24), rgba(250, 204, 21, 0.18)) !important;
+  background: linear-gradient(
+    90deg,
+    rgba(244, 114, 182, 0.24),
+    rgba(250, 204, 21, 0.18)
+  ) !important;
   border-color: rgba(250, 204, 21, 0.65) !important;
   box-shadow: 0 0 14px rgba(244, 114, 182, 0.28);
 }
 
-[data-theme="easter"] .nav-item.active {
+[data-theme='easter'] .nav-item.active {
   color: #fef08a !important;
-  background: linear-gradient(90deg, rgba(236, 72, 153, 0.36) 0%, rgba(22, 64, 42, 0.74) 70%, rgba(250, 204, 21, 0.28) 100%) !important;
+  background: linear-gradient(
+    90deg,
+    rgba(236, 72, 153, 0.36) 0%,
+    rgba(22, 64, 42, 0.74) 70%,
+    rgba(250, 204, 21, 0.28) 100%
+  ) !important;
   border-color: #facc15 !important;
   box-shadow:
     inset 0 2px 0 rgba(134, 239, 172, 0.88),
@@ -1713,7 +1879,7 @@ textarea:focus {
     0 4px 14px rgba(0, 0, 0, 0.72) !important;
 }
 
-[data-theme="easter"] .nav-item.active::before {
+[data-theme='easter'] .nav-item.active::before {
   content: '🐰' !important;
   width: auto !important;
   height: auto !important;
@@ -1725,34 +1891,41 @@ textarea:focus {
 }
 
 /* Riquadri, Card e Pannelli a Tema Pasqua (Bordi Uovo Dipinto Pastello, Erbetta Fiorita & Coniglietto con Uovo) */
-[data-theme="easter"] .weapon-card,
-[data-theme="easter"] .best-card,
-[data-theme="easter"] .pet-card,
-[data-theme="easter"] .libro-card,
-[data-theme="easter"] .scena-card,
-[data-theme="easter"] .sium-spell-card,
-[data-theme="easter"] .cyber-card,
-[data-theme="easter"] .veicolo-card,
-[data-theme="easter"] .droga-card,
-[data-theme="easter"] .panel-glass,
-[data-theme="easter"] .regole-card,
-[data-theme="easter"] .fazione-card,
-[data-theme="easter"] .bacheca-item {
+[data-theme='easter'] .weapon-card,
+[data-theme='easter'] .best-card,
+[data-theme='easter'] .pet-card,
+[data-theme='easter'] .libro-card,
+[data-theme='easter'] .scena-card,
+[data-theme='easter'] .sium-spell-card,
+[data-theme='easter'] .cyber-card,
+[data-theme='easter'] .veicolo-card,
+[data-theme='easter'] .droga-card,
+[data-theme='easter'] .panel-glass,
+[data-theme='easter'] .regole-card,
+[data-theme='easter'] .fazione-card,
+[data-theme='easter'] .bacheca-item {
   background:
-    linear-gradient(155deg, rgba(18, 48, 32, 0.96) 0%, rgba(10, 28, 18, 0.98) 62%, rgba(24, 58, 38, 0.96) 100%) padding-box,
+    linear-gradient(
+        155deg,
+        rgba(18, 48, 32, 0.96) 0%,
+        rgba(10, 28, 18, 0.98) 62%,
+        rgba(24, 58, 38, 0.96) 100%
+      )
+      padding-box,
     repeating-linear-gradient(
-      45deg,
-      #f472b6 0px,
-      #f472b6 12px,
-      #fde047 12px,
-      #fde047 24px,
-      #4ade80 24px,
-      #4ade80 36px,
-      #38bdf8 36px,
-      #38bdf8 48px,
-      #c084fc 48px,
-      #c084fc 60px
-    ) border-box !important;
+        45deg,
+        #f472b6 0px,
+        #f472b6 12px,
+        #fde047 12px,
+        #fde047 24px,
+        #4ade80 24px,
+        #4ade80 36px,
+        #38bdf8 36px,
+        #38bdf8 48px,
+        #c084fc 48px,
+        #c084fc 60px
+      )
+      border-box !important;
   border: 2.5px solid transparent !important;
   border-radius: 14px !important;
   box-shadow:
@@ -1764,25 +1937,24 @@ textarea:focus {
 }
 
 /* Cornice interna tratteggiata + Uovo di Pasqua Decorato & Coniglietto in basso a destra su tutte le card */
-[data-theme="easter"] .weapon-card::before,
-[data-theme="easter"] .best-card::before,
-[data-theme="easter"] .pet-card::before,
-[data-theme="easter"] .libro-card::before,
-[data-theme="easter"] .scena-card::before,
-[data-theme="easter"] .sium-spell-card::before,
-[data-theme="easter"] .cyber-card::before,
-[data-theme="easter"] .veicolo-card::before,
-[data-theme="easter"] .droga-card::before,
-[data-theme="easter"] .regole-card::before,
-[data-theme="easter"] .fazione-card::before,
-[data-theme="easter"] .bacheca-item::before {
+[data-theme='easter'] .weapon-card::before,
+[data-theme='easter'] .best-card::before,
+[data-theme='easter'] .pet-card::before,
+[data-theme='easter'] .libro-card::before,
+[data-theme='easter'] .scena-card::before,
+[data-theme='easter'] .sium-spell-card::before,
+[data-theme='easter'] .cyber-card::before,
+[data-theme='easter'] .veicolo-card::before,
+[data-theme='easter'] .droga-card::before,
+[data-theme='easter'] .regole-card::before,
+[data-theme='easter'] .fazione-card::before,
+[data-theme='easter'] .bacheca-item::before {
   content: '';
   position: absolute;
   inset: 4px;
   border: 1px dashed rgba(254, 240, 138, 0.55) !important;
   border-radius: 10px;
-  background-image:
-    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='56' viewBox='0 0 60 56'%3E%3Cg opacity='0.92'%3E%3Cellipse cx='20' cy='36' rx='11' ry='15' fill='%23f472b6' stroke='%23fef08a' stroke-width='1.5'/%3E%3Cpath d='M10,33 L15,29 L20,33 L25,29 L30,33' fill='none' stroke='%23fde047' stroke-width='2' stroke-linecap='round'/%3E%3Ccircle cx='16' cy='41' r='2' fill='%2338bdf8'/%3E%3Ccircle cx='24' cy='41' r='2' fill='%234ade80'/%3E%3Cellipse cx='40' cy='18' rx='3' ry='9' fill='%23ffffff' stroke='%23f472b6' stroke-width='1.2' transform='rotate(-8 40 18)'/%3E%3Cellipse cx='47' cy='18' rx='3' ry='9' fill='%23ffffff' stroke='%23f472b6' stroke-width='1.2' transform='rotate(8 47 18)'/%3E%3Ccircle cx='43.5' cy='34' r='9.5' fill='%23ffffff' stroke='%23fbcfe8' stroke-width='1.4'/%3E%3Ccircle cx='40.5' cy='32' r='1.4' fill='%231e293b'/%3E%3Ccircle cx='46.5' cy='32' r='1.4' fill='%231e293b'/%3E%3Cpolygon points='43.5,35.5 41.8,33.8 45.2,33.8' fill='%23f472b6'/%3E%3Cpath d='M4,52 Q30,47 56,52' stroke='%234ade80' stroke-width='2.5' fill='none'/%3E%3C/g%3E%3C/svg%3E");
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='56' viewBox='0 0 60 56'%3E%3Cg opacity='0.92'%3E%3Cellipse cx='20' cy='36' rx='11' ry='15' fill='%23f472b6' stroke='%23fef08a' stroke-width='1.5'/%3E%3Cpath d='M10,33 L15,29 L20,33 L25,29 L30,33' fill='none' stroke='%23fde047' stroke-width='2' stroke-linecap='round'/%3E%3Ccircle cx='16' cy='41' r='2' fill='%2338bdf8'/%3E%3Ccircle cx='24' cy='41' r='2' fill='%234ade80'/%3E%3Cellipse cx='40' cy='18' rx='3' ry='9' fill='%23ffffff' stroke='%23f472b6' stroke-width='1.2' transform='rotate(-8 40 18)'/%3E%3Cellipse cx='47' cy='18' rx='3' ry='9' fill='%23ffffff' stroke='%23f472b6' stroke-width='1.2' transform='rotate(8 47 18)'/%3E%3Ccircle cx='43.5' cy='34' r='9.5' fill='%23ffffff' stroke='%23fbcfe8' stroke-width='1.4'/%3E%3Ccircle cx='40.5' cy='32' r='1.4' fill='%231e293b'/%3E%3Ccircle cx='46.5' cy='32' r='1.4' fill='%231e293b'/%3E%3Cpolygon points='43.5,35.5 41.8,33.8 45.2,33.8' fill='%23f472b6'/%3E%3Cpath d='M4,52 Q30,47 56,52' stroke='%234ade80' stroke-width='2.5' fill='none'/%3E%3C/g%3E%3C/svg%3E");
   background-repeat: no-repeat;
   background-position: bottom right;
   background-size: 48px 45px;
@@ -1790,29 +1962,29 @@ textarea:focus {
   z-index: 1;
 }
 
-[data-theme="easter"] .weapon-card:hover,
-[data-theme="easter"] .best-card:hover,
-[data-theme="easter"] .pet-card:hover,
-[data-theme="easter"] .libro-card:hover,
-[data-theme="easter"] .scena-card:hover,
-[data-theme="easter"] .sium-spell-card:hover,
-[data-theme="easter"] .cyber-card:hover,
-[data-theme="easter"] .veicolo-card:hover,
-[data-theme="easter"] .droga-card:hover {
+[data-theme='easter'] .weapon-card:hover,
+[data-theme='easter'] .best-card:hover,
+[data-theme='easter'] .pet-card:hover,
+[data-theme='easter'] .libro-card:hover,
+[data-theme='easter'] .scena-card:hover,
+[data-theme='easter'] .sium-spell-card:hover,
+[data-theme='easter'] .cyber-card:hover,
+[data-theme='easter'] .veicolo-card:hover,
+[data-theme='easter'] .droga-card:hover {
   box-shadow:
     inset 0 6px 0 0 #86efac,
     0 16px 40px rgba(2, 10, 6, 0.96),
-    0 0 32px rgba(250, 204, 21, 0.50),
+    0 0 32px rgba(250, 204, 21, 0.5),
     0 0 22px rgba(244, 114, 182, 0.42),
-    inset 0 0 26px rgba(134, 239, 172, 0.20) !important;
+    inset 0 0 26px rgba(134, 239, 172, 0.2) !important;
 }
 
 /* Spotlight pastello primaverile al passaggio del mouse sulle card in Pasqua */
-[data-theme="easter"] .weapon-card::after,
-[data-theme="easter"] .best-card::after,
-[data-theme="easter"] .pet-card::after,
-[data-theme="easter"] .libro-card::after,
-[data-theme="easter"] .scena-card::after {
+[data-theme='easter'] .weapon-card::after,
+[data-theme='easter'] .best-card::after,
+[data-theme='easter'] .pet-card::after,
+[data-theme='easter'] .libro-card::after,
+[data-theme='easter'] .scena-card::after {
   background: radial-gradient(
     360px circle at var(--mouse-x, 50%) var(--mouse-y, 50%),
     rgba(250, 204, 21, 0.22),
@@ -1822,18 +1994,21 @@ textarea:focus {
 }
 
 /* Intestazioni e Divisori a tema Pasqua */
-[data-theme="easter"] .main-content header h1,
-[data-theme="easter"] .sium-rune-title {
+[data-theme='easter'] .main-content header h1,
+[data-theme='easter'] .sium-rune-title {
   color: #fef08a !important;
-  text-shadow: 0 0 18px rgba(250, 204, 21, 0.65), 0 0 28px rgba(244, 114, 182, 0.42), 0 2px 10px rgba(0, 0, 0, 0.90) !important;
+  text-shadow:
+    0 0 18px rgba(250, 204, 21, 0.65),
+    0 0 28px rgba(244, 114, 182, 0.42),
+    0 2px 10px rgba(0, 0, 0, 0.9) !important;
 }
 
-[data-theme="easter"] .ornate-divider {
+[data-theme='easter'] .ornate-divider {
   color: #f472b6 !important;
 }
 
-[data-theme="easter"] .ornate-divider::before,
-[data-theme="easter"] .ornate-divider::after {
+[data-theme='easter'] .ornate-divider::before,
+[data-theme='easter'] .ornate-divider::after {
   height: 2px !important;
   background: repeating-linear-gradient(
     90deg,
@@ -1847,23 +2022,24 @@ textarea:focus {
 }
 
 /* Modali, Input e Bottoni in modalità Pasqua con Cornici Uovo di Pasqua */
-[data-theme="easter"] .detail-modal-panel,
-[data-theme="easter"] .sium-spell-modal-panel,
-[data-theme="easter"] .modal-box,
-[data-theme="easter"] .detail-modal-card {
+[data-theme='easter'] .detail-modal-panel,
+[data-theme='easter'] .sium-spell-modal-panel,
+[data-theme='easter'] .modal-box,
+[data-theme='easter'] .detail-modal-card {
   background:
     linear-gradient(160deg, #153a26 0%, #091c12 65%, #1c442d 100%) padding-box,
     repeating-linear-gradient(
-      45deg,
-      #f472b6 0px,
-      #f472b6 14px,
-      #fde047 14px,
-      #fde047 28px,
-      #4ade80 28px,
-      #4ade80 42px,
-      #38bdf8 42px,
-      #38bdf8 56px
-    ) border-box !important;
+        45deg,
+        #f472b6 0px,
+        #f472b6 14px,
+        #fde047 14px,
+        #fde047 28px,
+        #4ade80 28px,
+        #4ade80 42px,
+        #38bdf8 42px,
+        #38bdf8 56px
+      )
+      border-box !important;
   border: 3px solid transparent !important;
   box-shadow:
     inset 0 6px 0 0 rgba(134, 239, 172, 0.92),
@@ -1872,26 +2048,28 @@ textarea:focus {
     0 0 24px rgba(244, 114, 182, 0.32) !important;
 }
 
-[data-theme="easter"] input[type="text"],
-[data-theme="easter"] input[type="number"],
-[data-theme="easter"] input[type="password"],
-[data-theme="easter"] input[type="url"],
-[data-theme="easter"] select,
-[data-theme="easter"] textarea {
+[data-theme='easter'] input[type='text'],
+[data-theme='easter'] input[type='number'],
+[data-theme='easter'] input[type='password'],
+[data-theme='easter'] input[type='url'],
+[data-theme='easter'] select,
+[data-theme='easter'] textarea {
   background-color: rgba(9, 27, 18, 0.94) !important;
   border-color: rgba(250, 204, 21, 0.56) !important;
   box-shadow: inset 0 2px 0 rgba(134, 239, 172, 0.35) !important;
   color: #fefce8 !important;
 }
 
-[data-theme="easter"] input:focus,
-[data-theme="easter"] select:focus,
-[data-theme="easter"] textarea:focus {
+[data-theme='easter'] input:focus,
+[data-theme='easter'] select:focus,
+[data-theme='easter'] textarea:focus {
   border-color: #fef08a !important;
-  box-shadow: 0 0 0 3px rgba(244, 114, 182, 0.36), 0 0 14px rgba(250, 204, 21, 0.45) !important;
+  box-shadow:
+    0 0 0 3px rgba(244, 114, 182, 0.36),
+    0 0 14px rgba(250, 204, 21, 0.45) !important;
 }
 
-[data-theme="easter"] .sium-top-controls {
+[data-theme='easter'] .sium-top-controls {
   background: linear-gradient(135deg, rgba(12, 36, 23, 0.96), rgba(26, 62, 41, 0.96)) !important;
   border: 1.5px solid rgba(250, 204, 21, 0.78) !important;
   box-shadow:
@@ -1900,14 +2078,14 @@ textarea:focus {
     0 0 22px rgba(244, 114, 182, 0.32) !important;
 }
 
-[data-theme="easter"] .sium-ctrl-btn {
+[data-theme='easter'] .sium-ctrl-btn {
   color: #fef08a;
   background: rgba(244, 114, 182, 0.16);
   border-color: rgba(250, 204, 21, 0.48);
 }
 
-[data-theme="easter"] .sium-ctrl-btn:hover,
-[data-theme="easter"] .sium-ctrl-btn.active {
+[data-theme='easter'] .sium-ctrl-btn:hover,
+[data-theme='easter'] .sium-ctrl-btn.active {
   color: #ffffff;
   background: linear-gradient(135deg, rgba(236, 72, 153, 0.52), rgba(34, 197, 94, 0.46));
   border-color: #fef08a;
@@ -1915,10 +2093,16 @@ textarea:focus {
 }
 
 /* Arena dei Dadi 3D e Dadi in versione Pasqua (Nido di Primavera, Uova Dipinte & Oro Pulcino) */
-[data-theme="easter"] .sium-3d-dice-arena {
+[data-theme='easter'] .sium-3d-dice-arena {
   background:
     radial-gradient(ellipse at 50% 42%, rgba(24, 72, 46, 0.95) 0%, rgba(8, 26, 17, 0.99) 76%),
-    repeating-radial-gradient(circle at 50% 50%, rgba(250, 204, 21, 0.08) 0px, rgba(250, 204, 21, 0.08) 1px, transparent 1px, transparent 18px) !important;
+    repeating-radial-gradient(
+      circle at 50% 50%,
+      rgba(250, 204, 21, 0.08) 0px,
+      rgba(250, 204, 21, 0.08) 1px,
+      transparent 1px,
+      transparent 18px
+    ) !important;
   border: 3px solid #facc15 !important;
   box-shadow:
     inset 0 6px 0 rgba(134, 239, 172, 0.88),
@@ -1927,26 +2111,39 @@ textarea:focus {
     0 14px 36px rgba(0, 0, 0, 0.86) !important;
 }
 
-[data-theme="easter"] .sium-die-cube-face {
+[data-theme='easter'] .sium-die-cube-face {
   background: linear-gradient(135deg, #db2777 0%, #9333ea 55%, #15803d 100%) !important;
   border-color: #fef08a !important;
   color: #ffffff !important;
-  box-shadow: inset 0 0 16px rgba(250, 204, 21, 0.45), 0 0 12px rgba(244, 114, 182, 0.4) !important;
+  box-shadow:
+    inset 0 0 16px rgba(250, 204, 21, 0.45),
+    0 0 12px rgba(244, 114, 182, 0.4) !important;
 }
 
-[data-theme="easter"] .sium-die-core-3d {
+[data-theme='easter'] .sium-die-core-3d {
   background: radial-gradient(circle, #ec4899 0%, #14532d 90%) !important;
-  border-color: rgba(254, 240, 138, 0.80) !important;
+  border-color: rgba(254, 240, 138, 0.8) !important;
 }
 
-[data-theme="easter"] #login-overlay {
+[data-theme='easter'] #login-overlay {
   background: radial-gradient(circle at 50% 42%, rgba(26, 78, 50, 0.74) 0%, #06140c 80%) !important;
 }
 
-[data-theme="easter"] #login-overlay .login-form-area {
+[data-theme='easter'] #login-overlay .login-form-area {
   background:
     linear-gradient(165deg, rgba(16, 44, 29, 0.96) 0%, rgba(7, 20, 13, 0.98) 100%) padding-box,
-    repeating-linear-gradient(45deg, #f472b6 0px, #f472b6 12px, #fde047 12px, #fde047 24px, #4ade80 24px, #4ade80 36px, #38bdf8 36px, #38bdf8 48px) border-box !important;
+    repeating-linear-gradient(
+        45deg,
+        #f472b6 0px,
+        #f472b6 12px,
+        #fde047 12px,
+        #fde047 24px,
+        #4ade80 24px,
+        #4ade80 36px,
+        #38bdf8 36px,
+        #38bdf8 48px
+      )
+      border-box !important;
   border: 2.5px solid transparent !important;
   box-shadow:
     inset 0 5px 0 rgba(134, 239, 172, 0.88),

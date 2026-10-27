@@ -1,6 +1,7 @@
 node_modules/
 build/
 dist/
+dist-test/
 coverage/
 .DS_Store
 *.log
@@ -11,3 +12,7 @@ work/
 
 # Firebase web config is generated from deployment environment settings.
 js/firebase-config.js
+js/app.js
+.aistudio/
+test-results/
+playwright-report/

@@ -1,0 +1,32 @@
+{
+  "adminUid": "admin",
+  "adminUsername": "admin",
+  "emailDomain": "dd.local",
+  "minPasswordLength": 6,
+  "usernamePattern": "[a-zA-Z0-9_-]{3,32}",
+  "usernameHint": "Usa da 3 a 32 lettere, numeri, trattini o underscore.",
+  "partyResetVersion": "2026-10-26-party-v1",
+  "roles": {
+    "admin": {
+      "name": "Admin",
+      "authRole": "admin",
+      "dmPriv": true,
+      "crest": "👑",
+      "title": "Amministratore"
+    },
+    "master": {
+      "name": "DM",
+      "authRole": "admin",
+      "dmPriv": true,
+      "crest": "👑",
+      "title": "Dungeon Master"
+    },
+    "player": {
+      "name": "Giocatore",
+      "authRole": "pg",
+      "dmPriv": false,
+      "crest": "🛡",
+      "title": "Avventuriero"
+    }
+  }
+}

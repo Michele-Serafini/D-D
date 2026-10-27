@@ -1,0 +1,1797 @@
+/* =========================================================
+     === SEZIONE STATISTICHE & CAOS ===
+     ========================================================= */
+
+.caos-wrap {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+@media (min-width: 640px) {
+  .caos-wrap {
+    padding: 0 1.5rem;
+  }
+}
+
+.caos-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+  margin-top: 1.5rem;
+}
+@media (min-width: 1100px) {
+  .caos-grid {
+    grid-template-columns: 1.5fr 1fr;
+  }
+}
+
+/* ---- Counter del Destino ---- */
+.counter-section-title {
+  font-family: 'Cinzel', serif;
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.22em;
+  color: var(--gold-dim);
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+.counter-section-title::before,
+.counter-section-title::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--gold-dim), transparent);
+}
+
+.player-counters {
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+}
+
+.player-row {
+  position: relative;
+  background: linear-gradient(165deg, var(--bg-card-elevated), var(--bg-card));
+  border: 1px solid var(--border-subtle);
+  border-radius: 4px;
+  padding: 0.9rem 1.1rem;
+  display: grid;
+  grid-template-columns: 1fr auto auto auto;
+  gap: 1rem;
+  align-items: center;
+  box-shadow: var(--shadow-card);
+  /* Layout stabile: altezza fissa e overflow contenuto. Le animazioni
+       vivono in layer absolute interni che non spingono il flow esterno. */
+  overflow: hidden;
+  min-height: 78px;
+  contain: layout paint;
+  transition:
+    border-color 0.35s ease,
+    box-shadow 0.35s ease;
+}
+@media (max-width: 600px) {
+  .player-row {
+    grid-template-columns: 1fr;
+    gap: 0.6rem;
+    min-height: 160px;
+  }
+}
+
+.player-row-name {
+  font-family: 'Cinzel', serif;
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--text-strong);
+}
+.player-row-name-input {
+  background: transparent;
+  border: none;
+  border-bottom: 1px dashed var(--border-soft);
+  color: var(--text-strong);
+  font-family: 'Cinzel', serif;
+  font-size: 16px;
+  font-weight: 600;
+  padding: 0.3rem 0.2rem;
+  outline: none;
+  width: 100%;
+  min-width: 120px;
+}
+.player-row-name-input:focus {
+  border-bottom-color: var(--gold);
+}
+.player-row-name-input::placeholder {
+  color: var(--text-faint);
+  font-style: italic;
+  font-weight: 400;
+}
+
+/* D20 counter unit (gruppo: icona + counter + bottoni) */
+.d20-counter {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  padding: 0.35rem 0.65rem;
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: 3px;
+  transition:
+    border-color 0.25s ease,
+    box-shadow 0.25s ease;
+}
+.d20-counter.crit-fail {
+  border-color: rgba(220, 60, 60, 0.5);
+  box-shadow: inset 0 0 12px rgba(220, 60, 60, 0.1);
+}
+.d20-counter.crit-success {
+  border-color: rgba(232, 200, 120, 0.55);
+  box-shadow: inset 0 0 12px rgba(232, 200, 120, 0.12);
+}
+
+.d20-icon {
+  width: 38px;
+  height: 38px;
+  position: relative;
+  flex-shrink: 0;
+}
+.d20-icon svg {
+  width: 100%;
+  height: 100%;
+}
+
+.d20-count {
+  font-family: 'Cinzel', serif;
+  font-size: 22px;
+  font-weight: 800;
+  min-width: 24px;
+  text-align: center;
+  text-shadow: 0 0 12px currentColor;
+}
+.d20-count.fail-color {
+  color: #ff6868;
+}
+.d20-count.succ-color {
+  color: #ffd890;
+}
+
+.d20-arrows {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.d20-arrow {
+  width: 22px;
+  height: 18px;
+  border: 1px solid var(--border-soft);
+  background: linear-gradient(180deg, var(--bg-card-elevated), var(--bg-card));
+  color: var(--gold);
+  cursor: pointer;
+  border-radius: 2px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.15s ease;
+  padding: 0;
+}
+.d20-arrow:hover {
+  border-color: var(--border-gold);
+  color: var(--gold-bright);
+  background: var(--bg-card-elevated);
+}
+.d20-arrow:active {
+  transform: scale(0.9);
+}
+.d20-arrow svg {
+  width: 10px;
+  height: 10px;
+}
+
+.player-row-actions {
+  display: flex;
+  gap: 0.3rem;
+  align-items: center;
+}
+
+/* ============================================================
+     ANIMAZIONI COUNTER DEL DESTINO — Tre gradi di distruzione
+     Niente più demoni/angeli emoji. Solo aure, crepe, void, catene.
+     ============================================================ */
+
+/* Render dei contenuti della riga sopra i layer fx */
+.player-row.lvl1-fail > *,
+.player-row.lvl1-succ > *,
+.player-row.lvl2-fail > *,
+.player-row.lvl2-succ > *,
+.player-row.lvl3-fail > *,
+.player-row.lvl3-succ > * {
+  position: relative;
+  z-index: 2;
+}
+.player-row.lvl1-fail,
+.player-row.lvl1-succ,
+.player-row.lvl2-fail,
+.player-row.lvl2-succ,
+.player-row.lvl3-fail,
+.player-row.lvl3-succ {
+  isolation: isolate;
+}
+
+/* ============================================================
+     SOGLIA 3 — AURA ENERGETICA
+     ============================================================ */
+.player-row.lvl1-fail {
+  border-color: rgba(180, 40, 40, 0.6);
+  background:
+    radial-gradient(ellipse at 50% 50%, rgba(60, 10, 10, 0.35) 0%, transparent 70%),
+    linear-gradient(165deg, var(--bg-card-elevated), var(--bg-card));
+}
+.player-row.lvl1-fail::before {
+  content: '';
+  position: absolute;
+  inset: -3px;
+  border-radius: 6px;
+  background: radial-gradient(ellipse at center, rgba(220, 40, 40, 0.25) 0%, transparent 70%);
+  box-shadow:
+    inset 0 0 30px rgba(180, 30, 30, 0.35),
+    0 0 32px rgba(180, 30, 30, 0.55);
+  pointer-events: none;
+  animation: aura-fail 3s ease-in-out infinite;
+  z-index: 0;
+}
+@keyframes aura-fail {
+  0%,
+  100% {
+    opacity: 0.55;
+    box-shadow:
+      inset 0 0 30px rgba(180, 30, 30, 0.35),
+      0 0 32px rgba(180, 30, 30, 0.55);
+  }
+  50% {
+    opacity: 0.9;
+    box-shadow:
+      inset 0 0 42px rgba(220, 40, 40, 0.5),
+      0 0 48px rgba(220, 50, 50, 0.75);
+  }
+}
+
+.player-row.lvl1-succ {
+  border-color: rgba(232, 200, 120, 0.65);
+  background:
+    radial-gradient(ellipse at 50% 50%, rgba(80, 55, 15, 0.25) 0%, transparent 70%),
+    linear-gradient(165deg, var(--bg-card-elevated), var(--bg-card));
+}
+.player-row.lvl1-succ::before {
+  content: '';
+  position: absolute;
+  inset: -3px;
+  border-radius: 6px;
+  background: radial-gradient(ellipse at center, rgba(255, 220, 140, 0.22) 0%, transparent 70%);
+  box-shadow:
+    inset 0 0 30px rgba(255, 210, 120, 0.3),
+    0 0 32px rgba(255, 210, 120, 0.5);
+  pointer-events: none;
+  animation: aura-succ 3.5s ease-in-out infinite;
+  z-index: 0;
+}
+@keyframes aura-succ {
+  0%,
+  100% {
+    opacity: 0.55;
+    box-shadow:
+      inset 0 0 30px rgba(255, 210, 120, 0.3),
+      0 0 32px rgba(255, 210, 120, 0.5);
+  }
+  50% {
+    opacity: 0.95;
+    box-shadow:
+      inset 0 0 44px rgba(255, 235, 180, 0.45),
+      0 0 50px rgba(255, 225, 150, 0.7);
+  }
+}
+
+/* ============================================================
+     SOGLIA 4 — RITO OSCURO (fail) / DEVOZIONE (succ)
+     ============================================================ */
+
+/* --- Rito Oscuro (fail) --- */
+.player-row.lvl2-fail {
+  border-color: rgba(200, 40, 40, 0.85);
+  background:
+    radial-gradient(ellipse at 50% 50%, rgba(40, 5, 5, 0.6) 0%, transparent 70%),
+    linear-gradient(165deg, rgba(50, 10, 10, 0.5), var(--bg-card));
+  box-shadow:
+    inset 0 0 36px rgba(140, 20, 20, 0.5),
+    0 0 28px rgba(200, 40, 40, 0.45),
+    var(--shadow-card);
+  animation: lvl2-fail-pulse 2.4s ease-in-out infinite;
+}
+@keyframes lvl2-fail-pulse {
+  0%,
+  100% {
+    box-shadow:
+      inset 0 0 36px rgba(140, 20, 20, 0.5),
+      0 0 28px rgba(200, 40, 40, 0.45),
+      var(--shadow-card);
+  }
+  50% {
+    box-shadow:
+      inset 0 0 50px rgba(200, 40, 40, 0.7),
+      0 0 42px rgba(220, 50, 30, 0.65),
+      var(--shadow-card);
+  }
+}
+
+/* Pentacolo SVG che si disegna progressivamente (stroke-dasharray) */
+.fx-pentacle {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+.fx-pentacle svg {
+  width: 78px;
+  height: 78px;
+  opacity: 0.85;
+  filter: drop-shadow(0 0 8px rgba(255, 40, 20, 0.85)) drop-shadow(0 0 16px rgba(255, 80, 30, 0.55));
+  animation: pentacle-pulse 2.5s ease-in-out infinite;
+}
+@keyframes pentacle-pulse {
+  0%,
+  100% {
+    filter: drop-shadow(0 0 8px rgba(255, 40, 20, 0.85))
+      drop-shadow(0 0 16px rgba(255, 80, 30, 0.55));
+  }
+  50% {
+    filter: drop-shadow(0 0 14px rgba(255, 80, 30, 1)) drop-shadow(0 0 28px rgba(255, 120, 40, 0.8));
+  }
+}
+.fx-pentacle .pentacle-star {
+  fill: none;
+  stroke: #ff4828;
+  stroke-width: 2;
+  stroke-dasharray: 280;
+  stroke-dashoffset: 280;
+  animation:
+    pentacle-draw 4s ease-out forwards,
+    pentacle-glow 2.5s ease-in-out infinite 4s;
+}
+.fx-pentacle .pentacle-circle {
+  fill: none;
+  stroke: #ff5028;
+  stroke-width: 1.5;
+  stroke-dasharray: 220;
+  stroke-dashoffset: 220;
+  animation: pentacle-draw 3s ease-out forwards;
+}
+@keyframes pentacle-draw {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+@keyframes pentacle-glow {
+  0%,
+  100% {
+    stroke: #ff4828;
+    stroke-width: 2;
+  }
+  50% {
+    stroke: #ff8050;
+    stroke-width: 2.4;
+  }
+}
+
+/* Mani spettrali che disegnano il pentacolo */
+.fx-spectral-hands {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 2;
+  overflow: hidden;
+}
+.fx-spectral-hands .hand {
+  position: absolute;
+  width: 32px;
+  height: 32px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: rgba(220, 180, 180, 0.45);
+  filter: blur(0.6px) drop-shadow(0 0 8px rgba(255, 80, 80, 0.6));
+  animation: hand-trace 4s linear infinite;
+}
+.fx-spectral-hands .hand.left {
+  left: 50%;
+  transform-origin: -22px center;
+  animation-direction: normal;
+}
+.fx-spectral-hands .hand.right {
+  left: 50%;
+  transform-origin: -22px center;
+  animation-delay: 2s;
+  animation-direction: reverse;
+}
+@keyframes hand-trace {
+  0% {
+    transform: translate(-50%, -50%) rotate(0deg) translateX(40px);
+    opacity: 0;
+  }
+  10% {
+    opacity: 0.85;
+  }
+  90% {
+    opacity: 0.85;
+  }
+  100% {
+    transform: translate(-50%, -50%) rotate(360deg) translateX(40px);
+    opacity: 0;
+  }
+}
+
+/* --- Devozione (succ) --- */
+.player-row.lvl2-succ {
+  border-color: rgba(255, 220, 140, 0.85);
+  background:
+    radial-gradient(ellipse at 50% 50%, rgba(80, 60, 20, 0.4) 0%, transparent 70%),
+    linear-gradient(165deg, rgba(50, 40, 15, 0.4), var(--bg-card));
+  box-shadow:
+    inset 0 0 38px rgba(220, 180, 80, 0.35),
+    0 0 32px rgba(255, 220, 140, 0.5),
+    var(--shadow-card);
+  animation: lvl2-succ-pulse 3s ease-in-out infinite;
+}
+@keyframes lvl2-succ-pulse {
+  0%,
+  100% {
+    box-shadow:
+      inset 0 0 38px rgba(220, 180, 80, 0.35),
+      0 0 32px rgba(255, 220, 140, 0.5),
+      var(--shadow-card);
+  }
+  50% {
+    box-shadow:
+      inset 0 0 52px rgba(255, 235, 180, 0.55),
+      0 0 48px rgba(255, 220, 140, 0.75),
+      var(--shadow-card);
+  }
+}
+
+/* Figura in preghiera (sagoma SVG centrale) */
+.fx-praying-figure {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.fx-praying-figure svg {
+  width: 72px;
+  height: 72px;
+  opacity: 0.85;
+  filter: drop-shadow(0 0 10px rgba(255, 220, 140, 0.9))
+    drop-shadow(0 0 20px rgba(255, 200, 100, 0.55));
+  animation: praying-sway 4s ease-in-out infinite;
+}
+@keyframes praying-sway {
+  0%,
+  100% {
+    transform: translateY(0);
+    filter: drop-shadow(0 0 10px rgba(255, 220, 140, 0.9))
+      drop-shadow(0 0 20px rgba(255, 200, 100, 0.55));
+  }
+  50% {
+    transform: translateY(-3px);
+    filter: drop-shadow(0 0 16px rgba(255, 235, 170, 1))
+      drop-shadow(0 0 32px rgba(255, 210, 120, 0.85));
+  }
+}
+.fx-praying-figure .figure-body {
+  fill: rgba(40, 28, 10, 0.85);
+  stroke: #ffd870;
+  stroke-width: 1.2;
+}
+.fx-praying-figure .figure-glow {
+  fill: none;
+  stroke: rgba(255, 240, 180, 0.6);
+  stroke-width: 0.5;
+}
+
+/* Particelle di luce che salgono */
+.fx-light-particles {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 2;
+  overflow: hidden;
+}
+.fx-light-particles span {
+  position: absolute;
+  width: 3px;
+  height: 3px;
+  border-radius: 50%;
+  background: radial-gradient(circle, #fff8d0 0%, #ffd870 60%, transparent 100%);
+  box-shadow:
+    0 0 8px rgba(255, 220, 140, 0.9),
+    0 0 14px rgba(255, 235, 170, 0.5);
+  animation: light-rise 3.5s ease-in infinite;
+  bottom: -6px;
+}
+.fx-light-particles span:nth-child(1) {
+  left: 10%;
+  animation-delay: 0s;
+}
+.fx-light-particles span:nth-child(2) {
+  left: 22%;
+  animation-delay: 0.4s;
+  width: 4px;
+  height: 4px;
+}
+.fx-light-particles span:nth-child(3) {
+  left: 35%;
+  animation-delay: 0.8s;
+}
+.fx-light-particles span:nth-child(4) {
+  left: 48%;
+  animation-delay: 1.2s;
+}
+.fx-light-particles span:nth-child(5) {
+  left: 62%;
+  animation-delay: 0.2s;
+  width: 4px;
+  height: 4px;
+}
+.fx-light-particles span:nth-child(6) {
+  left: 75%;
+  animation-delay: 0.6s;
+}
+.fx-light-particles span:nth-child(7) {
+  left: 88%;
+  animation-delay: 1s;
+}
+.fx-light-particles span:nth-child(8) {
+  left: 16%;
+  animation-delay: 1.5s;
+}
+.fx-light-particles span:nth-child(9) {
+  left: 42%;
+  animation-delay: 1.8s;
+}
+.fx-light-particles span:nth-child(10) {
+  left: 70%;
+  animation-delay: 2.1s;
+}
+@keyframes light-rise {
+  0% {
+    transform: translateY(0) scale(0.6);
+    opacity: 0;
+  }
+  15% {
+    opacity: 1;
+    transform: translateY(-10px) scale(1);
+  }
+  100% {
+    transform: translateY(-90px) scale(0.5);
+    opacity: 0;
+  }
+}
+
+/* ============================================================
+     SOGLIA 5+ — APOCALISSE (fail) / INTERVENTO DIVINO (succ)
+     ============================================================ */
+.player-row.lvl3-fail {
+  border: 2px solid #ff2828;
+  background:
+    radial-gradient(
+      ellipse at 50% 50%,
+      rgba(60, 5, 5, 0.9) 0%,
+      rgba(40, 0, 0, 0.6) 40%,
+      transparent 80%
+    ),
+    linear-gradient(165deg, #1a0606, #100404);
+  box-shadow:
+    inset 0 0 60px rgba(0, 0, 0, 0.85),
+    inset 0 0 30px rgba(200, 20, 20, 0.5),
+    0 0 50px rgba(220, 30, 30, 0.7),
+    0 0 100px rgba(120, 0, 0, 0.5);
+  animation: lvl3-fail-curse 0.4s steps(4) infinite;
+}
+@keyframes lvl3-fail-curse {
+  0%,
+  100% {
+    filter: brightness(1) contrast(1.15) hue-rotate(0deg);
+  }
+  50% {
+    filter: brightness(1.18) contrast(1.35) hue-rotate(-6deg);
+  }
+}
+
+/* Pentacolo completo fiammeggiante (versione lvl3 — più grosso e ardente) */
+.fx-pentacle-burning {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.fx-pentacle-burning svg {
+  width: 90px;
+  height: 90px;
+  filter: drop-shadow(0 0 12px rgba(255, 80, 30, 1)) drop-shadow(0 0 28px rgba(255, 40, 20, 0.85));
+  animation: pentacle-rotate-burn 12s linear infinite;
+}
+.fx-pentacle-burning .pentacle-star,
+.fx-pentacle-burning .pentacle-circle {
+  fill: none;
+  stroke: #ff4020;
+  stroke-width: 2.2;
+  animation: pentacle-burn-stroke 1.4s ease-in-out infinite;
+}
+.fx-pentacle-burning .pentacle-inner-circle {
+  fill: rgba(255, 80, 30, 0.18);
+  stroke: #ffa840;
+  stroke-width: 0.8;
+}
+@keyframes pentacle-burn-stroke {
+  0%,
+  100% {
+    stroke: #ff4020;
+    stroke-width: 2.2;
+  }
+  50% {
+    stroke: #ffaa30;
+    stroke-width: 2.8;
+  }
+}
+@keyframes pentacle-rotate-burn {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Lampi rossi */
+.fx-lightning {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 3;
+  overflow: hidden;
+}
+.fx-lightning span {
+  position: absolute;
+  top: 0;
+  width: 2px;
+  background: linear-gradient(
+    180deg,
+    transparent,
+    #ff4020 30%,
+    #ffaa50 50%,
+    #ff4020 70%,
+    transparent
+  );
+  transform-origin: top center;
+  box-shadow:
+    0 0 8px rgba(255, 80, 30, 0.9),
+    0 0 16px rgba(255, 40, 20, 0.7);
+  opacity: 0;
+  animation: lightning-strike 3s ease-out infinite;
+}
+.fx-lightning span:nth-child(1) {
+  left: 12%;
+  height: 70%;
+  animation-delay: 0.4s;
+  transform: rotate(-12deg);
+}
+.fx-lightning span:nth-child(2) {
+  left: 30%;
+  height: 90%;
+  animation-delay: 1.2s;
+  transform: rotate(8deg);
+}
+.fx-lightning span:nth-child(3) {
+  left: 58%;
+  height: 75%;
+  animation-delay: 0s;
+  transform: rotate(-6deg);
+}
+.fx-lightning span:nth-child(4) {
+  left: 78%;
+  height: 85%;
+  animation-delay: 1.8s;
+  transform: rotate(10deg);
+}
+.fx-lightning span:nth-child(5) {
+  left: 90%;
+  height: 60%;
+  animation-delay: 2.4s;
+  transform: rotate(-4deg);
+}
+@keyframes lightning-strike {
+  0%,
+  4% {
+    opacity: 0;
+  }
+  5% {
+    opacity: 1;
+  }
+  9% {
+    opacity: 0.4;
+  }
+  11% {
+    opacity: 1;
+  }
+  18% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+/* Fumo nero che ribolle alla base */
+.fx-black-smoke {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 50%;
+  pointer-events: none;
+  z-index: 2;
+  background:
+    radial-gradient(ellipse at 15% 100%, rgba(0, 0, 0, 0.85) 0%, transparent 50%),
+    radial-gradient(ellipse at 45% 100%, rgba(15, 5, 5, 0.9) 0%, transparent 55%),
+    radial-gradient(ellipse at 75% 100%, rgba(0, 0, 0, 0.85) 0%, transparent 50%),
+    radial-gradient(ellipse at 95% 100%, rgba(20, 8, 8, 0.8) 0%, transparent 50%);
+  filter: blur(6px);
+  animation: black-smoke-roil 5s ease-in-out infinite;
+}
+@keyframes black-smoke-roil {
+  0%,
+  100% {
+    transform: translateX(0) scale(1, 1);
+    opacity: 0.85;
+  }
+  33% {
+    transform: translateX(10px) scale(1.05, 0.95);
+    opacity: 1;
+  }
+  66% {
+    transform: translateX(-8px) scale(0.95, 1.05);
+    opacity: 0.9;
+  }
+}
+
+/* --- Intervento Divino (succ) --- */
+.player-row.lvl3-succ {
+  border: 2px solid #fff0b0;
+  background:
+    radial-gradient(
+      ellipse at 50% 50%,
+      rgba(255, 240, 200, 0.35) 0%,
+      rgba(120, 90, 40, 0.3) 40%,
+      transparent 80%
+    ),
+    linear-gradient(165deg, #2a1f08, #1f1606);
+  box-shadow:
+    inset 0 0 50px rgba(255, 220, 140, 0.45),
+    0 0 60px rgba(255, 220, 140, 0.8),
+    0 0 120px rgba(255, 200, 100, 0.5);
+  animation: lvl3-succ-divine 3s ease-in-out infinite;
+}
+@keyframes lvl3-succ-divine {
+  0%,
+  100% {
+    filter: brightness(1.05) saturate(1.15);
+  }
+  50% {
+    filter: brightness(1.25) saturate(1.35);
+  }
+}
+
+/* Angelo in SVG (silhouette + ali animate) */
+.fx-angel {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.fx-angel svg {
+  width: 130px;
+  height: 100%;
+  max-height: 100px;
+  opacity: 0.85;
+  filter: drop-shadow(0 0 12px rgba(255, 240, 180, 1))
+    drop-shadow(0 0 28px rgba(255, 220, 140, 0.7));
+}
+.fx-angel .angel-body {
+  fill: rgba(40, 28, 10, 0.7);
+  stroke: #ffe890;
+  stroke-width: 1.2;
+}
+.fx-angel .angel-halo {
+  fill: none;
+  stroke: #fff0b0;
+  stroke-width: 1.5;
+  filter: drop-shadow(0 0 4px rgba(255, 240, 180, 1));
+}
+.fx-angel .wing-left,
+.fx-angel .wing-right {
+  fill: rgba(255, 245, 210, 0.4);
+  stroke: rgba(255, 235, 170, 0.8);
+  stroke-width: 0.8;
+  transform-origin: 50% 50%;
+  animation: wing-beat 2.4s ease-in-out infinite;
+}
+.fx-angel .wing-left {
+  transform-origin: 65% 35%;
+}
+.fx-angel .wing-right {
+  transform-origin: 35% 35%;
+  animation-delay: 0s;
+}
+@keyframes wing-beat {
+  0%,
+  100% {
+    transform: scaleX(1) scaleY(1);
+  }
+  50% {
+    transform: scaleX(0.7) scaleY(1.05);
+  }
+}
+
+/* Luce accecante che emana dai bordi (uguale per tutti i lati) */
+.fx-divine-light {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 2;
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 200, 0.8),
+    inset 0 0 30px rgba(255, 240, 180, 0.8),
+    inset 0 0 80px rgba(255, 220, 140, 0.5);
+  animation: divine-light-pulse 2s ease-in-out infinite;
+  border-radius: inherit;
+}
+@keyframes divine-light-pulse {
+  0%,
+  100% {
+    box-shadow:
+      inset 0 0 0 1px rgba(255, 255, 200, 0.8),
+      inset 0 0 30px rgba(255, 240, 180, 0.8),
+      inset 0 0 80px rgba(255, 220, 140, 0.5);
+  }
+  50% {
+    box-shadow:
+      inset 0 0 0 2px rgba(255, 255, 230, 1),
+      inset 0 0 50px rgba(255, 250, 210, 1),
+      inset 0 0 120px rgba(255, 235, 170, 0.7);
+  }
+}
+
+/* Raggi divini di sfondo (uniformi attorno) */
+.fx-divine-rays-bg {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
+  border-radius: inherit;
+}
+.fx-divine-rays-bg::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 250%;
+  height: 250%;
+  transform: translate(-50%, -50%);
+  background: conic-gradient(
+    from 0deg,
+    transparent 0deg,
+    rgba(255, 240, 180, 0.18) 8deg,
+    transparent 16deg,
+    transparent 55deg,
+    rgba(255, 235, 170, 0.16) 63deg,
+    transparent 71deg,
+    transparent 115deg,
+    rgba(255, 240, 180, 0.18) 123deg,
+    transparent 131deg,
+    transparent 175deg,
+    rgba(255, 235, 170, 0.16) 183deg,
+    transparent 191deg,
+    transparent 235deg,
+    rgba(255, 240, 180, 0.18) 243deg,
+    transparent 251deg,
+    transparent 295deg,
+    rgba(255, 235, 170, 0.16) 303deg,
+    transparent 311deg
+  );
+  animation: divine-rays-spin 16s linear infinite;
+}
+@keyframes divine-rays-spin {
+  from {
+    transform: translate(-50%, -50%) rotate(0deg);
+  }
+  to {
+    transform: translate(-50%, -50%) rotate(360deg);
+  }
+}
+
+/* Pulsante aggiungi player + import iniziativa */
+.caos-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+  align-items: center;
+}
+
+/* =========================================================
+     D20 DELLA CONDANNA
+     ========================================================= */
+
+.condanna-panel {
+  background: linear-gradient(165deg, rgba(40, 10, 10, 0.5), var(--bg-card));
+  border: 1px solid rgba(140, 30, 30, 0.35);
+  border-radius: 4px;
+  padding: 1.5rem 1.25rem;
+  box-shadow:
+    var(--shadow-card),
+    inset 0 0 30px rgba(80, 10, 10, 0.25);
+  position: sticky;
+  top: 1rem;
+  max-height: calc(100vh - 2rem);
+  overflow-y: auto;
+}
+
+.condanna-title {
+  font-family: 'Cinzel', serif;
+  font-size: 13px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.24em;
+  color: #d4a070;
+  text-align: center;
+  margin-bottom: 0.4rem;
+}
+.condanna-sub {
+  text-align: center;
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: 14px;
+  color: var(--text-muted);
+  margin-bottom: 1.25rem;
+}
+
+/* Wheel: D20 con teschio e spicchi rotondi */
+.doom-wheel-wrap {
+  position: relative;
+  width: 260px;
+  height: 260px;
+  margin: 0 auto 1rem;
+}
+.doom-wheel-svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+  filter: drop-shadow(0 0 18px rgba(120, 20, 20, 0.4));
+}
+.doom-slice {
+  fill: rgba(40, 20, 20, 0.7);
+  stroke: rgba(180, 60, 60, 0.4);
+  stroke-width: 1.5;
+  transition:
+    fill 0.5s ease,
+    filter 0.5s ease;
+}
+.doom-slice.filled {
+  fill: #8a1a1a;
+  filter: drop-shadow(0 0 8px rgba(220, 30, 30, 0.8));
+  animation: blood-pulse 2.2s ease-in-out infinite;
+}
+@keyframes blood-pulse {
+  0%,
+  100% {
+    fill: #8a1a1a;
+    filter: drop-shadow(0 0 8px rgba(220, 30, 30, 0.7));
+  }
+  50% {
+    fill: #c82828;
+    filter: drop-shadow(0 0 16px rgba(255, 40, 40, 0.95));
+  }
+}
+
+.doom-skull-btn {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 110px;
+  height: 110px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 30% 30%, #3a2828 0%, #1a0e0e 70%);
+  border: 2px solid rgba(180, 60, 60, 0.5);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 56px;
+  transition: all 0.2s ease;
+  box-shadow:
+    inset 0 0 20px rgba(0, 0, 0, 0.7),
+    0 0 24px rgba(180, 30, 30, 0.4);
+  color: #d8d0c8;
+  text-shadow: 0 0 12px rgba(255, 60, 60, 0.4);
+  user-select: none;
+}
+.doom-skull-btn:hover {
+  transform: translate(-50%, -50%) scale(1.05);
+  border-color: #c83030;
+  box-shadow:
+    inset 0 0 24px rgba(0, 0, 0, 0.7),
+    0 0 36px rgba(220, 40, 40, 0.7);
+}
+.doom-skull-btn:active {
+  transform: translate(-50%, -50%) scale(0.95);
+}
+.doom-skull-btn.full {
+  animation: skull-scream 0.5s ease-in-out infinite;
+  background: radial-gradient(circle at 30% 30%, #7a2020 0%, #2a0808 70%);
+}
+@keyframes skull-scream {
+  0%,
+  100% {
+    transform: translate(-50%, -50%) rotate(0deg);
+  }
+  20% {
+    transform: translate(-52%, -48%) rotate(-3deg);
+  }
+  40% {
+    transform: translate(-48%, -52%) rotate(3deg);
+  }
+  60% {
+    transform: translate(-52%, -50%) rotate(-2deg);
+  }
+  80% {
+    transform: translate(-48%, -48%) rotate(2deg);
+  }
+}
+
+.doom-progress {
+  text-align: center;
+  font-family: 'Cinzel', serif;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.22em;
+  color: var(--gold-dim);
+  margin-bottom: 0.75rem;
+}
+.doom-progress strong {
+  color: #ff7070;
+  font-size: 16px;
+}
+
+.doom-controls {
+  display: flex;
+  gap: 0.4rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+.doom-controls button {
+  background: linear-gradient(180deg, rgba(140, 30, 30, 0.4), rgba(70, 15, 15, 0.5));
+  border: 1px solid rgba(180, 60, 60, 0.4);
+  color: #ffc8c8;
+  font-family: 'Cinzel', serif;
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  padding: 0.45rem 0.85rem;
+  border-radius: 2px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+.doom-controls button:hover {
+  background: linear-gradient(180deg, rgba(180, 40, 40, 0.6), rgba(100, 20, 20, 0.6));
+  border-color: rgba(220, 80, 80, 0.7);
+  color: #fff;
+}
+.doom-controls button:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+/* =========================================================
+     INDICATORE DI STADIO (D6 > D8 > D20)
+     ========================================================= */
+.doom-stage-indicator {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-bottom: 0.85rem;
+  padding: 0.5rem 0.6rem;
+  background: rgba(0, 0, 0, 0.35);
+  border: 1px solid rgba(140, 30, 30, 0.25);
+  border-radius: 3px;
+}
+.stage-dot {
+  font-family: 'Cinzel', serif;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  padding: 0.3rem 0.55rem;
+  border-radius: 2px;
+  background: rgba(50, 20, 20, 0.4);
+  color: var(--text-faint);
+  border: 1px solid rgba(120, 60, 60, 0.25);
+  transition: all 0.3s ease;
+}
+.stage-dot.active {
+  background: linear-gradient(180deg, rgba(140, 30, 30, 0.55), rgba(80, 15, 15, 0.55));
+  color: #ffc8c8;
+  border-color: rgba(180, 60, 60, 0.6);
+}
+.stage-dot.current {
+  color: #ffffff;
+  box-shadow:
+    0 0 12px rgba(220, 40, 40, 0.55),
+    inset 0 0 8px rgba(255, 80, 80, 0.25);
+  border-color: rgba(255, 80, 80, 0.8);
+}
+.stage-dot.current.final {
+  background: linear-gradient(180deg, #8a1010, #4a0606);
+  color: #fff8d0;
+  box-shadow:
+    0 0 18px rgba(255, 80, 30, 0.7),
+    inset 0 0 12px rgba(255, 160, 40, 0.3);
+  border-color: #ff5028;
+}
+.stage-arrow {
+  color: rgba(140, 60, 60, 0.6);
+  font-size: 10px;
+  line-height: 1;
+}
+
+/* Stage 2: pannello con tinta più satura */
+.condanna-panel.doom-stage-2 {
+  background: linear-gradient(165deg, rgba(60, 15, 15, 0.55), var(--bg-card));
+  border-color: rgba(180, 50, 50, 0.5);
+  box-shadow:
+    var(--shadow-card),
+    inset 0 0 36px rgba(100, 15, 15, 0.35);
+}
+
+/* Stage 3: pannello infernale */
+.condanna-panel.doom-stage-3 {
+  background:
+    radial-gradient(ellipse at 50% 30%, rgba(180, 40, 15, 0.3) 0%, transparent 60%),
+    linear-gradient(165deg, rgba(40, 5, 5, 0.85), #1a0606);
+  border: 1px solid rgba(255, 80, 30, 0.5);
+  box-shadow:
+    var(--shadow-card),
+    inset 0 0 60px rgba(120, 20, 10, 0.5),
+    0 0 32px rgba(220, 40, 20, 0.35);
+}
+.condanna-panel.doom-stage-3 .condanna-title {
+  color: #ffb070;
+  text-shadow: 0 0 18px rgba(255, 80, 30, 0.6);
+  font-size: 15px;
+  letter-spacing: 0.32em;
+  animation: stage3-title-pulse 2.5s ease-in-out infinite;
+}
+@keyframes stage3-title-pulse {
+  0%,
+  100% {
+    text-shadow: 0 0 18px rgba(255, 80, 30, 0.6);
+  }
+  50% {
+    text-shadow: 0 0 30px rgba(255, 120, 40, 1);
+  }
+}
+.condanna-panel.doom-stage-3 .condanna-sub {
+  color: #d8a080;
+}
+
+/* =========================================================
+     STADIO 3 — D20 stilizzato (facce illuminabili)
+     ========================================================= */
+.doom-d20-svg .d20-face {
+  fill: rgba(30, 18, 15, 0.85);
+  stroke: rgba(180, 90, 60, 0.5);
+  stroke-width: 1;
+  transition:
+    fill 0.6s ease,
+    stroke 0.4s ease,
+    filter 0.5s ease;
+}
+.doom-d20-svg .d20-face-outer {
+  fill: rgba(45, 22, 18, 0.9);
+}
+.doom-d20-svg .d20-face-inner {
+  fill: rgba(60, 28, 22, 0.85);
+}
+.doom-d20-svg .d20-face.lit {
+  fill: url(#unused); /* placeholder, sovrascritto sotto */
+  fill: #ff4a18;
+  stroke: #ffd070;
+  stroke-width: 1.5;
+  filter: drop-shadow(0 0 8px rgba(255, 80, 30, 0.95));
+  animation: lava-pulse 2s ease-in-out infinite;
+}
+.doom-d20-svg .d20-face-inner.lit {
+  fill: #ffaa30;
+}
+.doom-d20-svg .d20-face-outer.lit {
+  fill: #c83018;
+}
+@keyframes lava-pulse {
+  0%,
+  100% {
+    filter: drop-shadow(0 0 8px rgba(255, 80, 30, 0.95)) brightness(1);
+  }
+  50% {
+    filter: drop-shadow(0 0 18px rgba(255, 140, 50, 1)) brightness(1.25);
+  }
+}
+.doom-d20-svg .d20-rim {
+  animation: d20-rim-rotate 18s linear infinite;
+  transform-origin: 130px 130px;
+}
+@keyframes d20-rim-rotate {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Skull per stadio 3 — più infernale */
+.doom-skull-btn.doom-skull-stage-3 {
+  background: radial-gradient(circle at 30% 30%, #5a1818 0%, #1a0404 70%);
+  border: 2px solid rgba(255, 80, 30, 0.7);
+  color: #fff0d0;
+  text-shadow:
+    0 0 18px rgba(255, 80, 30, 0.9),
+    0 0 36px rgba(255, 40, 20, 0.7);
+  box-shadow:
+    inset 0 0 24px rgba(0, 0, 0, 0.85),
+    0 0 36px rgba(220, 50, 20, 0.7);
+}
+.doom-skull-btn.doom-skull-stage-3:hover {
+  box-shadow:
+    inset 0 0 24px rgba(0, 0, 0, 0.85),
+    0 0 50px rgba(255, 80, 30, 0.9);
+}
+.doom-skull-btn.transforming {
+  animation: skull-violent-shake 0.15s linear infinite;
+  pointer-events: none;
+}
+@keyframes skull-violent-shake {
+  0% {
+    transform: translate(-50%, -50%) translate(0, 0);
+  }
+  25% {
+    transform: translate(-50%, -50%) translate(-3px, 2px) rotate(-4deg);
+  }
+  50% {
+    transform: translate(-50%, -50%) translate(2px, -2px) rotate(3deg);
+  }
+  75% {
+    transform: translate(-50%, -50%) translate(-2px, -3px) rotate(-2deg);
+  }
+  100% {
+    transform: translate(-50%, -50%) translate(3px, 1px) rotate(2deg);
+  }
+}
+
+/* Animazione di shake del pannello durante la trasformazione */
+.condanna-panel.doom-shaking {
+  animation: panel-violent-shake 0.18s linear infinite;
+}
+@keyframes panel-violent-shake {
+  0%,
+  100% {
+    transform: translate(0, 0);
+  }
+  20% {
+    transform: translate(-2px, 2px);
+  }
+  40% {
+    transform: translate(2px, -1px);
+  }
+  60% {
+    transform: translate(-1px, -2px);
+  }
+  80% {
+    transform: translate(2px, 1px);
+  }
+}
+
+/* Particelle di cenere durante la trasformazione */
+.doom-ash-layer {
+  position: absolute;
+  inset: -40px;
+  pointer-events: none;
+  overflow: visible;
+  z-index: 50;
+}
+.doom-ash-layer .ash-particle {
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: radial-gradient(circle, #ff8030 0%, #d04020 50%, transparent 100%);
+  box-shadow: 0 0 6px rgba(255, 80, 30, 0.9);
+  animation: ash-burst 1.6s ease-out forwards;
+}
+/* 24 particelle con angoli e ritardi distribuiti */
+.doom-ash-layer .ash-particle:nth-child(1) {
+  top: 50%;
+  left: 50%;
+  --tx: -120px;
+  --ty: -90px;
+  --rot: -50deg;
+  animation-delay: 0s;
+}
+.doom-ash-layer .ash-particle:nth-child(2) {
+  top: 50%;
+  left: 50%;
+  --tx: 120px;
+  --ty: -90px;
+  --rot: 50deg;
+  animation-delay: 0.05s;
+}
+.doom-ash-layer .ash-particle:nth-child(3) {
+  top: 50%;
+  left: 50%;
+  --tx: 0px;
+  --ty: -140px;
+  --rot: 0deg;
+  animation-delay: 0.1s;
+  width: 5px;
+  height: 5px;
+}
+.doom-ash-layer .ash-particle:nth-child(4) {
+  top: 50%;
+  left: 50%;
+  --tx: -150px;
+  --ty: 30px;
+  --rot: -90deg;
+  animation-delay: 0.15s;
+}
+.doom-ash-layer .ash-particle:nth-child(5) {
+  top: 50%;
+  left: 50%;
+  --tx: 150px;
+  --ty: 30px;
+  --rot: 90deg;
+  animation-delay: 0.2s;
+}
+.doom-ash-layer .ash-particle:nth-child(6) {
+  top: 50%;
+  left: 50%;
+  --tx: -100px;
+  --ty: 110px;
+  --rot: -130deg;
+  animation-delay: 0.05s;
+  width: 3px;
+  height: 3px;
+}
+.doom-ash-layer .ash-particle:nth-child(7) {
+  top: 50%;
+  left: 50%;
+  --tx: 100px;
+  --ty: 110px;
+  --rot: 130deg;
+  animation-delay: 0.25s;
+}
+.doom-ash-layer .ash-particle:nth-child(8) {
+  top: 50%;
+  left: 50%;
+  --tx: 0px;
+  --ty: 150px;
+  --rot: 180deg;
+  animation-delay: 0.3s;
+}
+.doom-ash-layer .ash-particle:nth-child(9) {
+  top: 50%;
+  left: 50%;
+  --tx: -80px;
+  --ty: -60px;
+  --rot: -45deg;
+  animation-delay: 0.35s;
+  width: 3px;
+  height: 3px;
+}
+.doom-ash-layer .ash-particle:nth-child(10) {
+  top: 50%;
+  left: 50%;
+  --tx: 80px;
+  --ty: -60px;
+  --rot: 45deg;
+  animation-delay: 0.4s;
+}
+.doom-ash-layer .ash-particle:nth-child(11) {
+  top: 50%;
+  left: 50%;
+  --tx: -160px;
+  --ty: -20px;
+  --rot: -100deg;
+  animation-delay: 0.1s;
+  width: 5px;
+  height: 5px;
+}
+.doom-ash-layer .ash-particle:nth-child(12) {
+  top: 50%;
+  left: 50%;
+  --tx: 160px;
+  --ty: -20px;
+  --rot: 100deg;
+  animation-delay: 0.15s;
+}
+.doom-ash-layer .ash-particle:nth-child(13) {
+  top: 50%;
+  left: 50%;
+  --tx: -50px;
+  --ty: -150px;
+  --rot: -20deg;
+  animation-delay: 0.45s;
+}
+.doom-ash-layer .ash-particle:nth-child(14) {
+  top: 50%;
+  left: 50%;
+  --tx: 50px;
+  --ty: -150px;
+  --rot: 20deg;
+  animation-delay: 0.5s;
+}
+.doom-ash-layer .ash-particle:nth-child(15) {
+  top: 50%;
+  left: 50%;
+  --tx: -130px;
+  --ty: 60px;
+  --rot: -110deg;
+  animation-delay: 0.2s;
+}
+.doom-ash-layer .ash-particle:nth-child(16) {
+  top: 50%;
+  left: 50%;
+  --tx: 130px;
+  --ty: 60px;
+  --rot: 110deg;
+  animation-delay: 0.25s;
+}
+.doom-ash-layer .ash-particle:nth-child(17) {
+  top: 50%;
+  left: 50%;
+  --tx: -40px;
+  --ty: 130px;
+  --rot: -160deg;
+  animation-delay: 0.55s;
+}
+.doom-ash-layer .ash-particle:nth-child(18) {
+  top: 50%;
+  left: 50%;
+  --tx: 40px;
+  --ty: 130px;
+  --rot: 160deg;
+  animation-delay: 0.6s;
+}
+.doom-ash-layer .ash-particle:nth-child(19) {
+  top: 50%;
+  left: 50%;
+  --tx: -90px;
+  --ty: -120px;
+  --rot: -35deg;
+  animation-delay: 0.35s;
+}
+.doom-ash-layer .ash-particle:nth-child(20) {
+  top: 50%;
+  left: 50%;
+  --tx: 90px;
+  --ty: -120px;
+  --rot: 35deg;
+  animation-delay: 0.4s;
+}
+.doom-ash-layer .ash-particle:nth-child(21) {
+  top: 50%;
+  left: 50%;
+  --tx: -60px;
+  --ty: 100px;
+  --rot: -150deg;
+  animation-delay: 0.65s;
+}
+.doom-ash-layer .ash-particle:nth-child(22) {
+  top: 50%;
+  left: 50%;
+  --tx: 60px;
+  --ty: 100px;
+  --rot: 150deg;
+  animation-delay: 0.7s;
+}
+.doom-ash-layer .ash-particle:nth-child(23) {
+  top: 50%;
+  left: 50%;
+  --tx: -110px;
+  --ty: -10px;
+  --rot: -85deg;
+  animation-delay: 0.05s;
+  width: 5px;
+  height: 5px;
+}
+.doom-ash-layer .ash-particle:nth-child(24) {
+  top: 50%;
+  left: 50%;
+  --tx: 110px;
+  --ty: -10px;
+  --rot: 85deg;
+  animation-delay: 0.1s;
+  width: 5px;
+  height: 5px;
+}
+@keyframes ash-burst {
+  0% {
+    transform: translate(-50%, -50%) translate(0, 0) scale(0.3);
+    opacity: 0;
+  }
+  10% {
+    transform: translate(-50%, -50%) translate(0, 0) scale(1);
+    opacity: 1;
+  }
+  100% {
+    transform: translate(-50%, -50%) translate(var(--tx), var(--ty)) scale(0.3) rotate(var(--rot));
+    opacity: 0;
+  }
+}
+
+/* Flash full-screen durante la trasformazione */
+.doom-transform-flash {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  pointer-events: none;
+  background: radial-gradient(
+    ellipse at center,
+    rgba(255, 140, 40, 0.6) 0%,
+    rgba(180, 30, 10, 0.4) 30%,
+    rgba(0, 0, 0, 0) 70%
+  );
+  opacity: 0;
+  animation: doom-flash 1.7s ease-out forwards;
+}
+.doom-transform-flash.final {
+  /* Trasformazione finale: flash più potente e prolungato */
+  background: radial-gradient(
+    ellipse at center,
+    rgba(255, 220, 140, 0.85) 0%,
+    rgba(220, 80, 20, 0.6) 25%,
+    rgba(80, 0, 0, 0.5) 60%,
+    rgba(0, 0, 0, 0.3) 100%
+  );
+  animation: doom-flash-final 1.7s ease-out forwards;
+}
+@keyframes doom-flash {
+  0% {
+    opacity: 0;
+  }
+  15% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+@keyframes doom-flash-final {
+  0% {
+    opacity: 0;
+    backdrop-filter: blur(0);
+  }
+  10% {
+    opacity: 1;
+    backdrop-filter: blur(4px);
+  }
+  25% {
+    opacity: 0.85;
+  }
+  50% {
+    opacity: 0.6;
+    backdrop-filter: blur(2px);
+  }
+  100% {
+    opacity: 0;
+    backdrop-filter: blur(0);
+  }
+}
+
+/* Eyebrow del modal */
+.doom-modal-eyebrow {
+  font-family: 'Cinzel', serif;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.3em;
+  color: #ff9870;
+  margin-bottom: 0.6rem;
+  text-shadow: 0 0 12px rgba(255, 80, 30, 0.4);
+}
+.doom-modal-lvl-1 .doom-modal-eyebrow {
+  color: #d8a080;
+}
+.doom-modal-lvl-3 .doom-modal-eyebrow {
+  color: #ffd070;
+  text-shadow: 0 0 16px rgba(255, 140, 40, 0.7);
+  animation: doom-eyebrow-pulse 2s ease-in-out infinite;
+}
+@keyframes doom-eyebrow-pulse {
+  0%,
+  100% {
+    opacity: 0.9;
+  }
+  50% {
+    opacity: 1;
+    text-shadow: 0 0 24px rgba(255, 180, 60, 1);
+  }
+}
+/* Modal level 3 (catastrofico) — più imponente */
+.doom-modal-stage-3 {
+  border-width: 3px;
+  border-color: #ff4020;
+  box-shadow:
+    0 0 0 1px rgba(255, 80, 30, 0.5),
+    0 0 80px rgba(220, 40, 20, 0.85),
+    0 0 160px rgba(120, 0, 0, 0.6);
+}
+.doom-modal-stage-3 .doom-modal-title {
+  color: #ffd890;
+  font-size: clamp(1.8rem, 5vw, 2.6rem);
+  text-shadow: 0 0 24px rgba(255, 140, 40, 0.9);
+}
+.doom-modal-lvl-3 {
+  background: radial-gradient(ellipse at center, rgba(100, 0, 0, 0.92) 0%, rgba(0, 0, 0, 0.98) 80%);
+}
+
+/* Modal evento malvagio */
+.doom-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: radial-gradient(ellipse at center, rgba(80, 0, 0, 0.85) 0%, rgba(0, 0, 0, 0.95) 80%);
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+  animation: doom-bg-fade 0.4s ease-out;
+}
+@keyframes doom-bg-fade {
+  from {
+    opacity: 0;
+    backdrop-filter: blur(0);
+  }
+  to {
+    opacity: 1;
+    backdrop-filter: blur(6px);
+  }
+}
+.doom-modal {
+  background: linear-gradient(165deg, #2a0808 0%, #1a0404 100%);
+  border: 2px solid #8a1a1a;
+  border-radius: 6px;
+  max-width: 560px;
+  width: 100%;
+  padding: 2rem;
+  text-align: center;
+  box-shadow:
+    0 0 0 1px rgba(255, 40, 40, 0.3),
+    0 0 60px rgba(180, 20, 20, 0.6),
+    0 0 120px rgba(120, 0, 0, 0.4);
+  animation: doom-modal-in 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
+  position: relative;
+}
+@keyframes doom-modal-in {
+  from {
+    transform: scale(0.3) rotate(-10deg);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1) rotate(0deg);
+    opacity: 1;
+  }
+}
+.doom-modal::before {
+  content: '';
+  position: absolute;
+  inset: -2px;
+  border-radius: 6px;
+  background: linear-gradient(135deg, transparent, rgba(255, 40, 40, 0.4), transparent);
+  z-index: -1;
+  animation: doom-border-glow 3s linear infinite;
+}
+@keyframes doom-border-glow {
+  0% {
+    opacity: 0.4;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0.4;
+  }
+}
+.doom-modal-skull {
+  font-size: 80px;
+  margin-bottom: 1rem;
+  filter: drop-shadow(0 0 24px rgba(255, 40, 40, 0.8));
+  animation: skull-bob 2s ease-in-out infinite;
+}
+@keyframes skull-bob {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+.doom-modal-title {
+  font-family: 'Uncial Antiqua', serif;
+  font-size: clamp(1.5rem, 4vw, 2.2rem);
+  color: #ffb0b0;
+  text-shadow: 0 0 20px rgba(255, 40, 40, 0.7);
+  margin-bottom: 1.25rem;
+  letter-spacing: 0.05em;
+}
+.doom-event-text {
+  font-family: 'EB Garamond', serif;
+  font-size: 19px;
+  font-style: italic;
+  color: #ffe8d8;
+  line-height: 1.6;
+  padding: 1.25rem;
+  background: rgba(60, 10, 10, 0.5);
+  border-left: 3px solid #c83030;
+  border-right: 3px solid #c83030;
+  margin-bottom: 1.5rem;
+}
+.doom-modal-actions {
+  display: flex;
+  gap: 0.6rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+.doom-modal-btn {
+  background: linear-gradient(180deg, #c82828, #6a1414);
+  border: 1px solid #4a0a0a;
+  color: #ffe0d8;
+  font-family: 'Cinzel', serif;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-size: 11px;
+  padding: 0.7rem 1.4rem;
+  border-radius: 3px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: inset 0 1px 0 rgba(255, 180, 180, 0.2);
+}
+.doom-modal-btn:hover {
+  background: linear-gradient(180deg, #e83838, #7a1818);
+  box-shadow: 0 6px 20px rgba(220, 40, 40, 0.5);
+  transform: translateY(-1px);
+}

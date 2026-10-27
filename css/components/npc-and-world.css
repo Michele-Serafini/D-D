@@ -1,0 +1,1228 @@
+/* =========================================================
+     === SEZIONE GENERATORE NPC ===
+     ========================================================= */
+.generatore-wrap {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+@media (min-width: 640px) {
+  .generatore-wrap {
+    padding: 0 1.5rem;
+  }
+}
+
+.generatore-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+  margin-top: 1.5rem;
+}
+@media (min-width: 960px) {
+  .generatore-grid {
+    grid-template-columns: 280px 1fr;
+  }
+}
+
+/* --- NPC Sheet --- */
+.npc-sheet {
+  background: linear-gradient(165deg, var(--bg-card-elevated), var(--bg-card));
+  border: 1px solid var(--border-gold);
+  border-radius: 6px;
+  box-shadow: var(--shadow-card);
+  overflow: hidden;
+}
+.npc-sheet-header {
+  background: linear-gradient(135deg, var(--gold-dim), #5a3e1a 80%);
+  padding: 0.55rem 1rem;
+  border-bottom: 1px solid var(--border-gold);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+.npc-sheet-header-left {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+}
+.npc-sheet-header svg {
+  color: var(--gold-bright);
+  flex-shrink: 0;
+  width: 14px;
+  height: 14px;
+}
+.npc-sheet-title {
+  font-family: 'Cinzel', serif;
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.22em;
+  color: var(--gold-bright);
+}
+.npc-sheet-body {
+  padding: 0.9rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+.npc-top-panel {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.5rem;
+}
+@media (max-width: 600px) {
+  .npc-top-panel {
+    grid-template-columns: 1fr;
+  }
+}
+
+.npc-field-block {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+.npc-field-block.full {
+  grid-column: 1 / -1;
+}
+.npc-field-lbl {
+  font-family: 'Cinzel', serif;
+  font-size: 8.5px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--gold-dim);
+  display: block;
+}
+.npc-field-input {
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  color: var(--text-main);
+  font-family: 'EB Garamond', serif;
+  font-size: 14px;
+  padding: 0.4rem 0.7rem;
+  border-radius: 3px;
+  width: 100%;
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+.npc-field-input:focus {
+  outline: none;
+  border-color: var(--border-gold);
+  background: var(--bg-card-elevated);
+  box-shadow: 0 0 0 2px var(--gold-glow);
+}
+.npc-field-input::placeholder {
+  color: var(--text-faint);
+  font-style: italic;
+}
+.npc-field-textarea {
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  color: var(--text-main);
+  font-family: 'EB Garamond', serif;
+  font-size: 13.5px;
+  padding: 0.45rem 0.7rem;
+  border-radius: 3px;
+  width: 100%;
+  resize: vertical;
+  min-height: 54px;
+  line-height: 1.5;
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+.npc-field-textarea:focus {
+  outline: none;
+  border-color: var(--border-gold);
+  background: var(--bg-card-elevated);
+  box-shadow: 0 0 0 2px var(--gold-glow);
+}
+.npc-field-textarea::placeholder {
+  color: var(--text-faint);
+  font-style: italic;
+}
+/* Textarea idea DM — grande per descrizioni ricche */
+.npc-idea-tall {
+  min-height: 220px !important;
+}
+
+/* ---- Avatar NPC ---- */
+.npc-avatar-wrap {
+  display: flex;
+  gap: 0.85rem;
+  align-items: flex-start;
+}
+.npc-avatar-col {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  align-items: center;
+}
+.npc-avatar-frame {
+  width: 136px;
+  height: 136px;
+  flex-shrink: 0;
+  border: 2px solid var(--border-gold);
+  border-radius: 4px;
+  background: var(--bg-card);
+  overflow: hidden;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: border-color 0.2s ease;
+}
+.npc-avatar-frame:hover {
+  border-color: var(--gold-bright);
+}
+.npc-avatar-frame img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+.npc-avatar-ph {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.3rem;
+  pointer-events: none;
+}
+.npc-avatar-ph svg {
+  width: 28px;
+  height: 28px;
+  color: var(--text-faint);
+  opacity: 0.35;
+}
+.npc-avatar-ph span {
+  font-family: Cinzel, serif;
+  font-size: 7.5px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--text-faint);
+  opacity: 0.5;
+  text-align: center;
+}
+.npc-avatar-ov {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.npc-av-spin {
+  width: 20px;
+  height: 20px;
+  border: 2px solid rgba(201, 165, 92, 0.3);
+  border-top-color: var(--gold);
+  border-radius: 50%;
+  animation: npcSpin 0.75s linear infinite;
+}
+.npc-avatar-btns {
+  display: flex;
+  gap: 0.25rem;
+  width: 136px;
+}
+.btn-av {
+  flex: 1;
+  padding: 0.2rem 0;
+  font-family: Cinzel, serif;
+  font-size: 7px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  border-radius: 2px;
+  cursor: pointer;
+  border: 1px solid;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.2rem;
+  transition: all 0.18s ease;
+}
+.btn-av-gold {
+  background: rgba(201, 165, 92, 0.12);
+  color: var(--gold);
+  border-color: var(--border-gold);
+}
+.btn-av-gold:hover {
+  background: rgba(201, 165, 92, 0.22);
+}
+.btn-av-dim {
+  background: var(--bg-card);
+  color: var(--text-faint);
+  border-color: var(--border-subtle);
+}
+.btn-av-dim:hover {
+  color: var(--text-muted);
+  border-color: var(--border-soft);
+}
+.npc-avatar-urlrow {
+  display: flex;
+  gap: 0.25rem;
+  align-items: center;
+  width: 136px;
+}
+.npc-avatar-urlrow input {
+  flex: 1;
+  min-width: 0;
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  color: var(--text-main);
+  font-family:
+    EB Garamond,
+    serif;
+  font-size: 10px;
+  padding: 0.25rem 0.4rem;
+  border-radius: 2px;
+  outline: none;
+}
+.npc-avatar-urlrow input:focus {
+  border-color: var(--border-gold);
+}
+.npc-avatar-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  justify-content: center;
+  min-width: 0;
+}
+.npc-avatar-name {
+  font-family: Cinzel, serif;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text-strong);
+  line-height: 1.2;
+  word-break: break-word;
+}
+.npc-avatar-ruolo {
+  font-family:
+    EB Garamond,
+    serif;
+  font-size: 12.5px;
+  font-style: italic;
+  color: var(--gold-dim);
+}
+.npc-avatar-hint {
+  font-family: Cinzel, serif;
+  font-size: 8px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--text-faint);
+}
+/* HP e CA — riga compatta sotto le caratteristiche */
+.npc-hpca-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.5rem;
+}
+.npc-hpca-block {
+  background: var(--bg-card);
+  border: 1px solid var(--border-soft);
+  border-radius: 4px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0.4rem 0.5rem 0.45rem;
+  gap: 0.1rem;
+  transition: border-color 0.2s ease;
+}
+.npc-hpca-block:focus-within {
+  border-color: var(--border-gold);
+}
+.npc-hpca-label {
+  font-family: 'Cinzel', serif;
+  font-size: 8px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--gold);
+}
+.npc-hpca-input {
+  background: transparent;
+  border: none;
+  border-bottom: 1px dashed var(--border-soft);
+  color: var(--text-strong);
+  font-family: 'Cinzel', serif;
+  font-size: 18px;
+  font-weight: 800;
+  text-align: center;
+  width: 100%;
+  padding: 1px 4px;
+  outline: none;
+  transition: border-color 0.2s ease;
+}
+.npc-hpca-input:focus {
+  border-bottom-color: var(--gold);
+}
+.npc-hpca-input::placeholder {
+  color: var(--text-faint);
+  font-size: 13px;
+  font-weight: 400;
+}
+/* Textarea oggetti/incantesimi — più spaziosa */
+.npc-oggetti-tall {
+  min-height: 110px !important;
+}
+
+/* Griglia stat D&D 2024: abbreviazione in cima, modificatore GRANDE, punteggio piccolo sotto */
+.npc-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 0.35rem;
+}
+@media (max-width: 500px) {
+  .npc-stats-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+.stat-block {
+  background: var(--bg-card);
+  border: 1px solid var(--border-soft);
+  border-radius: 4px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0.4rem 0.15rem 0.45rem;
+  gap: 0;
+  transition: border-color 0.2s ease;
+}
+.stat-block:focus-within {
+  border-color: var(--border-gold);
+}
+.stat-abbr {
+  font-family: 'Cinzel', serif;
+  font-size: 8px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--gold);
+  margin-bottom: 0.05rem;
+}
+.stat-modifier {
+  font-family: 'Cinzel', serif;
+  font-size: 19px;
+  font-weight: 800;
+  color: var(--text-strong);
+  line-height: 1.05;
+  pointer-events: none;
+}
+.stat-score-input {
+  background: transparent;
+  border: none;
+  border-bottom: 1px dashed var(--border-soft);
+  color: var(--text-muted);
+  font-family: 'Cinzel', serif;
+  font-size: 11px;
+  font-weight: 600;
+  text-align: center;
+  width: 36px;
+  padding: 1px 2px;
+  margin-top: 0.12rem;
+  outline: none;
+  transition: border-color 0.2s ease;
+}
+.stat-score-input:focus {
+  border-bottom-color: var(--gold);
+  color: var(--text-main);
+}
+
+/* Section divider label */
+.npc-section-label {
+  font-family: 'Cinzel', serif;
+  font-size: 9px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  color: var(--gold-dim);
+  border-bottom: 1px solid var(--border-subtle);
+  padding-bottom: 0.28rem;
+  margin-bottom: 0.3rem;
+}
+
+/* ---- ATTACCHI & INCANTESIMI — stile scheda D&D ---- */
+.npc-attacks-wrap {
+  border: 2px solid var(--border-gold);
+  border-radius: 4px;
+  background: var(--bg-card);
+  overflow: hidden;
+  position: relative;
+}
+.npc-attacks-wrap::before {
+  content: '';
+  position: absolute;
+  inset: 3px;
+  border: 1px solid var(--border-subtle);
+  border-radius: 2px;
+  pointer-events: none;
+  z-index: 0;
+}
+.npc-attacks-inner {
+  position: relative;
+  z-index: 1;
+}
+.npc-attacks-header {
+  display: grid;
+  grid-template-columns: 1fr 80px 110px;
+  gap: 0;
+  border-bottom: 1px solid var(--border-gold);
+  background: linear-gradient(180deg, rgba(201, 165, 92, 0.14), rgba(201, 165, 92, 0.04));
+}
+.npc-attacks-th {
+  font-family: 'Cinzel', serif;
+  font-size: 7.5px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  color: var(--gold-dim);
+  padding: 0.3rem 0.45rem;
+  border-right: 1px solid var(--border-subtle);
+}
+.npc-attacks-th:last-child {
+  border-right: none;
+}
+.npc-attacks-row {
+  display: grid;
+  grid-template-columns: 1fr 80px 110px;
+  gap: 0;
+  border-bottom: 1px solid var(--border-subtle);
+}
+.npc-attacks-row:last-child {
+  border-bottom: none;
+}
+.npc-attacks-cell {
+  padding: 0.18rem 0.3rem;
+  border-right: 1px solid var(--border-subtle);
+  display: flex;
+  align-items: center;
+}
+.npc-attacks-cell:last-child {
+  border-right: none;
+}
+.npc-atk-input {
+  width: 100%;
+  background: transparent;
+  border: none;
+  color: var(--text-main);
+  font-family: 'EB Garamond', serif;
+  font-size: 12.5px;
+  padding: 0.18rem 0.2rem;
+  outline: none;
+  transition: background 0.15s;
+}
+.npc-atk-input:focus {
+  background: rgba(201, 165, 92, 0.06);
+  border-radius: 2px;
+}
+.npc-atk-input::placeholder {
+  color: var(--text-faint);
+  font-style: italic;
+  font-size: 11px;
+}
+.npc-attacks-footer {
+  font-family: 'Cinzel', serif;
+  font-size: 8px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.22em;
+  color: var(--gold-dim);
+  text-align: center;
+  padding: 0.28rem;
+  border-top: 1px solid var(--border-gold);
+  background: linear-gradient(180deg, rgba(201, 165, 92, 0.08), rgba(201, 165, 92, 0.02));
+}
+.npc-attacks-add-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.25rem;
+  width: 100%;
+  background: transparent;
+  border: 1px dashed var(--border-soft);
+  border-radius: 0 0 3px 3px;
+  color: var(--text-faint);
+  font-family: 'Cinzel', serif;
+  font-size: 8px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  padding: 0.3rem;
+  cursor: pointer;
+  transition: all 0.18s;
+  margin-top: 2px;
+}
+.npc-attacks-add-btn:hover {
+  color: var(--gold);
+  border-color: var(--border-gold);
+  background: rgba(201, 165, 92, 0.05);
+}
+
+/* Sezione azioni/leggendarie */
+.npc-azioni-wrap {
+  border: 2px solid var(--border-gold);
+  border-radius: 4px;
+  background: var(--bg-card);
+  overflow: hidden;
+  position: relative;
+}
+.npc-azioni-wrap::before {
+  content: '';
+  position: absolute;
+  inset: 3px;
+  border: 1px solid var(--border-subtle);
+  border-radius: 2px;
+  pointer-events: none;
+  z-index: 0;
+}
+.npc-azioni-header {
+  font-family: 'Cinzel', serif;
+  font-size: 7.5px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  color: var(--gold-dim);
+  padding: 0.28rem 0.45rem;
+  border-bottom: 1px solid var(--border-gold);
+  background: linear-gradient(180deg, rgba(201, 165, 92, 0.14), rgba(201, 165, 92, 0.04));
+  position: relative;
+  z-index: 1;
+}
+.npc-azioni-ta {
+  width: 100%;
+  background: transparent;
+  border: none;
+  color: var(--text-main);
+  font-family: 'EB Garamond', serif;
+  font-size: 13px;
+  padding: 0.5rem 0.6rem;
+  resize: vertical;
+  min-height: 90px;
+  outline: none;
+  line-height: 1.55;
+  position: relative;
+  z-index: 1;
+  display: block;
+  box-sizing: border-box;
+}
+.npc-azioni-ta::placeholder {
+  color: var(--text-faint);
+  font-style: italic;
+}
+
+/* API key box */
+.api-key-box {
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: 4px;
+  padding: 0.65rem 0.75rem;
+  margin-bottom: 0.6rem;
+  animation: fadeIn 0.2s ease;
+}
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-5px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.api-key-row {
+  display: flex;
+  gap: 0.4rem;
+  align-items: center;
+}
+.api-key-row input {
+  flex: 1;
+  background: var(--bg-card-elevated);
+  border: 1px solid var(--border-soft);
+  color: var(--text-main);
+  font-family: 'EB Garamond', serif;
+  font-size: 13px;
+  padding: 0.38rem 0.6rem;
+  border-radius: 3px;
+  outline: none;
+  transition: border-color 0.2s;
+}
+.api-key-row input:focus {
+  border-color: var(--border-gold);
+}
+.api-key-hint {
+  font-family: 'EB Garamond', serif;
+  font-size: 11px;
+  color: var(--text-faint);
+  margin-top: 0.3rem;
+  font-style: italic;
+}
+.api-key-hint a {
+  color: var(--gold-dim);
+  text-decoration: underline;
+}
+
+/* btn-gear */
+.btn-gear {
+  width: 27px;
+  height: 27px;
+  background: transparent;
+  border: 1px solid var(--border-subtle);
+  border-radius: 3px;
+  color: var(--text-faint);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+}
+.btn-gear:hover {
+  color: var(--gold);
+  border-color: var(--border-gold);
+}
+.btn-gear.active {
+  color: var(--gold-bright);
+  border-color: var(--border-gold);
+  background: rgba(201, 165, 92, 0.1);
+}
+.btn-gear svg {
+  width: 13px;
+  height: 13px;
+}
+
+/* Bottoni controllo DM — grandi e cliccabili */
+.btn-npc {
+  width: 100%;
+  padding: 0.42rem 0.85rem;
+  font-family: 'Cinzel', serif;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  border-radius: 3px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.3rem;
+  transition: all 0.2s ease;
+  border: 1px solid;
+  line-height: 1.4;
+}
+.btn-npc svg {
+  width: 12px;
+  height: 12px;
+  flex-shrink: 0;
+}
+.btn-npc-gold {
+  background: linear-gradient(180deg, #f0d490, #c9a55c 45%, #a8843e);
+  color: #1a1208;
+  border-color: #6b4f23;
+  box-shadow: inset 0 1px 0 rgba(255, 240, 200, 0.4);
+}
+.btn-npc-gold:hover {
+  background: linear-gradient(180deg, #ffe4a8, #e0bb6c 45%, #b89346);
+  box-shadow: 0 3px 12px rgba(232, 200, 120, 0.3);
+}
+.btn-npc-gold:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+.btn-npc-dark {
+  background: linear-gradient(180deg, var(--bg-card-elevated), var(--bg-card));
+  color: var(--gold);
+  border-color: var(--border-soft);
+}
+.btn-npc-dark:hover {
+  color: var(--gold-bright);
+  border-color: var(--border-gold);
+}
+.btn-npc-arch {
+  background: linear-gradient(180deg, var(--bg-card-elevated), var(--bg-card));
+  color: var(--gold);
+  border-color: var(--border-gold);
+}
+.btn-npc-arch:hover {
+  background: rgba(201, 165, 92, 0.08);
+}
+
+/* Spinner inline */
+.npc-spin {
+  width: 11px;
+  height: 11px;
+  flex-shrink: 0;
+  border: 1.5px solid rgba(26, 18, 8, 0.25);
+  border-top-color: #1a1208;
+  border-radius: 50%;
+  animation: npcSpin 0.7s linear infinite;
+}
+@keyframes npcSpin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Bottone "Salva in archivio" nell'header scheda */
+.btn-save-arch {
+  background: linear-gradient(180deg, rgba(201, 165, 92, 0.2), rgba(201, 165, 92, 0.07));
+  border: 1px solid var(--border-gold);
+  color: var(--gold-bright);
+  font-family: 'Cinzel', serif;
+  font-size: 8.5px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding: 0.28rem 0.6rem;
+  border-radius: 2px;
+  cursor: pointer;
+  transition: background 0.2s ease;
+  white-space: nowrap;
+}
+.btn-save-arch:hover {
+  background: linear-gradient(180deg, rgba(201, 165, 92, 0.32), rgba(201, 165, 92, 0.14));
+}
+
+/* Archivio personaggi */
+.archivio-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  margin-top: 0.4rem;
+  max-height: 65vh;
+  overflow-y: auto;
+}
+.archivio-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: 3px;
+  padding: 0.35rem 0.7rem 0.35rem 0.45rem;
+  cursor: pointer;
+  transition: all 0.18s ease;
+}
+.archivio-item:hover {
+  border-color: var(--border-gold);
+  background: var(--bg-card-elevated);
+}
+/* Thumbnail immagine archivio */
+.archivio-thumb {
+  width: 44px;
+  height: 44px;
+  flex-shrink: 0;
+  border-radius: 3px;
+  border: 1px solid var(--border-soft);
+  overflow: hidden;
+  background: var(--bg-card-elevated);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.archivio-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+.archivio-thumb svg {
+  width: 18px;
+  height: 18px;
+  color: var(--text-faint);
+  opacity: 0.4;
+}
+.archivio-text {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+}
+.archivio-item-name {
+  font-family: 'Cinzel', serif;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-strong);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.archivio-item-role {
+  font-family: 'EB Garamond', serif;
+  font-size: 11px;
+  font-style: italic;
+  color: var(--text-muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.archivio-del {
+  background: transparent;
+  border: none;
+  color: var(--text-faint);
+  cursor: pointer;
+  width: 20px;
+  height: 20px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 2px;
+  transition: all 0.15s;
+  flex-shrink: 0;
+  padding: 0;
+}
+.archivio-del:hover {
+  color: #ff9c9c;
+  background: rgba(138, 46, 46, 0.15);
+}
+.archivio-del svg {
+  width: 11px;
+  height: 11px;
+}
+.archivio-empty {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: 14px;
+  color: var(--text-faint);
+  text-align: center;
+  padding: 1.5rem 0;
+}
+.city-npc-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.35rem 0.5rem;
+  background: var(--bg-base);
+  border: 1px solid var(--border-subtle);
+  border-radius: 4px;
+  margin-bottom: 0.3rem;
+}
+.city-npc-thumb {
+  width: 38px;
+  height: 38px;
+  border-radius: 3px;
+  overflow: hidden;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg-card);
+  border: 1px solid var(--border-soft);
+}
+.city-npc-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.city-npc-info {
+  flex: 1;
+  min-width: 0;
+}
+.city-npc-name {
+  font-family: Cinzel, serif;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--text-strong);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.city-npc-role {
+  font-family:
+    EB Garamond,
+    serif;
+  font-size: 13px;
+  color: var(--text-muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.btn-reabilita {
+  font-family: Cinzel, serif;
+  font-size: 9px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  padding: 0.25rem 0.4rem;
+  background: var(--bg-card);
+  border: 1px solid var(--border-gold);
+  color: var(--gold);
+  border-radius: 3px;
+  cursor: pointer;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.btn-reabilita:hover {
+  background: var(--bg-card-elevated);
+}
+
+/* Scheda Personaggio */
+.scheda-grid {
+  display: grid;
+  grid-template-columns: 110px 210px 1fr 1fr;
+  gap: 0.75rem;
+}
+@media (max-width: 1100px) {
+  .scheda-grid {
+    grid-template-columns: 110px 210px 1fr;
+  }
+}
+@media (max-width: 760px) {
+  .scheda-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+@media (max-width: 500px) {
+  .scheda-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Bestiario Custom */
+.bestiario-form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 1rem;
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: 4px;
+  margin-bottom: 1rem;
+}
+.bestiario-form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 0.5rem;
+}
+.bestiario-field-lbl {
+  font-family: Cinzel, serif;
+  font-size: 9px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--gold-dim);
+  margin-bottom: 0.2rem;
+  display: block;
+}
+.bestiario-field-input {
+  width: 100%;
+  background: var(--bg-base);
+  border: 1px solid var(--border-soft);
+  color: var(--text-main);
+  font-family:
+    EB Garamond,
+    serif;
+  font-size: 15px;
+  padding: 0.4rem 0.6rem;
+  border-radius: 3px;
+  outline: none;
+  transition: border-color 0.2s;
+  box-sizing: border-box;
+}
+.bestiario-field-input:focus {
+  border-color: var(--border-gold);
+}
+.bestiario-field-textarea {
+  resize: vertical;
+  min-height: 120px;
+  font-family:
+    EB Garamond,
+    serif;
+  font-size: 15px;
+}
+.bestiario-img-preview {
+  width: 100%;
+  max-height: 180px;
+  object-fit: cover;
+  border-radius: 3px;
+  border: 1px solid var(--border-soft);
+  margin-top: 0.3rem;
+  display: none;
+}
+
+/* City Tracker (mappa flag panel) */
+.city-section {
+  border: 1px solid var(--border-subtle);
+  border-radius: 4px;
+  margin-bottom: 0.5rem;
+  overflow: hidden;
+}
+.city-section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.5rem 0.75rem;
+  background: var(--bg-card);
+  cursor: pointer;
+  font-family: Cinzel, serif;
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: var(--gold);
+  user-select: none;
+}
+.city-section-header:hover {
+  background: var(--bg-card-elevated);
+}
+.city-section-body {
+  padding: 0.6rem 0.75rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  background: var(--bg-panel);
+}
+.city-section-body.collapsed {
+  display: none;
+}
+.city-poi-item {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-family:
+    EB Garamond,
+    serif;
+  font-size: 15px;
+  color: var(--text-main);
+}
+.city-poi-del {
+  background: none;
+  border: none;
+  color: var(--text-faint);
+  cursor: pointer;
+  padding: 0 0.2rem;
+  font-size: 14px;
+}
+.city-poi-del:hover {
+  color: var(--blood);
+}
+.city-add-row {
+  display: flex;
+  gap: 0.35rem;
+}
+.city-add-inp {
+  flex: 1;
+  background: var(--bg-base);
+  border: 1px solid var(--border-soft);
+  color: var(--text-main);
+  font-family:
+    EB Garamond,
+    serif;
+  font-size: 14px;
+  padding: 0.3rem 0.5rem;
+  border-radius: 3px;
+  outline: none;
+}
+.city-add-inp:focus {
+  border-color: var(--border-gold);
+}
+.city-add-btn {
+  background: var(--bg-card);
+  border: 1px solid var(--border-soft);
+  color: var(--gold);
+  font-family: Cinzel, serif;
+  font-size: 9px;
+  padding: 0.3rem 0.5rem;
+  border-radius: 3px;
+  cursor: pointer;
+  white-space: nowrap;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+.city-add-btn:hover {
+  border-color: var(--border-gold);
+}
+
+/* NPC Status Vitale */
+.npc-status-row {
+  display: flex;
+  gap: 0.35rem;
+  margin-top: 0.35rem;
+}
+.npc-status-btn {
+  flex: 1;
+  padding: 0.25rem 0.3rem;
+  font-family: Cinzel, serif;
+  font-size: 8px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  border-radius: 3px;
+  cursor: pointer;
+  border: 1px solid var(--border-subtle);
+  background: var(--bg-card);
+  color: var(--text-faint);
+  transition: all 0.2s;
+}
+.npc-status-btn.active-vivo {
+  border-color: #60c870;
+  background: rgba(96, 200, 112, 0.15);
+  color: #60c870;
+}
+.npc-status-btn.active-ferito {
+  border-color: var(--blood);
+  background: rgba(138, 46, 46, 0.2);
+  color: #ff9c9c;
+}
+.npc-status-btn.active-morto {
+  border-color: #555;
+  background: rgba(50, 50, 50, 0.3);
+  color: var(--text-faint);
+  text-decoration: line-through;
+}
+
+/* Badge età — sovrapposto sull'avatar */
+.npc-eta-badge {
+  position: absolute;
+  bottom: 4px;
+  right: 4px;
+  background: rgba(0, 0, 0, 0.72);
+  border: 1px solid var(--border-gold);
+  border-radius: 3px;
+  padding: 1px 5px;
+  font-family: 'Cinzel', serif;
+  font-size: 9px;
+  font-weight: 700;
+  color: var(--gold-bright);
+  white-space: nowrap;
+  pointer-events: none;
+  letter-spacing: 0.04em;
+}
+/* Input età — inline accanto ai bottoni avatar */
+.npc-eta-row {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  width: 136px;
+}
+.npc-eta-row label {
+  font-family: 'Cinzel', serif;
+  font-size: 7.5px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--gold-dim);
+  white-space: nowrap;
+}
+.npc-eta-input {
+  flex: 1;
+  min-width: 0;
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  color: var(--text-main);
+  font-family: 'Cinzel', serif;
+  font-size: 11px;
+  font-weight: 600;
+  text-align: center;
+  padding: 0.18rem 0.3rem;
+  border-radius: 2px;
+  outline: none;
+  transition: border-color 0.2s;
+}
+.npc-eta-input:focus {
+  border-color: var(--border-gold);
+}
