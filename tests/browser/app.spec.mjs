@@ -37,6 +37,11 @@ test('player navigation, catalog search and every character-sheet system work', 
   await page.setViewportSize({ width: 390, height: 844 });
   await expectViewportFits(page);
   expect(await page.locator('.weapon-card img[loading="lazy"]').count()).toBeGreaterThan(0);
+  expect(
+    await page
+      .locator('.header-title')
+      .evaluate((node) => parseFloat(getComputedStyle(node).fontSize))
+  ).toBeLessThanOrEqual(32);
   await page.setViewportSize({ width: 1280, height: 720 });
   for (const section of [
     'emporio',

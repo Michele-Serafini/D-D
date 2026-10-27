@@ -2193,7 +2193,11 @@
 /* --- Header titoli --- */
 @media (max-width: 600px) {
   .header-title {
-    font-size: clamp(1.2rem, 5vw, 1.8rem) !important;
+    /* Use a stable mobile size: some WebKit ports retain a desktop clamp()
+       result when the viewport changes. */
+    font-size: 1.4rem !important;
+    max-width: 100%;
+    overflow-wrap: anywhere;
   }
   .container-main {
     padding: 0 0.75rem;
