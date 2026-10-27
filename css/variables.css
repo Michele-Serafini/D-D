@@ -12,6 +12,7 @@
  */
 
 :root {
+  --heading-compact-size: 1.4rem;
   /* ── Tipografia ── */
   --font-display: 'Cinzel', 'Cinzel Decorative', Georgia, serif;
   --font-editorial: 'Cormorant Garamond', 'Crimson Pro', Georgia, serif;

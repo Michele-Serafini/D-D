@@ -2195,7 +2195,7 @@
   .header-title {
     /* Use a stable mobile size: some WebKit ports retain a desktop clamp()
        result when the viewport changes. */
-    font-size: 1.4rem !important;
+    font-size: var(--heading-compact-size) !important;
     max-width: 100%;
     overflow-wrap: anywhere;
   }

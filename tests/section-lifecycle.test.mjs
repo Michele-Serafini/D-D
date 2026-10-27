@@ -48,3 +48,26 @@ test('a burst of realtime updates requests one render per frame', () => {
   ctx.scheduleRenderMain();
   assert.equal(frames.length, 2);
 });
+
+test('compact typography uses its CSS token and restores an existing desktop override', () => {
+  const { ctx } = context();
+  let compact = true;
+  const properties = new Map([['font-size', { value: '42px', priority: '' }]]);
+  const title = {
+    style: {
+      getPropertyValue: (key) => properties.get(key)?.value || '',
+      getPropertyPriority: (key) => properties.get(key)?.priority || '',
+      setProperty: (key, value, priority) => properties.set(key, { value, priority }),
+      removeProperty: (key) => properties.delete(key),
+    },
+  };
+  ctx.window = { matchMedia: () => ({ matches: compact }) };
+  ctx.document = { querySelectorAll: () => [title] };
+  ctx.syncResponsiveTypography();
+  ctx.syncResponsiveTypography();
+  assert.equal(properties.get('font-size').value, 'var(--heading-compact-size)');
+  compact = false;
+  ctx.syncResponsiveTypography();
+  assert.equal(properties.get('font-size').value, '42px');
+  assert.equal(title._compactHeadingFont, undefined);
+});
