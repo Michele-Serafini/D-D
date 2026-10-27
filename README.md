@@ -199,6 +199,20 @@ ricevere `FIREBASE_WEB_API_KEY` dall’ambiente della piattaforma di pubblicazio
 Il valore della nuova chiave è disponibile in Google Cloud, progetto
 `mercante-errante-dd-2026`, Credenziali, **Mercante Errante browser runtime**.
 
+Per il sito GitHub Pages, la pubblicazione diretta del ramo `main` non esegue Vite
+e non genera la configurazione Firebase. Il workflow **Publish GitHub Pages**
+pubblica invece `dist/` con il percorso `/D-D/` corretto:
+
+1. In **Settings → Secrets and variables → Actions**, aggiungere il repository
+   secret `FIREBASE_WEB_API_KEY` con il valore della chiave sostitutiva.
+2. In **Settings → Pages → Build and deployment → Source**, scegliere **GitHub Actions**.
+3. In **Actions → Publish GitHub Pages → Run workflow**, avviare la pubblicazione.
+
+Il workflow si avvia manualmente, interrompe la build se manca il secret e non
+scrive mai il valore nei sorgenti o nei log. L’artefatto pubblicato contiene la
+configurazione Web, leggibile dal browser come ogni applicazione Firebase Web.
+L’integrazione GitHub della sessione non ha i permessi per impostare i secret.
+
 La build compatta JSON e JavaScript, mantenendo nomi globali, proprietà, nomi delle
 funzioni e URL compatibili. I sorgenti restano leggibili e i file multimediali
 conservano i contenuti originali.

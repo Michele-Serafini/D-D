@@ -1,0 +1,53 @@
+name: Publish GitHub Pages
+
+# Run after configuring the repository secret and choosing GitHub Actions as
+# the Pages source. The real key is only injected into the generated artifact.
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: github-pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - name: Verify deployment configuration
+        env:
+          FIREBASE_WEB_API_KEY: ${{ secrets.FIREBASE_WEB_API_KEY }}
+        run: |
+          if [ -z "$FIREBASE_WEB_API_KEY" ]; then
+            echo '::error::Add the FIREBASE_WEB_API_KEY repository secret before publishing.'
+            exit 1
+          fi
+      - run: npm ci
+      - name: Build the site for its repository path
+        run: npm run build -- --base "/${GITHUB_REPOSITORY#*/}/"
+        env:
+          FIREBASE_WEB_API_KEY: ${{ secrets.FIREBASE_WEB_API_KEY }}
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Publish built assets
+        id: deployment
+        uses: actions/deploy-pages@v4
