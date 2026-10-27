@@ -179,13 +179,49 @@ export async function expectViewportFits(page) {
       'Responsive layout diagnostics:',
       await page.evaluate(() => {
         const header = document.querySelector('.header-title');
+        const cssRules = [];
+        function inspect(rules, conditions = []) {
+          for (const rule of rules) {
+            if (rule.selectorText === '.header-title')
+              cssRules.push({ font: rule.style.fontSize, conditions });
+            if (rule.cssRules)
+              inspect(
+                rule.cssRules,
+                rule.conditionText
+                  ? [
+                      ...conditions,
+                      {
+                        query: rule.conditionText,
+                        matches: matchMedia(rule.conditionText).matches,
+                      },
+                    ]
+                  : conditions
+              );
+          }
+        }
+        for (const sheet of document.styleSheets) {
+          try {
+            inspect(sheet.cssRules);
+          } catch {}
+        }
+        const originalFont = header && getComputedStyle(header).fontSize;
+        document.documentElement.style.setProperty('-webkit-text-size-adjust', 'none', 'important');
+        const noAutosizeFont = header && getComputedStyle(header).fontSize;
+        for (const sheet of document.styleSheets) {
+          sheet.disabled = true;
+          sheet.disabled = false;
+        }
+        const refreshedFont = header && getComputedStyle(header).fontSize;
         return {
           viewport: innerWidth,
           client: document.documentElement.clientWidth,
           scroll: document.documentElement.scrollWidth,
           mobileQuery: matchMedia('(max-width: 600px)').matches,
           rootFont: getComputedStyle(document.documentElement).fontSize,
-          titleFont: header && getComputedStyle(header).fontSize,
+          titleFont: originalFont,
+          noAutosizeFont,
+          refreshedFont,
+          cssRules,
           overflow: [...document.querySelectorAll('body *')]
             .map((node) => ({
               tag: node.tagName,
