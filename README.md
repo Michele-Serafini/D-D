@@ -176,7 +176,10 @@ restrizioni della chiave sui servizi Google consentiti.
 
 La chiave del nuovo progetto segnalata in `js/firebase-config.js` è stata sostituita
 e revocata. La nuova chiave è limitata a Identity Toolkit, Secure Token e Realtime
-Database. L’account collegato non ha permessi sul vecchio progetto `mercante-errante`:
+Database. Il codice usa solo il nuovo progetto: la vecchia chiave e il vecchio
+endpoint sono assenti dai sorgenti dell’applicazione. La chiave sostitutiva rimane
+nel file locale ignorato o nell’ambiente di build, senza essere inviata al repository.
+L’account collegato non ha permessi sul vecchio progetto `mercante-errante`:
 la relativa chiave storica deve essere revocata dal suo proprietario in Google Cloud.
 
 La rimozione di un valore dal commit corrente non elimina un alert storico di
@@ -184,8 +187,12 @@ GitHub. Dopo la revoca, risolvere l’alert con motivo **Revoked**. L’integraz
 GitHub attuale non dispone dei permessi per leggere o modificare questi alert.
 Non è stata riscritta la cronologia Git.
 
-`npm run check:secrets` controlla i file versionabili e stampa solo percorso e
-numero di riga. Viene eseguito automaticamente prima della build e nelle verifiche
+`npm run check:secrets` controlla tutti i file di testo versionabili, inclusi quelli
+senza estensione, e il contenuto preparato per il commit nell’indice Git. Blocca
+anche i file `.env` reali e la configurazione Firebase generata se vengono aggiunti
+forzatamente a Git; `.env.example` contiene solo nomi senza valori. Stampa percorso,
+numero di riga e tipo di problema, senza ripetere i valori trovati.
+Viene eseguito automaticamente prima della build e nelle verifiche
 GitHub Actions. Le verifiche CI usano una chiave fittizia e non pubblicano gli
 artefatti generati; non richiedono credenziali reali. La build da distribuire deve
 ricevere `FIREBASE_WEB_API_KEY` dall’ambiente della piattaforma di pubblicazione.
