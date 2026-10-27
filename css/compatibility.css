@@ -1,7 +1,9 @@
 /* Shared behavior for Chromium, WebKit/Safari and Gecko/Firefox. */
 :root {
   color-scheme: dark;
-  -webkit-text-size-adjust: 100%;
+  /* A distinct fallback value keeps Lightning CSS from dropping WebKit's
+     property when it normalizes the standard declaration below. */
+  -webkit-text-size-adjust: var(--browser-text-scale, 100%);
   text-size-adjust: 100%;
   scrollbar-color: #8b6f3f #14100c;
   scrollbar-width: thin;

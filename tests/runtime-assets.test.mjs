@@ -10,6 +10,25 @@ import { promisify } from 'node:util';
 import { renderFirebaseConfig } from '../scripts/firebase-runtime.mjs';
 import { optimizeAsset } from '../scripts/optimize-assets.mjs';
 import { secretLocations, protectedFileReason, scanRepository } from '../scripts/check-secrets.mjs';
+import { transform } from 'lightningcss';
+import { cssCompilerOptions } from '../config/browsers.mjs';
+
+test('compiled CSS retains WebKit text sizing and responsive queries after minification', () => {
+  const result = transform({
+    filename: 'compatibility.css',
+    code: fs.readFileSync('css/compatibility.css'),
+    ...cssCompilerOptions,
+    minify: true,
+  }).code.toString();
+  assert.match(result, /-webkit-text-size-adjust:var\(--browser-text-scale,100%\)/);
+  const media = transform({
+    filename: 'media.css',
+    code: Buffer.from('@media (max-width:600px){h1{font-size:20px}}'),
+    ...cssCompilerOptions,
+    minify: true,
+  }).code.toString();
+  assert.match(media, /@media\s*\(max-width:600px\)/);
+});
 
 const metadata = JSON.parse(fs.readFileSync('config/firebase.web.json', 'utf8'));
 
