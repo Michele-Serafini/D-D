@@ -23,7 +23,6 @@ try {
     document.addEventListener('visibilitychange', function () {
       if (document.visibilityState === 'hidden') flushPendingWrites();
     });
-    window.addEventListener('resize', syncResponsiveTypography, { passive: true });
 
     if (typeof renderMenu === 'function') renderMenu();
     // The authenticated render runs after login; do not build thousands of

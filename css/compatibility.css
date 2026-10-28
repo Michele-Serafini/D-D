@@ -44,6 +44,9 @@ textarea:focus-visible {
   }
 }
 @media (prefers-reduced-motion: reduce) {
+  .sium-rune-title {
+    animation: none !important;
+  }
   .sium-section-transition,
   .sium-pg-page {
     animation: none !important;
@@ -55,7 +58,10 @@ textarea:focus-visible {
   *::after {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
+    transition: none !important;
     scroll-behavior: auto !important;
   }
+}
+body.sium-fx-off .sium-rune-title {
+  animation: none !important;
 }

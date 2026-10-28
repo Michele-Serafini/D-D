@@ -1447,7 +1447,7 @@
     );
     headings.forEach(function (h) {
       h.dataset.siumH = '1';
-      h.classList.add('sium-rune-title');
+      if (state.fxEnabled && !state.reducedMotion) h.classList.add('sium-rune-title');
     });
 
     var selector = [

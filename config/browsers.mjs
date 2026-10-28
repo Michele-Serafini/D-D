@@ -12,6 +12,5 @@ export const cssTargets = Object.fromEntries(
   ])
 );
 
-// Retain classic media-query syntax for WebKit ports whose resize handling
-// does not update equivalent range queries consistently.
+// Use classic media-query syntax consistently across browser ports.
 export const cssCompilerOptions = { targets: cssTargets, include: Features.MediaQueries };

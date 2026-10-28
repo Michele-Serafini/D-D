@@ -66,28 +66,6 @@ function scheduleRenderMain() {
   });
 }
 
-function syncResponsiveTypography() {
-  var compact = window.matchMedia('(max-width: 600px)').matches;
-  document.querySelectorAll('.main-content .header-title').forEach(function (title) {
-    if (compact) {
-      if (!title._compactHeadingFont) {
-        title._compactHeadingFont = {
-          value: title.style.getPropertyValue('font-size'),
-          priority: title.style.getPropertyPriority('font-size'),
-        };
-      }
-      // Some WebKit ports retain desktop font metrics after a viewport resize.
-      // Share the CSS token instead of defining a second size in JavaScript.
-      title.style.setProperty('font-size', 'var(--heading-compact-size)', 'important');
-    } else if (title._compactHeadingFont) {
-      var previous = title._compactHeadingFont;
-      if (previous.value) title.style.setProperty('font-size', previous.value, previous.priority);
-      else title.style.removeProperty('font-size');
-      delete title._compactHeadingFont;
-    }
-  });
-}
-
 function cleanupActiveSection() {
   _sectionDisposers
     .splice(0)
@@ -156,7 +134,6 @@ function render() {
     if (state.doomEventOpen) document.body.appendChild(renderDoomEventModal());
 
     // Re-render badge after full render
-    syncResponsiveTypography();
     renderUserBadge();
     if (window.SiumAnimations && window.SiumAnimations.onRender)
       window.SiumAnimations.onRender(false);
@@ -206,7 +183,6 @@ function renderMain() {
     if (!state.regiaActive && existingRegia) existingRegia.remove();
   }
 
-  syncResponsiveTypography();
   if (window.SiumAnimations && window.SiumAnimations.onRender)
     window.SiumAnimations.onRender(_sectionChanged);
   if (!_sectionChanged) {
