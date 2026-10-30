@@ -62,11 +62,13 @@ var UserManager = {
   },
 
   isDM: function () {
+    if (typeof CampaignManager !== 'undefined' && CampaignManager.current)
+      return this.isAdmin() || CampaignManager.current.members[this.getUsername()] === 'dm';
     return _authRole === 'admin' || _authRole === 'dm';
   },
 
   isPG: function () {
-    return _authRole === 'pg';
+    return !!this.getCurrentUser() && !this.isDM();
   },
 
   getCurrentUser: function () {
@@ -105,6 +107,8 @@ var UserManager = {
   },
 
   getMasterUsername: function (profiles) {
+    if (!profiles && typeof CampaignManager !== 'undefined' && CampaignManager.current)
+      return CampaignManager.current.meta.owner;
     profiles = profiles || _remoteUsers;
     return (
       Object.keys(profiles).find(function (name) {
@@ -125,6 +129,16 @@ var UserManager = {
       .map(function (name) {
         return manager.getProfile(name);
       });
+  },
+
+  getCampaignUsers: function () {
+    var profiles =
+      typeof CampaignManager !== 'undefined' && CampaignManager.current
+        ? CampaignManager.profiles()
+        : _remoteUsers;
+    return Object.keys(profiles).map(function (name) {
+      return UserManager.getProfile(name, profiles[name]);
+    });
   },
 
   /** Normalizza il nome del giocatore prima dell'accesso. */
@@ -175,11 +189,11 @@ var UserManager = {
     await db.ref('users/' + username).update({ crest: crest || null, title: title || null });
   },
 
-  withTimeout: function (operation) {
+  withTimeout: function (operation, timeoutMs) {
     return new Promise(function (resolve, reject) {
       var timer = setTimeout(function () {
         reject(new Error('Database non raggiungibile. Riprova.'));
-      }, 8000);
+      }, timeoutMs || 8000);
       Promise.resolve(operation).then(
         function (result) {
           clearTimeout(timer);
@@ -246,7 +260,12 @@ var UserManager = {
         var changed = _authRole !== privileges.authRole;
         _authRole = privileges.authRole;
         Object.assign(current, manager.getProfile(current.username, profile));
-        if (changed && typeof render === 'function') render();
+        if (
+          changed &&
+          typeof render === 'function' &&
+          (typeof CampaignManager === 'undefined' || CampaignManager.current)
+        )
+          render();
       });
     }
   },
@@ -350,23 +369,7 @@ var UserManager = {
       var credential = await this.withTimeout(
         firebase.auth().signInWithEmailAndPassword(this.emailFor(u), p)
       );
-      var firebaseUid = credential.user.uid;
-      var record;
-      if (firebaseUid === ACCOUNT_POLICY.adminUid) {
-        u = ACCOUNT_POLICY.adminUsername;
-        record = { role: ACCOUNT_POLICY.roles.admin.name, dmPriv: true };
-      } else {
-        var mapping = await this.withTimeout(_db.ref('userAccess/' + firebaseUid).once('value'));
-        u = mapping.val();
-        if (!u) throw new Error('Account non abilitato al party.');
-        var profile = await this.withTimeout(_db.ref('users/' + u).once('value'));
-        record = profile.val();
-        if (!record || record.disabled) throw new Error('Account rimosso o disabilitato.');
-      }
-      if (document.getElementById('admin-panel') && this.getPrivileges(record).authRole !== 'admin')
-        throw new Error('Accesso riservato agli amministratori.');
-      if (errEl) errEl.style.display = 'none';
-      this.completeLogin(u, record);
+      await this.finishAuthenticatedLogin(credential.user);
     } catch (error) {
       try {
         if (typeof firebase !== 'undefined' && firebase.auth) await firebase.auth().signOut();
@@ -384,11 +387,31 @@ var UserManager = {
     }
   },
 
+  finishAuthenticatedLogin: async function (identity, resumeId) {
+    var username, record;
+    if (identity.uid === ACCOUNT_POLICY.adminUid) {
+      username = ACCOUNT_POLICY.adminUsername;
+      record = { role: ACCOUNT_POLICY.roles.admin.name, dmPriv: true };
+    } else {
+      username = (
+        await this.withTimeout(_db.ref('userAccess/' + identity.uid).once('value'))
+      ).val();
+      if (!username) throw new Error('Account non abilitato al party.');
+      record = (await this.withTimeout(_db.ref('users/' + username).once('value'))).val();
+      if (!record || record.disabled) throw new Error('Account rimosso o disabilitato.');
+    }
+    if (document.getElementById('admin-panel') && this.getPrivileges(record).authRole !== 'admin')
+      throw new Error('Accesso riservato agli amministratori.');
+    var error = document.getElementById('login-error');
+    if (error) error.style.display = 'none';
+    await this.completeLogin(username, record, resumeId);
+  },
+
   /**
    * Finalizza il login, imposta lo stato utente unificato, avvia la cerimonia
    * di apertura del Portale Runico (senza esplosione di luce bianca) e carica i dati.
    */
-  completeLogin: function (username, ud) {
+  completeLogin: async function (username, ud, resumeId) {
     var record = ud || {};
     var profile = this.getProfile(username, record);
     var privileges = this.getPrivileges(record);
@@ -418,26 +441,23 @@ var UserManager = {
 
     this.ensureDatabase();
     if (
-      (username === ACCOUNT_POLICY.adminUsername ||
-        (document.getElementById('admin-panel') && this.isAdmin())) &&
+      document.getElementById('admin-panel') &&
+      this.isAdmin() &&
       typeof window.openAdminPanel === 'function'
     ) {
       window.openAdminPanel();
       return;
     }
-
-    this.setupPresence();
-    if (typeof setupRealtimeListeners === 'function') setupRealtimeListeners();
-    if (typeof fbLoadApiKeys === 'function') fbLoadApiKeys();
-
-    // Avvia la nuova cerimonia scenografica del Portale Arcano
+    await CampaignManager.start(resumeId);
     this.playLoginPortalCeremony(username, role, hasDmPriv);
 
     // Autosave periodico di sicurezza
     if (!window._armiAutosaveInterval) {
       window._armiAutosaveInterval = setInterval(function () {
         if (
-          _db &&
+          typeof _campaignDb !== 'undefined' &&
+          _campaignDb &&
+          UserManager.isDM() &&
           typeof state !== 'undefined' &&
           state.armi &&
           state.armi.length > 0 &&
@@ -448,12 +468,6 @@ var UserManager = {
         }
       }, 120000);
     }
-
-    var self = this;
-    setTimeout(function () {
-      if (typeof render === 'function') render();
-      self.renderUserBadge();
-    }, 240);
   },
 
   /**
@@ -465,9 +479,9 @@ var UserManager = {
     this.stopWatchingUsers();
     if (this._presenceRef && this._presenceHandler)
       this._presenceRef.off('value', this._presenceHandler);
-    if (_db && state && state.currentUser) {
+    if (typeof _campaignDb !== 'undefined' && _campaignDb && state && state.currentUser) {
       try {
-        _db.ref('presence/' + state.currentUser.username).set({
+        _campaignDb.ref('presence/' + state.currentUser.username).set({
           online: false,
           lastSeen: firebase.database.ServerValue.TIMESTAMP,
         });
@@ -481,6 +495,7 @@ var UserManager = {
     if (typeof state !== 'undefined') state.currentUser = null;
     try {
       localStorage.removeItem('mercante_session');
+      sessionStorage.removeItem('mercante_campaign_switch');
     } catch (e) {}
     location.reload();
   },
@@ -490,9 +505,9 @@ var UserManager = {
    */
   setupPresence: function () {
     var cu = this.getCurrentUser();
-    if (!_db || !cu) return;
+    if (typeof _campaignDb === 'undefined' || !_campaignDb || !cu) return;
     var uid = cu.username;
-    var ref = _db.ref('presence/' + uid);
+    var ref = _campaignDb.ref('presence/' + uid);
     var connRef = _db.ref('.info/connected');
     if (this._presenceRef && this._presenceHandler)
       this._presenceRef.off('value', this._presenceHandler);
@@ -515,6 +530,29 @@ var UserManager = {
    */
   initAuth: function () {
     this.ensureDatabase();
+
+    // Only an explicit campaign switch resumes Firebase's existing identity.
+    var resume = null;
+    try {
+      resume = JSON.parse(sessionStorage.getItem('mercante_campaign_switch'));
+      sessionStorage.removeItem('mercante_campaign_switch');
+    } catch (_) {}
+    if (resume && typeof firebase.auth().onAuthStateChanged === 'function') {
+      var manager = this;
+      var unsubscribe = firebase.auth().onAuthStateChanged(async function (identity) {
+        unsubscribe();
+        if (!identity || identity.uid !== resume.uid) return;
+        try {
+          await manager.finishAuthenticatedLogin(identity, resume.campaign);
+        } catch (error) {
+          var message = document.getElementById('login-error');
+          if (message) {
+            message.style.display = 'block';
+            message.textContent = error.message;
+          }
+        }
+      });
+    }
 
     // Nessun autologin né ripristino degli account eliminati dai valori predefiniti.
     var ov = document.getElementById('login-overlay');
@@ -540,9 +578,9 @@ function isPG() {
 }
 
 function dmRef(path) {
-  if (!_db || !_authUser) return null;
-  if (UserManager.isAdmin()) return _db.ref('state/' + path);
-  return _db.ref('users/' + _authUser.uid + '/' + path);
+  if (typeof _campaignDb === 'undefined' || !_campaignDb || !_authUser) return null;
+  if (UserManager.isAdmin()) return _campaignDb.ref('state/' + path);
+  return _campaignDb.ref('users/' + _authUser.uid + '/' + path);
 }
 
 function doSignIn() {

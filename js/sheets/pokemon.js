@@ -183,8 +183,8 @@ window.renderPokemonSheet = function (scheda) {
     if (window.state && window.state.schedaAttivaId) {
       if (window.fbDeleteSchedaItem) {
         window.fbDeleteSchedaItem(window.state.schedaAttivaId);
-      } else if (window._db) {
-        window._db
+      } else if (window._campaignDb) {
+        window._campaignDb
           .ref(
             'schedePG/' +
               window.state.currentUser.username +

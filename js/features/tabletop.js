@@ -64,7 +64,7 @@ function renderTavolo() {
   var wrap = document.createElement('div');
   wrap.style.cssText =
     'display:flex;flex-direction:column;height:100%;overflow:hidden;background:#111;';
-  var _ref = _db.ref('state/tavolo');
+  var _ref = _campaignDb.ref('state/tavolo');
   _tavoloRef = _ref;
   var _data = { map: { url: '', w: 2000, h: 1500 }, grid: { s: 60, on: true }, tokens: {} };
   var _vp = { x: 0, y: 0, z: 1 };

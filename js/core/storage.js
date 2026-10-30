@@ -8,7 +8,7 @@ function doomSegmentsForStage(stage) {
 /* ===========================================================
    LOCALSTORAGE — Persistenza per Caos & Note
    =========================================================== */
-var LS_KEY = 'mercante_errante_v1';
+var LS_KEY = 'mercante_unselected';
 
 function _applySnapshot(raw) {
   if (!raw) return;
@@ -156,8 +156,10 @@ function saveToStorage() {
 }
 
 function flushStorage() {
+  if (typeof CampaignManager !== 'undefined' && !CampaignManager.current) return;
   clearTimeout(_storageSaveTimer);
   _storageSaveTimer = null;
+  var persisted = Promise.resolve();
   try {
     var snapshot = {
       caosPlayers: state.caosPlayers,
@@ -184,7 +186,7 @@ function flushStorage() {
     };
     var snapStr = JSON.stringify(snapshot);
     // Salva sempre su IndexedDB per scavalcare i 5MB di quota!
-    if (window.ImageDB) window.ImageDB.saveState(snapStr).catch(function () {});
+    if (window.ImageDB) persisted = window.ImageDB.saveState(snapStr).catch(function () {});
     // E prova a salvare anche su localStorage come fallback
     localStorage.setItem(LS_KEY, snapStr);
   } catch (e) {
@@ -192,4 +194,5 @@ function flushStorage() {
       // Ignorato intenzionalmente.
     }
   }
+  return persisted;
 }

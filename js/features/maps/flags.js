@@ -205,8 +205,8 @@ function _openSecondaryMapView(fid) {
   mapContainer.appendChild(overlay);
 
   // Leggi sempre mappaSec fresco da Firebase — se diverso da stato, aggiorna e riapri
-  if (_db) {
-    _db.ref(_mappaFlagPath(fid) + '/mappaSec').once('value', function (snap) {
+  if (_campaignDb) {
+    _campaignDb.ref(_mappaFlagPath(fid) + '/mappaSec').once('value', function (snap) {
       var ms = snap.val();
       var prev = state.mappaFlags[fid] && state.mappaFlags[fid].mappaSec;
       if (ms && ms !== prev && document.getElementById('mappa-sec-overlay')) {
@@ -330,7 +330,7 @@ function renderMappaFlagPanel(panel, fid, inSecView) {
     nomeInp.oninput = function () {
       if (!state.mappaFlags[fid]) state.mappaFlags[fid] = {};
       state.mappaFlags[fid].nome = this.value;
-      _db && _db.ref(_mappaFlagPath(fid) + '/nome').set(this.value);
+      _campaignDb && _campaignDb.ref(_mappaFlagPath(fid) + '/nome').set(this.value);
     };
     nomeWrap.appendChild(nomeLbl);
     nomeWrap.appendChild(nomeInp);
@@ -352,7 +352,8 @@ function renderMappaFlagPanel(panel, fid, inSecView) {
     visChk.onchange = function () {
       if (!state.mappaFlags[fid]) state.mappaFlags[fid] = {};
       state.mappaFlags[fid].visibile = this.checked ? false : true;
-      _db && _db.ref(_mappaFlagPath(fid) + '/visibile').set(this.checked ? false : true);
+      _campaignDb &&
+        _campaignDb.ref(_mappaFlagPath(fid) + '/visibile').set(this.checked ? false : true);
       refreshMappaFlags();
       renderMappaFlagPanel(panel, fid);
     };
@@ -452,7 +453,7 @@ function renderMappaFlagPanel(panel, fid, inSecView) {
       var val = REP_LEVELS[idx].label;
       if (!state.mappaFlags[fid]) state.mappaFlags[fid] = {};
       state.mappaFlags[fid].gradimento = val;
-      _db && _db.ref(_mappaFlagPath(fid) + '/gradimento').set(val);
+      _campaignDb && _campaignDb.ref(_mappaFlagPath(fid) + '/gradimento').set(val);
     };
 
     gradWrap.appendChild(sliderWrap);
@@ -494,7 +495,7 @@ function renderMappaFlagPanel(panel, fid, inSecView) {
         reader.onload = function (ev) {
           if (!state.mappaFlags[fid]) state.mappaFlags[fid] = {};
           state.mappaFlags[fid].immagine = ev.target.result;
-          _db && _db.ref(_mappaFlagPath(fid) + '/immagine').set(ev.target.result);
+          _campaignDb && _campaignDb.ref(_mappaFlagPath(fid) + '/immagine').set(ev.target.result);
           renderMappaFlagPanel(panel, fid);
         };
         reader.readAsDataURL(file);
@@ -511,7 +512,7 @@ function renderMappaFlagPanel(panel, fid, inSecView) {
       if (url) {
         if (!state.mappaFlags[fid]) state.mappaFlags[fid] = {};
         state.mappaFlags[fid].immagine = url;
-        _db && _db.ref(_mappaFlagPath(fid) + '/immagine').set(url);
+        _campaignDb && _campaignDb.ref(_mappaFlagPath(fid) + '/immagine').set(url);
         renderMappaFlagPanel(panel, fid);
       }
     };
@@ -532,7 +533,7 @@ function renderMappaFlagPanel(panel, fid, inSecView) {
     riaTA.oninput = function () {
       if (!state.mappaFlags[fid]) state.mappaFlags[fid] = {};
       state.mappaFlags[fid].riassunto = this.value;
-      _db && _db.ref(_mappaFlagPath(fid) + '/riassunto').set(this.value);
+      _campaignDb && _campaignDb.ref(_mappaFlagPath(fid) + '/riassunto').set(this.value);
     };
     riaWrap.appendChild(riaLbl);
     riaWrap.appendChild(riaTA);
@@ -577,7 +578,7 @@ function renderMappaFlagPanel(panel, fid, inSecView) {
                 items.splice(i, 1);
                 var upd = {};
                 upd[stateKey] = items.slice();
-                _db && _db.ref(_mappaFlagPath(fid)).update(upd);
+                _campaignDb && _campaignDb.ref(_mappaFlagPath(fid)).update(upd);
                 rebuildItems();
               };
             })(idx);
@@ -601,7 +602,7 @@ function renderMappaFlagPanel(panel, fid, inSecView) {
             items.push(val);
             var upd = {};
             upd[stateKey] = items.slice();
-            _db && _db.ref(_mappaFlagPath(fid)).update(upd);
+            _campaignDb && _campaignDb.ref(_mappaFlagPath(fid)).update(upd);
             inp.value = '';
             rebuildItems();
           };
@@ -674,8 +675,8 @@ function renderMappaFlagPanel(panel, fid, inSecView) {
               var compressed = cv.toDataURL('image/jpeg', 0.82);
               if (!state.mappaFlags[fid]) state.mappaFlags[fid] = {};
               state.mappaFlags[fid].mappaSec = compressed;
-              if (_db) {
-                _db
+              if (_campaignDb) {
+                _campaignDb
                   .ref(_mappaFlagPath(fid) + '/mappaSec')
                   .set(compressed)
                   .then(function () {
@@ -707,8 +708,8 @@ function renderMappaFlagPanel(panel, fid, inSecView) {
         if (url) {
           if (!state.mappaFlags[fid]) state.mappaFlags[fid] = {};
           state.mappaFlags[fid].mappaSec = url;
-          if (_db) {
-            _db
+          if (_campaignDb) {
+            _campaignDb
               .ref(_mappaFlagPath(fid) + '/mappaSec')
               .set(url)
               .then(function () {
@@ -740,7 +741,7 @@ function renderMappaFlagPanel(panel, fid, inSecView) {
     delBtn.onclick = function () {
       if (!confirm('Eliminare questo flag?')) return;
       delete state.mappaFlags[fid];
-      _db && _db.ref(_mappaFlagPath(fid)).remove();
+      _campaignDb && _campaignDb.ref(_mappaFlagPath(fid)).remove();
       panel.classList.remove('open');
       refreshMappaFlags();
     };

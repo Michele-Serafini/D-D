@@ -17,69 +17,136 @@
         }
       }
     },
-    "schedePG": {
-      ".read": "(auth != null && (auth.uid === \"admin\" || (root.child('userAccess').child(auth.uid).isString() && root.child('users').child(root.child('userAccess').child(auth.uid).val()).exists() && root.child('users').child(root.child('userAccess').child(auth.uid).val()).child('disabled').val() !== true))) && (auth.uid === \"admin\" || root.child('users').child(root.child('userAccess').child(auth.uid).val()).child('role').val() === \"DM\" || root.child('users').child(root.child('userAccess').child(auth.uid).val()).child('dmPriv').val() === true)",
+    "campaignAccess": {
       "$name": {
         ".read": "(auth != null && (auth.uid === \"admin\" || (root.child('userAccess').child(auth.uid).isString() && root.child('users').child(root.child('userAccess').child(auth.uid).val()).exists() && root.child('users').child(root.child('userAccess').child(auth.uid).val()).child('disabled').val() !== true))) && (auth != null && root.child('userAccess').child(auth.uid).val() === $name)",
-        ".write": "(auth != null && (auth.uid === \"admin\" || (root.child('userAccess').child(auth.uid).isString() && root.child('users').child(root.child('userAccess').child(auth.uid).val()).exists() && root.child('users').child(root.child('userAccess').child(auth.uid).val()).child('disabled').val() !== true))) && (auth != null && root.child('userAccess').child(auth.uid).val() === $name)"
-      }
-    },
-    "presence": {
-      ".read": "auth != null && (auth.uid === \"admin\" || (root.child('userAccess').child(auth.uid).isString() && root.child('users').child(root.child('userAccess').child(auth.uid).val()).exists() && root.child('users').child(root.child('userAccess').child(auth.uid).val()).child('disabled').val() !== true))",
-      "$name": {
-        ".write": "(auth != null && (auth.uid === \"admin\" || (root.child('userAccess').child(auth.uid).isString() && root.child('users').child(root.child('userAccess').child(auth.uid).val()).exists() && root.child('users').child(root.child('userAccess').child(auth.uid).val()).child('disabled').val() !== true))) && (auth != null && root.child('userAccess').child(auth.uid).val() === $name)"
-      }
-    },
-    "libri": {
-      ".read": "auth != null && (auth.uid === \"admin\" || (root.child('userAccess').child(auth.uid).isString() && root.child('users').child(root.child('userAccess').child(auth.uid).val()).exists() && root.child('users').child(root.child('userAccess').child(auth.uid).val()).child('disabled').val() !== true))",
-      "books": {
-        ".write": "(auth != null && (auth.uid === \"admin\" || (root.child('userAccess').child(auth.uid).isString() && root.child('users').child(root.child('userAccess').child(auth.uid).val()).exists() && root.child('users').child(root.child('userAccess').child(auth.uid).val()).child('disabled').val() !== true))) && (auth.uid === \"admin\" || root.child('users').child(root.child('userAccess').child(auth.uid).val()).child('role').val() === \"DM\" || root.child('users').child(root.child('userAccess').child(auth.uid).val()).child('dmPriv').val() === true)"
-      },
-      "preferiti": {
-        "$name": {
-          ".write": "(auth != null && (auth.uid === \"admin\" || (root.child('userAccess').child(auth.uid).isString() && root.child('users').child(root.child('userAccess').child(auth.uid).val()).exists() && root.child('users').child(root.child('userAccess').child(auth.uid).val()).child('disabled').val() !== true))) && (auth != null && root.child('userAccess').child(auth.uid).val() === $name)"
+        "$campaign": {
+          ".write": "((auth != null && (auth.uid === \"admin\" || (root.child('userAccess').child(auth.uid).isString() && root.child('users').child(root.child('userAccess').child(auth.uid).val()).exists() && root.child('users').child(root.child('userAccess').child(auth.uid).val()).child('disabled').val() !== true))) && root.child('campaigns').child($campaign).child('members').child(root.child('userAccess').child(auth.uid).val()).val() === 'dm') || (((auth != null && (auth.uid === \"admin\" || (root.child('userAccess').child(auth.uid).isString() && root.child('users').child(root.child('userAccess').child(auth.uid).val()).exists() && root.child('users').child(root.child('userAccess').child(auth.uid).val()).child('disabled').val() !== true))) && (auth.uid === \"admin\" || root.child('users').child(root.child('userAccess').child(auth.uid).val()).child('role').val() === \"DM\" || root.child('users').child(root.child('userAccess').child(auth.uid).val()).child('dmPriv').val() === true)) && newData.parent().parent().parent().child('campaigns').child($campaign).child('meta').child('owner').val() === root.child('userAccess').child(auth.uid).val())",
+          ".validate": "newData.isBoolean() && newData.val() === true && newData.parent().parent().parent().child('campaigns').child($campaign).child('members').child($name).exists()"
         }
       }
     },
-    "state": {
-      "$section": {
-        ".read": "(auth != null && (auth.uid === \"admin\" || (root.child('userAccess').child(auth.uid).isString() && root.child('users').child(root.child('userAccess').child(auth.uid).val()).exists() && root.child('users').child(root.child('userAccess').child(auth.uid).val()).child('disabled').val() !== true))) && $section !== 'config' && $section !== 'legacyUserContent'",
-        ".write": "((auth != null && (auth.uid === \"admin\" || (root.child('userAccess').child(auth.uid).isString() && root.child('users').child(root.child('userAccess').child(auth.uid).val()).exists() && root.child('users').child(root.child('userAccess').child(auth.uid).val()).child('disabled').val() !== true))) && (auth.uid === \"admin\" || root.child('users').child(root.child('userAccess').child(auth.uid).val()).child('role').val() === \"DM\" || root.child('users').child(root.child('userAccess').child(auth.uid).val()).child('dmPriv').val() === true)) || ((auth != null && (auth.uid === \"admin\" || (root.child('userAccess').child(auth.uid).isString() && root.child('users').child(root.child('userAccess').child(auth.uid).val()).exists() && root.child('users').child(root.child('userAccess').child(auth.uid).val()).child('disabled').val() !== true))) && ($section === 'iniziativa' || $section === 'caos' || $section === 'notes' || $section === 'tavolo'))"
-      }
-    },
-    "diceRolls": {
-      ".read": "auth != null && (auth.uid === \"admin\" || (root.child('userAccess').child(auth.uid).isString() && root.child('users').child(root.child('userAccess').child(auth.uid).val()).exists() && root.child('users').child(root.child('userAccess').child(auth.uid).val()).child('disabled').val() !== true))",
-      ".write": "auth != null && (auth.uid === \"admin\" || (root.child('userAccess').child(auth.uid).isString() && root.child('users').child(root.child('userAccess').child(auth.uid).val()).exists() && root.child('users').child(root.child('userAccess').child(auth.uid).val()).child('disabled').val() !== true))"
-    },
-    "dmConfig": {
-      ".read": "(auth != null && (auth.uid === \"admin\" || (root.child('userAccess').child(auth.uid).isString() && root.child('users').child(root.child('userAccess').child(auth.uid).val()).exists() && root.child('users').child(root.child('userAccess').child(auth.uid).val()).child('disabled').val() !== true))) && (auth.uid === \"admin\" || root.child('users').child(root.child('userAccess').child(auth.uid).val()).child('role').val() === \"DM\" || root.child('users').child(root.child('userAccess').child(auth.uid).val()).child('dmPriv').val() === true)",
-      ".write": "(auth != null && (auth.uid === \"admin\" || (root.child('userAccess').child(auth.uid).isString() && root.child('users').child(root.child('userAccess').child(auth.uid).val()).exists() && root.child('users').child(root.child('userAccess').child(auth.uid).val()).child('disabled').val() !== true))) && (auth.uid === \"admin\" || root.child('users').child(root.child('userAccess').child(auth.uid).val()).child('role').val() === \"DM\" || root.child('users').child(root.child('userAccess').child(auth.uid).val()).child('dmPriv').val() === true)"
-    },
-    "meta": {
-      ".read": "auth != null && (auth.uid === \"admin\" || (root.child('userAccess').child(auth.uid).isString() && root.child('users').child(root.child('userAccess').child(auth.uid).val()).exists() && root.child('users').child(root.child('userAccess').child(auth.uid).val()).child('disabled').val() !== true))"
-    },
-    "groups": {
-      ".read": "auth != null && (auth.uid === \"admin\" || (root.child('userAccess').child(auth.uid).isString() && root.child('users').child(root.child('userAccess').child(auth.uid).val()).exists() && root.child('users').child(root.child('userAccess').child(auth.uid).val()).child('disabled').val() !== true))"
-    },
-    "archivioIdee": {
-      ".read": "auth != null && (auth.uid === \"admin\" || (root.child('userAccess').child(auth.uid).isString() && root.child('users').child(root.child('userAccess').child(auth.uid).val()).exists() && root.child('users').child(root.child('userAccess').child(auth.uid).val()).child('disabled').val() !== true))"
-    },
-    "storia_private": {
-      "$name": {
-        ".read": "(auth != null && (auth.uid === \"admin\" || (root.child('userAccess').child(auth.uid).isString() && root.child('users').child(root.child('userAccess').child(auth.uid).val()).exists() && root.child('users').child(root.child('userAccess').child(auth.uid).val()).child('disabled').val() !== true))) && (auth != null && root.child('userAccess').child(auth.uid).val() === $name)",
-        ".write": "(auth != null && (auth.uid === \"admin\" || (root.child('userAccess').child(auth.uid).isString() && root.child('users').child(root.child('userAccess').child(auth.uid).val()).exists() && root.child('users').child(root.child('userAccess').child(auth.uid).val()).child('disabled').val() !== true))) && (auth != null && root.child('userAccess').child(auth.uid).val() === $name)"
-      }
-    },
-    "storie_private": {
-      "$name": {
-        ".read": "(auth != null && (auth.uid === \"admin\" || (root.child('userAccess').child(auth.uid).isString() && root.child('users').child(root.child('userAccess').child(auth.uid).val()).exists() && root.child('users').child(root.child('userAccess').child(auth.uid).val()).child('disabled').val() !== true))) && (auth != null && root.child('userAccess').child(auth.uid).val() === $name)",
-        ".write": "(auth != null && (auth.uid === \"admin\" || (root.child('userAccess').child(auth.uid).isString() && root.child('users').child(root.child('userAccess').child(auth.uid).val()).exists() && root.child('users').child(root.child('userAccess').child(auth.uid).val()).child('disabled').val() !== true))) && (auth != null && root.child('userAccess').child(auth.uid).val() === $name)"
-      }
-    },
-    "storia_markers_private": {
-      "$name": {
-        ".read": "(auth != null && (auth.uid === \"admin\" || (root.child('userAccess').child(auth.uid).isString() && root.child('users').child(root.child('userAccess').child(auth.uid).val()).exists() && root.child('users').child(root.child('userAccess').child(auth.uid).val()).child('disabled').val() !== true))) && (auth != null && root.child('userAccess').child(auth.uid).val() === $name)",
-        ".write": "(auth != null && (auth.uid === \"admin\" || (root.child('userAccess').child(auth.uid).isString() && root.child('users').child(root.child('userAccess').child(auth.uid).val()).exists() && root.child('users').child(root.child('userAccess').child(auth.uid).val()).child('disabled').val() !== true))) && (auth != null && root.child('userAccess').child(auth.uid).val() === $name)"
+    "campaigns": {
+      "$campaign": {
+        ".write": "((auth != null && (auth.uid === \"admin\" || (root.child('userAccess').child(auth.uid).isString() && root.child('users').child(root.child('userAccess').child(auth.uid).val()).exists() && root.child('users').child(root.child('userAccess').child(auth.uid).val()).child('disabled').val() !== true))) && (auth.uid === \"admin\" || root.child('users').child(root.child('userAccess').child(auth.uid).val()).child('role').val() === \"DM\" || root.child('users').child(root.child('userAccess').child(auth.uid).val()).child('dmPriv').val() === true)) && !data.exists() && newData.child('meta').child('owner').val() === root.child('userAccess').child(auth.uid).val() && newData.child('members').child(root.child('userAccess').child(auth.uid).val()).val() === 'dm'",
+        ".validate": "newData.hasChildren(['meta', 'members'])",
+        "meta": {
+          ".read": "(auth != null && (auth.uid === \"admin\" || (root.child('userAccess').child(auth.uid).isString() && root.child('users').child(root.child('userAccess').child(auth.uid).val()).exists() && root.child('users').child(root.child('userAccess').child(auth.uid).val()).child('disabled').val() !== true))) && (root.child('campaigns').child($campaign).child('members').child(root.child('userAccess').child(auth.uid).val()).val() === 'player' || root.child('campaigns').child($campaign).child('members').child(root.child('userAccess').child(auth.uid).val()).val() === 'dm')",
+          ".write": "(auth != null && (auth.uid === \"admin\" || (root.child('userAccess').child(auth.uid).isString() && root.child('users').child(root.child('userAccess').child(auth.uid).val()).exists() && root.child('users').child(root.child('userAccess').child(auth.uid).val()).child('disabled').val() !== true))) && root.child('campaigns').child($campaign).child('members').child(root.child('userAccess').child(auth.uid).val()).val() === 'dm'",
+          ".validate": "newData.hasChildren(['name', 'description', 'owner', 'createdAt'])",
+          "name": {
+            ".validate": "newData.isString() && newData.val().length > 0 && newData.val().length <= 80"
+          },
+          "description": {
+            ".validate": "newData.isString() && newData.val().length <= 500"
+          },
+          "owner": {
+            ".validate": "newData.isString() && (!data.exists() || newData.val() === data.val()) && newData.parent().parent().child('members').child(newData.val()).val() === 'dm'"
+          },
+          "createdAt": {
+            ".validate": "newData.isNumber() && (!data.exists() || newData.val() === data.val())"
+          },
+          "$other": {
+            ".validate": false
+          }
+        },
+        "members": {
+          ".read": "(auth != null && (auth.uid === \"admin\" || (root.child('userAccess').child(auth.uid).isString() && root.child('users').child(root.child('userAccess').child(auth.uid).val()).exists() && root.child('users').child(root.child('userAccess').child(auth.uid).val()).child('disabled').val() !== true))) && (root.child('campaigns').child($campaign).child('members').child(root.child('userAccess').child(auth.uid).val()).val() === 'player' || root.child('campaigns').child($campaign).child('members').child(root.child('userAccess').child(auth.uid).val()).val() === 'dm')",
+          ".write": "(auth != null && (auth.uid === \"admin\" || (root.child('userAccess').child(auth.uid).isString() && root.child('users').child(root.child('userAccess').child(auth.uid).val()).exists() && root.child('users').child(root.child('userAccess').child(auth.uid).val()).child('disabled').val() !== true))) && root.child('campaigns').child($campaign).child('members').child(root.child('userAccess').child(auth.uid).val()).val() === 'dm'",
+          ".validate": "newData.child(newData.parent().child('meta').child('owner').val()).val() === 'dm'",
+          "$name": {
+            ".read": "(auth != null && (auth.uid === \"admin\" || (root.child('userAccess').child(auth.uid).isString() && root.child('users').child(root.child('userAccess').child(auth.uid).val()).exists() && root.child('users').child(root.child('userAccess').child(auth.uid).val()).child('disabled').val() !== true))) && (auth != null && root.child('userAccess').child(auth.uid).val() === $name)",
+            ".validate": "(newData.val() === 'dm' || newData.val() === 'player') && ($name === \"admin\" || (root.child('users').child($name).exists() && root.child('users').child($name).child('disabled').val() !== true))"
+          }
+        },
+        "data": {
+          "schedePG": {
+            ".read": "(auth != null && (auth.uid === \"admin\" || (root.child('userAccess').child(auth.uid).isString() && root.child('users').child(root.child('userAccess').child(auth.uid).val()).exists() && root.child('users').child(root.child('userAccess').child(auth.uid).val()).child('disabled').val() !== true))) && root.child('campaigns').child($campaign).child('members').child(root.child('userAccess').child(auth.uid).val()).val() === 'dm'",
+            ".write": "(auth != null && (auth.uid === \"admin\" || (root.child('userAccess').child(auth.uid).isString() && root.child('users').child(root.child('userAccess').child(auth.uid).val()).exists() && root.child('users').child(root.child('userAccess').child(auth.uid).val()).child('disabled').val() !== true))) && root.child('campaigns').child($campaign).child('members').child(root.child('userAccess').child(auth.uid).val()).val() === 'dm'",
+            "$name": {
+              ".read": "((auth != null && (auth.uid === \"admin\" || (root.child('userAccess').child(auth.uid).isString() && root.child('users').child(root.child('userAccess').child(auth.uid).val()).exists() && root.child('users').child(root.child('userAccess').child(auth.uid).val()).child('disabled').val() !== true))) && (root.child('campaigns').child($campaign).child('members').child(root.child('userAccess').child(auth.uid).val()).val() === 'player' || root.child('campaigns').child($campaign).child('members').child(root.child('userAccess').child(auth.uid).val()).val() === 'dm')) && (auth != null && root.child('userAccess').child(auth.uid).val() === $name)",
+              ".write": "((auth != null && (auth.uid === \"admin\" || (root.child('userAccess').child(auth.uid).isString() && root.child('users').child(root.child('userAccess').child(auth.uid).val()).exists() && root.child('users').child(root.child('userAccess').child(auth.uid).val()).child('disabled').val() !== true))) && (root.child('campaigns').child($campaign).child('members').child(root.child('userAccess').child(auth.uid).val()).val() === 'player' || root.child('campaigns').child($campaign).child('members').child(root.child('userAccess').child(auth.uid).val()).val() === 'dm')) && (auth != null && root.child('userAccess').child(auth.uid).val() === $name)"
+            }
+          },
+          "presence": {
+            ".read": "(auth != null && (auth.uid === \"admin\" || (root.child('userAccess').child(auth.uid).isString() && root.child('users').child(root.child('userAccess').child(auth.uid).val()).exists() && root.child('users').child(root.child('userAccess').child(auth.uid).val()).child('disabled').val() !== true))) && (root.child('campaigns').child($campaign).child('members').child(root.child('userAccess').child(auth.uid).val()).val() === 'player' || root.child('campaigns').child($campaign).child('members').child(root.child('userAccess').child(auth.uid).val()).val() === 'dm')",
+            "$name": {
+              ".write": "((auth != null && (auth.uid === \"admin\" || (root.child('userAccess').child(auth.uid).isString() && root.child('users').child(root.child('userAccess').child(auth.uid).val()).exists() && root.child('users').child(root.child('userAccess').child(auth.uid).val()).child('disabled').val() !== true))) && (root.child('campaigns').child($campaign).child('members').child(root.child('userAccess').child(auth.uid).val()).val() === 'player' || root.child('campaigns').child($campaign).child('members').child(root.child('userAccess').child(auth.uid).val()).val() === 'dm')) && (auth != null && root.child('userAccess').child(auth.uid).val() === $name)"
+            }
+          },
+          "libri": {
+            ".read": "(auth != null && (auth.uid === \"admin\" || (root.child('userAccess').child(auth.uid).isString() && root.child('users').child(root.child('userAccess').child(auth.uid).val()).exists() && root.child('users').child(root.child('userAccess').child(auth.uid).val()).child('disabled').val() !== true))) && (root.child('campaigns').child($campaign).child('members').child(root.child('userAccess').child(auth.uid).val()).val() === 'player' || root.child('campaigns').child($campaign).child('members').child(root.child('userAccess').child(auth.uid).val()).val() === 'dm')",
+            "books": {
+              ".write": "(auth != null && (auth.uid === \"admin\" || (root.child('userAccess').child(auth.uid).isString() && root.child('users').child(root.child('userAccess').child(auth.uid).val()).exists() && root.child('users').child(root.child('userAccess').child(auth.uid).val()).child('disabled').val() !== true))) && root.child('campaigns').child($campaign).child('members').child(root.child('userAccess').child(auth.uid).val()).val() === 'dm'"
+            },
+            "preferiti": {
+              "$name": {
+                ".write": "((auth != null && (auth.uid === \"admin\" || (root.child('userAccess').child(auth.uid).isString() && root.child('users').child(root.child('userAccess').child(auth.uid).val()).exists() && root.child('users').child(root.child('userAccess').child(auth.uid).val()).child('disabled').val() !== true))) && (root.child('campaigns').child($campaign).child('members').child(root.child('userAccess').child(auth.uid).val()).val() === 'player' || root.child('campaigns').child($campaign).child('members').child(root.child('userAccess').child(auth.uid).val()).val() === 'dm')) && (auth != null && root.child('userAccess').child(auth.uid).val() === $name)"
+              }
+            }
+          },
+          "state": {
+            "$section": {
+              ".read": "((auth != null && (auth.uid === \"admin\" || (root.child('userAccess').child(auth.uid).isString() && root.child('users').child(root.child('userAccess').child(auth.uid).val()).exists() && root.child('users').child(root.child('userAccess').child(auth.uid).val()).child('disabled').val() !== true))) && root.child('campaigns').child($campaign).child('members').child(root.child('userAccess').child(auth.uid).val()).val() === 'dm') || (((auth != null && (auth.uid === \"admin\" || (root.child('userAccess').child(auth.uid).isString() && root.child('users').child(root.child('userAccess').child(auth.uid).val()).exists() && root.child('users').child(root.child('userAccess').child(auth.uid).val()).child('disabled').val() !== true))) && (root.child('campaigns').child($campaign).child('members').child(root.child('userAccess').child(auth.uid).val()).val() === 'player' || root.child('campaigns').child($campaign).child('members').child(root.child('userAccess').child(auth.uid).val()).val() === 'dm')) && $section !== 'config' && $section !== 'legacyUserContent')",
+              ".write": "((auth != null && (auth.uid === \"admin\" || (root.child('userAccess').child(auth.uid).isString() && root.child('users').child(root.child('userAccess').child(auth.uid).val()).exists() && root.child('users').child(root.child('userAccess').child(auth.uid).val()).child('disabled').val() !== true))) && root.child('campaigns').child($campaign).child('members').child(root.child('userAccess').child(auth.uid).val()).val() === 'dm') || (((auth != null && (auth.uid === \"admin\" || (root.child('userAccess').child(auth.uid).isString() && root.child('users').child(root.child('userAccess').child(auth.uid).val()).exists() && root.child('users').child(root.child('userAccess').child(auth.uid).val()).child('disabled').val() !== true))) && (root.child('campaigns').child($campaign).child('members').child(root.child('userAccess').child(auth.uid).val()).val() === 'player' || root.child('campaigns').child($campaign).child('members').child(root.child('userAccess').child(auth.uid).val()).val() === 'dm')) && ($section === 'iniziativa' || $section === 'caos' || $section === 'notes' || $section === 'tavolo'))"
+            }
+          },
+          "users": {
+            "$name": {
+              "mappa": {
+                ".read": "(auth != null && (auth.uid === \"admin\" || (root.child('userAccess').child(auth.uid).isString() && root.child('users').child(root.child('userAccess').child(auth.uid).val()).exists() && root.child('users').child(root.child('userAccess').child(auth.uid).val()).child('disabled').val() !== true))) && (root.child('campaigns').child($campaign).child('members').child(root.child('userAccess').child(auth.uid).val()).val() === 'player' || root.child('campaigns').child($campaign).child('members').child(root.child('userAccess').child(auth.uid).val()).val() === 'dm')",
+                ".write": "(auth != null && (auth.uid === \"admin\" || (root.child('userAccess').child(auth.uid).isString() && root.child('users').child(root.child('userAccess').child(auth.uid).val()).exists() && root.child('users').child(root.child('userAccess').child(auth.uid).val()).child('disabled').val() !== true))) && root.child('campaigns').child($campaign).child('members').child(root.child('userAccess').child(auth.uid).val()).val() === 'dm'"
+              },
+              "worldbuilding": {
+                ".read": "(auth != null && (auth.uid === \"admin\" || (root.child('userAccess').child(auth.uid).isString() && root.child('users').child(root.child('userAccess').child(auth.uid).val()).exists() && root.child('users').child(root.child('userAccess').child(auth.uid).val()).child('disabled').val() !== true))) && root.child('campaigns').child($campaign).child('members').child(root.child('userAccess').child(auth.uid).val()).val() === 'dm'",
+                ".write": "(auth != null && (auth.uid === \"admin\" || (root.child('userAccess').child(auth.uid).isString() && root.child('users').child(root.child('userAccess').child(auth.uid).val()).exists() && root.child('users').child(root.child('userAccess').child(auth.uid).val()).child('disabled').val() !== true))) && root.child('campaigns').child($campaign).child('members').child(root.child('userAccess').child(auth.uid).val()).val() === 'dm'"
+              }
+            }
+          },
+          "diceRolls": {
+            ".read": "(auth != null && (auth.uid === \"admin\" || (root.child('userAccess').child(auth.uid).isString() && root.child('users').child(root.child('userAccess').child(auth.uid).val()).exists() && root.child('users').child(root.child('userAccess').child(auth.uid).val()).child('disabled').val() !== true))) && (root.child('campaigns').child($campaign).child('members').child(root.child('userAccess').child(auth.uid).val()).val() === 'player' || root.child('campaigns').child($campaign).child('members').child(root.child('userAccess').child(auth.uid).val()).val() === 'dm')",
+            ".write": "(auth != null && (auth.uid === \"admin\" || (root.child('userAccess').child(auth.uid).isString() && root.child('users').child(root.child('userAccess').child(auth.uid).val()).exists() && root.child('users').child(root.child('userAccess').child(auth.uid).val()).child('disabled').val() !== true))) && (root.child('campaigns').child($campaign).child('members').child(root.child('userAccess').child(auth.uid).val()).val() === 'player' || root.child('campaigns').child($campaign).child('members').child(root.child('userAccess').child(auth.uid).val()).val() === 'dm')"
+          },
+          "dmConfig": {
+            ".read": "(auth != null && (auth.uid === \"admin\" || (root.child('userAccess').child(auth.uid).isString() && root.child('users').child(root.child('userAccess').child(auth.uid).val()).exists() && root.child('users').child(root.child('userAccess').child(auth.uid).val()).child('disabled').val() !== true))) && root.child('campaigns').child($campaign).child('members').child(root.child('userAccess').child(auth.uid).val()).val() === 'dm'",
+            ".write": "(auth != null && (auth.uid === \"admin\" || (root.child('userAccess').child(auth.uid).isString() && root.child('users').child(root.child('userAccess').child(auth.uid).val()).exists() && root.child('users').child(root.child('userAccess').child(auth.uid).val()).child('disabled').val() !== true))) && root.child('campaigns').child($campaign).child('members').child(root.child('userAccess').child(auth.uid).val()).val() === 'dm'"
+          },
+          "groups": {
+            ".read": "(auth != null && (auth.uid === \"admin\" || (root.child('userAccess').child(auth.uid).isString() && root.child('users').child(root.child('userAccess').child(auth.uid).val()).exists() && root.child('users').child(root.child('userAccess').child(auth.uid).val()).child('disabled').val() !== true))) && (root.child('campaigns').child($campaign).child('members').child(root.child('userAccess').child(auth.uid).val()).val() === 'player' || root.child('campaigns').child($campaign).child('members').child(root.child('userAccess').child(auth.uid).val()).val() === 'dm')",
+            ".write": "(auth != null && (auth.uid === \"admin\" || (root.child('userAccess').child(auth.uid).isString() && root.child('users').child(root.child('userAccess').child(auth.uid).val()).exists() && root.child('users').child(root.child('userAccess').child(auth.uid).val()).child('disabled').val() !== true))) && root.child('campaigns').child($campaign).child('members').child(root.child('userAccess').child(auth.uid).val()).val() === 'dm'"
+          },
+          "meta": {
+            ".read": "(auth != null && (auth.uid === \"admin\" || (root.child('userAccess').child(auth.uid).isString() && root.child('users').child(root.child('userAccess').child(auth.uid).val()).exists() && root.child('users').child(root.child('userAccess').child(auth.uid).val()).child('disabled').val() !== true))) && (root.child('campaigns').child($campaign).child('members').child(root.child('userAccess').child(auth.uid).val()).val() === 'player' || root.child('campaigns').child($campaign).child('members').child(root.child('userAccess').child(auth.uid).val()).val() === 'dm')",
+            ".write": "(auth != null && (auth.uid === \"admin\" || (root.child('userAccess').child(auth.uid).isString() && root.child('users').child(root.child('userAccess').child(auth.uid).val()).exists() && root.child('users').child(root.child('userAccess').child(auth.uid).val()).child('disabled').val() !== true))) && root.child('campaigns').child($campaign).child('members').child(root.child('userAccess').child(auth.uid).val()).val() === 'dm'"
+          },
+          "archivioIdee": {
+            "$name": {
+              ".read": "(((auth != null && (auth.uid === \"admin\" || (root.child('userAccess').child(auth.uid).isString() && root.child('users').child(root.child('userAccess').child(auth.uid).val()).exists() && root.child('users').child(root.child('userAccess').child(auth.uid).val()).child('disabled').val() !== true))) && (root.child('campaigns').child($campaign).child('members').child(root.child('userAccess').child(auth.uid).val()).val() === 'player' || root.child('campaigns').child($campaign).child('members').child(root.child('userAccess').child(auth.uid).val()).val() === 'dm')) && (auth != null && root.child('userAccess').child(auth.uid).val() === $name)) || ((auth != null && (auth.uid === \"admin\" || (root.child('userAccess').child(auth.uid).isString() && root.child('users').child(root.child('userAccess').child(auth.uid).val()).exists() && root.child('users').child(root.child('userAccess').child(auth.uid).val()).child('disabled').val() !== true))) && root.child('campaigns').child($campaign).child('members').child(root.child('userAccess').child(auth.uid).val()).val() === 'dm')",
+              ".write": "(((auth != null && (auth.uid === \"admin\" || (root.child('userAccess').child(auth.uid).isString() && root.child('users').child(root.child('userAccess').child(auth.uid).val()).exists() && root.child('users').child(root.child('userAccess').child(auth.uid).val()).child('disabled').val() !== true))) && (root.child('campaigns').child($campaign).child('members').child(root.child('userAccess').child(auth.uid).val()).val() === 'player' || root.child('campaigns').child($campaign).child('members').child(root.child('userAccess').child(auth.uid).val()).val() === 'dm')) && (auth != null && root.child('userAccess').child(auth.uid).val() === $name)) || ((auth != null && (auth.uid === \"admin\" || (root.child('userAccess').child(auth.uid).isString() && root.child('users').child(root.child('userAccess').child(auth.uid).val()).exists() && root.child('users').child(root.child('userAccess').child(auth.uid).val()).child('disabled').val() !== true))) && root.child('campaigns').child($campaign).child('members').child(root.child('userAccess').child(auth.uid).val()).val() === 'dm')"
+            }
+          },
+          "storia_private": {
+            "$name": {
+              ".read": "((auth != null && (auth.uid === \"admin\" || (root.child('userAccess').child(auth.uid).isString() && root.child('users').child(root.child('userAccess').child(auth.uid).val()).exists() && root.child('users').child(root.child('userAccess').child(auth.uid).val()).child('disabled').val() !== true))) && (root.child('campaigns').child($campaign).child('members').child(root.child('userAccess').child(auth.uid).val()).val() === 'player' || root.child('campaigns').child($campaign).child('members').child(root.child('userAccess').child(auth.uid).val()).val() === 'dm')) && (auth != null && root.child('userAccess').child(auth.uid).val() === $name)",
+              ".write": "((auth != null && (auth.uid === \"admin\" || (root.child('userAccess').child(auth.uid).isString() && root.child('users').child(root.child('userAccess').child(auth.uid).val()).exists() && root.child('users').child(root.child('userAccess').child(auth.uid).val()).child('disabled').val() !== true))) && (root.child('campaigns').child($campaign).child('members').child(root.child('userAccess').child(auth.uid).val()).val() === 'player' || root.child('campaigns').child($campaign).child('members').child(root.child('userAccess').child(auth.uid).val()).val() === 'dm')) && (auth != null && root.child('userAccess').child(auth.uid).val() === $name)"
+            }
+          },
+          "storie_private": {
+            "$name": {
+              ".read": "((auth != null && (auth.uid === \"admin\" || (root.child('userAccess').child(auth.uid).isString() && root.child('users').child(root.child('userAccess').child(auth.uid).val()).exists() && root.child('users').child(root.child('userAccess').child(auth.uid).val()).child('disabled').val() !== true))) && (root.child('campaigns').child($campaign).child('members').child(root.child('userAccess').child(auth.uid).val()).val() === 'player' || root.child('campaigns').child($campaign).child('members').child(root.child('userAccess').child(auth.uid).val()).val() === 'dm')) && (auth != null && root.child('userAccess').child(auth.uid).val() === $name)",
+              ".write": "((auth != null && (auth.uid === \"admin\" || (root.child('userAccess').child(auth.uid).isString() && root.child('users').child(root.child('userAccess').child(auth.uid).val()).exists() && root.child('users').child(root.child('userAccess').child(auth.uid).val()).child('disabled').val() !== true))) && (root.child('campaigns').child($campaign).child('members').child(root.child('userAccess').child(auth.uid).val()).val() === 'player' || root.child('campaigns').child($campaign).child('members').child(root.child('userAccess').child(auth.uid).val()).val() === 'dm')) && (auth != null && root.child('userAccess').child(auth.uid).val() === $name)"
+            }
+          },
+          "storia_markers_private": {
+            "$name": {
+              ".read": "((auth != null && (auth.uid === \"admin\" || (root.child('userAccess').child(auth.uid).isString() && root.child('users').child(root.child('userAccess').child(auth.uid).val()).exists() && root.child('users').child(root.child('userAccess').child(auth.uid).val()).child('disabled').val() !== true))) && (root.child('campaigns').child($campaign).child('members').child(root.child('userAccess').child(auth.uid).val()).val() === 'player' || root.child('campaigns').child($campaign).child('members').child(root.child('userAccess').child(auth.uid).val()).val() === 'dm')) && (auth != null && root.child('userAccess').child(auth.uid).val() === $name)",
+              ".write": "((auth != null && (auth.uid === \"admin\" || (root.child('userAccess').child(auth.uid).isString() && root.child('users').child(root.child('userAccess').child(auth.uid).val()).exists() && root.child('users').child(root.child('userAccess').child(auth.uid).val()).child('disabled').val() !== true))) && (root.child('campaigns').child($campaign).child('members').child(root.child('userAccess').child(auth.uid).val()).val() === 'player' || root.child('campaigns').child($campaign).child('members').child(root.child('userAccess').child(auth.uid).val()).val() === 'dm')) && (auth != null && root.child('userAccess').child(auth.uid).val() === $name)"
+            }
+          }
+        },
+        "$other": {
+          ".validate": false
+        }
       }
     }
   }

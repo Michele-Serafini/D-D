@@ -179,8 +179,8 @@ function _renderSchedaList() {
       (function (ch) {
         stSel.onchange = function () {
           ch.stato = this.value;
-          if (_db && state.currentUser)
-            _db
+          if (_campaignDb && state.currentUser)
+            _campaignDb
               .ref('schedePG/' + state.currentUser.username + '/chars/' + ch.id + '/stato')
               .set(this.value);
         };

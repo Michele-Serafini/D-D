@@ -24,11 +24,11 @@ var _localWrite = {
    SEZIONE 1: SINCRONIZZAZIONE FIREBASE REALTIME & SALVATAGGIO CLOUD
    ============================================================================ */
 function setupRealtimeListeners() {
-  if (!_db || setupRealtimeListeners.started) return;
+  if (!_campaignDb || setupRealtimeListeners.started) return;
   setupRealtimeListeners.started = true;
 
   // ---- INIZIATIVA ----
-  _db.ref('state/iniziativa').on('value', function (snap) {
+  _campaignDb.ref('state/iniziativa').on('value', function (snap) {
     if (_localWrite.iniziativa) return;
     var v = snap.val();
     if (v && v.combatants && Array.isArray(v.combatants) && v.combatants.length > 0) {
@@ -48,7 +48,7 @@ function setupRealtimeListeners() {
   });
 
   // ---- CAOS ----
-  _db.ref('state/caos/players').on('value', function (snap) {
+  _campaignDb.ref('state/caos/players').on('value', function (snap) {
     if (_localWrite.caos) return;
     var v = snap.val();
     if (v && Array.isArray(v)) {
@@ -56,7 +56,7 @@ function setupRealtimeListeners() {
       if (state.section === 'caos') renderCaosBody();
     }
   });
-  _db.ref('state/caos/doom').on('value', function (snap) {
+  _campaignDb.ref('state/caos/doom').on('value', function (snap) {
     if (_localWrite.caos) return;
     var v = snap.val();
     if (v) {
@@ -67,7 +67,7 @@ function setupRealtimeListeners() {
   });
 
   // ---- BACHECA ----
-  _db.ref('state/bacheca/items').on('value', function (snap) {
+  _campaignDb.ref('state/bacheca/items').on('value', function (snap) {
     var v = snap.val();
     if (v && typeof v === 'object')
       state.bacheItems = Object.keys(v).map(function (k) {
@@ -81,7 +81,7 @@ function setupRealtimeListeners() {
   });
 
   // ---- PERSONAGGI NPC ----
-  _db.ref('state/personaggi').on('value', function (snap) {
+  _campaignDb.ref('state/personaggi').on('value', function (snap) {
     var v = snap.val();
     if (v && Array.isArray(v)) {
       state.personaggi = v;
@@ -91,7 +91,7 @@ function setupRealtimeListeners() {
 
   // ---- SCHEDE PG ----
   if (isDM())
-    _db.ref('schedePG').on('value', function (snap) {
+    _campaignDb.ref('schedePG').on('value', function (snap) {
       state.schedePGAll = snap.val() || {};
 
       if (state.section === 'schedepg') scheduleRenderMain();
@@ -100,12 +100,12 @@ function setupRealtimeListeners() {
   // ---- DELETED LISTS (admin) ----
   // NOTA: il listener bestiario è annidato qui dentro per garantire che bestiarioDeleted
   // sia caricato PRIMA della merge SRD (evita race condition che riaggiungeva mostri eliminati)
-  _db.ref('state/bestiarioDeleted').once('value', function (snap) {
+  _campaignDb.ref('state/bestiarioDeleted').once('value', function (snap) {
     var v = snap.val();
     if (v && Array.isArray(v)) state.bestiarioDeleted = v;
 
     // ---- BESTIARIO CUSTOM ----
-    _db.ref('state/bestiario').on('value', function (snap) {
+    _campaignDb.ref('state/bestiario').on('value', function (snap) {
       if (_localWrite.bestiario) return;
       var v = snap.val();
       var existing = v && Array.isArray(v) ? v : [];
@@ -176,7 +176,7 @@ function setupRealtimeListeners() {
         if (_newDel.length) {
           _deleted = _deleted.concat(_newDel);
           state.bestiarioDeleted = _deleted;
-          _db.ref('state/bestiarioDeleted').set(_deleted);
+          if (isDM()) _campaignDb.ref('state/bestiarioDeleted').set(_deleted);
         }
       }
       // Costruisce set di nomi eliminati (da voci "nome:xxx" in bestiarioDeleted)
@@ -192,10 +192,12 @@ function setupRealtimeListeners() {
         var merged = existing.concat(toAdd).sort(function (a, b) {
           return (a.nome || '').localeCompare(b.nome || '', 'it');
         });
-        _localWrite.bestiario = true;
-        _db.ref('state/bestiario').set(merged, function () {
-          _localWrite.bestiario = false;
-        });
+        if (isDM()) {
+          _localWrite.bestiario = true;
+          _campaignDb.ref('state/bestiario').set(merged, function () {
+            _localWrite.bestiario = false;
+          });
+        }
         state.bestiario = merged;
       } else {
         state.bestiario = existing;
@@ -204,13 +206,13 @@ function setupRealtimeListeners() {
     });
   }); // fine bestiarioDeleted.once
 
-  _db.ref('state/armiDeleted').once('value', function (snap) {
+  _campaignDb.ref('state/armiDeleted').once('value', function (snap) {
     var v = snap.val();
     if (v && Array.isArray(v)) state.armiDeleted = v;
   });
 
   // ---- ARMI ----
-  _db.ref('state/armi').on('value', function (snap) {
+  _campaignDb.ref('state/armi').on('value', function (snap) {
     if (_localWrite.armi) return;
     var v = snap.val();
     var existing =
@@ -258,9 +260,9 @@ function setupRealtimeListeners() {
       imgChanged = true;
     }
 
-    if (imgChanged) {
+    if (imgChanged && isDM()) {
       _localWrite.armi = true;
-      _db.ref('state/armi').set(existing, function () {
+      _campaignDb.ref('state/armi').set(existing, function () {
         _localWrite.armi = false;
       });
     }
@@ -269,7 +271,7 @@ function setupRealtimeListeners() {
   });
 
   // ---- IMPIANTI CIBERNETICI ----
-  _db.ref('state/impianti').on('value', function (snap) {
+  _campaignDb.ref('state/impianti').on('value', function (snap) {
     var v = snap.val();
     if (v && Array.isArray(v)) {
       state.impiantiCibernetici = v;
@@ -278,45 +280,45 @@ function setupRealtimeListeners() {
   });
 
   // ---- DROGHE ----
-  _db.ref('state/droghe').on('value', function (snap) {
+  _campaignDb.ref('state/droghe').on('value', function (snap) {
     var v = snap.val();
     state.droghe = v && Array.isArray(v) ? v : [];
     if (state.section === 'emporio' && state.emporioTab === 'droghe') scheduleRenderMain();
   });
 
   // ---- VEICOLI ----
-  _db.ref('state/veicoli').on('value', function (snap) {
+  _campaignDb.ref('state/veicoli').on('value', function (snap) {
     var v = snap.val();
     state.veicoli = v && Array.isArray(v) ? v : [];
     if (state.section === 'emporio' && state.emporioTab === 'veicoli') scheduleRenderMain();
   });
 
   // ---- VEICOLI PARTY ----
-  _db.ref('state/veicoliParty').on('value', function (snap) {
+  _campaignDb.ref('state/veicoliParty').on('value', function (snap) {
     var v = snap.val();
     state.veicoliParty = v && Array.isArray(v) ? v : [];
     if (state.section === 'emporio' && state.emporioTab === 'veicoli') scheduleRenderMain();
   });
 
   // ---- ARMI DA FUOCO ----
-  _db.ref('state/armiFuoco').on('value', function (snap) {
+  _campaignDb.ref('state/armiFuoco').on('value', function (snap) {
     var v = snap.val();
     state.armiDaFuoco = v && Array.isArray(v) ? v : [];
     if (state.section === 'emporio' && state.emporioTab === 'armifuoco') scheduleRenderMain();
   });
-  _db.ref('state/armiFuocoPotenziamenti').on('value', function (snap) {
+  _campaignDb.ref('state/armiFuocoPotenziamenti').on('value', function (snap) {
     var v = snap.val();
     state.potenziamenti = v && Array.isArray(v) ? v : [];
     if (state.section === 'emporio' && state.emporioTab === 'armifuoco') scheduleRenderMain();
   });
-  _db.ref('state/armiFuocoMunizioni').on('value', function (snap) {
+  _campaignDb.ref('state/armiFuocoMunizioni').on('value', function (snap) {
     var v = snap.val();
     state.munizioniArmi = v && Array.isArray(v) ? v : [];
     if (state.section === 'emporio' && state.emporioTab === 'armifuoco') scheduleRenderMain();
   });
 
   // ---- NOTE ----
-  _db.ref('state/notes').on('value', function (snap) {
+  _campaignDb.ref('state/notes').on('value', function (snap) {
     var v = snap.val();
     if (typeof v === 'string' && v !== state.notes) {
       state.notes = v;
@@ -329,7 +331,7 @@ function setupRealtimeListeners() {
   UserManager.watchUsers();
 
   // ---- PRESENCE ----
-  _db.ref('presence').on('value', function (snap) {
+  _campaignDb.ref('presence').on('value', function (snap) {
     _presenceMap = snap.val() || {};
     var settEl = document.getElementById('settings-overlay');
     if (settEl) {
@@ -338,12 +340,12 @@ function setupRealtimeListeners() {
     }
   });
 
-  _db.ref('state/pet').on('value', function (snap) {
+  _campaignDb.ref('state/pet').on('value', function (snap) {
     state.pet = Array.isArray(snap.val()) ? snap.val() : [];
     if (state.section === 'bestiario') scheduleRenderMain();
   });
 
-  _db.ref('state/incantesimiAggiuntivi').on('value', function (snap) {
+  _campaignDb.ref('state/incantesimiAggiuntivi').on('value', function (snap) {
     if (_localWrite.incantesimiAggiuntivi) return;
     var v = snap.val();
     var existing = v && Array.isArray(v) ? v : [];
@@ -433,10 +435,12 @@ function setupRealtimeListeners() {
       var merged = existing.concat(toAdd).sort(function (a, b) {
         return (a.nome || '').localeCompare(b.nome || '', 'it');
       });
-      _localWrite.incantesimiAggiuntivi = true;
-      _db.ref('state/incantesimiAggiuntivi').set(merged, function () {
-        _localWrite.incantesimiAggiuntivi = false;
-      });
+      if (isDM()) {
+        _localWrite.incantesimiAggiuntivi = true;
+        _campaignDb.ref('state/incantesimiAggiuntivi').set(merged, function () {
+          _localWrite.incantesimiAggiuntivi = false;
+        });
+      }
       state.incantesimiAggiuntivi = merged;
     } else {
       state.incantesimiAggiuntivi = existing;
@@ -447,7 +451,7 @@ function setupRealtimeListeners() {
   // ---- WORLDBUILDING: agganciato dentro il listener mappa (vedi sotto) ----
 
   // ---- DICE ROLLS ----
-  _db
+  _campaignDb
     .ref('diceRolls')
     .limitToLast(15)
     .on('value', function (snap) {
@@ -466,7 +470,7 @@ function setupRealtimeListeners() {
   // ---- STORIA MARKERS (privati per DM, per mappa) ----
   var _smListenerUser = state.currentUser && state.currentUser.username;
   if (_smListenerUser) {
-    _db.ref('state/storia_markers/' + _smListenerUser).on('value', function (snap) {
+    _campaignDb.ref('state/storia_markers/' + _smListenerUser).on('value', function (snap) {
       window._storiaMarkersCache = snap.val() || {};
       var mid = state.mappaActiveId || 'default';
       state.storia.markers =
@@ -479,8 +483,8 @@ function setupRealtimeListeners() {
 }
 
 function fbSave(path, value) {
-  if (!_db) return;
-  _db
+  if (!_campaignDb) return;
+  _campaignDb
     .ref(path)
     .set(value)
     .catch(function (e) {
@@ -502,14 +506,14 @@ var _fbSaveIniziativaTimer = null;
 var _fbSaveCaosNomeTimer = null;
 
 function fbSavePersonaggi() {
-  if (!_db) return;
-  _db.ref('state/personaggi').set(state.personaggi.length > 0 ? state.personaggi : null);
+  if (!_campaignDb) return;
+  _campaignDb.ref('state/personaggi').set(state.personaggi.length > 0 ? state.personaggi : null);
 }
 
 /* Salva chiavi API su Firebase — persistenti su qualsiasi dominio/dispositivo */
 function fbSaveApiKeys() {
-  if (!_db || !isDM()) return;
-  _db.ref('dmConfig/apiKeys').set({
+  if (!_campaignDb || !isDM()) return;
+  _campaignDb.ref('dmConfig/apiKeys').set({
     geminiKey: state.geminiKey || '',
     groqKey: state.groqKey || '',
   });
@@ -517,8 +521,8 @@ function fbSaveApiKeys() {
 
 /* Carica chiavi API da Firebase (priorità su localStorage) */
 function fbLoadApiKeys() {
-  if (!_db || !isDM()) return;
-  _db.ref('dmConfig/apiKeys').once('value', function (snap) {
+  if (!_campaignDb || !isDM()) return;
+  _campaignDb.ref('dmConfig/apiKeys').once('value', function (snap) {
     var v = snap.val();
     if (!v) return;
     if (v.geminiKey) state.geminiKey = v.geminiKey;
@@ -528,31 +532,33 @@ function fbLoadApiKeys() {
 }
 
 function fbSaveBestiario() {
-  if (!_db) return;
+  if (!_campaignDb) return;
   _localWrite.bestiario = true;
-  _db.ref('state/bestiario').set(state.bestiario.length > 0 ? state.bestiario : null, function () {
-    setTimeout(function () {
-      _localWrite.bestiario = false;
-    }, 300);
-  });
+  _campaignDb
+    .ref('state/bestiario')
+    .set(state.bestiario.length > 0 ? state.bestiario : null, function () {
+      setTimeout(function () {
+        _localWrite.bestiario = false;
+      }, 300);
+    });
 }
 function fbSaveBestiarioDeleted() {
-  if (!_db) return;
-  _db
+  if (!_campaignDb) return;
+  _campaignDb
     .ref('state/bestiarioDeleted')
     .set(state.bestiarioDeleted.length > 0 ? state.bestiarioDeleted : null);
 }
 function fbSaveArmiDeleted() {
-  if (!_db) return;
-  _db.ref('state/armiDeleted').set(state.armiDeleted.length > 0 ? state.armiDeleted : null);
+  if (!_campaignDb) return;
+  _campaignDb.ref('state/armiDeleted').set(state.armiDeleted.length > 0 ? state.armiDeleted : null);
 }
 function fbSavePet() {
-  if (!_db) return;
-  _db.ref('state/pet').set(state.pet.length > 0 ? state.pet : null);
+  if (!_campaignDb) return;
+  _campaignDb.ref('state/pet').set(state.pet.length > 0 ? state.pet : null);
 }
 function fbSaveIncantesimiAggiuntivi() {
-  if (!_db) return;
-  _db
+  if (!_campaignDb) return;
+  _campaignDb
     .ref('state/incantesimiAggiuntivi')
     .set(state.incantesimiAggiuntivi.length > 0 ? state.incantesimiAggiuntivi : null);
 }
@@ -696,7 +702,7 @@ function _schedaFix(raw) {
 var _schedaSaveTimer = null;
 function fbSaveScheda(immediate) {
   if (
-    !_db ||
+    !_campaignDb ||
     !state.currentUser ||
     !state.schedaAttivaId ||
     !state.scheda ||
@@ -710,7 +716,8 @@ function fbSaveScheda(immediate) {
   if (snapshot.schedaTipo === 'pokemon') console.log('[POKEMON SAVE] Payload inviato:', snapshot);
   if (snapshot.schedaTipo === 'naruto') console.log('[NARUTO SAVE] Payload inviato:', snapshot);
   var doSave = function () {
-    _db.ref('schedePG/' + state.currentUser.username + '/chars/' + _sid).set(snapshot);
+    _schedaSaveTimer = null;
+    _campaignDb.ref('schedePG/' + state.currentUser.username + '/chars/' + _sid).set(snapshot);
     var _idx = state.schedeList.findIndex(function (s) {
       return s.id === _sid;
     });
@@ -723,14 +730,14 @@ function fbSaveScheda(immediate) {
   else _schedaSaveTimer = setTimeout(doSave, 600);
 }
 function fbLoadSchede(cb) {
-  if (!_db || !state.currentUser) {
+  if (!_campaignDb || !state.currentUser) {
     state.schedeList = [];
     state.companions = {};
     state.schedaLoaded = true;
     if (cb) cb();
     return;
   }
-  _db.ref('schedePG/' + state.currentUser.username).once('value', function (snap) {
+  _campaignDb.ref('schedePG/' + state.currentUser.username).once('value', function (snap) {
     var raw = snap.val();
     if (!raw) {
       state.schedeList = [];
@@ -749,7 +756,7 @@ function fbLoadSchede(cb) {
       // --- CLEANUP TROLL CHARACTERS ---
       state.schedeList.forEach(function (c) {
         if (c.nome && c.nome.includes('iiiiiiiii')) {
-          _db.ref('schedePG/' + state.currentUser.username + '/chars/' + c.id).remove();
+          _campaignDb.ref('schedePG/' + state.currentUser.username + '/chars/' + c.id).remove();
         }
       });
 
@@ -759,7 +766,7 @@ function fbLoadSchede(cb) {
           c.schedaTipo === 'brancalonia' &&
           (!c.branca_data || Object.keys(c.branca_data).length === 0)
         ) {
-          _db.ref('schedePG/' + state.currentUser.username + '/chars/' + c.id).remove();
+          _campaignDb.ref('schedePG/' + state.currentUser.username + '/chars/' + c.id).remove();
         }
       });
       state.schedeList = state.schedeList.filter(function (c) {
@@ -780,7 +787,7 @@ function fbLoadSchede(cb) {
       var oldFix = _schedaFix(raw);
       var upd = { _v2: true };
       upd['chars/' + newId] = oldFix;
-      _db.ref('schedePG/' + state.currentUser.username).update(upd, function () {
+      _campaignDb.ref('schedePG/' + state.currentUser.username).update(upd, function () {
         state.schedeList = [Object.assign({}, oldFix, { id: newId })];
         state.companions = {};
         state.schedaLoaded = true;
@@ -790,22 +797,22 @@ function fbLoadSchede(cb) {
   });
 }
 function fbSaveCompanion(charId, comp) {
-  if (!_db || !state.currentUser || !charId || !comp.id) return;
+  if (!_campaignDb || !state.currentUser || !charId || !comp.id) return;
   var data = Object.assign({}, comp);
   delete data.id;
-  _db
+  _campaignDb
     .ref('schedePG/' + state.currentUser.username + '/companions/' + charId + '/' + comp.id)
     .set(data);
 }
 function fbDeleteCompanion(charId, compId) {
-  if (!_db || !state.currentUser) return;
-  _db
+  if (!_campaignDb || !state.currentUser) return;
+  _campaignDb
     .ref('schedePG/' + state.currentUser.username + '/companions/' + charId + '/' + compId)
     .remove();
 }
 function fbDeleteSchedaItem(id) {
-  if (!_db || !state.currentUser) return;
-  _db.ref('schedePG/' + state.currentUser.username + '/chars/' + id).remove();
+  if (!_campaignDb || !state.currentUser) return;
+  _campaignDb.ref('schedePG/' + state.currentUser.username + '/chars/' + id).remove();
 }
 function updateSchedaDerived() {
   var s = state.scheda,
@@ -933,7 +940,7 @@ var _wbRecovered = false; // true dopo il primo recovery da localStorage
    Se non c'è worldbuildingMapId (formato vecchio), lo restituisce comunque (recovery una-tantum). */
 function _getLocalStorageWorldbuilding(forMapId) {
   try {
-    var s = localStorage.getItem('mercante_errante_v1');
+    var s = localStorage.getItem(LS_KEY);
     if (!s) return null;
     var d = JSON.parse(s);
     if (!d.worldbuilding || !Array.isArray(d.worldbuilding) || !d.worldbuilding.length) return null;
@@ -945,7 +952,7 @@ function _getLocalStorageWorldbuilding(forMapId) {
 }
 
 function _attachWorldbuildingListener(mapId) {
-  if (!_db) return;
+  if (!_campaignDb) return;
   var mid = mapId || 'default';
   var fbPath = _wbPath(mid);
   // Forza re-attach se il path è cambiato (es. admin cambia utente visualizzato)
@@ -958,7 +965,7 @@ function _attachWorldbuildingListener(mapId) {
     _wbListenerRef = null;
   }
 
-  _wbListenerRef = _db.ref(fbPath);
+  _wbListenerRef = _campaignDb.ref(fbPath);
   _wbListenerRef.on('value', function (snap) {
     if (_wbLocalWrite) {
       _wbLocalWrite = false;
@@ -975,7 +982,7 @@ function _attachWorldbuildingListener(mapId) {
       if (lsWb && lsWb.length > 0) {
         state.worldbuilding = lsWb;
         _wbLocalWrite = true;
-        _db.ref(fbPath).set(lsWb);
+        _campaignDb.ref(fbPath).set(lsWb);
         notify('Worldbuilding ripristinato correttamente.');
       } else {
         state.worldbuilding = [];
@@ -988,17 +995,17 @@ function _attachWorldbuildingListener(mapId) {
 }
 
 function fbSaveWorldbuilding() {
-  if (!_db) return;
+  if (!_campaignDb) return;
   if (_mappaViewAsUser) return; // non salvare dati altrui
   _wbLocalWrite = true;
   var mid = state.mappaActiveId || 'default';
-  _db.ref(_wbPath(mid)).set(state.worldbuilding.length > 0 ? state.worldbuilding : null);
+  _campaignDb.ref(_wbPath(mid)).set(state.worldbuilding.length > 0 ? state.worldbuilding : null);
 }
 
 /* Attacca (o ri-attacca) il listener Firebase per le mappe dell'utente corrente/visualizzato.
    Chiamata all'init e quando l'admin cambia utente da visualizzare. */
 function _attachMappaListener() {
-  if (!_db) return;
+  if (!_campaignDb) return;
   if (_mappaListenerRef) {
     _mappaListenerRef.off();
     _mappaListenerRef = null;
@@ -1024,8 +1031,8 @@ function _attachMappaListener() {
       _tPaths.push({ path: 'users/' + _myUid + '/mappa', owner: _myUid });
       _tSeen[_myUid] = true;
     }
-    if (_remoteUsers && typeof _remoteUsers === 'object') {
-      Object.keys(_remoteUsers).forEach(function (uid) {
+    if (CampaignManager.profiles() && typeof CampaignManager.profiles() === 'object') {
+      Object.keys(CampaignManager.profiles()).forEach(function (uid) {
         if (!_tSeen[uid]) {
           _tPaths.push({ path: 'users/' + uid + '/mappa', owner: uid });
           _tSeen[uid] = true;
@@ -1034,7 +1041,7 @@ function _attachMappaListener() {
     }
     var _tDone = 0;
     _tPaths.forEach(function (p) {
-      _db.ref(p.path).once('value', function (snap) {
+      _campaignDb.ref(p.path).once('value', function (snap) {
         var v = snap.val();
         if (v && v.maps && typeof v.maps === 'object') {
           Object.keys(v.maps).forEach(function (mid) {
@@ -1082,7 +1089,7 @@ function _attachMappaListener() {
         _mappaListenerRef.off();
         _mappaListenerRef = null;
       }
-      _mappaListenerRef = _db.ref(pgMapPath);
+      _mappaListenerRef = _campaignDb.ref(pgMapPath);
       _mappaListenerRef.on('value', function (snap) {
         var v = snap.val();
         if (v) {
@@ -1144,17 +1151,14 @@ function _attachMappaListener() {
     if (_mappaViewAsUser) {
       _pgDoAttach(_mappaViewAsUser);
     } else {
-      _db.ref('users').once('value', function (usersSnap) {
-        var users = usersSnap.val() || {};
-        var adminKey = UserManager.getMasterUsername(users);
-        if (adminKey) _mappaViewAsUser = adminKey;
-        _pgDoAttach(adminKey);
-      });
+      var adminKey = UserManager.getMasterUsername();
+      if (adminKey) _mappaViewAsUser = adminKey;
+      _pgDoAttach(adminKey);
     }
     return;
   }
 
-  _mappaListenerRef = _db.ref(_mappaBasePath());
+  _mappaListenerRef = _campaignDb.ref(_mappaBasePath());
   _mappaListenerRef.on('value', function (snap) {
     var v = snap.val();
     if (v) {
@@ -1279,10 +1283,11 @@ function fbSaveIniziativa(immediate) {
 }
 
 function _doFbSaveIniziativa() {
-  if (!_db) return;
+  _fbSaveIniziativaTimer = null;
+  if (!_campaignDb) return;
   _localWrite.iniziativa = true;
   var toSave = state.combatants.length > 0 ? state.combatants : null;
-  _db.ref('state/iniziativa').set(
+  _campaignDb.ref('state/iniziativa').set(
     {
       combatants: toSave,
       round: state.round,
@@ -1296,55 +1301,59 @@ function _doFbSaveIniziativa() {
   );
 }
 function fbSaveCaos() {
-  if (!_db) return;
+  if (!_campaignDb) return;
   _localWrite.caos = true;
-  _db.ref('state/caos/players').set(state.caosPlayers, function () {
+  _campaignDb.ref('state/caos/players').set(state.caosPlayers, function () {
     setTimeout(function () {
       _localWrite.caos = false;
     }, 200);
   });
-  _db.ref('state/caos/doom').set({ doomStage: state.doomStage, doomFilled: state.doomFilled });
+  _campaignDb
+    .ref('state/caos/doom')
+    .set({ doomStage: state.doomStage, doomFilled: state.doomFilled });
 }
 function fbSaveArmi() {
-  if (!_db) return;
+  if (!_campaignDb) return;
   _localWrite.armi = true;
-  _db.ref('state/armi').set(state.armi, function () {
+  _campaignDb.ref('state/armi').set(state.armi, function () {
     setTimeout(function () {
       _localWrite.armi = false;
     }, 200);
   });
 }
 function fbSaveImpianti() {
-  if (!_db) return;
-  _db
+  if (!_campaignDb) return;
+  _campaignDb
     .ref('state/impianti')
     .set(state.impiantiCibernetici.length > 0 ? state.impiantiCibernetici : null);
 }
 function fbSaveDroghe() {
-  if (!_db) return;
-  _db.ref('state/droghe').set(state.droghe.length > 0 ? state.droghe : null);
+  if (!_campaignDb) return;
+  _campaignDb.ref('state/droghe').set(state.droghe.length > 0 ? state.droghe : null);
 }
 function fbSaveVeicoli() {
-  if (!_db) return;
-  _db.ref('state/veicoli').set(state.veicoli.length > 0 ? state.veicoli : null);
+  if (!_campaignDb) return;
+  _campaignDb.ref('state/veicoli').set(state.veicoli.length > 0 ? state.veicoli : null);
 }
 function fbSaveVeicoliParty() {
-  if (!_db) return;
-  _db.ref('state/veicoliParty').set(state.veicoliParty.length > 0 ? state.veicoliParty : null);
+  if (!_campaignDb) return;
+  _campaignDb
+    .ref('state/veicoliParty')
+    .set(state.veicoliParty.length > 0 ? state.veicoliParty : null);
 }
 function fbSaveArmiFuoco() {
-  if (!_db) return;
-  _db.ref('state/armiFuoco').set(state.armiDaFuoco.length > 0 ? state.armiDaFuoco : null);
+  if (!_campaignDb) return;
+  _campaignDb.ref('state/armiFuoco').set(state.armiDaFuoco.length > 0 ? state.armiDaFuoco : null);
 }
 function fbSavePotenziamentiArmi() {
-  if (!_db) return;
-  _db
+  if (!_campaignDb) return;
+  _campaignDb
     .ref('state/armiFuocoPotenziamenti')
     .set(state.potenziamenti.length > 0 ? state.potenziamenti : null);
 }
 function fbSaveMunizioniArmi() {
-  if (!_db) return;
-  _db
+  if (!_campaignDb) return;
+  _campaignDb
     .ref('state/armiFuocoMunizioni')
     .set(state.munizioniArmi.length > 0 ? state.munizioniArmi : null);
 }

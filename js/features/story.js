@@ -13,14 +13,14 @@ function _storiePrivatePath() {
 }
 
 function fbSaveStoriaMarkers(mapId) {
-  if (!_db || !state.currentUser) return;
+  if (!_campaignDb || !state.currentUser) return;
   var mid = mapId || state.mappaActiveId || 'default';
   var u = state.currentUser.username;
   var markers =
     state.storia.markers && Object.keys(state.storia.markers).length > 0
       ? state.storia.markers
       : null;
-  _db.ref('state/storia_markers/' + u + '/' + mid).set(markers);
+  _campaignDb.ref('state/storia_markers/' + u + '/' + mid).set(markers);
 }
 
 function fbLoadStoriaMarkers(mapId) {
@@ -34,14 +34,14 @@ function fbLoadStoriaMarkers(mapId) {
 }
 
 function _salvaStoriaConNome(nome, callback) {
-  if (!_db || !state.currentUser) {
+  if (!_campaignDb || !state.currentUser) {
     if (callback) callback(new Error('Firebase non connesso'));
     return;
   }
   var ed = document.getElementById('storia-editor');
   if (ed) state.storia.content = ed.innerHTML;
-  var id = state.storia.currentStoryId || _db.ref().push().key;
-  _db.ref(_storiePrivatePath() + '/' + id).set(
+  var id = state.storia.currentStoryId || _campaignDb.ref().push().key;
+  _campaignDb.ref(_storiePrivatePath() + '/' + id).set(
     {
       nome: nome,
       content: state.storia.content || '',
@@ -59,21 +59,21 @@ function _salvaStoriaConNome(nome, callback) {
 }
 
 function _caricaLibreria(callback) {
-  if (!_db || !state.currentUser) {
+  if (!_campaignDb || !state.currentUser) {
     if (callback) callback({});
     return;
   }
-  _db.ref(_storieActivePath()).once('value', function (snap) {
+  _campaignDb.ref(_storieActivePath()).once('value', function (snap) {
     if (callback) callback(snap.val() || {});
   });
 }
 
 function _caricaLibreriaTutti(callback) {
-  if (!_db) {
+  if (!_campaignDb) {
     callback([]);
     return;
   }
-  var usernames = _remoteUsers ? Object.keys(_remoteUsers) : [];
+  var usernames = CampaignManager.profiles() ? Object.keys(CampaignManager.profiles()) : [];
   var myUser = state.currentUser && state.currentUser.username;
   if (myUser && usernames.indexOf(myUser) < 0) usernames.push(myUser);
   if (usernames.length === 0) {
@@ -83,7 +83,7 @@ function _caricaLibreriaTutti(callback) {
   var allStories = [];
   var done = 0;
   usernames.forEach(function (uid) {
-    _db.ref('storie_private/' + uid).once('value', function (snap) {
+    _campaignDb.ref('storie_private/' + uid).once('value', function (snap) {
       var v = snap.val();
       if (v && typeof v === 'object') {
         Object.keys(v).forEach(function (id) {
@@ -804,8 +804,8 @@ function renderStoria() {
     storiaFilterBar.appendChild(
       _mkStoriaPill('⭐ ' + (state.currentUser ? state.currentUser.username : 'Mie'), '')
     );
-    if (_remoteUsers && typeof _remoteUsers === 'object') {
-      Object.keys(_remoteUsers)
+    if (CampaignManager.profiles() && typeof CampaignManager.profiles() === 'object') {
+      Object.keys(CampaignManager.profiles())
         .sort()
         .forEach(function (uid) {
           if (uid === (state.currentUser && state.currentUser.username)) return;
@@ -907,7 +907,7 @@ function renderStoria() {
   saveBtn.onclick = function () {
     var ed = document.getElementById('storia-editor');
     if (ed) state.storia.content = ed.innerHTML;
-    if (!_db) {
+    if (!_campaignDb) {
       saveStatus.style.color = '#ff9c9c';
       saveStatus.textContent = '❌ Firebase non connesso';
       return;
@@ -1114,7 +1114,7 @@ function renderStoria() {
           delBtn.onclick = function (e) {
             e.stopPropagation();
             if (!confirm('Eliminare "' + (s.nome || 'questa storia') + '"?')) return;
-            _db.ref(_storiePrivatePath() + '/' + id).remove(function () {
+            _campaignDb.ref(_storiePrivatePath() + '/' + id).remove(function () {
               if (state.storia.currentStoryId === id) {
                 state.storia.currentStoryId = null;
                 state.storia.currentStoryName = '';

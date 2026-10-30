@@ -6,6 +6,23 @@ on:
 permissions:
   contents: read
 jobs:
+  database-rules:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+      - run: npm ci
+      - run: npm run rules:build
+      - run: git diff --exit-code database.rules.json
+      - run: npm run test:rules
   verify:
     runs-on: ubuntu-latest
     steps:

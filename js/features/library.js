@@ -78,7 +78,7 @@ function _libroCard(libro) {
             b.orderIndex = idx;
             if (!state.libriCustom[b.id]) state.libriCustom[b.id] = Object.assign({}, b);
             else state.libriCustom[b.id].orderIndex = idx;
-            if (_db) _db.ref('libri/books/' + b.id + '/orderIndex').set(idx);
+            if (_campaignDb) _campaignDb.ref('libri/books/' + b.id + '/orderIndex').set(idx);
           });
           renderMain();
         }
@@ -119,7 +119,7 @@ function _libroCard(libro) {
       return;
     }
     if (isFav) {
-      if (_db) _db.ref('libri/preferiti/' + u + '/' + libro.id).remove();
+      if (_campaignDb) _campaignDb.ref('libri/preferiti/' + u + '/' + libro.id).remove();
       if (state.libriPreferiti) delete state.libriPreferiti[libro.id];
     } else {
       var favCount = state.libriPreferiti ? Object.keys(state.libriPreferiti).length : 0;
@@ -127,7 +127,7 @@ function _libroCard(libro) {
         alert('Limite raggiunto: puoi selezionare massimo 4 preferiti.');
         return;
       }
-      if (_db) _db.ref('libri/preferiti/' + u + '/' + libro.id).set(true);
+      if (_campaignDb) _campaignDb.ref('libri/preferiti/' + u + '/' + libro.id).set(true);
       if (!state.libriPreferiti) state.libriPreferiti = {};
       state.libriPreferiti[libro.id] = true;
     }
@@ -214,10 +214,10 @@ function _libroCard(libro) {
       if (libro.id.startsWith('d_')) {
         var b = Object.assign({}, libro, { deleted: true });
         state.libriCustom[libro.id] = b;
-        if (_db) _db.ref('libri/books/' + libro.id).set(b);
+        if (_campaignDb) _campaignDb.ref('libri/books/' + libro.id).set(b);
       } else {
         delete state.libriCustom[libro.id];
-        if (_db) _db.ref('libri/books/' + libro.id).remove();
+        if (_campaignDb) _campaignDb.ref('libri/books/' + libro.id).remove();
       }
       renderMain();
     };
@@ -361,7 +361,7 @@ function renderLibri() {
 
       if (!state.libriCustom) state.libriCustom = {};
       state.libriCustom[id] = libro;
-      if (_db) _db.ref('libri/books/' + id).set(libro);
+      if (_campaignDb) _campaignDb.ref('libri/books/' + id).set(libro);
       state.libriShowForm = false;
       state.libriEditId = null;
       renderMain();

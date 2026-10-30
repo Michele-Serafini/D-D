@@ -3,9 +3,27 @@ import { test as base, expect } from '@playwright/test';
 // Isolated in-memory backend: browser tests never contact a real party/database.
 export const test = base.extend({
   page: async ({ page }, use) => {
-    await page.route('**/*', (route) => {
+    // The simulated server lives in the test runner, not browser storage quotas.
+    let serverSnapshot = null;
+    await page.exposeBinding('__persistTestDatabase', (_, data) => {
+      serverSnapshot = data;
+    });
+    await page.route('**/*', async (route) => {
       const url = new URL(route.request().url());
-      if (url.origin === 'http://127.0.0.1:4173') return route.continue();
+      if (url.origin === 'http://127.0.0.1:4173') {
+        if (url.pathname.endsWith('/js/firebase-config.js')) {
+          const response = await route.fetch();
+          return route.fulfill({
+            response,
+            body:
+              (await response.text()) +
+              '\nwindow.__restoreTestDatabase(' +
+              JSON.stringify(serverSnapshot) +
+              ');',
+          });
+        }
+        return route.continue();
+      }
       if (url.hostname === 'www.gstatic.com')
         return route.fulfill({ contentType: 'application/javascript', body: '' });
       if (url.hostname === 'fonts.googleapis.com')
@@ -23,11 +41,40 @@ export const test = base.extend({
         admin: 'fixture-password',
         sebastiano: 'fixture-password',
         michele: 'fixture-password',
+        montre: 'fixture-password',
+        alessio: 'fixture-password',
       };
-      const data = {
+      const initialData = {
         users,
         userAccess: Object.fromEntries(Object.keys(users).map((name) => [name, name])),
-        meta: { partyResetVersion: '2026-10-26-party-v1' },
+        meta: { partyResetVersion: '2026-10-26-party-v1', campaignMigration: { version: 1 } },
+        campaigns: {
+          principale: {
+            meta: {
+              name: 'Campagna principale',
+              description: '',
+              owner: 'sebastiano',
+              createdAt: 1,
+            },
+            members: { sebastiano: 'dm', michele: 'player', montre: 'player', alessio: 'player' },
+          },
+          mare: {
+            meta: { name: 'Campagna del mare', description: '', owner: 'sebastiano', createdAt: 2 },
+            members: { sebastiano: 'dm', michele: 'player' },
+          },
+        },
+        campaignAccess: {
+          sebastiano: { principale: true, mare: true },
+          michele: { principale: true, mare: true },
+          montre: { principale: true },
+          alessio: { principale: true },
+        },
+      };
+      const data = JSON.parse(sessionStorage.getItem('__testDatabase') || 'null') || initialData;
+      window.__restoreTestDatabase = (snapshot) => {
+        if (!snapshot) return;
+        Object.keys(data).forEach((key) => delete data[key]);
+        Object.assign(data, snapshot);
       };
       const watchers = new Set();
       const value = (path) =>
@@ -49,16 +96,22 @@ export const test = base.extend({
         const keys = path.split('/').filter(Boolean);
         let node = data;
         for (const key of keys.slice(0, -1)) node = node[key] ??= {};
-        if (item === null) delete node[keys.at(-1)];
+        if (!keys.length) {
+          Object.keys(data).forEach((key) => delete data[key]);
+          Object.assign(data, structuredClone(item));
+        } else if (item === null) delete node[keys.at(-1)];
         else node[keys.at(-1)] = structuredClone(item);
+        const persisted = window.__persistTestDatabase(data);
         for (const watcher of [...watchers]) {
           if (
+            !path ||
             path === watcher.path ||
             path.startsWith(watcher.path + '/') ||
             watcher.path.startsWith(path + '/')
           )
             watcher.callback(snapshot(watcher.path));
         }
+        return persisted;
       }
       function ref(path = '') {
         return {
@@ -91,24 +144,22 @@ export const test = base.extend({
             return ref(path + '/entry-' + Date.now());
           },
           set(item, callback) {
-            write(path, item);
-            callback?.(null);
-            return Promise.resolve();
+            return write(path, item).then(() => callback?.(null));
           },
           remove() {
-            write(path, null);
-            return Promise.resolve();
+            return write(path, null);
           },
           update(changes) {
-            for (const [key, item] of Object.entries(changes))
-              write([path, key].filter(Boolean).join('/'), item);
-            return Promise.resolve();
+            return Promise.all(
+              Object.entries(changes).map(([key, item]) =>
+                write([path, key].filter(Boolean).join('/'), item)
+              )
+            );
           },
           transaction(change) {
             const item = change(structuredClone(value(path)));
             if (item === undefined) return Promise.resolve({ committed: false });
-            write(path, item);
-            return Promise.resolve({ committed: true });
+            return write(path, item).then(() => ({ committed: true }));
           },
           onDisconnect() {
             return { set: () => Promise.resolve() };
@@ -125,17 +176,25 @@ export const test = base.extend({
         },
       });
       const auth = {
-        currentUser: null,
+        currentUser: sessionStorage.getItem('__testIdentity')
+          ? identity(sessionStorage.getItem('__testIdentity'))
+          : null,
+        onAuthStateChanged(callback) {
+          queueMicrotask(() => callback(this.currentUser));
+          return () => {};
+        },
         async signInWithEmailAndPassword(email, password) {
           const name = email.split('@')[0];
           if (passwords[name] !== password)
             throw Object.assign(new Error('Invalid credentials'), {
               code: 'auth/invalid-credential',
             });
+          sessionStorage.setItem('__testIdentity', name);
           this.currentUser = identity(name);
           return { user: this.currentUser };
         },
         async signOut() {
+          sessionStorage.removeItem('__testIdentity');
           this.currentUser = null;
         },
       };
@@ -199,6 +258,10 @@ export async function login(page, username = 'michele', admin = false) {
       .poll(() => page.evaluate(() => window.state?.currentUser?.username))
       .toBe(username.toLowerCase());
     await expect(page.locator('#login-overlay')).toBeHidden();
+    await page
+      .locator('[data-campaign-id=principale]')
+      .getByRole('button', { name: 'Entra', exact: true })
+      .click();
     await expect(page.locator('.main-content')).toBeVisible();
   }
 }

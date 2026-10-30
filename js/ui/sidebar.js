@@ -7,6 +7,23 @@ function renderSidebar() {
   sb.innerHTML =
     '<div class="sidebar-brand"><div class="brand-rune">\u269C</div><div class="brand-name">Mercante<br>Errante</div></div>';
 
+  var campaignButton = document.createElement('button');
+  campaignButton.type = 'button';
+  campaignButton.className = 'nav-item';
+  campaignButton.textContent = 'Cambia campagna · ' + CampaignManager.current.meta.name;
+  campaignButton.onclick = function () {
+    CampaignManager.showSelector();
+    CampaignManager.load()
+      .then(function () {
+        CampaignManager.showSelector();
+      })
+      .catch(function (error) {
+        var status = document.querySelector('#campaign-selector [role=status]');
+        if (status) status.textContent = error.message;
+      });
+  };
+  sb.appendChild(campaignButton);
+
   var sections = [
     { id: 'emporio', label: 'Emporio', icon: ICON.sword },
     {
@@ -132,8 +149,8 @@ function renderSidebar() {
     state.sidebarOpen = false;
     if (state.libriCustom === null) {
       state.libriCustom = {};
-      _db &&
-        _db.ref('libri/books').on('value', function (snap) {
+      _campaignDb &&
+        _campaignDb.ref('libri/books').on('value', function (snap) {
           state.libriCustom = snap.val() || {};
           if (state.section === 'libri') renderMain();
         });
@@ -141,8 +158,8 @@ function renderSidebar() {
     if (state.libriPreferiti === undefined) {
       state.libriPreferiti = {};
       var u = state.currentUser ? state.currentUser.username : '_guest';
-      _db &&
-        _db.ref('libri/preferiti/' + u).on('value', function (snap) {
+      _campaignDb &&
+        _campaignDb.ref('libri/preferiti/' + u).on('value', function (snap) {
           state.libriPreferiti = snap.val() || {};
           if (state.section === 'libri') renderMain();
         });

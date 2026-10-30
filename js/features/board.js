@@ -65,7 +65,7 @@ function renderBacheca() {
             pinned: false,
             ts: Date.now(),
           };
-          var _gbf = _db.ref('state/bacheca/items');
+          var _gbf = _campaignDb.ref('state/bacheca/items');
           if (_gbf) _gbf.push(itemData);
         });
       };
@@ -89,7 +89,7 @@ function renderBacheca() {
         pinned: false,
         ts: Date.now(),
       };
-      var _gbu = _db.ref('state/bacheca/items');
+      var _gbu = _campaignDb.ref('state/bacheca/items');
       if (_gbu) _gbu.push(itemData);
     };
     toolbar.appendChild(addUrlBtn);
@@ -151,7 +151,7 @@ function renderBacheca() {
     nx = Math.max(0, Math.min(rect.width - (_bacheDrag.elW || 160), nx));
     ny = Math.max(0, Math.min(rect.height - 100, ny));
     _bacheDrag.el.classList.remove('dragging');
-    var _grd = _db ? _db.ref('state/bacheca/items/' + _bacheDrag.id) : null;
+    var _grd = _campaignDb ? _campaignDb.ref('state/bacheca/items/' + _bacheDrag.id) : null;
     if (_grd) _grd.update({ x: nx, y: ny });
     _bacheDrag = null;
   });
@@ -239,7 +239,7 @@ function createBacheEl(item) {
       el.classList.toggle('pinned', item.pinned);
       pinBtn.textContent = item.pinned ? '\uD83D\uDCCC Fissato' : '\uD83D\uDCCC Fissa';
       pinBtn.classList.toggle('active', item.pinned);
-      var _grp = _db ? _db.ref('state/bacheca/items/' + item.id) : null;
+      var _grp = _campaignDb ? _campaignDb.ref('state/bacheca/items/' + item.id) : null;
       if (_grp) _grp.update({ pinned: item.pinned });
     };
     ctrls.appendChild(pinBtn);
@@ -250,7 +250,7 @@ function createBacheEl(item) {
     delBtn.onclick = function (e) {
       e.stopPropagation();
       if (confirm('Rimuovere questo manifesto dalla lavagna?')) {
-        var _grr = _db ? _db.ref('state/bacheca/items/' + item.id) : null;
+        var _grr = _campaignDb ? _campaignDb.ref('state/bacheca/items/' + item.id) : null;
         if (_grr) _grr.remove();
         el.remove();
       }
@@ -291,7 +291,7 @@ function createBacheEl(item) {
         function onUp() {
           document.removeEventListener('mousemove', onMove);
           document.removeEventListener('mouseup', onUp);
-          var _grw = _db ? _db.ref('state/bacheca/items/' + item.id) : null;
+          var _grw = _campaignDb ? _campaignDb.ref('state/bacheca/items/' + item.id) : null;
           if (_grw) _grw.update({ w: _elW, x: item.x });
         }
         document.addEventListener('mousemove', onMove);
@@ -319,7 +319,7 @@ function createBacheEl(item) {
       item.commento = ta.value;
       if (_saveTimer) clearTimeout(_saveTimer);
       _saveTimer = setTimeout(function () {
-        var _grc = _db ? _db.ref('state/bacheca/items/' + item.id) : null;
+        var _grc = _campaignDb ? _campaignDb.ref('state/bacheca/items/' + item.id) : null;
         if (_grc) _grc.update({ commento: ta.value });
       }, 800);
     });
@@ -380,7 +380,7 @@ function createBacheEl(item) {
       var maxZ = Date.now();
       item.zIndex = maxZ;
       el.style.zIndex = maxZ;
-      var _grz = _db ? _db.ref('state/bacheca/items/' + item.id) : null;
+      var _grz = _campaignDb ? _campaignDb.ref('state/bacheca/items/' + item.id) : null;
       if (_grz) _grz.update({ zIndex: maxZ });
       var rect = el.getBoundingClientRect();
       _bacheDrag = {

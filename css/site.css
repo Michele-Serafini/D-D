@@ -3,3 +3,5 @@
 @import './theme.css';
 @import './animations.css';
 @import './compatibility.css';
+
+@import './components/campaigns.css';

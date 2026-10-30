@@ -1,0 +1,63 @@
+.campaign-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 10010;
+  overflow-y: auto;
+  padding: clamp(0.75rem, 4vw, 3rem);
+  background: var(--bg-primary, #14100c);
+  color: var(--text-primary, #f5e9d0);
+}
+.campaign-panel {
+  max-width: 800px;
+  margin: auto;
+}
+.campaign-panel h1,
+.campaign-panel h2 {
+  overflow-wrap: anywhere;
+}
+.campaign-card {
+  padding: 1rem;
+  margin: 1rem 0;
+  border: 1px solid var(--border-gold, #8b6f3f);
+  border-radius: var(--radius-md, 8px);
+  background: var(--bg-card, #211910);
+}
+.campaign-card label {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem;
+  margin: 0.75rem 0;
+}
+.campaign-card input:not([type='checkbox']),
+.campaign-card textarea,
+.campaign-card select {
+  min-width: 0;
+  flex: 1 1 180px;
+}
+.campaign-panel button,
+.campaign-panel select,
+.campaign-panel input,
+.campaign-panel textarea {
+  padding: 0.6rem;
+  border-radius: 5px;
+  border: 1px solid var(--border-gold, #8b6f3f);
+  background: var(--bg-panel, #1c1612);
+  color: inherit;
+  font: inherit;
+}
+.campaign-panel button {
+  cursor: pointer;
+  margin: 0.3rem 0.6rem 0.3rem 0;
+}
+.campaign-panel button:disabled {
+  opacity: 0.6;
+  cursor: wait;
+}
+.campaign-card summary {
+  cursor: pointer;
+  padding: 0.75rem 0;
+}
+.campaign-card p {
+  overflow-wrap: anywhere;
+}

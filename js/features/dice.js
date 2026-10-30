@@ -309,8 +309,8 @@ function renderDadi() {
           formula: formula,
         });
         if (state.diceHistory.length > 20) state.diceHistory.pop();
-        if (_db && state.currentUser) {
-          _db.ref('diceRolls').push({
+        if (_campaignDb && state.currentUser) {
+          _campaignDb.ref('diceRolls').push({
             value: total,
             diceType: faces,
             username: state.currentUser.username,
@@ -356,8 +356,8 @@ function renderDadi() {
     });
     if (state.diceHistory.length > 20) state.diceHistory.pop();
 
-    if (_db && state.currentUser) {
-      _db.ref('diceRolls').push({
+    if (_campaignDb && state.currentUser) {
+      _campaignDb.ref('diceRolls').push({
         value: sum,
         diceType: dtype,
         username: state.currentUser.username,

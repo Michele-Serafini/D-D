@@ -8,14 +8,14 @@
    ============================================================================ */
 function renderArchivio() {
   var uid = (_authUser && _authUser.uid) || (state.currentUser && state.currentUser.username);
-  if (!uid || !_db) {
+  if (!uid || !_campaignDb) {
     var noDb = document.createElement('div');
     noDb.style.cssText = 'padding:2rem;color:var(--text-muted);text-align:center;';
     noDb.textContent = 'Connessione al database non disponibile.';
     return noDb;
   }
 
-  var _archRef = _db.ref('archivioIdee/' + uid);
+  var _archRef = _campaignDb.ref('archivioIdee/' + uid);
   var _archBooks = {};
   var _archSelId = null;
   var _archSaveTimer = null;

@@ -144,7 +144,7 @@ window.renderNarutoSheet = function (scheda) {
     if (window.state && window.state.schedePGViewMode) return;
     scheda.nome = scheda.nomePersonaggio; // Sync back
     scheda.classelivello = scheda.classeLivello;
-    if (!window._db || !window.state || !window.state.currentUser) return;
+    if (!window._campaignDb || !window.state || !window.state.currentUser) return;
     clearTimeout(saveTimer);
     saveTimer = setTimeout(function () {
       if (window.fbSaveScheda) window.fbSaveScheda();
@@ -201,8 +201,8 @@ window.renderNarutoSheet = function (scheda) {
     if (window.state && window.state.schedaAttivaId) {
       if (window.fbDeleteSchedaItem) {
         window.fbDeleteSchedaItem(window.state.schedaAttivaId);
-      } else if (window._db) {
-        window._db
+      } else if (window._campaignDb) {
+        window._campaignDb
           .ref(
             'schedePG/' +
               window.state.currentUser.username +

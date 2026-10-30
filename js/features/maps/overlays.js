@@ -23,31 +23,39 @@ function _ovEnsure(layerKey) {
 
 function _ovFbSavePoly(lk, pid, data) {
   var mid = state.mappaActiveId;
-  if (!_db || !mid) return;
-  _db.ref(_mappaBasePath() + '/maps/' + mid + '/overlays/' + lk + '/polygons/' + pid).set(data);
+  if (!_campaignDb || !mid) return;
+  _campaignDb
+    .ref(_mappaBasePath() + '/maps/' + mid + '/overlays/' + lk + '/polygons/' + pid)
+    .set(data);
 }
 
 function _ovFbDelPoly(lk, pid) {
   var mid = state.mappaActiveId;
-  if (!_db || !mid) return;
-  _db.ref(_mappaBasePath() + '/maps/' + mid + '/overlays/' + lk + '/polygons/' + pid).remove();
+  if (!_campaignDb || !mid) return;
+  _campaignDb
+    .ref(_mappaBasePath() + '/maps/' + mid + '/overlays/' + lk + '/polygons/' + pid)
+    .remove();
 }
 
 function _ovFbSaveFaction(lk, fid, data) {
   var mid = state.mappaActiveId;
-  if (!_db || !mid) return;
-  _db.ref(_mappaBasePath() + '/maps/' + mid + '/overlays/' + lk + '/factions/' + fid).set(data);
+  if (!_campaignDb || !mid) return;
+  _campaignDb
+    .ref(_mappaBasePath() + '/maps/' + mid + '/overlays/' + lk + '/factions/' + fid)
+    .set(data);
 }
 
 function _ovFbDelFaction(lk, fid) {
   var mid = state.mappaActiveId;
-  if (!_db || !mid) return;
-  _db.ref(_mappaBasePath() + '/maps/' + mid + '/overlays/' + lk + '/factions/' + fid).remove();
+  if (!_campaignDb || !mid) return;
+  _campaignDb
+    .ref(_mappaBasePath() + '/maps/' + mid + '/overlays/' + lk + '/factions/' + fid)
+    .remove();
   var ld = _ovGetLayer(lk);
   if (ld && ld.polygons) {
     Object.keys(ld.polygons).forEach(function (pid) {
       if (ld.polygons[pid].factionId === fid) {
-        _db
+        _campaignDb
           .ref(_mappaBasePath() + '/maps/' + mid + '/overlays/' + lk + '/polygons/' + pid)
           .remove();
         delete ld.polygons[pid];

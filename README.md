@@ -4,6 +4,44 @@ Compendium per D&D con negozio, combattimento, mappe, libri, regia sonora e sche
 
 ---
 
+## Campagne separate
+
+Dopo il login si sceglie una campagna. Il master può crearne una indicando nome,
+descrizione e partecipanti. **Gestisci giocatori** permette di aggiungere o togliere
+membri e assegnare il ruolo di giocatore o master per quella campagna, senza
+cambiare il loro account globale. Il proprietario resta master. Gli amministratori
+della piattaforma, incluso il master principale, possono gestire tutte le campagne.
+
+**Cambia campagna** nella barra laterale torna alla scelta. Prima del cambio vengono
+completati i salvataggi pendenti; la pagina viene ricaricata per rilasciare tutti i
+listener, timer, mappe e cache delle schede. Firebase verifica nuovamente l'identità
+esistente, senza chiedere la password per un normale cambio campagna. Un nuovo
+accesso continua a mostrare la scelta delle campagne.
+
+Account e credenziali restano globali. I dati di gioco passano esclusivamente da
+`CampaignManager` e da `_campaignDb`, sotto `campaigns/<id>/data/`: schede, pet,
+mappe, note, libri personalizzati, negozi, storie, dadi e contenuti del gruppo.
+`campaignAccess/<username>` serve a elencare le campagne; le regole verificano
+sempre l'appartenenza effettiva in `campaigns/<id>/members`. Un master di una
+campagna non ottiene accesso alle altre campagne. Rimozione dal gruppo e
+disabilitazione dell'account revocano l'accesso anche nelle sessioni aperte.
+
+Snapshot locali e immagini IndexedDB hanno chiavi distinte per utente e campagna.
+I vecchi snapshot locali senza proprietario restano conservati e non vengono
+caricati automaticamente in un altro account. Cataloghi e risorse statiche del
+repository restano disponibili come base comune delle nuove campagne.
+
+La migrazione iniziale conserva i dati esistenti nella **Campagna principale**.
+È idempotente e usa una transazione: due accessi amministrativi contemporanei non
+possono sovrascriverla. Le vecchie mappe nei profili vengono trasferite nella
+campagna e archiviate in un ramo riservato agli amministratori. Le preferenze della
+migrazione sono in `config/campaigns.json`.
+
+Per verificare le regole con un database locale simulato: `npm run test:rules`
+(richiede Java 21). La CI esegue questo controllo oltre ai test dei tre browser.
+
+---
+
 ## Struttura del codice
 
 ```text
@@ -73,7 +111,13 @@ maschera password e chiavi e abbrevia i contenuti lunghi.
 
 ### Nuovo progetto Firebase
 
-**Stato operativo:** il codice su `main` punta al nuovo progetto e gli utenti Auth sono già creati. Importazione dei contenuti e pubblicazione delle regole RTDB restano da completare: il relativo endpoint restituisce timeout/HTTP 500 da questo ambiente. Il merge del codice non conferma la migrazione del database remoto.
+**Stato operativo, 30 ottobre 2026:** le regole RTDB per le campagne sono pubblicate
+nel nuovo progetto. I contenuti predisposti per la migrazione sono stati importati
+nella Campagna principale con una scrittura condizionale, consentita soltanto su
+database vuoto. È stato verificato un login reale e l'accesso alla campagna, insieme
+al rifiuto degli accessi anonimi, ai percorsi legacy e alle campagne non abilitate.
+I backup completi rimangono locali, esclusi da Git. La pubblicazione GitHub Pages
+richiede ancora la configurazione descritta sotto.
 
 Il nuovo progetto predisposto è **mercante-errante-dd-2026**, dell’account Google del proprietario.
 I metadati Web pubblici sono in `config/firebase.web.json`. La chiave viene letta

@@ -1,6 +1,8 @@
 // Ordered classic-script sources. Build and development serve one generated app.js.
 export const appSources = [
   'js/core/dependencies.js',
+  'js/core/campaigns.js',
+  'js/ui/campaigns.js',
   'js/core/realtime.js',
   'js/core/state.js',
   'js/core/storage.js',

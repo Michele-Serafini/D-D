@@ -194,13 +194,13 @@ Object.assign(UserManager, {
     /* 2. Account attivi della Gilda */
     var usersLbl = document.createElement('div');
     usersLbl.className = 'settings-section-lbl';
-    usersLbl.textContent = 'Membri del Party (' + this.getAllUsers().length + ')';
+    usersLbl.textContent = 'Membri del Party (' + this.getCampaignUsers().length + ')';
     body.appendChild(usersLbl);
 
     var usersWrap = document.createElement('div');
     usersWrap.style.cssText = 'display:flex;flex-direction:column;gap:0.4rem;';
 
-    var allUsers = this.getAllUsers();
+    var allUsers = this.getCampaignUsers();
     allUsers.forEach(function (uObj) {
       var uname = uObj.username;
       var pres = _presenceMap[uname] || {};

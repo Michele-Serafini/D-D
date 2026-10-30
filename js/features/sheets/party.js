@@ -28,8 +28,8 @@ function renderSchedePG() {
   refreshBtn.onclick = function () {
     state.schedePGAll = null;
     state.schedePGOpenChar = null;
-    if (_db) {
-      _db.ref('schedePG').once('value', function (snap) {
+    if (_campaignDb) {
+      _campaignDb.ref('schedePG').once('value', function (snap) {
         state.schedePGAll = snap.val() || {};
 
         renderMain();

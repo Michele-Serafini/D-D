@@ -148,7 +148,7 @@ test('master sections, all shop categories, themes and lazy map engine remain av
 test('IndexedDB reuses its connection, commits images and restores local notes', async ({
   page,
 }) => {
-  await page.goto('/D-D/');
+  await login(page);
   const result = await page.evaluate(async () => {
     const first = await ImageDB.init();
     const second = await ImageDB.init();
@@ -162,6 +162,8 @@ test('IndexedDB reuses its connection, commits images and restores local notes',
   expect(result.sameConnection).toBe(true);
   expect(result.image).toBe('data:image/png;base64,fixture');
   await page.reload();
+  await expect.poll(() => page.evaluate(() => state.notes)).toBe('');
+  await login(page);
   await expect.poll(() => page.evaluate(() => state.notes)).toBe('Appunti salvati');
 });
 

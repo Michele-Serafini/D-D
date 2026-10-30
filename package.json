@@ -16,11 +16,14 @@
     "format:check": "prettier --check \"{js,css,scripts,config,tests,src}/**/*.{js,mjs,ts,css,json}\" \"*.{html,ts,json}\"",
     "rules:build": "node scripts/build-database-rules.mjs",
     "check:secrets": "node scripts/check-secrets.mjs",
-    "prebuild": "npm run check:secrets"
+    "prebuild": "npm run check:secrets",
+    "test:rules": "npx --yes firebase-tools@15.34.1 emulators:exec --only database --project demo-dd-campaigns \"node --test tests/rules/*.test.mjs\""
   },
   "devDependencies": {
+    "@firebase/rules-unit-testing": "^6.0.0",
     "@playwright/test": "^1.64.1",
     "@types/node": "^22.14.0",
+    "firebase": "^13.1.0",
     "lightningcss": "^1.33.0",
     "prettier": "^3.9.10",
     "rolldown": "^1.2.15",

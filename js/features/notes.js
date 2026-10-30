@@ -48,6 +48,7 @@ function renderNote() {
 
   var ta = document.createElement('textarea');
   ta.className = 'notes-area';
+  ta.id = 'notes-area';
   ta.value = state.notes;
   ta.placeholder =
     "Inizia a scrivere il resoconto della sessione...\n\nEsempi di cosa annotare:\n- Eventi chiave e svolte narrative\n- Decisioni dei personaggi e loro conseguenze\n- Indizi e segreti rivelati o ancora celati\n- Tesoro e XP assegnati\n- NPC incontrati e loro reazioni\n- Idee per la prossima sessione\n\nQuando hai finito, premi 'Esporta Note (.txt)' per scaricare il file sulla chiavetta.";

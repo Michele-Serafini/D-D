@@ -1,7 +1,6 @@
 /* AVVIO */
 try {
-  loadFromStorageAsync(function () {
-    migrateImagesToDB();
+  (function () {
     // Mostra overlay login mentre Firebase Auth controlla la sessione
     document.getElementById('login-overlay').style.display = 'flex';
     // Inizializza Firebase + Auth listener (gestirà lui login/logout)
@@ -27,7 +26,7 @@ try {
     if (typeof renderMenu === 'function') renderMenu();
     // The authenticated render runs after login; do not build thousands of
     // catalog nodes underneath a closed login overlay.
-  });
+  })();
 } catch (err) {
   console.error('[Mercante] Errore:', err);
   document.getElementById('app').innerHTML =

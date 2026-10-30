@@ -48,22 +48,31 @@ const ImageDB = {
       });
     });
   },
+  scopedKey: function (key) {
+    return typeof CampaignManager !== 'undefined' && CampaignManager.current
+      ? CampaignManager.storageKey() + ':' + key
+      : 'unselected:' + key;
+  },
   saveState: function (snapshot) {
+    var key = this.scopedKey('state');
     return this.request('app_state', 'readwrite', function (store) {
-      return store.put(snapshot, 'state');
+      return store.put(snapshot, key);
     });
   },
   getState: function () {
+    var key = this.scopedKey('state');
     return this.request('app_state', 'readonly', function (store) {
-      return store.get('state');
+      return store.get(key);
     });
   },
   save: function (id, dataUrl) {
+    id = this.scopedKey(id);
     return this.request(this.storeName, 'readwrite', function (store) {
       return store.put({ id: id, dataUrl: dataUrl });
     });
   },
   get: function (id) {
+    id = this.scopedKey(id);
     return this.request(this.storeName, 'readonly', function (store) {
       return store.get(id);
     }).then(function (record) {
@@ -71,6 +80,7 @@ const ImageDB = {
     });
   },
   remove: function (id) {
+    id = this.scopedKey(id);
     return this.request(this.storeName, 'readwrite', function (store) {
       return store.delete(id);
     });

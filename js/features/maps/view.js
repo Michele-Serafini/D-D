@@ -85,12 +85,12 @@ function renderMappa() {
       personaWrap.appendChild(
         _mkPersonaPill('⭐ ' + (state.currentUser ? state.currentUser.username : 'Mie'), '')
       );
-      if (_remoteUsers && typeof _remoteUsers === 'object') {
-        Object.keys(_remoteUsers)
+      if (CampaignManager.profiles() && typeof CampaignManager.profiles() === 'object') {
+        Object.keys(CampaignManager.profiles())
           .sort()
           .forEach(function (uid) {
             if (uid === (state.currentUser && state.currentUser.username)) return;
-            var ru = _remoteUsers[uid] || {};
+            var ru = CampaignManager.profiles()[uid] || {};
             if (UserManager.getPrivileges(ru).dmPriv) {
               personaWrap.appendChild(_mkPersonaPill('\uD83E\uDDD1\u200D\uD83C\uDFEB ' + uid, uid));
             }
@@ -124,7 +124,8 @@ function renderMappa() {
       state.mappaFlags = state.mappaList[mid].flags || {};
       state.worldbuilding = []; // svuota mentre carica il worldbuilding della nuova mappa
       // Salva mappa attiva su Firebase
-      if (!_mappaViewAsUser) _db && _db.ref(_mappaBasePath() + '/activeMapId').set(mid);
+      if (!_mappaViewAsUser)
+        _campaignDb && _campaignDb.ref(_mappaBasePath() + '/activeMapId').set(mid);
       // Aggiorna il worldbuilding alla mappa selezionata
       _attachWorldbuildingListener(mid);
       // Carica i marker della nuova mappa dalla cache Firebase
@@ -173,9 +174,11 @@ function renderMappa() {
       state.mappaActiveId = mid;
       state.mappaUrl = '';
       state.mappaFlags = {};
-      _db &&
-        _db.ref(_mappaBasePath() + '/maps/' + mid).set({ nome: nomeMappa, url: '', flags: {} });
-      _db && _db.ref(_mappaBasePath() + '/activeMapId').set(mid);
+      _campaignDb &&
+        _campaignDb
+          .ref(_mappaBasePath() + '/maps/' + mid)
+          .set({ nome: nomeMappa, url: '', flags: {} });
+      _campaignDb && _campaignDb.ref(_mappaBasePath() + '/activeMapId').set(mid);
       _refreshMappaSelectorOptions(mapSelector);
       mapSelector.value = mid;
       mapDiv.innerHTML =
@@ -207,7 +210,8 @@ function renderMappa() {
       var newName = prompt('Nuovo nome:', current);
       if (!newName || newName === current) return;
       state.mappaList[state.mappaActiveId].nome = newName;
-      _db && _db.ref(_mappaBasePath() + '/maps/' + state.mappaActiveId + '/nome').set(newName);
+      _campaignDb &&
+        _campaignDb.ref(_mappaBasePath() + '/maps/' + state.mappaActiveId + '/nome').set(newName);
       _refreshMappaSelectorOptions(mapSelector);
     };
     dmControls.appendChild(renameMapBtn);
@@ -258,17 +262,18 @@ function renderMappa() {
               mid = 'm_' + Date.now();
               state.mappaList[mid] = { nome: 'Mappa 1', url: dataUrl, flags: {} };
               state.mappaActiveId = mid;
-              _db &&
-                _db
+              _campaignDb &&
+                _campaignDb
                   .ref(_mappaBasePath() + '/maps/' + mid)
                   .set({ nome: 'Mappa 1', url: dataUrl, flags: {} });
-              _db && _db.ref(_mappaBasePath() + '/activeMapId').set(mid);
+              _campaignDb && _campaignDb.ref(_mappaBasePath() + '/activeMapId').set(mid);
               _refreshMappaSelectorOptions(mapSelector);
               mapSelector.value = mid;
             } else {
               if (!state.mappaList[mid]) state.mappaList[mid] = { nome: 'Mappa', flags: {} };
               state.mappaList[mid].url = dataUrl;
-              _db && _db.ref(_mappaBasePath() + '/maps/' + mid + '/url').set(dataUrl);
+              _campaignDb &&
+                _campaignDb.ref(_mappaBasePath() + '/maps/' + mid + '/url').set(dataUrl);
             }
             if (_leafletMap) {
               _leafletMap.remove();
@@ -305,7 +310,7 @@ function renderMappa() {
       }
       var nomeMappa = state.mappaList[state.mappaActiveId].nome || state.mappaActiveId;
       if (!confirm('Eliminare "' + nomeMappa + '"? Tutti i flag verranno persi.')) return;
-      _db && _db.ref(_mappaBasePath() + '/maps/' + state.mappaActiveId).remove();
+      _campaignDb && _campaignDb.ref(_mappaBasePath() + '/maps/' + state.mappaActiveId).remove();
       delete state.mappaList[state.mappaActiveId];
       // Seleziona un'altra mappa
       var ids = Object.keys(state.mappaList);
@@ -313,12 +318,12 @@ function renderMappa() {
         state.mappaActiveId = ids[0];
         state.mappaUrl = state.mappaList[ids[0]].url || '';
         state.mappaFlags = state.mappaList[ids[0]].flags || {};
-        _db && _db.ref(_mappaBasePath() + '/activeMapId').set(ids[0]);
+        _campaignDb && _campaignDb.ref(_mappaBasePath() + '/activeMapId').set(ids[0]);
       } else {
         state.mappaActiveId = '';
         state.mappaUrl = '';
         state.mappaFlags = {};
-        _db && _db.ref(_mappaBasePath() + '/activeMapId').set('');
+        _campaignDb && _campaignDb.ref(_mappaBasePath() + '/activeMapId').set('');
       }
       _refreshMappaSelectorOptions(mapSelector);
       if (_leafletMap) {
@@ -359,11 +364,11 @@ function renderMappa() {
         var optionsText = 'Seleziona destinazione:\n1. Multiverso\n';
         var dests = [{ id: 'multiverso', path: 'state/multiverso/mappa' }];
         var _idx = 2;
-        if (_remoteUsers && typeof _remoteUsers === 'object') {
-          Object.keys(_remoteUsers)
+        if (CampaignManager.profiles() && typeof CampaignManager.profiles() === 'object') {
+          Object.keys(CampaignManager.profiles())
             .sort()
             .forEach(function (uid) {
-              if (UserManager.getPrivileges(_remoteUsers[uid]).dmPriv) {
+              if (UserManager.getPrivileges(CampaignManager.profiles()[uid]).dmPriv) {
                 optionsText += _idx + '. ' + uid + '\n';
                 dests.push({ id: uid, path: 'users/' + uid + '/mappa' });
                 _idx++;
@@ -399,12 +404,12 @@ function renderMappa() {
           return;
 
         var mapData = state.mappaList[state.mappaActiveId];
-        _db.ref(destPath + '/maps/' + state.mappaActiveId).set(mapData, function (err) {
+        _campaignDb.ref(destPath + '/maps/' + state.mappaActiveId).set(mapData, function (err) {
           if (err) {
             alert('Errore nello spostamento.');
             return;
           }
-          _db.ref(oldPath + '/maps/' + state.mappaActiveId).remove();
+          _campaignDb.ref(oldPath + '/maps/' + state.mappaActiveId).remove();
           alert('Mappa spostata con successo in ' + dest.id);
           _attachMappaListener();
         });
@@ -534,10 +539,10 @@ function renderMappa() {
       });
       if (!hasDms) pgSelectorBar.style.display = 'none';
     };
-    if (_remoteUsers && Object.keys(_remoteUsers).length > 0) {
-      _buildPgPills(_remoteUsers);
+    if (CampaignManager.profiles() && Object.keys(CampaignManager.profiles()).length > 0) {
+      _buildPgPills(CampaignManager.profiles());
     } else {
-      _db.ref('users').once('value', function (snap) {
+      _campaignDb.ref('users').once('value', function (snap) {
         _buildPgPills(snap.val() || {});
       });
     }
@@ -760,7 +765,7 @@ function initLeafletMap(mapDiv, infoPanel) {
       };
       if (!state.mappaFlags) state.mappaFlags = {};
       state.mappaFlags[fid] = flagData;
-      _db && _db.ref(_mappaFlagPath(fid)).set(flagData);
+      _campaignDb && _campaignDb.ref(_mappaFlagPath(fid)).set(flagData);
       refreshMappaFlags();
       state.mappaSelectedFlag = fid;
       var panel = document.querySelector('.mappa-info-panel');

@@ -28,8 +28,8 @@ window.renderSW5eSheet = function (scheda) {
     layout = [[], [], [], []];
   }
 
-  if (window._db) {
-    window._db.ref('state/config/sw5e_layout').once('value', function (s) {
+  if (window._campaignDb) {
+    window._campaignDb.ref('state/config/sw5e_layout').once('value', function (s) {
       var remoteLayout = s.val();
       if (remoteLayout && JSON.stringify(remoteLayout) !== JSON.stringify(layout)) {
         layout = remoteLayout;
@@ -41,8 +41,8 @@ window.renderSW5eSheet = function (scheda) {
 
   function saveLayout() {
     localStorage.setItem('sium_sw5e_layout', JSON.stringify(layout));
-    if (window._db) {
-      window._db.ref('state/config/sw5e_layout').set(layout);
+    if (window._campaignDb) {
+      window._campaignDb.ref('state/config/sw5e_layout').set(layout);
     }
   }
 
@@ -185,8 +185,8 @@ window.renderSW5eSheet = function (scheda) {
       if (!confirm('ELIMINARE DEFINITIVAMENTE questa scheda?')) return;
       if (window.state && window.state.schedaAttivaId) {
         if (window.fbDeleteSchedaItem) window.fbDeleteSchedaItem(window.state.schedaAttivaId);
-        else if (window._db)
-          window._db
+        else if (window._campaignDb)
+          window._campaignDb
             .ref(
               'schedePG/' +
                 window.state.currentUser.username +

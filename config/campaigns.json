@@ -1,0 +1,17 @@
+{
+  "legacyId": "principale",
+  "legacyName": "Campagna principale",
+  "dataNodes": [
+    "state",
+    "schedePG",
+    "libri",
+    "diceRolls",
+    "dmConfig",
+    "groups",
+    "archivioIdee",
+    "storia_private",
+    "storie_private",
+    "storia_markers_private",
+    "meta"
+  ]
+}
