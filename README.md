@@ -39,6 +39,8 @@ migrazione sono in `config/campaigns.json`.
 
 Per verificare le regole con un database locale simulato: `npm run test:rules`
 (richiede Java 21). La CI esegue questo controllo oltre ai test dei tre browser.
+L’override gRPC in `package.json` applica le correzioni di sicurezza alla dipendenza
+transitiva dell’SDK Firebase usato dai test.
 
 ---
 
