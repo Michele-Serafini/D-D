@@ -19,6 +19,18 @@
 .content-wrap {
   min-width: 0;
 }
+/* Avoid a backdrop surface for every catalog card: WebKit can stop scheduling
+   frames while composing a large blurred grid. Card gradients remain intact. */
+#app .weapon-card,
+#app .best-card,
+#app .pet-card,
+#app .libro-card,
+#app .scena-card,
+#app .sium-spell-card,
+#app .cyber-card {
+  -webkit-backdrop-filter: none !important;
+  backdrop-filter: none !important;
+}
 button,
 a,
 input,
@@ -44,8 +56,10 @@ textarea:focus-visible {
   }
 }
 @media (prefers-reduced-motion: reduce) {
-  .sium-rune-title {
+  .sium-rune-title,
+  .sium-grid-card-enter {
     animation: none !important;
+    will-change: auto;
   }
   .sium-section-transition,
   .sium-pg-page {
@@ -56,12 +70,13 @@ textarea:focus-visible {
   *,
   *::before,
   *::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
+    animation: none !important;
     transition: none !important;
     scroll-behavior: auto !important;
   }
 }
-body.sium-fx-off .sium-rune-title {
+body.sium-fx-off .sium-rune-title,
+body.sium-fx-off .sium-grid-card-enter {
   animation: none !important;
+  will-change: auto;
 }

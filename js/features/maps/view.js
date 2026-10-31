@@ -90,8 +90,7 @@ function renderMappa() {
           .sort()
           .forEach(function (uid) {
             if (uid === (state.currentUser && state.currentUser.username)) return;
-            var ru = CampaignManager.profiles()[uid] || {};
-            if (UserManager.getPrivileges(ru).dmPriv) {
+            if (CampaignManager.isMaster(uid)) {
               personaWrap.appendChild(_mkPersonaPill('\uD83E\uDDD1\u200D\uD83C\uDFEB ' + uid, uid));
             }
           });
@@ -368,7 +367,7 @@ function renderMappa() {
           Object.keys(CampaignManager.profiles())
             .sort()
             .forEach(function (uid) {
-              if (UserManager.getPrivileges(CampaignManager.profiles()[uid]).dmPriv) {
+              if (CampaignManager.isMaster(uid)) {
                 optionsText += _idx + '. ' + uid + '\n';
                 dests.push({ id: uid, path: 'users/' + uid + '/mappa' });
                 _idx++;
@@ -508,7 +507,7 @@ function renderMappa() {
       var hasDms = false;
       Object.keys(users).forEach(function (k) {
         var u = users[k];
-        if (!u || !UserManager.getPrivileges(u).dmPriv) return;
+        if (!u || !CampaignManager.isMaster(k)) return;
         hasDms = true;
         var pill = document.createElement('button');
         pill.className = 'pg-mappa-pill' + (_mappaViewAsUser === k ? ' active' : '');

@@ -1,6 +1,13 @@
+import fs from 'node:fs';
+import { renderFirebaseConfig } from '../../scripts/firebase-runtime.mjs';
 import { test as base, expect } from '@playwright/test';
 
 // Isolated in-memory backend: browser tests never contact a real party/database.
+const configScript = renderFirebaseConfig(
+  JSON.parse(fs.readFileSync('config/firebase.web.json', 'utf8')),
+  'browser-test-placeholder'
+);
+
 export const test = base.extend({
   page: async ({ page }, use) => {
     // The simulated server lives in the test runner, not browser storage quotas.
@@ -12,11 +19,10 @@ export const test = base.extend({
       const url = new URL(route.request().url());
       if (url.origin === 'http://127.0.0.1:4173') {
         if (url.pathname.endsWith('/js/firebase-config.js')) {
-          const response = await route.fetch();
           return route.fulfill({
-            response,
+            contentType: 'application/javascript',
             body:
-              (await response.text()) +
+              configScript +
               '\nwindow.__restoreTestDatabase(' +
               JSON.stringify(serverSnapshot) +
               ');',

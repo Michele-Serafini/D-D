@@ -77,9 +77,17 @@ test('master creates a campaign and manages its group without editing accounts',
       role: campaign.members.montre,
       access: window.__testDatabase.campaignAccess.montre[campaign.id],
       globalRole: window.__testDatabase.users.montre.role,
+      campaignMaster: CampaignManager.isMaster('montre', campaign),
+      currentMaster: CampaignManager.isMaster('montre'),
     };
   });
-  expect(result).toEqual({ role: 'dm', access: true, globalRole: 'Giocatore' });
+  expect(result).toEqual({
+    role: 'dm',
+    access: true,
+    globalRole: 'Giocatore',
+    campaignMaster: true,
+    currentMaster: false,
+  });
 });
 
 test('players select only their campaigns and removal revokes an open campaign', async ({

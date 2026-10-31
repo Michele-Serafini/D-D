@@ -3,6 +3,14 @@ Object.assign(UserManager, {
   playLoginPortalCeremony: function (username, role, hasDmPriv) {
     var ov = document.getElementById('login-overlay');
     if (!ov) return;
+    if (
+      window.matchMedia('(prefers-reduced-motion: reduce)').matches ||
+      document.body.classList.contains('sium-fx-off')
+    ) {
+      ov.style.display = 'none';
+      ov.classList.remove('opening');
+      return;
+    }
 
     var isFast = !!(navigator.webdriver || /HeadlessChrome/i.test(navigator.userAgent || ''));
     var profile =

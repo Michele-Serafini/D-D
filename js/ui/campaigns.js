@@ -1,6 +1,9 @@
 /* Campaign selection and membership editing share the same account directory. */
 Object.assign(CampaignManager, {
   showSelector: function () {
+    var app = document.getElementById('app');
+    app.hidden = true;
+    app.inert = true;
     document.getElementById('campaign-selector')?.remove();
     var overlay = document.createElement('div');
     overlay.id = 'campaign-selector';

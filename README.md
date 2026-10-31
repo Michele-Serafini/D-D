@@ -153,6 +153,8 @@ rimangono esclusi da Git in `work/`.
 
 ### Sorgenti e build
 
+Richiede Node.js 24.12 o successivo, coerente con gli strumenti di test Firebase.
+
 I file canonici sono in `js/`, `css/`, `data/`, `img/`, `audio/` e `schede/`.
 Anche i vecchi URL dei JSON e delle schede vengono generati da queste sorgenti,
 senza ulteriori copie da modificare. Non esiste più una seconda copia in `public/`. Vite serve direttamente

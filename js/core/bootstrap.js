@@ -1,6 +1,7 @@
 /* AVVIO */
 try {
   (function () {
+    document.getElementById('app').hidden = true;
     // Mostra overlay login mentre Firebase Auth controlla la sessione
     document.getElementById('login-overlay').style.display = 'flex';
     // Inizializza Firebase + Auth listener (gestirà lui login/logout)

@@ -11,7 +11,11 @@ function createCampaignDatabase(id) {
         if (typeof value !== 'function') return value;
         return function () {
           var result = value.apply(target, arguments);
-          if (['set', 'update', 'remove', 'transaction'].includes(key) && result?.then) {
+          if (
+            (['set', 'update', 'remove', 'transaction'].includes(key) ||
+              (key === 'push' && arguments.length)) &&
+            result?.then
+          ) {
             pending.add(result);
             result.then(
               function () {
@@ -59,6 +63,10 @@ var CampaignManager = {
 
   canCreate: function () {
     return _authRole === 'admin' || _authRole === 'dm';
+  },
+  isMaster: function (username, campaign) {
+    campaign = campaign || this.current;
+    return !!campaign && campaign.members[username] === 'dm';
   },
   canManage: function (campaign) {
     return UserManager.isAdmin() || campaign.members[UserManager.getUsername()] === 'dm';
@@ -271,6 +279,8 @@ var CampaignManager = {
       throw new Error('Non sei abilitato a questa campagna.');
     if (this.current && (this.current.id !== id || !this.ready)) return this.reloadForCampaign(id);
     if (this.current) {
+      document.getElementById('app').hidden = false;
+      document.getElementById('app').inert = false;
       document.getElementById('campaign-selector')?.remove();
       return;
     }
@@ -284,6 +294,8 @@ var CampaignManager = {
     setupRealtimeListeners();
     UserManager.setupPresence();
     fbLoadApiKeys();
+    document.getElementById('app').hidden = false;
+    document.getElementById('app').inert = false;
     render();
     renderUserBadge();
     this.ready = true;

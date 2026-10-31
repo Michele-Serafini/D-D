@@ -63,7 +63,7 @@ var UserManager = {
 
   isDM: function () {
     if (typeof CampaignManager !== 'undefined' && CampaignManager.current)
-      return this.isAdmin() || CampaignManager.current.members[this.getUsername()] === 'dm';
+      return this.isAdmin() || CampaignManager.isMaster(this.getUsername());
     return _authRole === 'admin' || _authRole === 'dm';
   },
 
