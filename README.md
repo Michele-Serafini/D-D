@@ -2,7 +2,7 @@
 
 Compendium per D&D con negozio, combattimento, mappe, libri, regia sonora e schede personaggio multi-sistema.
 
-Dashboard del master
+## Dashboard del master
 
 Il master entra nella dashboard dopo aver scelto la campagna e può riaprirla dalla
 barra laterale. Ordine dei turni, round, punti vita e condizioni usano lo stesso

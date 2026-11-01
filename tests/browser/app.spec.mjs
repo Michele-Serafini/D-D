@@ -69,7 +69,7 @@ test('player navigation, catalog search and every character-sheet system work', 
     state.search = 'spada';
     renderMain();
   });
-  expect(await page.locator('.weapon-card').count()).toBeGreaterThan(0);
+  await expect(page.locator('#weapons-grid .weapon-card').first()).toBeVisible();
   for (const type of [
     'normale',
     'onepiece',
