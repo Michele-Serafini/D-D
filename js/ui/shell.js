@@ -13,6 +13,7 @@ function renderActiveSection() {
   }
   var renderers = {
     dashboard: renderDashboard,
+    commercio: renderCommerce,
     emporio: renderEmporio,
     iniziativa: renderIniziativa,
     note: renderNote,

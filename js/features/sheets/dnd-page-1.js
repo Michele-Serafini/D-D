@@ -470,6 +470,7 @@ function renderDndPage1(context) {
     var credInp = document.createElement('input');
     credInp.type = 'number';
     credInp.value = s.berry || '';
+    credInp.dataset.sheetField = 'berry';
     credInp.style.cssText =
       'flex:1;text-align:center;font-size:12px;font-weight:bold;background:transparent;border:none;border-bottom:1px dashed #c9a55c;color:#111;outline:none;padding:1px 0;box-sizing:border-box;font-family:Arial,Helvetica,sans-serif;';
     credInp.oninput = function () {
@@ -510,6 +511,7 @@ function renderDndPage1(context) {
       var inp = document.createElement('input');
       inp.type = 'text';
       inp.value = s[m[1]] || '';
+      inp.dataset.sheetField = m[1];
       inp.maxLength = 15;
       inp.style.cssText =
         'width:100%;text-align:center;font-size:7.5px;font-weight:bold;background:transparent;border:none;border-bottom:1px solid #ddd;color:#111;outline:none;padding:1px 0;box-sizing:border-box;font-family:Arial,Helvetica,sans-serif;';
@@ -534,6 +536,7 @@ function renderDndPage1(context) {
     var credInp = document.createElement('input');
     credInp.type = 'text';
     credInp.value = s.crediti || '';
+    credInp.dataset.sheetField = 'crediti';
     credInp.maxLength = 18;
     credInp.style.cssText =
       'flex:1;text-align:center;font-size:8px;font-weight:bold;background:transparent;border:none;border-bottom:1px solid #9bc;color:#111;outline:none;padding:1px 0;box-sizing:border-box;font-family:Arial,Helvetica,sans-serif;';

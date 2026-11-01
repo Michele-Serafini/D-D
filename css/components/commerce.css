@@ -1,0 +1,107 @@
+.commerce-page {
+  padding-top: 2rem;
+  padding-bottom: 5rem;
+}
+.commerce-panel {
+  margin: 1.25rem 0;
+  padding: 1rem;
+  border: 1px solid var(--border-soft);
+  border-radius: 8px;
+  background: var(--bg-card);
+  color: var(--text-primary);
+}
+.commerce-panel h2 {
+  font-family: var(--font-display);
+  color: var(--gold);
+  font-size: 1.05rem;
+  margin-bottom: 0.75rem;
+}
+.commerce-muted {
+  color: var(--text-muted);
+  line-height: 1.5;
+  margin: 0.75rem 0;
+}
+.commerce-wallet {
+  line-height: 1.8;
+  overflow-wrap: anywhere;
+}
+.commerce-inventory {
+  list-style: none;
+  padding: 0;
+  margin: 0.75rem 0;
+  display: grid;
+  gap: 0.5rem;
+}
+.commerce-policy {
+  display: flex;
+  gap: 0.6rem;
+  align-items: center;
+  margin: 1.5rem 0;
+}
+.commerce-order {
+  padding: 0.8rem 0;
+  border-top: 1px solid var(--border-subtle);
+  overflow-wrap: anywhere;
+}
+.commerce-order p {
+  margin-bottom: 0.5rem;
+  line-height: 1.5;
+}
+.commerce-order button {
+  margin-right: 0.5rem;
+}
+.commerce-page select,
+.commerce-dialog select,
+.commerce-dialog input {
+  max-width: 100%;
+  min-width: 0;
+  padding: 0.6rem;
+  border: 1px solid var(--border-soft);
+  border-radius: 5px;
+  color: var(--text-primary);
+  background: var(--bg-input);
+  font: inherit;
+}
+.commerce-sheet-panel {
+  background: var(--bg-panel);
+  color: var(--text-primary);
+  padding: 0.75rem 1rem;
+}
+.commerce-sheet-panel summary {
+  cursor: pointer;
+  color: var(--gold);
+  padding-right: 3rem;
+}
+.commerce-dialog {
+  padding: 1.5rem;
+  width: min(520px, 95vw);
+  max-height: 85vh;
+  overflow-y: auto;
+  display: grid;
+  gap: 1rem;
+}
+.commerce-dialog h2 {
+  color: var(--gold);
+  font-family: var(--font-display);
+  font-size: 1.4rem;
+}
+.commerce-dialog label {
+  display: grid;
+  gap: 0.5rem;
+}
+.commerce-buy {
+  margin-left: 0.5rem;
+}
+.commerce-page button:disabled,
+.commerce-dialog button:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+@media (max-width: 600px) {
+  .commerce-dialog {
+    padding: 1rem;
+  }
+  .commerce-panel {
+    padding: 0.75rem;
+  }
+}

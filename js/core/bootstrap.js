@@ -17,6 +17,7 @@ try {
     function flushPendingWrites() {
       flushStorage();
       storiaFlushSave();
+      if (_schedaSaveTimer) fbSaveScheda(true);
       MasterDashboardNotes.flush().catch(function () {});
     }
     window.addEventListener('beforeunload', flushPendingWrites);

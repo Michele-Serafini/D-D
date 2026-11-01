@@ -2,6 +2,35 @@
 
 Compendium per D&D con negozio, combattimento, mappe, libri, regia sonora e schede personaggio multi-sistema.
 
+## Negozio collegato alle schede
+
+**Acquista** nei cataloghi e nel negozio generato permette di scegliere personaggio e quantità.
+**Inventario e acquisti** mostra monete, oggetti e richieste del giocatore. Il master
+usa **Negozio e ricompense**, anche dalla dashboard, per approvare, rifiutare o
+assegnare oggetti e denaro. L'approvazione è attiva per impostazione predefinita e
+si può disattivare per la singola campagna. In attesa non viene addebitato nulla;
+se i fondi non bastano, l'operazione resta in attesa e si può annullare o riprovare.
+
+Il pannello **Inventario, monete e acquisti** è disponibile nella scheda di tutti
+i sistemi. Gli oggetti identici dello stesso catalogo hanno una sola voce con
+quantità. L'equipaggiamento testuale esistente rimane disponibile. Le monete
+usano i campi della scheda: rame, argento, oro, platino, crediti, Berry, soldi Pokémon
+e Ryō. Il cambio fra monete D&D è automatico; le altre valute restano indipendenti.
+Gli oggetti senza prezzo possono essere assegnati dal master come ricompensa.
+
+`commerce-model.js` contiene contabilità e inventario; `commerce-service.js` gestisce
+richieste, approvazioni e ricompense. Interfaccia e dialogo sono separati. `SheetStore`
+salva soltanto i campi modificati, preparati prima del debounce, e conserva gli
+aggiornamenti remoti. La creazione della prima scheda salva anche il marcatore `_v2`.
+
+Ogni operazione conserva il proprio ID anche in caso di retry. Richieste e ricevute
+sono separate dai dati ripristinabili della scheda, in `commerceRequests/<utente>/<pg>`
+e `commerceReceipts/<utente>/<pg>` sotto `campaigns/<id>/data`. Monete, quantità,
+versione e ricevuta cambiano con un solo aggiornamento atomico: una versione superata
+viene rifiutata e riprovata sui dati correnti. Le regole per approvazioni, ricompense
+e ricevute sono centralizzate in `scripts/commerce-rules.mjs` e incluse nel generatore
+RTDB. I backup JSON non sostituiscono il registro delle operazioni.
+
 ## Dashboard del master
 
 Il master entra nella dashboard dopo aver scelto la campagna e può riaprirla dalla

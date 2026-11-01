@@ -1,6 +1,7 @@
 import fs from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import accountPolicy from '../config/accounts.json' with { type: 'json' };
+import { commerceRules } from './commerce-rules.mjs';
 
 // RTDB rules cannot declare helpers. Keep permission expressions here and generate JSON.
 export function buildDatabaseRules() {
@@ -20,6 +21,12 @@ export function buildDatabaseRules() {
   const member = `(${active}) && (${role} === 'player' || ${role} === 'dm')`;
   const campaignDM = `(${active}) && ${role} === 'dm'`;
   const scopedOwner = `(${member}) && (${owner})`;
+  const commerce = commerceRules({
+    master: `(${admin}) || (${campaignDM})`,
+    owner: scopedOwner,
+    actor: `auth.uid === ${adminUid} ? ${JSON.stringify(accountPolicy.adminUsername)} : ${name}`,
+    automatic: `${campaign}.child('data').child('commercePolicy').child('requireApproval').val() === false`,
+  });
   const creator = `(${dm}) && !data.exists() && newData.child('meta').child('owner').val() === ${name} && newData.child('members').child(${name}).val() === 'dm'`;
   const nextRoot = 'newData.parent().parent().parent()';
   const nextCampaign = `${nextRoot}.child('campaigns').child($campaign)`;
@@ -80,7 +87,16 @@ export function buildDatabaseRules() {
           schedePG: {
             '.read': campaignDM,
             '.write': campaignDM,
-            $name: { '.read': scopedOwner, '.write': scopedOwner },
+            $name: {
+              '.read': scopedOwner,
+              '.write': scopedOwner,
+              chars: {
+                $character: {
+                  '.validate': "!data.child('trade').exists() || newData.child('trade').exists()",
+                  trade: commerce.trade,
+                },
+              },
+            },
           },
           presence: { '.read': member, $name: { '.write': scopedOwner } },
           libri: {
@@ -102,6 +118,12 @@ export function buildDatabaseRules() {
           },
           diceRolls: { '.read': member, '.write': member },
           dmConfig: { '.read': campaignDM, '.write': campaignDM },
+          commercePolicy: {
+            '.read': member,
+            '.write': campaignDM,
+            requireApproval: { '.validate': 'newData.isBoolean()' },
+            $other: { '.validate': false },
+          },
           groups: { '.read': member, '.write': campaignDM },
           meta: { '.read': member, '.write': campaignDM },
           archivioIdee: {
@@ -114,6 +136,14 @@ export function buildDatabaseRules() {
         $other: { '.validate': false },
       },
     },
+  };
+  rules.campaigns.$campaign.data.commerceRequests = {
+    '.read': `(${admin}) || (${campaignDM})`,
+    $name: { '.read': scopedOwner, $character: { $operation: commerce.request } },
+  };
+  rules.campaigns.$campaign.data.commerceReceipts = {
+    '.read': `(${admin}) || (${campaignDM})`,
+    $name: { '.read': scopedOwner, $character: { $operation: commerce.receipt } },
   };
   for (const node of ['storia_private', 'storie_private', 'storia_markers_private']) {
     rules.campaigns.$campaign.data[node] = {

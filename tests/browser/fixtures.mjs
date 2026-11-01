@@ -98,7 +98,7 @@ export const test = base.extend({
             (key) => callback(snapshot(path + '/' + key)) === true
           ),
       });
-      function write(path, item) {
+      function write(path, item, quiet = false) {
         const keys = path.split('/').filter(Boolean);
         let node = data;
         for (const key of keys.slice(0, -1)) node = node[key] ??= {};
@@ -107,13 +107,19 @@ export const test = base.extend({
           Object.assign(data, structuredClone(item));
         } else if (item === null) delete node[keys.at(-1)];
         else node[keys.at(-1)] = structuredClone(item);
+        return quiet ? Promise.resolve() : publish(path);
+      }
+      function publish(path, changedPaths = [path]) {
         const persisted = window.__persistTestDatabase(data);
         for (const watcher of [...watchers]) {
           if (
-            !path ||
-            path === watcher.path ||
-            path.startsWith(watcher.path + '/') ||
-            watcher.path.startsWith(path + '/')
+            changedPaths.some(
+              (changed) =>
+                !changed ||
+                changed === watcher.path ||
+                changed.startsWith(watcher.path + '/') ||
+                watcher.path.startsWith(changed + '/')
+            )
           )
             watcher.callback(snapshot(watcher.path));
         }
@@ -156,10 +162,11 @@ export const test = base.extend({
             return write(path, null);
           },
           update(changes) {
-            return Promise.all(
-              Object.entries(changes).map(([key, item]) =>
-                write([path, key].filter(Boolean).join('/'), item)
-              )
+            for (const [key, item] of Object.entries(changes))
+              write([path, key].filter(Boolean).join('/'), item, true);
+            return publish(
+              path,
+              Object.keys(changes).map((key) => [path, key].filter(Boolean).join('/'))
             );
           },
           transaction(change) {

@@ -285,6 +285,7 @@ function renderCyberCard(im) {
     btnWrap.appendChild(delBtn);
     foot.appendChild(btnWrap);
   }
+  foot.appendChild(buildCommerceItemAction(im, 'cyberware'));
   card.appendChild(foot);
   card.classList.add('sium-grid-card-enter');
   card.style.cursor = 'pointer';

@@ -635,6 +635,7 @@ function renderVeicoloCard(v, isParty) {
     }
     foot.appendChild(actions2);
   }
+  if (!isParty) foot.appendChild(buildCommerceItemAction(v, 'veicoli'));
   card.appendChild(foot);
   card.classList.add('sium-grid-card-enter');
   card.style.cursor = 'pointer';

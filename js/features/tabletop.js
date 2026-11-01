@@ -5,6 +5,7 @@ function _buildSchedaWithLavagna() {
 
   var schedaPane = document.createElement('div');
   schedaPane.style.cssText = 'flex:1;overflow-y:auto;min-width:0;position:relative;';
+  if (state.schedaAttivaId && state.schedaLoaded) schedaPane.appendChild(buildCommerceSheetPanel());
   schedaPane.appendChild(renderScheda());
 
   // Toggle button (floating top-right of scheda pane)

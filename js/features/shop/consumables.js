@@ -284,6 +284,7 @@ function renderDrogaCard(d, ACCENT) {
     actions.appendChild(delBtn);
     foot.appendChild(actions);
   }
+  foot.appendChild(buildCommerceItemAction(d, 'sostanze'));
   card.appendChild(foot);
   card.classList.add('sium-grid-card-enter');
   card.style.cursor = 'pointer';

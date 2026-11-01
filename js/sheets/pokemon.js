@@ -417,6 +417,7 @@ window.renderPokemonSheet = function (scheda) {
   natConf.appendChild(createInput('CONFIDENCE:', scheda, 'confidence'));
   botForm.appendChild(natConf);
   var mny = createInput('MONEY:', scheda, 'soldi');
+  mny.querySelector('input').dataset.sheetField = 'soldi';
   mny.style.flex = '1';
   botForm.appendChild(mny);
   s1Form.appendChild(botForm);

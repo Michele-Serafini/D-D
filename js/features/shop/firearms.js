@@ -382,6 +382,7 @@ function renderEmporioArmiFuoco() {
       sec2.appendChild(dv);
     }
     if (arma.costo) row('// PREZZO', arma.costo + ' ' + (arma.valuta || 'mo'));
+    sec2.appendChild(buildCommerceItemAction(arma, 'armifuoco'));
     if (isAdmin()) {
       var br = document.createElement('div');
       br.style.cssText =
@@ -900,6 +901,7 @@ function _renderArmiPotenziamenti() {
       body.appendChild(br2);
     }
     card.appendChild(body);
+    card.appendChild(buildCommerceItemAction(p, 'potenziamenti'));
     grid.appendChild(card);
   });
   outer.appendChild(grid);
@@ -1140,6 +1142,7 @@ function _renderArmiMunizioni() {
       br3.appendChild(db4);
       card.appendChild(br3);
     }
+    card.appendChild(buildCommerceItemAction(m, 'munizioni'));
     grid.appendChild(card);
   });
   outer.appendChild(grid);

@@ -119,6 +119,7 @@ function buildDashboardShortcuts() {
   grid.className = 'dashboard-shortcuts';
   [
     ['iniziativa', 'Iniziativa completa', ICON.swords],
+    ['commercio', 'Negozio e ricompense', ICON.folder],
     ['mappa', 'Mappa della campagna', ICON.map],
     ['schedepg', 'Schede dei personaggi', ICON.scroll],
     ['generatore', 'Generatore PNG', ICON.npc],

@@ -310,6 +310,7 @@ function _generateShop(listEl, RC) {
       card.appendChild(desc);
     }
 
+    card.appendChild(buildCommerceItemAction(item, 'emporio'));
     listEl.appendChild(card);
   });
 }

@@ -86,6 +86,7 @@ function renderWeaponCard(w) {
   } else {
     foot.innerHTML = priceDiv;
   }
+  foot.appendChild(buildCommerceItemAction(w, 'emporio'));
   body.appendChild(foot);
   card.appendChild(body);
   return card;

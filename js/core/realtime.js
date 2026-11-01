@@ -26,6 +26,8 @@ var _localWrite = {
 function setupRealtimeListeners() {
   if (!_campaignDb || setupRealtimeListeners.started) return;
   setupRealtimeListeners.started = true;
+  SheetStore.connect();
+  CommerceService.connect();
 
   // ---- INIZIATIVA ----
   _campaignDb.ref('state/iniziativa').on('value', function (snap) {
@@ -105,6 +107,7 @@ function setupRealtimeListeners() {
   if (isDM())
     _campaignDb.ref('schedePG').on('value', function (snap) {
       state.schedePGAll = snap.val() || {};
+      CommerceService.notify();
 
       if (state.section === 'schedepg') scheduleRenderMain();
     });
@@ -725,20 +728,17 @@ function fbSaveScheda(immediate) {
   var _sid = state.schedaAttivaId;
   var snapshot = JSON.parse(JSON.stringify(state.scheda));
   delete snapshot.id;
-  if (snapshot.schedaTipo === 'pokemon') console.log('[POKEMON SAVE] Payload inviato:', snapshot);
-  if (snapshot.schedaTipo === 'naruto') console.log('[NARUTO SAVE] Payload inviato:', snapshot);
+  var username = state.currentUser.username;
+  var changes = SheetStore.prepare(username, _sid, snapshot);
   var doSave = function () {
     _schedaSaveTimer = null;
-    _campaignDb.ref('schedePG/' + state.currentUser.username + '/chars/' + _sid).set(snapshot);
-    var _idx = state.schedeList.findIndex(function (s) {
-      return s.id === _sid;
+    var saving = SheetStore.saveChanges(username, _sid, changes);
+    saving.catch(function () {
+      notify('Salvataggio della scheda non riuscito. Riprova.', 'err');
     });
-    if (_idx >= 0) {
-      state.schedeList[_idx] = JSON.parse(JSON.stringify(snapshot));
-      state.schedeList[_idx].id = _sid;
-    }
+    return saving;
   };
-  if (immediate === true) doSave();
+  if (immediate === true) return doSave();
   else _schedaSaveTimer = setTimeout(doSave, 600);
 }
 function fbLoadSchede(cb) {
@@ -762,7 +762,10 @@ function fbLoadSchede(cb) {
       var chars = raw.chars || {};
 
       state.schedeList = Object.keys(chars).map(function (k) {
-        return Object.assign(_schedaFix(chars[k]), { id: k });
+        return SheetStore.seed(
+          state.currentUser.username,
+          Object.assign(_schedaFix(chars[k]), { id: k })
+        );
       });
 
       // --- CLEANUP TROLL CHARACTERS ---
@@ -800,7 +803,9 @@ function fbLoadSchede(cb) {
       var upd = { _v2: true };
       upd['chars/' + newId] = oldFix;
       _campaignDb.ref('schedePG/' + state.currentUser.username).update(upd, function () {
-        state.schedeList = [Object.assign({}, oldFix, { id: newId })];
+        state.schedeList = [
+          SheetStore.seed(state.currentUser.username, Object.assign({}, oldFix, { id: newId })),
+        ];
         state.companions = {};
         state.schedaLoaded = true;
         if (cb) cb();

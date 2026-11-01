@@ -28,6 +28,11 @@ function renderSidebar() {
     { id: 'dashboard', label: 'Dashboard del master', dmOnly: true, icon: ICON.swords },
     { id: 'emporio', label: 'Emporio', icon: ICON.sword },
     {
+      id: 'commercio',
+      label: isDM() ? 'Negozio e ricompense' : 'Inventario e acquisti',
+      icon: ICON.folder,
+    },
+    {
       id: 'bestiario',
       label: isDM() ? 'Bestiario' : 'Pet del Party',
       icon: isDM()
