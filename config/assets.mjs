@@ -21,6 +21,8 @@ export const appSources = [
   'js/ui/catalog-controls.js',
   'js/features/shop/items.js',
   'js/features/combat.js',
+  'js/features/dashboard/notes.js',
+  'js/features/dashboard/view.js',
   'js/features/notes.js',
   'js/features/npc/model.js',
   'js/core/ai.js',

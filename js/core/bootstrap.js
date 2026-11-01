@@ -17,6 +17,7 @@ try {
     function flushPendingWrites() {
       flushStorage();
       storiaFlushSave();
+      MasterDashboardNotes.flush().catch(function () {});
     }
     window.addEventListener('beforeunload', flushPendingWrites);
     window.addEventListener('pagehide', flushPendingWrites);

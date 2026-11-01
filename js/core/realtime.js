@@ -32,16 +32,28 @@ function setupRealtimeListeners() {
     if (_localWrite.iniziativa) return;
     var v = snap.val();
     if (v && v.combatants && Array.isArray(v.combatants) && v.combatants.length > 0) {
-      state.combatants = v.combatants.map(function (c) {
-        if (!Array.isArray(c.condizioni)) c.condizioni = [];
-        return c;
-      });
+      var existing = new Map(
+        state.combatants.map(function (combatant) {
+          return [combatant.id, combatant];
+        })
+      );
+      state.combatants = v.combatants
+        .filter(function (combatant) {
+          return combatant && typeof combatant === 'object';
+        })
+        .map(function (combatant) {
+          if (!Array.isArray(combatant.condizioni)) combatant.condizioni = [];
+          // Keep the objects captured by existing input handlers current.
+          return Object.assign(existing.get(combatant.id) || {}, combatant);
+        });
       if (typeof v.round === 'number') state.round = v.round;
       if (typeof v.activeIndex === 'number') state.activeIndex = v.activeIndex;
     } else {
-      if (state.combatants.length === 0) state.combatants = [makeEmptyCombatant()];
+      state.combatants = [makeEmptyCombatant()];
+      state.round = 1;
+      state.activeIndex = 0;
     }
-    if (state.section === 'iniziativa') {
+    if (state.section === 'iniziativa' || state.section === 'dashboard') {
       ensureTrailingEmpty();
       renderIniziativaBody();
     } else ensureTrailingEmpty();
@@ -1273,8 +1285,10 @@ function loadNpc() {
 }
 
 function fbSaveIniziativa(immediate) {
+  refreshCombatControls();
   // Salva immediatamente (azioni esplicite) o con debounce (input testo)
   if (immediate) {
+    clearTimeout(_fbSaveIniziativaTimer);
     _doFbSaveIniziativa();
   } else {
     if (_fbSaveIniziativaTimer) clearTimeout(_fbSaveIniziativaTimer);

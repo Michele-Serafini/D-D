@@ -535,4 +535,18 @@
   opacity: 0.7;
   padding: 0;
   display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  flex-shrink: 0;
+}
+.condition-badge button svg {
+  width: 12px;
+  height: 12px;
+}
+.combat-actions button svg {
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
 }

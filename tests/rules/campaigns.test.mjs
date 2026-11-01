@@ -33,7 +33,7 @@ test('campaign membership enforces isolation, scoped DM permissions and immediat
             data: {
               state: { notes: 'secret first' },
               schedePG: { alice: { name: 'Alice' } },
-              dmConfig: { secret: 'fixture' },
+              dmConfig: { secret: 'fixture', dashboardNotes: 'Private session notes' },
             },
           },
           second: {
@@ -61,6 +61,13 @@ test('campaign membership enforces isolation, scoped DM permissions and immediat
     await assertFails(get(ref(alice, 'campaigns/second/data/state/notes')));
     await assertFails(set(ref(alice, 'campaigns/second/data/state/notes'), 'overwrite'));
     await assertFails(get(ref(alice, 'campaigns/first/data/dmConfig')));
+    await assertFails(get(ref(alice, 'campaigns/first/data/dmConfig/dashboardNotes')));
+    await assertFails(set(ref(alice, 'campaigns/first/data/dmConfig/dashboardNotes'), 'overwrite'));
+    await assertSucceeds(get(ref(dm1, 'campaigns/first/data/dmConfig/dashboardNotes')));
+    await assertSucceeds(
+      set(ref(dm1, 'campaigns/first/data/dmConfig/dashboardNotes'), 'Next session')
+    );
+    await assertFails(get(ref(dm1, 'campaigns/second/data/dmConfig/dashboardNotes')));
     await assertFails(set(ref(alice, 'campaigns/first/members/alice'), 'dm'));
     await assertFails(set(ref(alice, 'campaignAccess/alice/second'), true));
     await assertFails(update(ref(alice, 'users/alice'), { dmPriv: true }));

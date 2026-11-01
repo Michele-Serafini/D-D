@@ -291,6 +291,7 @@ var CampaignManager = {
       loadFromStorageAsync(resolve);
     });
     migrateImagesToDB();
+    if (isDM()) state.section = 'dashboard';
     setupRealtimeListeners();
     UserManager.setupPresence();
     fbLoadApiKeys();
@@ -309,6 +310,7 @@ var CampaignManager = {
   },
   reloadForCampaign: async function (id) {
     storiaFlushSave();
+    if (id !== null) await UserManager.withTimeout(MasterDashboardNotes.flush());
     await flushStorage();
     if (id !== null) {
       // Flush debounced edits before the old page and its listeners are released.

@@ -2,6 +2,22 @@
 
 Compendium per D&D con negozio, combattimento, mappe, libri, regia sonora e schede personaggio multi-sistema.
 
+Dashboard del master
+
+Il master entra nella dashboard dopo aver scelto la campagna e può riaprirla dalla
+barra laterale. Ordine dei turni, round, punti vita e condizioni usano lo stesso
+tracker della schermata **Iniziativa** e si aggiornano in tempo reale. I pulsanti
+**−1 / +1** modificano i punti vita; un clic nell'ordine dei turni seleziona il
+combattente attivo senza avanzare il round. I comandi rapidi aprono mappe, schede,
+generatore PNG, dadi, libri e regia sonora.
+
+Gli **Appunti del master** sono condivisi fra i master della campagna e protetti
+dalle regole esistenti di `campaigns/<id>/data/dmConfig/dashboardNotes`. Sono
+separati dalle note dei giocatori, si salvano automaticamente e conservano una
+bozza locale per utente e campagna finché il server conferma il salvataggio.
+Una bozza recuperata si salva con **Salva appunti** o continuando a scrivere.
+Il cambio campagna attende il salvataggio degli appunti pendenti.
+
 ---
 
 ## Campagne separate

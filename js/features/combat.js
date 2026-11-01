@@ -39,36 +39,7 @@ function renderIniziativa() {
     '<h1 class="header-title">Ordine di Iniziativa</h1>' +
     '<p class="font-script italic mt-2 text-lg" style="color:var(--text-muted);">Gestore dinamico per personaggi, boss e condizioni di gioco</p></div>';
 
-  var actions = document.createElement('div');
-  actions.className = 'flex flex-wrap items-center gap-2';
-
-  var rc = document.createElement('div');
-  rc.className = 'round-counter';
-  rc.innerHTML = '<span>ROUND</span><span class="round-num">' + state.round + '</span>';
-  actions.appendChild(rc);
-
-  if (isDM()) {
-    var nb = document.createElement('button');
-    nb.className = 'btn-gold';
-    nb.innerHTML = ICON.arrowRight + ' Prossimo Turno';
-    nb.onclick = nextTurn;
-    actions.appendChild(nb);
-
-    var rb = document.createElement('button');
-    rb.className = 'btn-blood';
-    rb.innerHTML = ICON.refresh + ' Reset';
-    rb.onclick = function () {
-      if (!confirm('Azzerare il combattimento?')) return;
-      state.combatants = [makeEmptyCombatant()];
-      state.round = 1;
-      state.activeIndex = 0;
-      state.expandedCondition = null;
-      state.assigningCondId = null;
-      fbSaveIniziativa(true);
-      renderMain();
-    };
-    actions.appendChild(rb);
-  }
+  var actions = buildCombatActions();
 
   top.appendChild(actions);
   hc.appendChild(top);
@@ -91,9 +62,50 @@ function renderIniziativa() {
   section.className = 'container-main pb-20';
   section.style.cssText = 'padding-top:2rem;';
 
-  var layout = document.createElement('div');
-  layout.className = 'initiative-layout';
+  section.appendChild(buildCombatWorkspace());
+  wrap.appendChild(section);
 
+  return wrap;
+}
+
+function buildCombatActions() {
+  var actions = document.createElement('div');
+  actions.className = 'combat-actions flex flex-wrap items-center gap-2';
+
+  var rc = document.createElement('div');
+  rc.className = 'round-counter';
+  rc.innerHTML = '<span>ROUND</span><span class="round-num">' + state.round + '</span>';
+  actions.appendChild(rc);
+
+  if (isDM()) {
+    var nb = document.createElement('button');
+    nb.className = 'btn-gold';
+    nb.classList.add('combat-next-turn');
+    nb.disabled = getOrderedActive().length === 0;
+    nb.innerHTML = ICON.arrowRight + ' Prossimo Turno';
+    nb.onclick = nextTurn;
+    actions.appendChild(nb);
+
+    var rb = document.createElement('button');
+    rb.className = 'btn-blood';
+    rb.innerHTML = ICON.refresh + ' Reset';
+    rb.onclick = function () {
+      if (!confirm('Azzerare il combattimento?')) return;
+      state.combatants = [makeEmptyCombatant()];
+      state.round = 1;
+      state.activeIndex = 0;
+      state.expandedCondition = null;
+      state.assigningCondId = null;
+      fbSaveIniziativa(true);
+      renderMain();
+    };
+    actions.appendChild(rb);
+  }
+
+  return actions;
+}
+
+function buildCombatTracker() {
   var left = document.createElement('div');
 
   // Toolbar
@@ -136,23 +148,22 @@ function renderIniziativa() {
     left.appendChild(thin);
   }
 
-  layout.appendChild(left);
+  var initialRender = setTimeout(renderIniziativaBody, 0);
+  onSectionCleanup(function () {
+    clearTimeout(initialRender);
+  });
+  return left;
+}
 
-  var right = document.createElement('aside');
-  right.className = 'conditions-panel';
-  right.id = 'conditions-panel';
-  layout.appendChild(right);
-
-  section.appendChild(layout);
-  wrap.appendChild(section);
-
-  // Render lista e condizioni dopo che il DOM è pronto
-  setTimeout(function () {
-    renderCombatantsList();
-    renderConditionsPanel();
-  }, 0);
-
-  return wrap;
+function buildCombatWorkspace() {
+  var layout = document.createElement('div');
+  layout.className = 'initiative-layout';
+  layout.appendChild(buildCombatTracker());
+  var panel = document.createElement('aside');
+  panel.className = 'conditions-panel';
+  panel.id = 'conditions-panel';
+  layout.appendChild(panel);
+  return layout;
 }
 
 // Aggiunge un combattente e fa focus sul nuovo input
@@ -182,8 +193,7 @@ function renderIniziativaBody() {
   renderCombatantsList();
   renderConditionsPanel();
   updateToolbarCount();
-  var rn = document.querySelector('.round-num');
-  if (rn) rn.textContent = state.round;
+  refreshCombatControls();
 }
 
 function getOrderedActive() {
@@ -194,6 +204,41 @@ function getOrderedActive() {
     .sort(function (a, b) {
       return (Number(b.iniziativa) || 0) - (Number(a.iniziativa) || 0);
     });
+}
+
+function refreshCombatControls() {
+  var ordered = getOrderedActive();
+  if (state.activeIndex >= ordered.length || state.activeIndex < 0) state.activeIndex = 0;
+  document.querySelectorAll('.round-num').forEach(function (el) {
+    el.textContent = state.round;
+  });
+  document.querySelectorAll('.combat-next-turn').forEach(function (el) {
+    el.disabled = !ordered.length;
+  });
+  var current = ordered[state.activeIndex];
+  document.querySelectorAll('.combatant-card').forEach(function (el) {
+    el.classList.toggle('is-active', !!current && el.dataset.combatantId === current.id);
+  });
+  if (state.section === 'dashboard') updateDashboardCombatSummary();
+}
+
+function jumpToCombatant(id) {
+  if (!isDM()) return;
+  var index = getOrderedActive().findIndex(function (c) {
+    return c.id === id;
+  });
+  if (index === -1) return;
+  state.activeIndex = index;
+  fbSaveIniziativa(true);
+  renderIniziativaBody();
+}
+
+function adjustCombatantHp(combatant, amount) {
+  if (!isDM()) return;
+  var hp = Number(combatant.hp);
+  combatant.hp = Math.max(0, (Number.isFinite(hp) ? hp : 0) + amount);
+  fbSaveIniziativa(true);
+  renderCombatantsList();
 }
 
 function renderCombatantsList() {
@@ -317,7 +362,9 @@ function updateCombatantCard(cardEl, c, isActive) {
         co.icon +
         '</span><span>' +
         co.nome +
-        '</span><button title="Rimuovi">' +
+        '</span><button title="Rimuovi" aria-label="Rimuovi ' +
+        escapeHtml(co.nome) +
+        '">' +
         ICON.x +
         '</button>';
       b.querySelector('button').onclick = function () {
@@ -486,6 +533,7 @@ function buildCombatantCard(c, isActive) {
   initEl.title = 'Iniziativa';
   var initInput = document.createElement('input');
   initInput.type = 'number';
+  initInput.setAttribute('aria-label', 'Iniziativa');
   initInput.value = c.iniziativa;
   initInput.placeholder = '\u2014';
   initInput.oninput = function () {
@@ -499,6 +547,7 @@ function buildCombatantCard(c, isActive) {
   // Input nome
   var nameInput = document.createElement('input');
   nameInput.type = 'text';
+  nameInput.setAttribute('aria-label', 'Nome combattente');
   nameInput.className = 'combatant-name-input';
   nameInput.value = c.nome;
   nameInput.placeholder = 'Nome del combattente...';
@@ -579,6 +628,7 @@ function buildCombatantCard(c, isActive) {
   if (isDM()) {
     var sel = document.createElement('select');
     sel.className = 'category-select';
+    sel.setAttribute('aria-label', 'Categoria combattente');
     CATEGORIE.forEach(function (ct) {
       var op = document.createElement('option');
       op.value = ct.id;
@@ -606,6 +656,7 @@ function buildCombatantCard(c, isActive) {
   var isMonster = c.tipo === 'boss' || c.tipo === 'sgherri';
   var hpInput = document.createElement('input');
   hpInput.type = 'number';
+  hpInput.setAttribute('aria-label', 'Punti vita');
   hpInput.value = c.hp;
   hpInput.placeholder = '\u2014';
   if (isDM() || !isMonster) {
@@ -618,6 +669,22 @@ function buildCombatantCard(c, isActive) {
     hpInput.style.cssText = 'pointer-events:none;opacity:0.75;';
   }
   hpW.appendChild(hpInput);
+  if (isDM()) {
+    [-1, 1].forEach(function (amount) {
+      var adjust = document.createElement('button');
+      adjust.type = 'button';
+      adjust.className = 'hp-adjust';
+      adjust.textContent = amount > 0 ? '+1' : '−1';
+      adjust.setAttribute(
+        'aria-label',
+        amount > 0 ? 'Recupera un punto vita' : 'Infliggi un danno'
+      );
+      adjust.onclick = function () {
+        adjustCombatantHp(c, amount);
+      };
+      hpW.appendChild(adjust);
+    });
+  }
   header.appendChild(hpW);
 
   // Pulsante elimina (solo DM)
@@ -661,7 +728,9 @@ function buildCombatantCard(c, isActive) {
         co.icon +
         '</span><span>' +
         co.nome +
-        '</span><button title="Rimuovi">' +
+        '</span><button title="Rimuovi" aria-label="Rimuovi ' +
+        escapeHtml(co.nome) +
+        '">' +
         ICON.x +
         '</button>';
       b.querySelector('button').onclick = function () {
