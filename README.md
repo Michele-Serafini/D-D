@@ -97,10 +97,10 @@ dal generatore delle regole del database. `database.rules.json` è generato con
 
 | Account | Password iniziale | Ruolo |
 | --- | --- | --- |
-| sebastiano | dungeonmaster | Dungeon Master |
-| michele | player | Giocatore |
-| montre | player | Giocatore |
-| alessio | player | Giocatore |
+| Master | dungeonmaster | Dungeon Master |
+| Player1 | player | Giocatore |
+| Player2 | player | Giocatore |
+| Player3 | player | Giocatore |
 
 Apri `admin.html` con `admin` / `admin` per consultare il database, aggiungere
 un giocatore dal modulo e rimuoverlo con il relativo pulsante. Il master può
