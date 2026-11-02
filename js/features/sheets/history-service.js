@@ -9,11 +9,18 @@ var SheetHistory = (function () {
   }
   async function read(username, id) {
     var path = paths(username, id);
-    var snapshots = await Promise.all([
-      _campaignDb.ref(path.sheet).once('value'),
-      _campaignDb.ref(path.history + '/head').once('value'),
-    ]);
-    return { sheet: snapshots[0].val(), head: snapshots[1].val() || { version: 0 } };
+    for (var attempt = 0; attempt < 5; attempt++) {
+      var snapshots = await Promise.all([
+        _campaignDb.ref(path.sheet).once('value'),
+        _campaignDb.ref(path.history + '/head').once('value'),
+      ]);
+      var sheet = snapshots[0].val(),
+        head = snapshots[1].val() || { version: 0 };
+      // The two reads can straddle another editor's commit. Never audit a stale "before".
+      if (!sheet || (sheet._rev || '') === (head.revision || ''))
+        return { sheet: sheet, head: head };
+    }
+    throw new Error('La scheda è cambiata durante la lettura. Riprova.');
   }
   function record(username, id, before, after, head, kind, source) {
     var delta = SheetHistoryModel.diff(before, after);
@@ -125,8 +132,8 @@ var SheetHistory = (function () {
     record: record,
     save: save,
     restore: restore,
-    flush: function () {
-      return Promise.all(Array.from(pending.values()));
+    flush: async function () {
+      while (pending.size) await Promise.all(Array.from(pending.values()));
     },
   };
 })();

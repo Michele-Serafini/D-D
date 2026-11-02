@@ -103,3 +103,34 @@ test('restoring old data preserves later shop inventory, receipts and balances w
   assert.equal(values.schedePG.alice.chars.hero.oro, 50);
   assert.equal(values.schedePG.alice.chars.hero.trade.inventory.potion.quantity, 1);
 });
+
+test('a read spanning a remote commit retries before capturing the previous field values', async () => {
+  const values = { schedePG: { alice: { chars: { hero: { hp: 10 } } } } };
+  const ctx = historyContext(values);
+  await ctx.SheetHistory.save('alice', 'hero', { hp: 9 });
+  const original = ctx._campaignDb.ref;
+  let injected = false;
+  ctx._campaignDb.ref = (path) => {
+    if (path === 'sheetHistory/alice/hero/head' && !injected) {
+      injected = true;
+      values.schedePG.alice.chars.hero.hp = 8;
+      values.schedePG.alice.chars.hero._rev = 'remote';
+      const history = values.sheetHistory.alice.hero;
+      history.head = { ...history.head, version: 2, revision: 'remote', actor: 'dm' };
+      history.entries.remote = {
+        version: 2,
+        actor: 'dm',
+        at: Date.now(),
+        kind: 'edit',
+        before: '{"hp":9}',
+        after: '{"hp":8}',
+        source: '',
+      };
+    }
+    return original(path);
+  };
+  await ctx.SheetHistory.save('alice', 'hero', { hp: 1 });
+  const history = values.sheetHistory.alice.hero;
+  assert.equal(history.head.version, 3);
+  assert.equal(JSON.parse(history.entries[history.head.revision].before).hp, 8);
+});

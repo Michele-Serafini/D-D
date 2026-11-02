@@ -121,6 +121,10 @@ var CommerceService = {
         return id;
       }
       if (!isDM() && this.approval) return id;
+      if ((snapshots[0].val()?._rev || '') !== (snapshots[3].val()?.revision || '')) {
+        if (attempt === 4) throw new Error('La scheda è cambiata durante la lettura. Riprova.');
+        continue;
+      }
       var result = CommerceModel.apply(snapshots[0].val(), id, operation, actor, Date.now());
       var changes = {};
       changes[characterPath + '/trade/version'] = result.sheet.trade.version;
