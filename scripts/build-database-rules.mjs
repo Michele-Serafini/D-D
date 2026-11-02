@@ -3,6 +3,7 @@ import { fileURLToPath } from 'node:url';
 import accountPolicy from '../config/accounts.json' with { type: 'json' };
 import { commerceRules } from './commerce-rules.mjs';
 import { journalRules } from './journal-rules.mjs';
+import { sheetHistoryRules } from './sheet-history-rules.mjs';
 
 // RTDB rules cannot declare helpers. Keep permission expressions here and generate JSON.
 export function buildDatabaseRules() {
@@ -22,6 +23,12 @@ export function buildDatabaseRules() {
   const member = `(${active}) && (${role} === 'player' || ${role} === 'dm')`;
   const campaignDM = `(${active}) && ${role} === 'dm'`;
   const scopedOwner = `(${member}) && (${owner})`;
+  const history = sheetHistoryRules({
+    master: `(${admin}) || (${campaignDM})`,
+    owner: scopedOwner,
+    actor: `auth.uid === ${adminUid} ? ${JSON.stringify(accountPolicy.adminUsername)} : ${name}`,
+    campaign,
+  });
   const commerce = commerceRules({
     master: `(${admin}) || (${campaignDM})`,
     owner: scopedOwner,
@@ -93,7 +100,7 @@ export function buildDatabaseRules() {
               '.write': scopedOwner,
               chars: {
                 $character: {
-                  '.validate': "!data.child('trade').exists() || newData.child('trade').exists()",
+                  '.validate': `(!data.child('trade').exists() || newData.child('trade').exists()) && (${history.guard})`,
                   trade: commerce.trade,
                 },
               },
@@ -144,6 +151,7 @@ export function buildDatabaseRules() {
     actor: `auth.uid === ${adminUid} ? ${JSON.stringify(accountPolicy.adminUsername)} : ${name}`,
     campaign,
   });
+  rules.campaigns.$campaign.data.sheetHistory = history.history;
   rules.campaigns.$campaign.data.commerceRequests = {
     '.read': `(${admin}) || (${campaignDM})`,
     $name: { '.read': scopedOwner, $character: { $operation: commerce.request } },

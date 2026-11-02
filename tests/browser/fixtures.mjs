@@ -125,11 +125,19 @@ export const test = base.extend({
         }
         return persisted;
       }
-      function ref(path = '') {
+      function ref(path = '', query = {}) {
         return {
           key: path.split('/').at(-1),
           once(event, success) {
-            const item = snapshot(path);
+            let item = snapshot(path);
+            if (query.orderKey || query.last) {
+              let entries = Object.entries(value(path) || {});
+              if (query.orderKey)
+                entries.sort((a, b) => a[1][query.orderKey] - b[1][query.orderKey]);
+              if (query.last) entries = entries.slice(-query.last);
+              const result = entries.length ? Object.fromEntries(entries) : null;
+              item = { ...item, val: () => structuredClone(result), exists: () => result !== null };
+            }
             success?.(item);
             return Promise.resolve(item);
           },
@@ -149,8 +157,11 @@ export const test = base.extend({
           limitToFirst() {
             return this;
           },
-          limitToLast() {
-            return this;
+          orderByChild(key) {
+            return ref(path, { ...query, orderKey: key });
+          },
+          limitToLast(last) {
+            return ref(path, { ...query, last });
           },
           push() {
             return ref(path + '/entry-' + Date.now() + '-' + crypto.randomUUID());
@@ -180,7 +191,11 @@ export const test = base.extend({
         };
       }
       const database = () => ({ ref });
-      database.ServerValue = { TIMESTAMP: 0 };
+      database.ServerValue = {
+        get TIMESTAMP() {
+          return Date.now();
+        },
+      };
       const identity = (name) => ({
         uid: name,
         email: name + '@dd.local',

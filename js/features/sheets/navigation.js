@@ -180,9 +180,11 @@ function _renderSchedaList() {
         stSel.onchange = function () {
           ch.stato = this.value;
           if (_campaignDb && state.currentUser)
-            _campaignDb
-              .ref('schedePG/' + state.currentUser.username + '/chars/' + ch.id + '/stato')
-              .set(this.value);
+            SheetStore.saveChanges(state.currentUser.username, ch.id, { stato: this.value }).catch(
+              function () {
+                notify('Salvataggio dello stato non riuscito.', 'err');
+              }
+            );
         };
       })(sch);
       stWrap.appendChild(stSel);

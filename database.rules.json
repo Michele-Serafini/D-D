@@ -68,7 +68,7 @@
               ".write": "((auth != null && (auth.uid === \"admin\" || (root.child('userAccess').child(auth.uid).isString() && root.child('users').child(root.child('userAccess').child(auth.uid).val()).exists() && root.child('users').child(root.child('userAccess').child(auth.uid).val()).child('disabled').val() !== true))) && (root.child('campaigns').child($campaign).child('members').child(root.child('userAccess').child(auth.uid).val()).val() === 'player' || root.child('campaigns').child($campaign).child('members').child(root.child('userAccess').child(auth.uid).val()).val() === 'dm')) && (auth != null && root.child('userAccess').child(auth.uid).val() === $name)",
               "chars": {
                 "$character": {
-                  ".validate": "!data.child('trade').exists() || newData.child('trade').exists()",
+                  ".validate": "(!data.child('trade').exists() || newData.child('trade').exists()) && ((!data.child('_rev').exists() && !newData.child('_rev').exists() && !root.child('campaigns').child($campaign).child('data').child('sheetHistory').child($name).child($character).child('head').exists()) || (newData.parent().parent().parent().parent().child('sheetHistory').child($name).child($character).child('head').child('revision').val() === newData.child('_rev').val() && newData.parent().parent().parent().parent().child('sheetHistory').child($name).child($character).child('head').child('version').val() === (root.child('campaigns').child($campaign).child('data').child('sheetHistory').child($name).child($character).child('head').exists() ? root.child('campaigns').child($campaign).child('data').child('sheetHistory').child($name).child($character).child('head').child('version').val() : 0) + 1))",
                   "trade": {
                     ".validate": "(newData.child('version').isNumber() && newData.child('version').val() === (data.child('version').exists() ? data.child('version').val() : 0) + 1 && newData.child('lastOperation').isString() && !root.child('campaigns').child($campaign).child('data').child('commerceReceipts').child($name).child($character).child(newData.child('lastOperation').val()).exists() && newData.parent().parent().parent().parent().parent().child('commerceReceipts').child($name).child($character).child(newData.child('lastOperation').val()).exists())",
                     "version": {
@@ -261,6 +261,72 @@
             },
             "$other": {
               ".validate": false
+            }
+          },
+          "sheetHistory": {
+            ".read": "((auth != null && (auth.uid === \"admin\" || (root.child('userAccess').child(auth.uid).isString() && root.child('users').child(root.child('userAccess').child(auth.uid).val()).exists() && root.child('users').child(root.child('userAccess').child(auth.uid).val()).child('disabled').val() !== true))) && (auth.uid === \"admin\" || root.child('users').child(root.child('userAccess').child(auth.uid).val()).child('role').val() === \"DM\")) || ((auth != null && (auth.uid === \"admin\" || (root.child('userAccess').child(auth.uid).isString() && root.child('users').child(root.child('userAccess').child(auth.uid).val()).exists() && root.child('users').child(root.child('userAccess').child(auth.uid).val()).child('disabled').val() !== true))) && root.child('campaigns').child($campaign).child('members').child(root.child('userAccess').child(auth.uid).val()).val() === 'dm')",
+            "$name": {
+              ".read": "((auth != null && (auth.uid === \"admin\" || (root.child('userAccess').child(auth.uid).isString() && root.child('users').child(root.child('userAccess').child(auth.uid).val()).exists() && root.child('users').child(root.child('userAccess').child(auth.uid).val()).child('disabled').val() !== true))) && (root.child('campaigns').child($campaign).child('members').child(root.child('userAccess').child(auth.uid).val()).val() === 'player' || root.child('campaigns').child($campaign).child('members').child(root.child('userAccess').child(auth.uid).val()).val() === 'dm')) && (auth != null && root.child('userAccess').child(auth.uid).val() === $name)",
+              "$character": {
+                "head": {
+                  ".write": "((((auth != null && (auth.uid === \"admin\" || (root.child('userAccess').child(auth.uid).isString() && root.child('users').child(root.child('userAccess').child(auth.uid).val()).exists() && root.child('users').child(root.child('userAccess').child(auth.uid).val()).child('disabled').val() !== true))) && (auth.uid === \"admin\" || root.child('users').child(root.child('userAccess').child(auth.uid).val()).child('role').val() === \"DM\")) || ((auth != null && (auth.uid === \"admin\" || (root.child('userAccess').child(auth.uid).isString() && root.child('users').child(root.child('userAccess').child(auth.uid).val()).exists() && root.child('users').child(root.child('userAccess').child(auth.uid).val()).child('disabled').val() !== true))) && root.child('campaigns').child($campaign).child('members').child(root.child('userAccess').child(auth.uid).val()).val() === 'dm')) || (((auth != null && (auth.uid === \"admin\" || (root.child('userAccess').child(auth.uid).isString() && root.child('users').child(root.child('userAccess').child(auth.uid).val()).exists() && root.child('users').child(root.child('userAccess').child(auth.uid).val()).child('disabled').val() !== true))) && (root.child('campaigns').child($campaign).child('members').child(root.child('userAccess').child(auth.uid).val()).val() === 'player' || root.child('campaigns').child($campaign).child('members').child(root.child('userAccess').child(auth.uid).val()).val() === 'dm')) && (auth != null && root.child('userAccess').child(auth.uid).val() === $name))) && newData.exists()",
+                  ".validate": "newData.hasChildren(['version','revision','actor','at','name']) && newData.child('version').val() === (data.exists() ? data.child('version').val() : 0) + 1 && newData.parent().parent().parent().parent().child('schedePG').child($name).child('chars').child($character).child('_rev').val() === newData.child('revision').val() && newData.parent().child('entries').child(newData.child('revision').val()).child('version').val() === newData.child('version').val() && newData.parent().child('entries').child(newData.child('revision').val()).child('actor').val() === newData.child('actor').val() && newData.parent().child('entries').child(newData.child('revision').val()).child('at').val() === newData.child('at').val()",
+                  "version": {
+                    ".validate": "newData.isNumber() && newData.val() >= 1 && newData.val() % 1 === 0"
+                  },
+                  "actor": {
+                    ".validate": "newData.val() === (auth.uid === \"admin\" ? \"admin\" : root.child('userAccess').child(auth.uid).val())"
+                  },
+                  "at": {
+                    ".validate": "newData.isNumber() && newData.val() > 0 && newData.val() <= now + 300000"
+                  },
+                  "revision": {
+                    ".validate": "newData.isString() && newData.val().length <= 100 && !data.parent().parent().child('entries').child(newData.val()).exists()"
+                  },
+                  "name": {
+                    ".validate": "newData.isString() && newData.val().length <= 160"
+                  },
+                  "$other": {
+                    ".validate": false
+                  }
+                },
+                "entries": {
+                  ".indexOn": [
+                    "version"
+                  ],
+                  "$revision": {
+                    ".write": "((((auth != null && (auth.uid === \"admin\" || (root.child('userAccess').child(auth.uid).isString() && root.child('users').child(root.child('userAccess').child(auth.uid).val()).exists() && root.child('users').child(root.child('userAccess').child(auth.uid).val()).child('disabled').val() !== true))) && (auth.uid === \"admin\" || root.child('users').child(root.child('userAccess').child(auth.uid).val()).child('role').val() === \"DM\")) || ((auth != null && (auth.uid === \"admin\" || (root.child('userAccess').child(auth.uid).isString() && root.child('users').child(root.child('userAccess').child(auth.uid).val()).exists() && root.child('users').child(root.child('userAccess').child(auth.uid).val()).child('disabled').val() !== true))) && root.child('campaigns').child($campaign).child('members').child(root.child('userAccess').child(auth.uid).val()).val() === 'dm')) || (((auth != null && (auth.uid === \"admin\" || (root.child('userAccess').child(auth.uid).isString() && root.child('users').child(root.child('userAccess').child(auth.uid).val()).exists() && root.child('users').child(root.child('userAccess').child(auth.uid).val()).child('disabled').val() !== true))) && (root.child('campaigns').child($campaign).child('members').child(root.child('userAccess').child(auth.uid).val()).val() === 'player' || root.child('campaigns').child($campaign).child('members').child(root.child('userAccess').child(auth.uid).val()).val() === 'dm')) && (auth != null && root.child('userAccess').child(auth.uid).val() === $name))) && !data.exists() && newData.exists()",
+                    ".validate": "!data.exists() && newData.hasChildren(['version','actor','at','kind','before','after','source']) && newData.parent().parent().child('head').child('revision').val() === $revision && newData.parent().parent().child('head').child('version').val() === newData.child('version').val() && newData.parent().parent().child('head').child('actor').val() === newData.child('actor').val() && newData.parent().parent().child('head').child('at').val() === newData.child('at').val()",
+                    "version": {
+                      ".validate": "newData.isNumber() && newData.val() >= 1 && newData.val() % 1 === 0"
+                    },
+                    "actor": {
+                      ".validate": "newData.val() === (auth.uid === \"admin\" ? \"admin\" : root.child('userAccess').child(auth.uid).val())"
+                    },
+                    "at": {
+                      ".validate": "newData.isNumber() && newData.val() > 0 && newData.val() <= now + 300000"
+                    },
+                    "kind": {
+                      ".validate": "newData.val() === 'create' || newData.val() === 'edit' || newData.val() === 'restore' || newData.val() === 'purchase' || newData.val() === 'reward'"
+                    },
+                    "before": {
+                      ".validate": "newData.isString() && newData.val().length <= 8000000"
+                    },
+                    "after": {
+                      ".validate": "newData.isString() && newData.val().length <= 8000000"
+                    },
+                    "source": {
+                      ".validate": "newData.isString() && newData.val().length <= 100"
+                    },
+                    "$other": {
+                      ".validate": false
+                    }
+                  }
+                },
+                "$other": {
+                  ".validate": false
+                }
+              }
             }
           },
           "commerceRequests": {

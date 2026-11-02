@@ -75,6 +75,18 @@ test('ordinary sheet edits preserve remote purchases and nested input model iden
       ref: (path) => ({ update: async (changes) => updates.push({ path, changes }) }),
     },
     document: { querySelectorAll: () => [] },
+    SheetHistory: {
+      save: async (username, id, changes) =>
+        updates.push({
+          path: 'schedePG/' + username,
+          changes: Object.assign(
+            { _v2: true },
+            Object.fromEntries(
+              Object.entries(changes).map(([path, value]) => ['chars/' + id + '/' + path, value])
+            )
+          ),
+        }),
+    },
   });
   vm.runInContext(fs.readFileSync('js/features/sheets/store.js', 'utf8'), ctx);
   const store = ctx.SheetStore;
@@ -144,6 +156,10 @@ test('simultaneous purchases retry stale versions and repeated operation IDs onl
   ctx.SessionJournal = {
     active: null,
     commit: (changes) => ctx._campaignDb.ref('').update(changes),
+  };
+  ctx.SheetHistory = {
+    paths: (username, id) => ({ history: 'sheetHistory/' + username + '/' + id }),
+    record: () => ({}),
   };
   vm.runInContext(fs.readFileSync('js/features/shop/commerce-service.js', 'utf8'), ctx);
   const service = ctx.CommerceService;

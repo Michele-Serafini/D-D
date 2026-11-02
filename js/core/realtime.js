@@ -770,48 +770,24 @@ function fbLoadSchede(cb) {
         );
       });
 
-      // --- CLEANUP TROLL CHARACTERS ---
-      state.schedeList.forEach(function (c) {
-        if (c.nome && c.nome.includes('iiiiiiiii')) {
-          _campaignDb.ref('schedePG/' + state.currentUser.username + '/chars/' + c.id).remove();
-        }
-      });
-
-      // --- CLEANUP TROLL E BRANCALONIA VECCHIE ---
-      state.schedeList.forEach(function (c) {
-        if (
-          c.schedaTipo === 'brancalonia' &&
-          (!c.branca_data || Object.keys(c.branca_data).length === 0)
-        ) {
-          _campaignDb.ref('schedePG/' + state.currentUser.username + '/chars/' + c.id).remove();
-        }
-      });
-      state.schedeList = state.schedeList.filter(function (c) {
-        return !(
-          c.schedaTipo === 'brancalonia' &&
-          (!c.branca_data || Object.keys(c.branca_data).length === 0)
-        );
-      });
-      // --------------------------------
-
-      // --------------------------------
-
       state.companions = raw.companions || {};
       state.schedaLoaded = true;
       if (cb) cb();
     } else {
       var newId = 'c' + Date.now();
       var oldFix = _schedaFix(raw);
-      var upd = { _v2: true };
-      upd['chars/' + newId] = oldFix;
-      _campaignDb.ref('schedePG/' + state.currentUser.username).update(upd, function () {
-        state.schedeList = [
-          SheetStore.seed(state.currentUser.username, Object.assign({}, oldFix, { id: newId })),
-        ];
-        state.companions = {};
-        state.schedaLoaded = true;
-        if (cb) cb();
-      });
+      SheetHistory.save(state.currentUser.username, newId, oldFix)
+        .then(function () {
+          state.schedeList = [
+            SheetStore.seed(state.currentUser.username, Object.assign({}, oldFix, { id: newId })),
+          ];
+          state.companions = {};
+          state.schedaLoaded = true;
+          if (cb) cb();
+        })
+        .catch(function () {
+          notify('Migrazione della scheda non riuscita. Riprova.', 'err');
+        });
     }
   });
 }
@@ -831,7 +807,16 @@ function fbDeleteCompanion(charId, compId) {
 }
 function fbDeleteSchedaItem(id) {
   if (!_campaignDb || !state.currentUser) return;
-  _campaignDb.ref('schedePG/' + state.currentUser.username + '/chars/' + id).remove();
+  clearTimeout(_schedaSaveTimer);
+  _schedaSaveTimer = null;
+  var path = 'schedePG/' + state.currentUser.username + '/chars/' + id;
+  return SheetHistory.flush()
+    .then(function () {
+      return _campaignDb.ref(path).remove();
+    })
+    .catch(function () {
+      notify('Eliminazione della scheda non riuscita. Riprova.', 'err');
+    });
 }
 function updateSchedaDerived() {
   var s = state.scheda,

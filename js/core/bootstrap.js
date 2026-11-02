@@ -18,6 +18,7 @@ try {
       flushStorage();
       storiaFlushSave();
       if (_schedaSaveTimer) fbSaveScheda(true);
+      SheetHistory.flush().catch(function () {});
       MasterDashboardNotes.flush().catch(function () {});
       SessionJournal.flush();
     }

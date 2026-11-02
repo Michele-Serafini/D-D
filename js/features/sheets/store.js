@@ -9,23 +9,25 @@ var SheetStore = (function () {
     return JSON.stringify(a) === JSON.stringify(b);
   }
   function patch(before, after, prefix, output) {
-    Object.keys(after).forEach(function (key) {
-      if (!prefix && (key === 'id' || key === 'trade')) return;
-      var path = prefix ? prefix + '/' + key : key;
-      var value = after[key],
-        old = before && before[key];
-      if (equal(old, value)) return;
-      if (
-        value &&
-        typeof value === 'object' &&
-        !Array.isArray(value) &&
-        old &&
-        typeof old === 'object' &&
-        !Array.isArray(old)
-      )
-        patch(old, value, path, output);
-      else output[path] = clone(value);
-    });
+    Array.from(new Set(Object.keys(before || {}).concat(Object.keys(after)))).forEach(
+      function (key) {
+        if (!prefix && (key === 'id' || key === 'trade' || key === '_rev')) return;
+        var path = prefix ? prefix + '/' + key : key;
+        var value = after[key],
+          old = before && before[key];
+        if (equal(old, value)) return;
+        if (
+          value &&
+          typeof value === 'object' &&
+          !Array.isArray(value) &&
+          old &&
+          typeof old === 'object' &&
+          !Array.isArray(old)
+        )
+          patch(old, value, path, output);
+        else output[path] = value == null ? null : clone(value);
+      }
+    );
   }
   function applyPatch(target, changes) {
     Object.keys(changes).forEach(function (path) {
@@ -82,17 +84,10 @@ var SheetStore = (function () {
     // Advance the local baseline now so successive debounced edits only send their delta.
     var expected = applyPatch(clone(previous || {}), changes);
     baselines.set(token, expected);
-    var update = { _v2: true };
-    Object.keys(changes).forEach(function (path) {
-      update['chars/' + id + '/' + path] = changes[path];
+    return SheetHistory.save(username, id, changes).catch(function (error) {
+      if (baselines.get(token) === expected) baselines.set(token, previous);
+      throw error;
     });
-    return _campaignDb
-      .ref('schedePG/' + username)
-      .update(update)
-      .catch(function (error) {
-        if (baselines.get(token) === expected) baselines.set(token, previous);
-        throw error;
-      });
   }
   function connect() {
     if (connect.started || !_campaignDb || !state.currentUser) return;

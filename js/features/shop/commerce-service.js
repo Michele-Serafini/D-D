@@ -96,6 +96,9 @@ var CommerceService = {
         character.once('value'),
         reference.once('value'),
         _campaignDb.ref(receiptPath).once('value'),
+        _campaignDb
+          .ref(SheetHistory.paths(target.username, target.id).history + '/head')
+          .once('value'),
       ]);
       var operation = snapshots[1].val();
       if (snapshots[2].exists() || (operation && operation.status !== 'pending')) return id;
@@ -131,6 +134,18 @@ var CommerceService = {
       });
       changes[operationPath] = result.operation;
       changes[receiptPath] = result.receipt;
+      Object.assign(
+        changes,
+        SheetHistory.record(
+          target.username,
+          target.id,
+          snapshots[0].val(),
+          result.sheet,
+          snapshots[3].val() || { version: 0 },
+          operation.kind,
+          id
+        )
+      );
       try {
         // The database validates version + 1. Conflicting purchases retry on fresh balances.
         var entries =

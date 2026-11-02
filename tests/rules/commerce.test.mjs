@@ -8,6 +8,7 @@ import {
   assertSucceeds,
 } from '@firebase/rules-unit-testing';
 import { ref, set, get, update } from 'firebase/database';
+import { auditWrites } from '../helpers/sheet-history.mjs';
 
 const context = vm.createContext({});
 vm.runInContext(fs.readFileSync('js/features/shop/commerce-model.js', 'utf8'), context);
@@ -78,6 +79,8 @@ test('commerce enforces approval, atomic version checks, immutable receipts and 
       [order(id)]: result.operation,
       [receipt(id)]: result.receipt,
     });
+    const audited = (db, changes, actor) => auditWrites(db, changes, actor, { get, ref });
+    const editCoins = (oro) => ({ [char + '/oro']: oro });
     const first = create();
     await assertSucceeds(set(ref(alice, order('one')), first));
     await assertFails(get(ref(bob, order('one'))));
@@ -86,15 +89,15 @@ test('commerce enforces approval, atomic version checks, immutable receipts and 
     const unauthorized = model.apply({ oro: 100 }, 'one', first, 'alice', 2);
     await assertFails(update(ref(alice), writes('one', unauthorized)));
     const approved = model.apply({ oro: 100 }, 'one', first, 'dm', 2);
-    await assertSucceeds(set(ref(alice, char + '/oro'), 90));
-    await assertFails(update(ref(dm), writes('one', approved)));
-    await assertSucceeds(set(ref(alice, char + '/oro'), 100));
-    await assertSucceeds(update(ref(dm), writes('one', approved)));
+    await assertSucceeds(update(ref(alice), await audited(alice, editCoins(90), 'alice')));
+    await assertFails(update(ref(dm), await audited(dm, writes('one', approved), 'dm')));
+    await assertSucceeds(update(ref(alice), await audited(alice, editCoins(100), 'alice')));
+    await assertSucceeds(update(ref(dm), await audited(dm, writes('one', approved), 'dm')));
     assert.equal(
       (await get(ref(alice, char + '/trade/inventory/' + item.key + '/quantity'))).val(),
       1
     );
-    await assertFails(update(ref(dm), writes('one', approved)));
+    await assertFails(update(ref(dm), await audited(dm, writes('one', approved), 'dm')));
     await assertFails(set(ref(alice, receipt('one')), null));
     await assertFails(set(ref(alice, char + '/trade'), null));
     await assertFails(set(ref(alice, char + '/trade/inventory/' + item.key + '/quantity'), 99));
@@ -112,8 +115,8 @@ test('commerce enforces approval, atomic version checks, immutable receipts and 
     const current = (await get(ref(alice, char))).val();
     const auto = model.apply(current, 'two', second, 'alice', 4);
     const stale = model.apply(current, 'three', third, 'alice', 4);
-    await assertSucceeds(update(ref(alice), writes('two', auto)));
-    await assertFails(update(ref(alice), writes('three', stale)));
+    await assertSucceeds(update(ref(alice), await audited(alice, writes('two', auto), 'alice')));
+    await assertFails(update(ref(alice), await audited(alice, writes('three', stale), 'alice')));
     assert.equal(
       (await get(ref(alice, char + '/trade/inventory/' + item.key + '/quantity'))).val(),
       2
@@ -124,7 +127,11 @@ test('commerce enforces approval, atomic version checks, immutable receipts and 
     await assertSucceeds(
       update(
         ref(dm),
-        writes('cash', model.apply((await get(ref(dm, char))).val(), 'cash', cash, 'dm', 5))
+        await audited(
+          dm,
+          writes('cash', model.apply((await get(ref(dm, char))).val(), 'cash', cash, 'dm', 5)),
+          'dm'
+        )
       )
     );
     const reward = model.request(
@@ -134,8 +141,8 @@ test('commerce enforces approval, atomic version checks, immutable receipts and 
     );
     await assertSucceeds(set(ref(dm, order('reward')), reward));
     const granted = model.apply((await get(ref(dm, char))).val(), 'reward', reward, 'dm', 6);
-    await assertSucceeds(update(ref(dm), writes('reward', granted)));
-    await assertSucceeds(update(ref(alice, char), { hp: 9 }));
+    await assertSucceeds(update(ref(dm), await audited(dm, writes('reward', granted), 'dm')));
+    await assertSucceeds(update(ref(alice), await audited(alice, { [char + '/hp']: 9 }, 'alice')));
     assert.equal(
       (await get(ref(alice, char + '/trade/inventory/' + item.key + '/quantity'))).val(),
       4

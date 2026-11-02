@@ -28,6 +28,7 @@ function renderSidebar() {
     { id: 'dashboard', label: 'Dashboard del master', dmOnly: true, icon: ICON.swords },
     { id: 'diario', label: 'Diario della sessione', dmOnly: true, icon: ICON.scroll },
     { id: 'emporio', label: 'Emporio', icon: ICON.sword },
+    { id: 'storico-schede', label: 'Storico e ripristino', icon: ICON.scroll },
     {
       id: 'commercio',
       label: isDM() ? 'Negozio e ricompense' : 'Inventario e acquisti',

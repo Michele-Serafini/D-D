@@ -2,6 +2,37 @@
 
 Compendium per D&D con negozio, combattimento, mappe, libri, regia sonora e schede personaggio multi-sistema.
 
+## Storico e ripristino delle schede
+
+La voce **Storico e ripristino**, disponibile anche sopra ogni scheda, mostra chi
+ha cambiato ciascun campo, quando e i valori prima/dopo. Il proprietario vede le
+proprie schede; i master vedono quelle della campagna corrente. Funziona con tutti
+i sistemi di scheda e registra anche acquisti e ricompense.
+
+Seleziona una versione, apri **Anteprima ripristino** e controlla i campi prima di
+confermare. Il ripristino crea una nuova versione: anche il ripristino può essere
+annullato recuperando lo stato precedente. Se la scheda cambia mentre esamini
+l’anteprima, aggiorna lo storico prima di riprovare.
+
+Gli oggetti del negozio e le ricevute restano attuali. Se dopo la versione scelta
+ci sono acquisti o ricompense, anche le monete restano attuali: il ripristino non
+rimborsa acquisti né duplica ricompense. In assenza di operazioni successive si
+possono recuperare anche modifiche accidentali alle monete.
+
+Lo storico parte dal primo salvataggio effettuato con questa funzione: non può
+ricostruire modifiche precedenti. Conserva i dati e i riferimenti delle immagini;
+le immagini cancellate dall’archivio locale IndexedDB non vengono ricreate.
+Le versioni cancellate dal database da un amministratore non sono recuperabili.
+
+`js/features/sheets/history-model.js` calcola differenze e ricostruisce le versioni;
+`history-service.js` salva scheda e registro insieme, con contatore e ritentativi
+per le collisioni; `history-view.js` gestisce l’interfaccia. Il database conserva
+solo i campi cambiati, non una copia completa a ogni tasto. La pagina carica 30
+versioni alla volta. Le regole sono mantenute in `scripts/sheet-history-rules.mjs`.
+Le schede già esistenti restano compatibili con i vecchi client fino al primo
+salvataggio nello storico; da quel momento tutti gli aggiornamenti richiedono
+una revisione atomica. Aggiornare le schede da client recenti.
+
 ## Diario automatico della sessione
 
 Il master apre **Diario della sessione** dalla barra laterale o dalla dashboard,

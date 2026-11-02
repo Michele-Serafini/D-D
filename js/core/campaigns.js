@@ -315,6 +315,7 @@ var CampaignManager = {
     if (id !== null) {
       // Flush debounced edits before the old page and its listeners are released.
       if (_schedaSaveTimer) fbSaveScheda(true);
+      await UserManager.withTimeout(SheetHistory.flush());
       if (_fbSaveIniziativaTimer) {
         clearTimeout(_fbSaveIniziativaTimer);
         _doFbSaveIniziativa();

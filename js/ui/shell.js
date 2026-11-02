@@ -14,6 +14,7 @@ function renderActiveSection() {
   var renderers = {
     dashboard: renderDashboard,
     diario: renderSessionJournal,
+    'storico-schede': renderSheetHistory,
     commercio: renderCommerce,
     emporio: renderEmporio,
     iniziativa: renderIniziativa,
