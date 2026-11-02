@@ -86,17 +86,39 @@ function buildCombatActions() {
     nb.onclick = nextTurn;
     actions.appendChild(nb);
 
+    var start = document.createElement('button');
+    start.className = 'btn-dark combat-start';
+    start.textContent = 'Avvia combattimento';
+    start.disabled =
+      !getOrderedActive().length || !!(state.encounter && state.encounter.status === 'active');
+    start.onclick = function () {
+      var entry = beginCombat();
+      if (entry) fbSaveIniziativa(true, [entry]);
+    };
+    actions.appendChild(start);
+    var end = document.createElement('button');
+    end.className = 'btn-dark combat-end';
+    end.textContent = 'Termina combattimento';
+    end.disabled = !(state.encounter && state.encounter.status === 'active');
+    end.onclick = function () {
+      var entry = endCombat();
+      if (entry) fbSaveIniziativa(true, [entry]);
+    };
+    actions.appendChild(end);
+
     var rb = document.createElement('button');
     rb.className = 'btn-blood';
     rb.innerHTML = ICON.refresh + ' Reset';
     rb.onclick = function () {
       if (!confirm('Azzerare il combattimento?')) return;
+      var entry = endCombat();
       state.combatants = [makeEmptyCombatant()];
       state.round = 1;
       state.activeIndex = 0;
       state.expandedCondition = null;
       state.assigningCondId = null;
-      fbSaveIniziativa(true);
+      state.encounter = null;
+      fbSaveIniziativa(true, entry ? [entry] : []);
       renderMain();
     };
     actions.appendChild(rb);
@@ -214,6 +236,13 @@ function refreshCombatControls() {
   });
   document.querySelectorAll('.combat-next-turn').forEach(function (el) {
     el.disabled = !ordered.length;
+  });
+  var inCombat = !!(state.encounter && state.encounter.status === 'active');
+  document.querySelectorAll('.combat-start').forEach(function (el) {
+    el.disabled = !ordered.length || inCombat;
+  });
+  document.querySelectorAll('.combat-end').forEach(function (el) {
+    el.disabled = !inCombat;
   });
   var current = ordered[state.activeIndex];
   document.querySelectorAll('.combatant-card').forEach(function (el) {
@@ -787,15 +816,59 @@ function conditionBadgeStyle(condId) {
   );
 }
 
+function beginCombat() {
+  if (
+    !isDM() ||
+    !getOrderedActive().length ||
+    (state.encounter && state.encounter.status === 'active')
+  )
+    return null;
+  state.encounter = {
+    id: 'c_' + crypto.randomUUID(),
+    status: 'active',
+    startedAt: Date.now(),
+    sessionId: SessionJournal.active || '',
+  };
+  return {
+    session: SessionJournal.active,
+    data: JournalModel.combat(
+      state.encounter,
+      'start',
+      state.combatants,
+      state.round,
+      state.currentUser.username,
+      Date.now()
+    ),
+  };
+}
+
+function endCombat() {
+  if (!isDM() || !state.encounter || state.encounter.status !== 'active') return null;
+  state.encounter.status = 'ended';
+  state.encounter.endedAt = Date.now();
+  return {
+    session: SessionJournal.active || state.encounter.sessionId,
+    data: JournalModel.combat(
+      state.encounter,
+      'end',
+      state.combatants,
+      state.round,
+      state.currentUser.username,
+      state.encounter.endedAt
+    ),
+  };
+}
+
 function nextTurn() {
   var ordered = getOrderedActive();
   if (ordered.length === 0) return;
+  var entry = beginCombat();
   state.activeIndex++;
   if (state.activeIndex >= ordered.length) {
     state.activeIndex = 0;
     state.round++;
   }
-  fbSaveIniziativa(true);
+  fbSaveIniziativa(true, entry ? [entry] : []);
   renderIniziativaBody();
 }
 

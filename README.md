@@ -2,6 +2,36 @@
 
 Compendium per D&D con negozio, combattimento, mappe, libri, regia sonora e schede personaggio multi-sistema.
 
+## Diario automatico della sessione
+
+Il master apre **Diario della sessione** dalla barra laterale o dalla dashboard,
+inserisce un titolo e avvia la sessione. La chiusura conserva il registro e rende
+disponibile la sessione precedente per preparare un riepilogo modificabile e
+scaricabile in Markdown. Il diario e le bozze sono privati per i master della campagna.
+
+Vengono registrati automaticamente i tiri segnati come importanti e i naturali 1/20
+(anche con modificatori, vantaggio e D20 rapido), l'inizio e la fine dei combattimenti,
+le ricompense effettivamente applicate alle schede e gli appunti salvati dalla dashboard.
+**Avvia combattimento** e **Termina combattimento** sono disponibili nello stesso
+tracker di Iniziativa; il primo avanzamento del turno avvia automaticamente il
+combattimento se necessario. Il diario conserva un solo checkpoint degli appunti
+per master e sessione; le annotazioni manuali sono voci separate. Un combattimento
+ancora aperto viene riepilogato alla chiusura della sessione e può proseguire nella successiva.
+
+Gli eventi usano identificativi stabili e vengono scritti insieme alla loro fonte.
+Se la consegna al diario fallisce, il tiro o la ricompensa resta salvato e l'evento
+viene conservato in una coda locale per utente e campagna. La sincronizzazione riparte
+alla riapertura, alla riconnessione o dal pulsante **Sincronizza eventi in attesa**.
+Le bozze modificate restano anche localmente fino alla conferma del salvataggio.
+Il riepilogo usa gli eventi registrati; non richiede servizi AI o chiavi aggiuntive.
+
+Modello, sincronizzazione e interfaccia sono separati in `js/features/journal/`.
+I dati sono sotto `campaigns/<id>/data/sessionJournal`: controllo e metadati in
+`control`, eventi in `events/<sessione>` e riepiloghi in `drafts/<sessione>`.
+Le regole in `scripts/journal-rules.mjs` consentono ai giocatori di aggiungere solo
+un evento per un proprio tiro importante salvato, senza leggere il diario privato.
+I controlli coprono anche eventi ripetuti, tentativi di modifica e isolamento fra campagne.
+
 ## Negozio collegato alle schede
 
 **Acquista** nei cataloghi e nel negozio generato permette di scegliere personaggio e quantità.

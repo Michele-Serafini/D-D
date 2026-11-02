@@ -15,6 +15,7 @@ function notesFixture({ master = true, draft = null, remote = 'Remote notes', sa
   let cancel;
   let timerId = 0;
   const context = {
+    SessionJournal: { recordNotes: async () => {} },
     isDM: () => master,
     CampaignManager: { storageKey: () => 'mercante_v2:alice:first' },
     localStorage: {

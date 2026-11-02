@@ -2,7 +2,7 @@
    SEZIONE 2: MOTORE DI RENDERING PRINCIPALE (render & renderMain)
    ============================================================================ */
 function renderActiveSection() {
-  var dmSections = ['dashboard', 'worldbuilding', 'storia', 'archivio', 'schedepg'];
+  var dmSections = ['dashboard', 'diario', 'worldbuilding', 'storia', 'archivio', 'schedepg'];
   if (dmSections.indexOf(state.section) !== -1 && !isDM()) return renderDadi();
   if (state.section === 'scheda' || (state.section === 'schedepg' && state.schedePGViewMode))
     return _buildSchedaWithLavagna();
@@ -13,6 +13,7 @@ function renderActiveSection() {
   }
   var renderers = {
     dashboard: renderDashboard,
+    diario: renderSessionJournal,
     commercio: renderCommerce,
     emporio: renderEmporio,
     iniziativa: renderIniziativa,

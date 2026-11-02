@@ -153,7 +153,7 @@ export const test = base.extend({
             return this;
           },
           push() {
-            return ref(path + '/entry-' + Date.now());
+            return ref(path + '/entry-' + Date.now() + '-' + crypto.randomUUID());
           },
           set(item, callback) {
             return write(path, item).then(() => callback?.(null));

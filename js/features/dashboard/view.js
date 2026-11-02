@@ -120,6 +120,7 @@ function buildDashboardShortcuts() {
   [
     ['iniziativa', 'Iniziativa completa', ICON.swords],
     ['commercio', 'Negozio e ricompense', ICON.folder],
+    ['diario', 'Diario della sessione', ICON.scroll],
     ['mappa', 'Mappa della campagna', ICON.map],
     ['schedepg', 'Schede dei personaggi', ICON.scroll],
     ['generatore', 'Generatore PNG', ICON.npc],

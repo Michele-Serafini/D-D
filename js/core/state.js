@@ -54,6 +54,7 @@ var state = {
   combatants: [makeEmptyCombatant()],
   round: 1,
   activeIndex: 0,
+  encounter: null,
   expandedCondition: null,
   assigningCondId: null,
   notes: '',

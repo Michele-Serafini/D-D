@@ -2,6 +2,7 @@ import fs from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import accountPolicy from '../config/accounts.json' with { type: 'json' };
 import { commerceRules } from './commerce-rules.mjs';
+import { journalRules } from './journal-rules.mjs';
 
 // RTDB rules cannot declare helpers. Keep permission expressions here and generate JSON.
 export function buildDatabaseRules() {
@@ -137,6 +138,12 @@ export function buildDatabaseRules() {
       },
     },
   };
+  rules.campaigns.$campaign.data.sessionJournal = journalRules({
+    master: `(${admin}) || (${campaignDM})`,
+    member: `(${admin}) || (${member})`,
+    actor: `auth.uid === ${adminUid} ? ${JSON.stringify(accountPolicy.adminUsername)} : ${name}`,
+    campaign,
+  });
   rules.campaigns.$campaign.data.commerceRequests = {
     '.read': `(${admin}) || (${campaignDM})`,
     $name: { '.read': scopedOwner, $character: { $operation: commerce.request } },

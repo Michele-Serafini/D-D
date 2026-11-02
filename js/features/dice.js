@@ -159,6 +159,15 @@ function renderDadi() {
   modWrap.appendChild(modPlus);
   formulaWrap.appendChild(modWrap);
   diceBox.appendChild(formulaWrap);
+  var importantLabel = document.createElement('label');
+  importantLabel.className = 'journal-important';
+  var importantRoll = document.createElement('input');
+  importantRoll.type = 'checkbox';
+  importantLabel.append(
+    importantRoll,
+    document.createTextNode('Segna il prossimo tiro come importante')
+  );
+  diceBox.appendChild(importantLabel);
 
   /* 5. ARENA 3D DEL VASSOIO DADI (.sium-3d-dice-arena) */
   var arena = document.createElement('div');
@@ -310,12 +319,16 @@ function renderDadi() {
         });
         if (state.diceHistory.length > 20) state.diceHistory.pop();
         if (_campaignDb && state.currentUser) {
-          _campaignDb.ref('diceRolls').push({
+          saveDiceRoll({
             value: total,
             diceType: faces,
-            username: state.currentUser.username,
-            timestamp: firebase.database.ServerValue.TIMESTAMP,
+            rolls: rolls,
+            formula: formula,
+            important: importantRoll.checked,
+            critical: faces === 20 && rolls.includes(20),
+            failure: faces === 20 && rolls.includes(1) && !rolls.includes(20),
           });
+          importantRoll.checked = false;
         }
         updateDiceHistory(histList);
         return;
@@ -357,12 +370,17 @@ function renderDadi() {
     if (state.diceHistory.length > 20) state.diceHistory.pop();
 
     if (_campaignDb && state.currentUser) {
-      _campaignDb.ref('diceRolls').push({
+      saveDiceRoll({
         value: sum,
         diceType: dtype,
-        username: state.currentUser.username,
-        timestamp: firebase.database.ServerValue.TIMESTAMP,
+        rolls: rollsArr,
+        formula: diceCount + 'd' + dtype + (diceMod ? (diceMod > 0 ? '+' : '') + diceMod : ''),
+        mode: diceRollMode,
+        important: importantRoll.checked,
+        critical: isCrit,
+        failure: isFail,
       });
+      importantRoll.checked = false;
     }
 
     updateDiceHistory(histList);
@@ -413,8 +431,10 @@ function updateDiceHistory(listEl) {
     return;
   }
   state.diceHistory.slice(0, 12).forEach(function (h) {
-    var isCrit = h.diceType === 20 && h.value === 20;
-    var isFail = h.diceType === 20 && h.value === 1;
+    var isCrit =
+      h.critical === true || (h.critical === undefined && h.diceType === 20 && h.value === 20);
+    var isFail =
+      h.failure === true || (h.failure === undefined && h.diceType === 20 && h.value === 1);
     var item = document.createElement('div');
     item.className = 'dice-history-item';
     var valEl = document.createElement('div');

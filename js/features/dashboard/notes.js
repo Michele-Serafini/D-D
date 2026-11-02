@@ -94,9 +94,13 @@ var MasterDashboardNotes = (function () {
     model.saving = true;
     model.status = 'Salvataggio…';
     notify();
-    pending = Promise.resolve().then(function () {
-      return ref.set(text);
-    });
+    pending = Promise.resolve()
+      .then(function () {
+        return ref.set(text);
+      })
+      .then(function () {
+        return SessionJournal.recordNotes(text);
+      });
     try {
       await pending;
       if (revision === savedRevision) {

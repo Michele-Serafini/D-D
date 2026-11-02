@@ -141,6 +141,10 @@ test('simultaneous purchases retry stale versions and repeated operation IDs onl
     },
   });
   vm.runInContext(fs.readFileSync('js/features/shop/commerce-model.js', 'utf8'), ctx);
+  ctx.SessionJournal = {
+    active: null,
+    commit: (changes) => ctx._campaignDb.ref('').update(changes),
+  };
   vm.runInContext(fs.readFileSync('js/features/shop/commerce-service.js', 'utf8'), ctx);
   const service = ctx.CommerceService;
   service.ready = true;

@@ -2349,6 +2349,15 @@
       }, 420);
 
       var roll = Math.floor(Math.random() * 20) + 1;
+      if (window.saveDiceRoll)
+        window.saveDiceRoll({
+          value: roll,
+          diceType: 20,
+          rolls: [roll],
+          formula: 'd20 rapido',
+          critical: roll === 20,
+          failure: roll === 1,
+        });
       var label = '🎲 D20: ' + roll;
       if (roll === 20) {
         label = '🌟 20 NATURALE! CRITICO!';

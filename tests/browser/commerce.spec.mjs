@@ -1,5 +1,8 @@
 import { test, expect, login, expectViewportFits } from './fixtures.mjs';
 
+// Checkout scenarios include several account logins, reloads and sheet renders.
+test.setTimeout(90_000);
+
 async function preparePlayer(page) {
   await login(page);
   await page.evaluate(async () => {

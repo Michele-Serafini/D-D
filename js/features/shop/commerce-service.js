@@ -133,7 +133,24 @@ var CommerceService = {
       changes[receiptPath] = result.receipt;
       try {
         // The database validates version + 1. Conflicting purchases retry on fresh balances.
-        await _campaignDb.ref('').update(changes);
+        var entries =
+          operation.kind === 'reward'
+            ? [
+                {
+                  session: SessionJournal.active,
+                  data: JournalModel.reward(
+                    target.username,
+                    target.id,
+                    id,
+                    operation,
+                    result.receipt,
+                    target.sheet &&
+                      (target.sheet.nomePersonaggio || target.sheet.nome || target.sheet.eroe)
+                  ),
+                },
+              ]
+            : [];
+        await SessionJournal.commit(changes, entries);
         return id;
       } catch (error) {
         if (attempt === 4 || !/permission|denied/i.test(error.message || error.code || ''))

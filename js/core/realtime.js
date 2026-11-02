@@ -28,11 +28,13 @@ function setupRealtimeListeners() {
   setupRealtimeListeners.started = true;
   SheetStore.connect();
   CommerceService.connect();
+  SessionJournal.connect();
 
   // ---- INIZIATIVA ----
   _campaignDb.ref('state/iniziativa').on('value', function (snap) {
     if (_localWrite.iniziativa) return;
     var v = snap.val();
+    state.encounter = (v && v.encounter) || null;
     if (v && v.combatants && Array.isArray(v.combatants) && v.combatants.length > 0) {
       var existing = new Map(
         state.combatants.map(function (combatant) {
@@ -1289,35 +1291,46 @@ function loadNpc() {
   input.click();
 }
 
-function fbSaveIniziativa(immediate) {
+function fbSaveIniziativa(immediate, entries) {
   refreshCombatControls();
   // Salva immediatamente (azioni esplicite) o con debounce (input testo)
   if (immediate) {
     clearTimeout(_fbSaveIniziativaTimer);
-    _doFbSaveIniziativa();
+    return _doFbSaveIniziativa(entries);
   } else {
     if (_fbSaveIniziativaTimer) clearTimeout(_fbSaveIniziativaTimer);
     _fbSaveIniziativaTimer = setTimeout(_doFbSaveIniziativa, 600);
   }
 }
 
-function _doFbSaveIniziativa() {
+function _doFbSaveIniziativa(entries) {
   _fbSaveIniziativaTimer = null;
   if (!_campaignDb) return;
   _localWrite.iniziativa = true;
   var toSave = state.combatants.length > 0 ? state.combatants : null;
-  _campaignDb.ref('state/iniziativa').set(
+  var saving = SessionJournal.commit(
     {
-      combatants: toSave,
-      round: state.round,
-      activeIndex: state.activeIndex,
+      'state/iniziativa': {
+        combatants: toSave,
+        round: state.round,
+        activeIndex: state.activeIndex,
+        encounter: state.encounter || null,
+      },
     },
+    entries
+  );
+  saving.then(
     function () {
       setTimeout(function () {
         _localWrite.iniziativa = false;
       }, 200);
+    },
+    function () {
+      _localWrite.iniziativa = false;
+      notify('Salvataggio del combattimento non riuscito.', 'err');
     }
   );
+  return saving;
 }
 function fbSaveCaos() {
   if (!_campaignDb) return;

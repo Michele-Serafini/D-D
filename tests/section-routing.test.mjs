@@ -8,6 +8,7 @@ const source = readAppSource();
 const route = source.match(/function renderActiveSection\(\) \{[\s\S]*?\n\}/)[0];
 const names = [
   'Dashboard',
+  'SessionJournal',
   'Commerce',
   'Emporio',
   'Iniziativa',
@@ -45,7 +46,14 @@ function context(dm) {
 test('players cannot render master sections; sheet view and shared sections retain their routes', () => {
   const player = context(false),
     dm = context(true);
-  for (const section of ['dashboard', 'worldbuilding', 'storia', 'archivio', 'schedepg']) {
+  for (const section of [
+    'dashboard',
+    'diario',
+    'worldbuilding',
+    'storia',
+    'archivio',
+    'schedepg',
+  ]) {
     player.state.section = section;
     assert.equal(player.renderActiveSection().kind, 'Dadi');
     dm.state.section = section;

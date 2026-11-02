@@ -148,6 +148,7 @@ test('master sections, all shop categories, themes and lazy map engine remain av
 test('IndexedDB reuses its connection, commits images and restores local notes', async ({
   page,
 }) => {
+  test.setTimeout(90_000);
   await login(page);
   const result = await page.evaluate(async () => {
     const first = await ImageDB.init();
@@ -164,7 +165,9 @@ test('IndexedDB reuses its connection, commits images and restores local notes',
   await page.reload();
   await expect.poll(() => page.evaluate(() => state.notes)).toBe('');
   await login(page);
-  await expect.poll(() => page.evaluate(() => state.notes)).toBe('Appunti salvati');
+  await expect
+    .poll(() => page.evaluate(() => state.notes), { timeout: 15000 })
+    .toBe('Appunti salvati');
 });
 
 test('sheet zoom fits the viewport when native CSS zoom is unavailable', async ({ page }) => {

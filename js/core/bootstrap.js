@@ -19,6 +19,7 @@ try {
       storiaFlushSave();
       if (_schedaSaveTimer) fbSaveScheda(true);
       MasterDashboardNotes.flush().catch(function () {});
+      SessionJournal.flush();
     }
     window.addEventListener('beforeunload', flushPendingWrites);
     window.addEventListener('pagehide', flushPendingWrites);
