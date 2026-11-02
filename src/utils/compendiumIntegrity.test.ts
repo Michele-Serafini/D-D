@@ -145,14 +145,17 @@ test('Fair Dice Rolls (No Account Bias), Silent Dice, 10-Face 3D Die, and Empori
     '3D die faces hide backfaces to prevent z-fighting'
   );
 
-  // 4. Floating background lights & FX toggle button (top bar + sidebar)
+  // 4. Background effects and one FX control in account settings
   assert.ok(
     animJs.includes('sium-floating-fireflies'),
     'Floating background fireflies layer present'
   );
   assert.ok(animCss.includes('.sium-firefly-orb'), 'Floating firefly orb CSS present');
-  assert.ok(animJs.includes('createTopControlsBar'), 'Top FX toggle control bar present');
-  assert.ok(appJs.includes('sium-fx-toggle-btn'), 'Sidebar FX toggle button present in js/app.js');
+  assert.ok(
+    fs.readFileSync('js/ui/account-panel.js', 'utf8').includes('sium-fx-toggle-btn'),
+    'FX toggle remains available in account settings'
+  );
+  assert.ok(animJs.includes('toggleFx: toggleFx'), 'The shared FX implementation remains exported');
 
   // 5. Emporio and Incantesimi Aggiuntivi click & modal animations
   assert.ok(
@@ -202,20 +205,12 @@ test('Theme Selector Button (Dark / Light / Halloween) & Halloween Theme (Dark B
   const themeCss = fs.readFileSync('css/theme.css', 'utf8').replaceAll("'", '"');
   const animCss = fs.readFileSync('css/animations.css', 'utf8');
 
-  // 1. Theme Selector button & menu in top bar and sidebar
-  assert.ok(
-    animJs.includes('sium-theme-picker-btn'),
-    'Theme Picker button present in js/animations.js'
-  );
-  assert.ok(
-    animJs.includes('sium-theme-picker-menu'),
-    'Theme Picker popover menu present in js/animations.js'
-  );
-  assert.ok(
-    appJs.includes('sium-theme-picker-btn'),
-    'Theme Picker button present in sidebar footer in js/app.js'
-  );
-  assert.ok(appJs.includes('window.setAppTheme'), 'setAppTheme helper present in js/app.js');
+  // Theme controls live in one account dialog; fixed duplicate bars are gone.
+  const accountJs = fs.readFileSync('js/ui/account-panel.js', 'utf8');
+  assert.ok(accountJs.includes('Tema del sito'), 'Account settings contain the theme selector');
+  assert.ok(!animJs.includes('sium-top-controls'), 'No duplicate floating toolbar');
+  assert.ok(appJs.includes('account-settings-button'), 'Sidebar has a single settings entry');
+  assert.ok(appJs.includes('window.setAppTheme'), 'Central theme setter remains available');
 
   // 2. Halloween palette (abyssal black, dark gothic purple, pumpkin orange)
   assert.ok(
@@ -335,10 +330,10 @@ test('Theme Selector Button (Dark / Light / Halloween) & Halloween Theme (Dark B
   );
   assert.ok(appJs.includes("'easter'"), 'Easter theme persisted and supported in js/app.js');
 
-  // 7. Bottom-right controls positioning & Extra Counter immediate delete (no iframe-blocked confirm())
+  // 7. No fixed control overlay; extra counters still delete immediately.
   assert.ok(
-    themeCss.includes('bottom: 0.85rem;'),
-    'Theme & animation controls positioned at bottom-right so they do not cover Scheda PG buttons'
+    !themeCss.includes('.sium-top-controls'),
+    'The redundant floating controls have been removed'
   );
   assert.ok(
     appJs.includes("notify('Contatore extra rimosso.')"),

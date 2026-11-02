@@ -2,6 +2,35 @@
 
 Compendium per D&D con negozio, combattimento, mappe, libri, regia sonora e schede personaggio multi-sistema.
 
+## Contenuti segreti e rivelabili
+
+Nel menu **Contenuti e segreti**, il master prepara luoghi, NPC, immagini e indizi.
+**Salva bozza** conserva il contenuto riservato; **Rivela ai giocatori** pubblica
+una copia nella sezione **Contenuti rivelati** degli altri partecipanti. Le note
+segrete del master sono escluse dalla copia condivisa, anche dopo la rivelazione.
+
+Le modifiche a una bozza già rivelata restano private finché il master preme
+**Aggiorna per i giocatori**. **Nascondi ai giocatori** ritira la copia pubblicata
+senza cancellare la bozza; **Elimina** rimuove entrambe. L’aggiornamento è in tempo
+reale per chi ha aperto la sezione. I contenuti sono separati per campagna.
+
+Le immagini si possono caricare dal dispositivo o indicare con un URL HTTPS.
+Gli upload vengono ridimensionati a 1600 pixel e compressi in JPEG, conservati
+nel database della campagna; non dipendono dall’archivio locale del master.
+
+I moduli sono raccolti in `js/features/reveals/`. Le regole del database separano
+`secretContent` (solo master) da `revealedContent` (partecipanti); la copia
+pubblicata deve coincidere con una revisione salvata e non ammette campi privati.
+Le bozze modificate contemporaneamente richiedono di riaprire l’ultima versione.
+
+## Account, temi e animazioni
+
+Il pulsante **Account e impostazioni**, all’inizio della sidebar, apre l’unico
+pannello per profilo, password, sei temi, animazioni e **Esci e cambia account**.
+La stessa area ospita il **D20 rapido**. Sono state rimosse la barra flottante
+tema/animazioni, la coppia ingranaggio/badge e i pulsanti duplicati di logout.
+Su mobile i comandi sono nel menu laterale e non coprono schede o altri contenuti.
+
 ## Storico e ripristino delle schede
 
 La voce **Storico e ripristino**, disponibile anche sopra ogni scheda, mostra chi
@@ -248,7 +277,7 @@ Apri **`css/variables.css`**: tutte le scelte cromatiche e tipografiche sono rac
 - **Cerimonia di Login ("Portale Runico & Doppio Battente")**: definita in `js/ui/account-panel.js` (`playLoginPortalCeremony`) e in `css/animations.css` (`.sium-login-portal`, `.portal-door-left`, `.portal-door-right`).
 - **Arena Dadi 3D Poliedrica**: nella sezione **Lanciatore Dadi** (`renderDadi` in `js/features/dice.js` + `build3DDieElement` in `js/animations.js`) tutti i dadi (`d4, d6, d8, d10, d12, d20, d100`) vengono lanciati in 3D con rimbalzo fisico, ombra dinamica sul velluto e onda d'urto runica all'impatto.
 - **Transizioni al Click sulle Sezioni**: ogni volta che clicchi su una sezione del menu laterale, compare l'**Araldo Runico** della sezione (`SECTION_HERALDS` in `js/animations.js`), la pagina si srotola in 3D (`siumSectionUnroll3D`) e tutti gli elementi entrano con animazione scaglionata (`sium-reveal`).
-- **Pulsante Rapido `✦ FX ON / OFF`**: presente nella barra in alto a destra e nel footer della sidebar per disattivare gli effetti pesanti su dispositivi lenti.
+- **Animazioni ON / OFF**: nel pannello **Account e impostazioni**, per disattivare gli effetti pesanti sui dispositivi lenti.
 
 ---
 

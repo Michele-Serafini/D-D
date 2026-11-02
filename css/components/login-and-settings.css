@@ -644,63 +644,6 @@
   background: var(--gold-bright);
 }
 
-/* Bottone ingranaggio in alto a sinistra */
-.gear-btn {
-  position: fixed;
-  top: 0.75rem;
-  left: 0.75rem;
-  z-index: 500;
-  width: 38px;
-  height: 38px;
-  border-radius: 50%;
-  background: var(--bg-panel-glass);
-  border: 1px solid var(--border-gold);
-  color: var(--gold-dim);
-  cursor: pointer;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  transition: all 0.2s ease;
-  backdrop-filter: blur(4px);
-}
-.gear-btn:hover {
-  color: var(--gold-bright);
-  transform: rotate(30deg);
-}
-.gear-btn svg {
-  width: 17px;
-  height: 17px;
-}
-
-/* Badge utente corrente */
-.user-badge {
-  position: fixed;
-  top: 0.75rem;
-  left: 3.2rem;
-  z-index: 500;
-  font-family: 'Cinzel', serif;
-  font-size: 9px;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.12em;
-  color: var(--gold-dim);
-  background: var(--bg-panel-glass);
-  border: 1px solid var(--border-subtle);
-  border-radius: 20px;
-  padding: 0.25rem 0.65rem;
-  backdrop-filter: blur(4px);
-  display: flex;
-  align-items: center;
-  gap: 0.4rem;
-}
-.user-badge .online-dot {
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background: #80e890;
-  animation: pulse 2s infinite;
-}
-
 /* Form creazione account */
 .create-account-form {
   background: var(--bg-card);
@@ -792,4 +735,31 @@
   color: var(--text-muted);
   background: var(--bg-card);
   transition: all 0.2s ease;
+}
+
+/* Comandi account e preferenze: un solo punto di accesso nella sidebar. */
+.sidebar-account {
+  width: 100%;
+  overflow-wrap: anywhere;
+  white-space: normal;
+}
+.sidebar-tools {
+  display: grid;
+  gap: 0.4rem;
+  padding-bottom: 0.8rem;
+  border-bottom: 1px solid var(--border-subtle);
+}
+.settings-body label:has(select) {
+  display: grid;
+  gap: 0.5rem;
+}
+.settings-body select {
+  padding: 0.6rem;
+  width: 100%;
+  background: var(--bg-card);
+  color: var(--text-primary);
+  border: 1px solid var(--border-subtle);
+}
+.settings-body > .sium-fx-toggle-btn {
+  margin-top: 0.6rem;
 }

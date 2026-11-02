@@ -70,51 +70,11 @@ Object.assign(UserManager, {
     }, duration);
   },
   renderUserBadge: function () {
-    var ex = document.getElementById('user-badge-el');
-    if (ex) ex.remove();
-    var ex2 = document.getElementById('gear-btn-el');
-    if (ex2) ex2.remove();
-
+    document.getElementById('user-badge-el')?.remove();
+    document.getElementById('gear-btn-el')?.remove();
+    var button = document.getElementById('account-settings-button');
     var cu = this.getCurrentUser();
-    if (!cu) return;
-
-    var self = this;
-
-    // Pulsante Impostazioni (Ingranaggio)
-    var gear = document.createElement('button');
-    gear.type = 'button';
-    gear.className = 'gear-btn';
-    gear.id = 'gear-btn-el';
-    gear.setAttribute('aria-label', 'Impostazioni Account e Party');
-    gear.innerHTML = typeof ICON !== 'undefined' && ICON.gear ? ICON.gear : '⚙';
-    gear.title = 'Impostazioni Account & Gestione Party';
-    gear.onclick = function () {
-      self.renderSettingsPanel();
-    };
-    document.body.appendChild(gear);
-
-    // Badge Utente Attivo
-    var badge = document.createElement('button');
-    badge.type = 'button';
-    badge.className = 'user-badge';
-    badge.id = 'user-badge-el';
-    badge.style.cursor = 'pointer';
-    var roleText = this.isAdmin() ? 'Admin / DM' : this.isDM() ? 'Dungeon Master' : 'Giocatore';
-    badge.title = cu.username + ' (' + roleText + ') — Clicca per aprire le impostazioni utente';
-
-    var dot = document.createElement('span');
-    dot.className = 'online-dot';
-    badge.appendChild(dot);
-
-    var nameSpan = document.createElement('span');
-    var roleEmoji = this.isAdmin() ? ' 👑' : this.isDM() ? ' ⚔' : ' 🛡';
-    nameSpan.textContent = (cu.username || '') + roleEmoji;
-    badge.appendChild(nameSpan);
-
-    badge.onclick = function () {
-      self.renderSettingsPanel();
-    };
-    document.body.appendChild(badge);
+    if (button && cu) button.textContent = 'Account e impostazioni · ' + cu.username;
   },
   renderSettingsPanel: function () {
     var self = this;
@@ -186,16 +146,6 @@ Object.assign(UserManager, {
         '</div>' +
         '</div>';
 
-      // Cambio rapido account per test o cambio giocatore al volo
-      var switchBtn = document.createElement('button');
-      switchBtn.type = 'button';
-      switchBtn.className = 'sium-ctrl-btn';
-      switchBtn.textContent = 'Cambia Account';
-      switchBtn.onclick = function () {
-        ov.remove();
-        self.signOut();
-      };
-      profCard.appendChild(switchBtn);
       body.appendChild(profCard);
     }
 
@@ -334,7 +284,7 @@ Object.assign(UserManager, {
         }
         if (newP.length < 6) {
           pwMsg.style.color = '#f87171';
-          pwMsg.textContent = 'La nuova password deve avere almeno 4 caratteri.';
+          pwMsg.textContent = 'La nuova password deve avere almeno 6 caratteri.';
           pwMsg.style.display = 'block';
           return;
         }
@@ -375,31 +325,36 @@ Object.assign(UserManager, {
     themeLbl.textContent = 'Aspetto & Atmosfera';
     body.appendChild(themeLbl);
 
-    var themeRow = document.createElement('div');
-    themeRow.style.cssText = 'display:flex;gap:0.5rem;';
-    var curTheme = document.documentElement.getAttribute('data-theme') || 'dark';
+    var themeLabel = document.createElement('label');
+    themeLabel.textContent = 'Tema del sito';
+    var themeSelect = document.createElement('select');
     [
-      ['dark', '🌙 Taverna (Scuro)'],
-      ['light', '☀ Pergamena (Chiaro)'],
-    ].forEach(function (t) {
-      var tb = document.createElement('button');
-      tb.type = 'button';
-      tb.className = 'btn-secondary';
-      tb.style.cssText =
-        'flex:1;justify-content:center;font-size:11px;padding:0.45rem;' +
-        (curTheme === t[0] ? 'border-color:var(--gold);color:var(--gold-bright);' : '');
-      tb.textContent = t[1];
-      tb.onclick = function () {
-        if (typeof state !== 'undefined') state.theme = t[0];
-        document.documentElement.setAttribute('data-theme', t[0]);
-        if (typeof saveToStorage === 'function') saveToStorage();
-        if (typeof render === 'function') render();
-        ov.remove();
-      };
-      themeRow.appendChild(tb);
+      ['dark', 'Taverna (Scuro)'],
+      ['light', 'Pergamena (Chiaro)'],
+      ['halloween', 'Halloween'],
+      ['christmas', 'Natale'],
+      ['valentine', 'San Valentino'],
+      ['easter', 'Pasqua'],
+    ].forEach(function (entry) {
+      var option = document.createElement('option');
+      option.value = entry[0];
+      option.textContent = entry[1];
+      themeSelect.appendChild(option);
     });
-    body.appendChild(themeRow);
-
+    themeSelect.value = document.documentElement.getAttribute('data-theme') || 'dark';
+    themeSelect.onchange = function () {
+      window.SiumAnimations.setTheme(themeSelect.value);
+    };
+    themeLabel.appendChild(themeSelect);
+    body.appendChild(themeLabel);
+    var fx = document.createElement('button');
+    fx.type = 'button';
+    fx.className = 'btn-dark sium-fx-toggle-btn';
+    fx.innerHTML = '<span class="fx-label"></span>';
+    fx.onclick = function () {
+      window.SiumAnimations.toggleFx();
+    };
+    body.appendChild(fx);
     /* 5. Disconnessione */
     if (_authUser) {
       var logoutBtn = document.createElement('button');
@@ -407,7 +362,7 @@ Object.assign(UserManager, {
       logoutBtn.className = 'btn-blood';
       logoutBtn.style.cssText =
         'margin-top:0.65rem;width:100%;justify-content:center;padding:0.55rem;';
-      logoutBtn.textContent = '⤻ Disconnetti dal Compendium';
+      logoutBtn.textContent = 'Esci e cambia account';
       logoutBtn.onclick = function () {
         ov.remove();
         self.signOut();
@@ -418,5 +373,6 @@ Object.assign(UserManager, {
     box.appendChild(body);
     ov.appendChild(box);
     document.body.appendChild(ov);
+    window.SiumAnimations.onRender();
   },
 });

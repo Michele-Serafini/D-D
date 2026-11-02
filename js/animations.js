@@ -11,7 +11,7 @@
  *   6. Costruttore e Lanciatore Dadi Fisico 4D (Traiettoria, Rimbalzi, Tesseract & Numeri Dinamici)
  *   7. Cerimonia Reliquiario 3D dell'Emporio (Armi, Oggetti, Droghe, Veicoli, Cyber)
  *   8. Cerimonia Grimorio 3D degli Incantesimi Aggiuntivi (Sigillo Scuola & Canalizzazione)
- *   9. D20 Fluttuante di Accesso Rapido
+ *   9. D20 di Accesso Rapido nella sidebar
  * ============================================================================
  */
 (function () {
@@ -197,30 +197,6 @@
     return state.theme || 'dark';
   }
 
-  function getThemeMeta(themeId) {
-    if (themeId === 'easter') {
-      return { id: 'easter', icon: '🐰', label: 'Tema: Pasqua', shortLabel: 'Pasqua' };
-    }
-    if (themeId === 'valentine') {
-      return {
-        id: 'valentine',
-        icon: '💘',
-        label: 'Tema: S. Valentino',
-        shortLabel: 'S. Valentino',
-      };
-    }
-    if (themeId === 'christmas') {
-      return { id: 'christmas', icon: '🎄', label: 'Tema: Natale', shortLabel: 'Natale' };
-    }
-    if (themeId === 'halloween') {
-      return { id: 'halloween', icon: '🎃', label: 'Tema: Halloween', shortLabel: 'Halloween' };
-    }
-    if (themeId === 'light') {
-      return { id: 'light', icon: '☀️', label: 'Tema: Chiaro', shortLabel: 'Chiaro' };
-    }
-    return { id: 'dark', icon: '🌙', label: 'Tema: Scuro', shortLabel: 'Scuro' };
-  }
-
   function setTheme(newTheme) {
     if (
       newTheme !== 'dark' &&
@@ -257,56 +233,6 @@
     if (state.fxEnabled && !state.reducedMotion) {
       startParticles();
     }
-    updateThemeButtons();
-  }
-
-  function updateThemeButtons() {
-    var cur = getCurrentTheme();
-    var meta = getThemeMeta(cur);
-    var btns = document.querySelectorAll('.sium-theme-picker-btn');
-    btns.forEach(function (btn) {
-      btn.innerHTML =
-        '<span>' + meta.icon + '</span><span class="theme-btn-label">' + meta.label + '</span>';
-      btn.title =
-        'Scegli il tema del sito (Normale Scuro, Normale Chiaro, Halloween, Natale, San Valentino o Pasqua)';
-      btn.classList.toggle(
-        'active',
-        cur === 'halloween' || cur === 'christmas' || cur === 'valentine' || cur === 'easter'
-      );
-    });
-
-    var opts = document.querySelectorAll('.sium-theme-option');
-    opts.forEach(function (opt) {
-      var t = opt.getAttribute('data-theme-opt');
-      opt.classList.toggle('is-selected', t === cur);
-    });
-  }
-
-  function toggleThemePickerMenu(anchorEl) {
-    createTopControlsBar();
-    var menu = document.getElementById('sium-theme-picker-menu');
-    if (!menu) return;
-    var isOpen = menu.classList.contains('is-open');
-    if (isOpen) {
-      menu.classList.remove('is-open');
-      return;
-    }
-    updateThemeButtons();
-    if (anchorEl && anchorEl.getBoundingClientRect) {
-      var rect = anchorEl.getBoundingClientRect();
-      menu.style.top = 'auto';
-      menu.style.bottom = Math.max(12, window.innerHeight - rect.top + 8) + 'px';
-      if (rect.left > window.innerWidth * 0.5) {
-        /* Aperto dalla barra fissa in basso a destra */
-        menu.style.right = Math.max(12, window.innerWidth - rect.right) + 'px';
-        menu.style.left = 'auto';
-      } else {
-        /* Aperto dal pulsante nella sidebar in basso a sinistra */
-        menu.style.left = Math.max(12, Math.min(rect.left, window.innerWidth - 310)) + 'px';
-        menu.style.right = 'auto';
-      }
-    }
-    menu.classList.add('is-open');
   }
 
   function applyFxClass() {
@@ -2152,174 +2078,23 @@
   }
 
   /* ==========================================================================
-     8. BARRA SUPERIORE CON SELETTORE TEMA + SPEGNI/ACCENDI ANIMAZIONI + D20
+     8. D20 RAPIDO NELLA SIDEBAR
      ========================================================================== */
-  function createTopControlsBar() {
-    if (document.getElementById('sium-top-controls')) {
-      updateFxToggleButtons();
-      updateThemeButtons();
-      return;
-    }
-
-    var bar = document.createElement('div');
-    bar.id = 'sium-top-controls';
-    bar.className = 'sium-top-controls';
-    bar.setAttribute('role', 'toolbar');
-    bar.setAttribute('aria-label', 'Controlli tema e animazioni');
-
-    /* Bottone Selettore Tema (Normale Scuro / Normale Chiaro / Halloween / Natale / San Valentino / Pasqua) */
-    var curMeta = getThemeMeta(getCurrentTheme());
-    var themeBtn = document.createElement('button');
-    themeBtn.type = 'button';
-    themeBtn.id = 'sium-theme-picker-top';
-    themeBtn.className =
-      'sium-ctrl-btn sium-theme-picker-btn' +
-      (curMeta.id === 'halloween' ||
-      curMeta.id === 'christmas' ||
-      curMeta.id === 'valentine' ||
-      curMeta.id === 'easter'
-        ? ' active'
-        : '');
-    themeBtn.innerHTML =
-      '<span>' + curMeta.icon + '</span><span class="theme-btn-label">' + curMeta.label + '</span>';
-    themeBtn.onclick = function (e) {
-      e.stopPropagation();
-      toggleThemePickerMenu(themeBtn);
-    };
-    bar.appendChild(themeBtn);
-
-    /* Bottone Spegni/Accendi Animazioni */
-    var fxBtn = document.createElement('button');
-    fxBtn.type = 'button';
-    fxBtn.id = 'sium-fx-toggle-top';
-    fxBtn.className = 'sium-ctrl-btn sium-fx-toggle-btn' + (state.fxEnabled ? ' active' : '');
-    fxBtn.innerHTML = state.fxEnabled
-      ? '<span>✨</span><span class="fx-label">Animazioni: ON</span>'
-      : '<span>💤</span><span class="fx-label">Animazioni: OFF</span>';
-    fxBtn.onclick = function (e) {
-      e.stopPropagation();
-      toggleFx();
-    };
-    bar.appendChild(fxBtn);
-
-    document.body.appendChild(bar);
-
-    /* Menu Popover per la scelta del Tema */
-    if (!document.getElementById('sium-theme-picker-menu')) {
-      var menu = document.createElement('div');
-      menu.id = 'sium-theme-picker-menu';
-      menu.className = 'sium-theme-picker-menu';
-      menu.onclick = function (e) {
-        e.stopPropagation();
-      };
-
-      var hdr = document.createElement('div');
-      hdr.className = 'sium-theme-picker-header';
-      hdr.innerHTML = '<span>🎨 Scegli il Tema</span><span style="opacity:0.7;">✦</span>';
-      menu.appendChild(hdr);
-
-      var themeChoices = [
-        {
-          id: 'dark',
-          icon: '🌙',
-          title: 'Normale — Scuro',
-          sub: 'Taverna arcana, cuoio, oro e lucette',
-          swatches: ['#0b0907', '#221a14', '#d8b25c'],
-        },
-        {
-          id: 'light',
-          icon: '☀️',
-          title: 'Normale — Chiaro',
-          sub: 'Pergamena antica, bronzo e inchiostro',
-          swatches: ['#f3ead8', '#e8dcc4', '#8c5d19'],
-        },
-        {
-          id: 'halloween',
-          icon: '🎃',
-          title: 'Halloween Spettrale',
-          sub: 'Nero abissale, viola cupo & arancio con zucche, tombe e ragnatele',
-          swatches: ['#05020a', '#160a2c', '#a855f7'],
-        },
-        {
-          id: 'christmas',
-          icon: '🎄',
-          title: 'Natale Magico',
-          sub: 'Neve, Babbi Natale, alberi, pupazzi, biscotti, caramelle e lucette',
-          swatches: ['#061b12', '#ef233c', '#ffd56b'],
-        },
-        {
-          id: 'valentine',
-          icon: '💘',
-          title: 'San Valentino Amoroso',
-          sub: "Cupido, cuoricini fluttuanti, rose, pizzi e frecce d'amore",
-          swatches: ['#1d050f', '#ff4d8d', '#ffb3d1'],
-        },
-        {
-          id: 'easter',
-          icon: '🐰',
-          title: 'Pasqua Fiorita',
-          sub: 'Uova di Pasqua dipinte, coniglietti, pulcini, fiori e prato',
-          swatches: ['#0b2116', '#f472b6', '#facc15'],
-        },
-      ];
-
-      themeChoices.forEach(function (tc) {
-        var opt = document.createElement('button');
-        opt.type = 'button';
-        opt.className = 'sium-theme-option' + (getCurrentTheme() === tc.id ? ' is-selected' : '');
-        opt.setAttribute('data-theme-opt', tc.id);
-        opt.innerHTML =
-          '<span class="sium-theme-option-icon">' +
-          tc.icon +
-          '</span>' +
-          '<span class="sium-theme-option-info">' +
-          '<span class="sium-theme-option-title">' +
-          tc.title +
-          '</span>' +
-          '<span class="sium-theme-option-sub">' +
-          tc.sub +
-          '</span>' +
-          '</span>' +
-          '<span class="sium-theme-option-swatch">' +
-          tc.swatches
-            .map(function (c) {
-              return '<span style="background:' + c + ';"></span>';
-            })
-            .join('') +
-          '</span>';
-        opt.onclick = function (e) {
-          e.stopPropagation();
-          setTheme(tc.id);
-          menu.classList.remove('is-open');
-        };
-        menu.appendChild(opt);
-      });
-
-      document.body.appendChild(menu);
-
-      document.addEventListener('click', function () {
-        menu.classList.remove('is-open');
-      });
-    }
-
-    updateFxToggleButtons();
-    updateThemeButtons();
-  }
-
-  function createFloatingD20Roller() {
-    if (document.getElementById('sium-floating-d20')) return;
+  function createQuickD20() {
+    var host = document.querySelector('[data-quick-dice]');
+    if (!host || host.firstChild) return;
 
     var container = document.createElement('div');
-    container.id = 'sium-floating-d20';
+    container.id = 'quick-d20';
     container.style.cssText =
-      'position:fixed;bottom:1.25rem;left:1.25rem;z-index:900;display:flex;align-items:center;gap:0.6rem;';
+      'display:flex;align-items:center;flex-wrap:wrap;gap:0.6rem;margin-top:0.6rem;';
 
     var btn = document.createElement('button');
     btn.type = 'button';
     btn.setAttribute('aria-label', 'Lancia un dado D20 rapido');
     btn.title = 'Lancio rapido D20 (clicca per tirare!)';
     btn.style.cssText =
-      'width:48px;height:48px;border-radius:12px;background:linear-gradient(135deg,#231a12,#120d09);' +
+      'width:100%;min-height:42px;gap:0.6rem;border-radius:8px;background:linear-gradient(135deg,#231a12,#120d09);' +
       'border:1px solid rgba(216,178,92,0.55);color:#f5d98e;cursor:pointer;display:flex;align-items:center;' +
       'justify-content:center;box-shadow:0 8px 24px rgba(0,0,0,0.65),0 0 15px rgba(216,178,92,0.18);' +
       'transition:transform 0.25s ease,border-color 0.25s ease;';
@@ -2331,19 +2106,20 @@
       '<polyline points="3 7 12 12 12 22"></polyline>' +
       '<line x1="3" y1="17" x2="12" y2="12"></line>' +
       '<line x1="21" y1="17" x2="12" y2="12"></line>' +
-      '</svg>';
+      '</svg><span>D20 rapido</span>';
 
     var badge = document.createElement('div');
-    badge.id = 'sium-floating-d20-result';
+    badge.id = 'quick-d20-result';
+    badge.hidden = true;
     badge.style.cssText =
       'padding:0.35rem 0.75rem;border-radius:8px;background:rgba(15,12,9,0.94);border:1px solid rgba(216,178,92,0.5);' +
       'color:#f5d98e;font-family:var(--font-display);font-size:12px;font-weight:700;letter-spacing:0.08em;' +
       'box-shadow:0 6px 20px rgba(0,0,0,0.6);opacity:0;transform:translateX(-8px);pointer-events:none;' +
-      'transition:opacity 0.25s ease,transform 0.25s ease;white-space:nowrap;';
+      'transition:opacity 0.25s ease,transform 0.25s ease;white-space:normal;max-width:100%;overflow-wrap:anywhere;';
 
     var hideTimer = null;
     btn.addEventListener('click', function () {
-      btn.style.transform = 'rotate(360deg) scale(1.12)';
+      if (state.fxEnabled && !state.reducedMotion) btn.style.transform = 'scale(1.04)';
       setTimeout(function () {
         btn.style.transform = '';
       }, 420);
@@ -2373,19 +2149,21 @@
       }
 
       badge.textContent = label;
+      badge.hidden = false;
       badge.style.opacity = '1';
       badge.style.transform = 'translateX(0)';
 
       if (hideTimer) clearTimeout(hideTimer);
       hideTimer = setTimeout(function () {
         badge.style.opacity = '0';
+        badge.hidden = true;
         badge.style.transform = 'translateX(-8px)';
       }, 3600);
     });
 
     container.appendChild(btn);
     container.appendChild(badge);
-    document.body.appendChild(container);
+    host.appendChild(container);
   }
 
   /* ==========================================================================
@@ -2402,7 +2180,6 @@
       else if (state.fxEnabled && !state.reducedMotion) startParticles();
     });
     createAmbientLayers();
-    createTopControlsBar();
     if (state.fxEnabled && !state.reducedMotion) {
       startParticles();
     }
@@ -2410,7 +2187,7 @@
     initClickBurst();
     initCursorTrail();
     initScrollReveal();
-    createFloatingD20Roller();
+    createQuickD20();
   }
 
   if (document.readyState === 'loading') {
@@ -2422,9 +2199,9 @@
   window.SiumAnimations = {
     SECTION_HERALDS: SECTION_META,
     onRender: function () {
+      createQuickD20();
       scanAndRevealNewNodes();
       updateFxToggleButtons();
-      updateThemeButtons();
       populateFloatingEntities();
     },
     toggleFx: toggleFx,
@@ -2433,7 +2210,6 @@
     },
     setTheme: setTheme,
     onThemeChange: onThemeChange,
-    toggleThemePickerMenu: toggleThemePickerMenu,
     refreshReveal: scanAndRevealNewNodes,
     build3DDieElement: build3DDieElement,
     showSectionHerald: showSectionHerald,

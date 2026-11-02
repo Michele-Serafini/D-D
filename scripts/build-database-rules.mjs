@@ -4,6 +4,7 @@ import accountPolicy from '../config/accounts.json' with { type: 'json' };
 import { commerceRules } from './commerce-rules.mjs';
 import { journalRules } from './journal-rules.mjs';
 import { sheetHistoryRules } from './sheet-history-rules.mjs';
+import { revealRules } from './reveal-rules.mjs';
 
 // RTDB rules cannot declare helpers. Keep permission expressions here and generate JSON.
 export function buildDatabaseRules() {
@@ -152,6 +153,14 @@ export function buildDatabaseRules() {
     campaign,
   });
   rules.campaigns.$campaign.data.sheetHistory = history.history;
+  const reveals = revealRules({
+    master: `(${admin}) || (${campaignDM})`,
+    member: `(${admin}) || (${member})`,
+    actor: `auth.uid === ${adminUid} ? ${JSON.stringify(accountPolicy.adminUsername)} : ${name}`,
+    campaign,
+  });
+  rules.campaigns.$campaign.data.secretContent = reveals.secret;
+  rules.campaigns.$campaign.data.revealedContent = reveals.shared;
   rules.campaigns.$campaign.data.commerceRequests = {
     '.read': `(${admin}) || (${campaignDM})`,
     $name: { '.read': scopedOwner, $character: { $operation: commerce.request } },

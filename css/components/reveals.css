@@ -1,0 +1,91 @@
+.reveals-page {
+  padding-top: 2rem;
+  padding-bottom: 3rem;
+}
+.reveals-page [role='status'] {
+  min-height: 1.5rem;
+  overflow-wrap: anywhere;
+}
+.reveal-editor {
+  padding: 1.2rem;
+  margin: 1rem 0;
+  background: var(--bg-card);
+  border: 1px solid var(--border-gold);
+  border-radius: 0.6rem;
+}
+.reveal-editor[hidden] {
+  display: none;
+}
+.reveal-editor label {
+  display: grid;
+  gap: 0.35rem;
+  margin: 0.8rem 0;
+}
+.reveal-editor input,
+.reveal-editor select,
+.reveal-editor textarea,
+.reveal-filters input,
+.reveal-filters select {
+  width: 100%;
+  min-width: 0;
+  padding: 0.65rem;
+  background: var(--bg-deep);
+  color: var(--text-primary);
+  border: 1px solid var(--border-subtle);
+  border-radius: 0.3rem;
+  font: inherit;
+}
+.reveal-editor button {
+  margin: 0.3rem 0.4rem 0.3rem 0;
+}
+.reveal-filters {
+  display: flex;
+  gap: 0.6rem;
+  margin: 1.2rem 0;
+}
+.reveal-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 1fr));
+  gap: 1rem;
+  align-items: start;
+}
+.reveal-card {
+  padding: 1.1rem;
+  min-width: 0;
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: 0.6rem;
+  overflow-wrap: anywhere;
+}
+.reveal-card img {
+  display: block;
+  width: 100%;
+  max-height: 28rem;
+  object-fit: contain;
+  background: var(--bg-deep);
+  border-radius: 0.3rem;
+}
+.reveal-kind,
+.reveal-visibility {
+  color: var(--gold);
+  font-size: 0.85rem;
+}
+.reveal-text {
+  white-space: pre-wrap;
+}
+.reveal-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 1rem;
+}
+.reveal-image-preview {
+  width: 100%;
+  max-height: 20rem;
+  object-fit: contain;
+}
+@media (max-width: 600px) {
+  .reveal-filters {
+    flex-direction: column;
+  }
+}

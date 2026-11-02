@@ -9,6 +9,7 @@ const route = source.match(/function renderActiveSection\(\) \{[\s\S]*?\n\}/)[0]
 const names = [
   'Dashboard',
   'SessionJournal',
+  'RevealedContent',
   'SheetHistory',
   'Commerce',
   'Emporio',

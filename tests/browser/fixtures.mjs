@@ -283,7 +283,7 @@ export async function login(page, username = 'michele', admin = false) {
   if (admin) await expect(page.locator('#admin-panel')).toBeVisible();
   else {
     await expect
-      .poll(() => page.evaluate(() => window.state?.currentUser?.username))
+      .poll(() => page.evaluate(() => window.state?.currentUser?.username), { timeout: 15_000 })
       .toBe(username.toLowerCase());
     await expect(page.locator('#login-overlay')).toBeHidden();
     await page

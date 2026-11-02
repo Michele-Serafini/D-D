@@ -26,6 +26,11 @@ function renderSidebar() {
 
   var sections = [
     { id: 'dashboard', label: 'Dashboard del master', dmOnly: true, icon: ICON.swords },
+    {
+      id: 'contenuti',
+      label: isDM() ? 'Contenuti e segreti' : 'Contenuti rivelati',
+      icon: ICON.scroll,
+    },
     { id: 'diario', label: 'Diario della sessione', dmOnly: true, icon: ICON.scroll },
     { id: 'emporio', label: 'Emporio', icon: ICON.sword },
     { id: 'storico-schede', label: 'Storico e ripristino', icon: ICON.scroll },
@@ -189,8 +194,8 @@ function renderSidebar() {
   };
   sb.appendChild(tavoloItem);
 
-  var footer = document.createElement('div');
-  footer.className = 'sidebar-footer';
+  var tools = document.createElement('div');
+  tools.className = 'sidebar-tools';
 
   window.setAppTheme = function (newTheme, fromAnimEngine) {
     if (
@@ -209,7 +214,6 @@ function renderSidebar() {
       localStorage.setItem('theme', newTheme);
     } catch (e) {}
     saveToStorage();
-    render();
     if (
       !fromAnimEngine &&
       window.SiumAnimations &&
@@ -219,113 +223,18 @@ function renderSidebar() {
     }
   };
 
-  var footerControlsRow = document.createElement('div');
-  footerControlsRow.style.cssText =
-    'display:flex;align-items:center;justify-content:center;gap:0.45rem;width:100%;';
-
-  var tb = document.createElement('button');
-  tb.className = 'theme-toggle';
-  tb.title = 'Alterna Modalità Chiara / Scura';
-  tb.innerHTML = state.theme === 'light' ? ICON.moon : ICON.sun;
-  tb.onclick = function () {
-    var nextT = state.theme === 'dark' ? 'light' : 'dark';
-    window.setAppTheme(nextT);
+  var account = document.createElement('button');
+  account.type = 'button';
+  account.id = 'account-settings-button';
+  account.className = 'btn-dark sidebar-account';
+  account.textContent = 'Account e impostazioni · ' + state.currentUser.username;
+  account.onclick = function () {
+    UserManager.renderSettingsPanel();
   };
-  footerControlsRow.appendChild(tb);
-
-  var themePickerSidebarBtn = document.createElement('button');
-  themePickerSidebarBtn.type = 'button';
-  themePickerSidebarBtn.className =
-    'sium-ctrl-btn sium-theme-picker-btn' +
-    (state.theme === 'halloween' ||
-    state.theme === 'christmas' ||
-    state.theme === 'valentine' ||
-    state.theme === 'easter'
-      ? ' active'
-      : '');
-  themePickerSidebarBtn.style.cssText = 'flex:1;justify-content:center;padding:0.42rem 0.55rem;';
-  var tIcon =
-    state.theme === 'easter'
-      ? '🐰'
-      : state.theme === 'valentine'
-        ? '💘'
-        : state.theme === 'christmas'
-          ? '🎄'
-          : state.theme === 'halloween'
-            ? '🎃'
-            : state.theme === 'light'
-              ? '☀️'
-              : '🌙';
-  var tLabel =
-    state.theme === 'easter'
-      ? 'Tema: Pasqua'
-      : state.theme === 'valentine'
-        ? 'Tema: S. Valentino'
-        : state.theme === 'christmas'
-          ? 'Tema: Natale'
-          : state.theme === 'halloween'
-            ? 'Tema: Halloween'
-            : state.theme === 'light'
-              ? 'Tema: Chiaro'
-              : 'Tema: Scuro';
-  themePickerSidebarBtn.innerHTML =
-    '<span>' + tIcon + '</span><span class="theme-btn-label">' + tLabel + '</span>';
-  themePickerSidebarBtn.onclick = function (e) {
-    e.stopPropagation();
-    if (
-      window.SiumAnimations &&
-      typeof window.SiumAnimations.toggleThemePickerMenu === 'function'
-    ) {
-      window.SiumAnimations.toggleThemePickerMenu(themePickerSidebarBtn);
-    }
-  };
-  footerControlsRow.appendChild(themePickerSidebarBtn);
-  footer.appendChild(footerControlsRow);
-
-  var fxSidebarBtn = document.createElement('button');
-  var isFxOn = !(
-    window.SiumAnimations &&
-    typeof window.SiumAnimations.isFxEnabled === 'function' &&
-    !window.SiumAnimations.isFxEnabled()
-  );
-  fxSidebarBtn.type = 'button';
-  fxSidebarBtn.className = 'sium-ctrl-btn sium-fx-toggle-btn' + (isFxOn ? ' active' : '');
-  fxSidebarBtn.style.cssText =
-    'width:100%;margin-top:0.45rem;justify-content:center;padding:0.42rem 0.6rem;';
-  fxSidebarBtn.innerHTML = isFxOn
-    ? '<span>✨</span><span class="fx-label">Animazioni: ON</span>'
-    : '<span>💤</span><span class="fx-label">Animazioni: OFF</span>';
-  fxSidebarBtn.onclick = function () {
-    if (window.SiumAnimations && typeof window.SiumAnimations.toggleFx === 'function') {
-      window.SiumAnimations.toggleFx();
-    }
-  };
-  footer.appendChild(fxSidebarBtn);
-
-  /* Pulsante Logout \u2014 se loggato con Google */
-  if (_authUser) {
-    var logoutBtn = document.createElement('button');
-    logoutBtn.style.cssText =
-      "width:100%;margin-top:0.5rem;background:transparent;border:1px solid rgba(201,165,92,0.25);color:var(--gold-dim);font-family:'Cinzel',serif;font-size:10px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;padding:0.4rem 0.75rem;cursor:pointer;border-radius:3px;";
-    logoutBtn.textContent = '\u293B Disconnetti';
-    logoutBtn.onmouseenter = function () {
-      this.style.borderColor = 'var(--border-gold)';
-      this.style.color = 'var(--gold)';
-    };
-    logoutBtn.onmouseleave = function () {
-      this.style.borderColor = 'rgba(201,165,92,0.25)';
-      this.style.color = 'var(--gold-dim)';
-    };
-    logoutBtn.onclick = doSignOut;
-    footer.appendChild(logoutBtn);
-  }
-
-  var lab = document.createElement('div');
-  lab.className = 'font-display text-center';
-  lab.style.cssText =
-    'font-size:9px;color:var(--gold-dim);letter-spacing:0.18em;margin-top:0.5rem;';
-  lab.textContent = '\u269C OFFLINE READY \u269C';
-  footer.appendChild(lab);
-  sb.appendChild(footer);
+  tools.appendChild(account);
+  var dice = document.createElement('div');
+  dice.dataset.quickDice = '';
+  tools.appendChild(dice);
+  sb.insertBefore(tools, campaignButton);
   return sb;
 }
