@@ -120,11 +120,13 @@ test('account, theme and animation controls have one location and never float ab
   const settings = page.getByRole('dialog', { name: 'Impostazioni Compendium e Party' });
   await expect(settings.getByRole('button', { name: 'Esci e cambia account' })).toHaveCount(1);
   await expect(page.getByRole('button', { name: /Cambia Account|Disconnetti/ })).toHaveCount(0);
+  await page.getByRole('button', { name: 'Chiudi Impostazioni' }).click();
   for (const theme of ['light', 'dark', 'halloween', 'christmas', 'valentine', 'easter']) {
-    await settings.getByLabel('Tema del sito').selectOption(theme);
+    await page.getByLabel('Tema del sito', { exact: true }).selectOption(theme);
     await expect(page.locator('html')).toHaveAttribute('data-theme', theme);
   }
   await expect(page.getByLabel('Cerca contenuti')).toHaveValue('Filtro conservato');
+  await account.click();
   const fx = settings.locator('.sium-fx-toggle-btn');
   const before = await fx.getAttribute('aria-pressed');
   await fx.click();

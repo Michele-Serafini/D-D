@@ -763,3 +763,20 @@
 .settings-body > .sium-fx-toggle-btn {
   margin-top: 0.6rem;
 }
+
+.sidebar-theme {
+  display: grid;
+  gap: 0.4rem;
+  font-size: 0.85rem;
+  color: var(--gold);
+}
+.sidebar-theme select {
+  width: 100%;
+  min-width: 0;
+  padding: 0.6rem;
+  color: var(--text-primary);
+  background: var(--bg-card);
+  border: 1px solid var(--border-gold);
+  border-radius: 0.35rem;
+  font: inherit;
+}

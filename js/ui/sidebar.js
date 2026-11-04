@@ -209,6 +209,8 @@ function renderSidebar() {
       newTheme = 'dark';
     state.theme = newTheme;
     document.documentElement.setAttribute('data-theme', newTheme);
+    var picker = document.getElementById('site-theme');
+    if (picker) picker.value = newTheme;
     try {
       localStorage.setItem('sium_theme_mode', newTheme);
       localStorage.setItem('theme', newTheme);
@@ -222,6 +224,32 @@ function renderSidebar() {
       window.SiumAnimations.onThemeChange(newTheme);
     }
   };
+
+  var themeLabel = document.createElement('label');
+  themeLabel.className = 'sidebar-theme';
+  themeLabel.textContent = 'Tema del sito';
+  var themeSelect = document.createElement('select');
+  themeSelect.id = 'site-theme';
+  themeSelect.setAttribute('aria-label', 'Tema del sito');
+  [
+    ['dark', '🌙 Taverna (Scuro)'],
+    ['light', '☀️ Pergamena (Chiaro)'],
+    ['halloween', '🎃 Halloween'],
+    ['christmas', '🎄 Natale'],
+    ['valentine', '💘 San Valentino'],
+    ['easter', '🐰 Pasqua'],
+  ].forEach(function (entry) {
+    var option = document.createElement('option');
+    option.value = entry[0];
+    option.textContent = entry[1];
+    themeSelect.appendChild(option);
+  });
+  themeSelect.value = state.theme || 'dark';
+  themeSelect.onchange = function () {
+    window.SiumAnimations.setTheme(themeSelect.value);
+  };
+  themeLabel.appendChild(themeSelect);
+  tools.appendChild(themeLabel);
 
   var account = document.createElement('button');
   account.type = 'button';

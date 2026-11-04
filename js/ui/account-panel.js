@@ -325,28 +325,9 @@ Object.assign(UserManager, {
     themeLbl.textContent = 'Aspetto & Atmosfera';
     body.appendChild(themeLbl);
 
-    var themeLabel = document.createElement('label');
-    themeLabel.textContent = 'Tema del sito';
-    var themeSelect = document.createElement('select');
-    [
-      ['dark', 'Taverna (Scuro)'],
-      ['light', 'Pergamena (Chiaro)'],
-      ['halloween', 'Halloween'],
-      ['christmas', 'Natale'],
-      ['valentine', 'San Valentino'],
-      ['easter', 'Pasqua'],
-    ].forEach(function (entry) {
-      var option = document.createElement('option');
-      option.value = entry[0];
-      option.textContent = entry[1];
-      themeSelect.appendChild(option);
-    });
-    themeSelect.value = document.documentElement.getAttribute('data-theme') || 'dark';
-    themeSelect.onchange = function () {
-      window.SiumAnimations.setTheme(themeSelect.value);
-    };
-    themeLabel.appendChild(themeSelect);
-    body.appendChild(themeLabel);
+    var themeHelp = document.createElement('p');
+    themeHelp.textContent = 'I sei temi sono nel menu laterale, alla voce Tema del sito.';
+    body.appendChild(themeHelp);
     var fx = document.createElement('button');
     fx.type = 'button';
     fx.className = 'btn-dark sium-fx-toggle-btn';

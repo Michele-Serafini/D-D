@@ -207,7 +207,7 @@ test('Theme Selector Button (Dark / Light / Halloween) & Halloween Theme (Dark B
 
   // Theme controls live in one account dialog; fixed duplicate bars are gone.
   const accountJs = fs.readFileSync('js/ui/account-panel.js', 'utf8');
-  assert.ok(accountJs.includes('Tema del sito'), 'Account settings contain the theme selector');
+  assert.ok(appJs.includes('site-theme'), 'Sidebar contains the six-theme selector');
   assert.ok(!animJs.includes('sium-top-controls'), 'No duplicate floating toolbar');
   assert.ok(appJs.includes('account-settings-button'), 'Sidebar has a single settings entry');
   assert.ok(appJs.includes('window.setAppTheme'), 'Central theme setter remains available');
