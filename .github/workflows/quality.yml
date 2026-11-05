@@ -57,6 +57,8 @@ jobs:
     timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
+      - name: Align mounted settings with the container user
+        run: chown "$(id -u):$(id -g)" "$HOME"
       - name: Trust the mounted checkout for repository checks
         run: git config --global --add safe.directory "$GITHUB_WORKSPACE"
       - uses: actions/setup-node@v4
@@ -64,6 +66,16 @@ jobs:
           node-version: '24'
           cache: npm
       - run: npm ci
+      - name: Verify all browser runtimes before testing
+        run: |
+          node --input-type=module <<'JS'
+          import { chromium, firefox, webkit } from 'playwright';
+          for (const engine of [chromium, firefox, webkit]) {
+            const browser = await engine.launch();
+            await browser.close();
+            console.log(engine.name() + ' ready');
+          }
+          JS
       - run: npm run test:browsers
       - uses: actions/upload-artifact@v4
         if: failure()
