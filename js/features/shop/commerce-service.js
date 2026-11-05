@@ -74,6 +74,7 @@ var CommerceService = {
     if (target.username !== actor && !isDM()) throw new Error('Puoi usare soltanto le tue schede.');
     if (!/^[A-Za-z0-9_-]+$/.test(id)) throw new Error('Operazione non valida.');
     if (state.schedaAttivaId && !state.schedePGViewMode) await fbSaveScheda(true);
+    if (typeof OfflineSheets !== 'undefined') await OfflineSheets.requireSynced();
     var characterPath = 'schedePG/' + target.username + '/chars/' + target.id;
     var operationPath = 'commerceRequests/' + target.username + '/' + target.id + '/' + id;
     var receiptPath = 'commerceReceipts/' + target.username + '/' + target.id + '/' + id;

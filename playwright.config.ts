@@ -21,6 +21,6 @@ export default defineConfig({
       'npm run build -- --outDir dist-test --base /D-D/ && npm run preview -- --outDir dist-test --base /D-D/ --host 127.0.0.1 --port 4173 --strictPort',
     url: 'http://127.0.0.1:4173/D-D/',
     reuseExistingServer: false,
-    env: { FIREBASE_WEB_API_KEY: 'browser-test-placeholder' },
+    env: { FIREBASE_WEB_API_KEY: 'browser-test-placeholder', DD_BROWSER_TEST: '1' },
   },
 });

@@ -9,7 +9,12 @@ export default defineConfig(({ mode }) => {
   return {
     publicDir: false as const,
     css: { transformer: 'lightningcss', lightningcss: cssCompilerOptions },
-    plugins: [staticAssets(process.cwd(), { firebaseApiKey })],
+    plugins: [
+      staticAssets(process.cwd(), {
+        firebaseApiKey,
+        browserTest: process.env.DD_BROWSER_TEST === '1',
+      }),
+    ],
     server: {
       // HMR is disabled in AI Studio via DISABLE_HMR env var.
       // Do not modify—file watching is disabled to prevent flickering during agent edits.

@@ -7,13 +7,15 @@ var SheetHistory = (function () {
       history: 'sheetHistory/' + username + '/' + id,
     };
   }
-  async function read(username, id) {
+  async function read(username, id, fresh) {
     var path = paths(username, id);
     for (var attempt = 0; attempt < 5; attempt++) {
-      var snapshots = await Promise.all([
-        _campaignDb.ref(path.sheet).once('value'),
-        _campaignDb.ref(path.history + '/head').once('value'),
-      ]);
+      var snapshots = await Promise.all(
+        [path.sheet, path.history + '/head'].map(function (key) {
+          var ref = _campaignDb.ref(key);
+          return fresh && typeof ref.get === 'function' ? ref.get() : ref.once('value');
+        })
+      );
       var sheet = snapshots[0].val(),
         head = snapshots[1].val() || { version: 0 };
       // The two reads can straddle another editor's commit. Never audit a stale "before".
@@ -22,10 +24,10 @@ var SheetHistory = (function () {
     }
     throw new Error('La scheda è cambiata durante la lettura. Riprova.');
   }
-  function record(username, id, before, after, head, kind, source) {
+  function record(username, id, before, after, head, kind, source, revisionId) {
     var delta = SheetHistoryModel.diff(before, after);
     if (!Object.keys(delta.after).length) return null;
-    var revision = 'r_' + crypto.randomUUID(),
+    var revision = revisionId || 'r_' + crypto.randomUUID(),
       at = firebase.database.ServerValue.TIMESTAMP;
     var entry = {
       version: (head.version || 0) + 1,
@@ -68,9 +70,9 @@ var SheetHistory = (function () {
     options = options || {};
     return serial(username, id, async function () {
       for (var attempt = 0; attempt < 5; attempt++) {
-        var current = await read(username, id);
+        var current = await read(username, id, options.expected !== undefined);
         if (!current.sheet && current.head.version) throw new Error('La scheda è stata eliminata.');
-        if (options.expected && (current.head.revision || '') !== options.expected)
+        if (options.expected !== undefined && (current.head.revision || '') !== options.expected)
           throw new Error(
             'La scheda è cambiata. Aggiorna lo storico e controlla le nuove modifiche.'
           );
@@ -83,7 +85,8 @@ var SheetHistory = (function () {
           after,
           current.head,
           options.kind,
-          options.source
+          options.source,
+          options.revision
         );
         if (!changes) return current.sheet;
         var path = paths(username, id);
@@ -98,7 +101,7 @@ var SheetHistory = (function () {
           return after;
         } catch (error) {
           if (
-            options.expected ||
+            options.expected !== undefined ||
             attempt === 4 ||
             !/permission|denied/i.test(error.message || error.code || '')
           )
@@ -109,6 +112,7 @@ var SheetHistory = (function () {
   }
   async function restore(username, id, entries, version, head) {
     if (state.schedaAttivaId && !state.schedePGViewMode) await fbSaveScheda(true);
+    if (typeof OfflineSheets !== 'undefined') await OfflineSheets.requireSynced();
     var current = await read(username, id);
     if (current.head.revision !== head.revision || !current.sheet)
       throw new Error('La scheda è cambiata. Aggiorna lo storico e controlla le nuove modifiche.');

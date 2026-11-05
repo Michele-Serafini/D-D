@@ -3,6 +3,10 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <script>
+      // A cached online document cannot load its SDKs without a connection.
+      if (!navigator.onLine) location.replace(new URL('offline.html', location.href).href);
+    </script>
     <title>Mercante Errante — Compendium &amp; VTT per D&amp;D</title>
     <meta
       name="description"
@@ -161,6 +165,7 @@
             ></div>
 
             <a href="admin.html" style="color: #cbb89d">Amministrazione database</a>
+            <a href="offline.html" style="color: #cbb89d">Consulta schede salvate offline</a>
           </div>
         </div>
 
@@ -271,6 +276,8 @@
     <script defer src="js/party-admin.js"></script>
 
     <!-- 3. Logica Applicativa Principale -->
+    <script defer src="js/pwa/offline-store.js"></script>
+    <script defer src="js/pwa/install.js"></script>
     <script defer src="js/app.js"></script>
 
     <!-- 4. Moduli Schede Personaggio Multi-Sistema -->

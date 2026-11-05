@@ -1,0 +1,107 @@
+:root {
+  --paper: #120d09;
+  --ink: #f5ead6;
+  --panel: #251d16;
+  --accent: #e4bf6a;
+  --line: #55442d;
+  color-scheme: dark;
+  font-family: system-ui, sans-serif;
+  background: var(--paper);
+  color: var(--ink);
+}
+* {
+  box-sizing: border-box;
+}
+body {
+  margin: 0;
+}
+main {
+  max-width: 950px;
+  margin: auto;
+  padding: max(1rem, env(safe-area-inset-top)) 1rem 3rem;
+}
+h1,
+h2 {
+  color: var(--accent);
+}
+label {
+  display: grid;
+  gap: 0.5rem;
+  margin: 1rem 0;
+}
+select,
+.button {
+  padding: 0.8rem;
+  background: var(--panel);
+  color: inherit;
+  border: 1px solid var(--accent);
+  border-radius: 0.4rem;
+  font: inherit;
+  max-width: 100%;
+}
+.button {
+  display: inline-block;
+  text-decoration: none;
+}
+section {
+  padding: 0.7rem;
+  margin: 0.6rem 0;
+  border: 1px solid var(--line);
+  border-radius: 0.4rem;
+  min-width: 0;
+}
+section section {
+  border-left: 2px solid var(--accent);
+  border-top: 0;
+  border-right: 0;
+  border-bottom: 0;
+}
+h3 {
+  margin: 0.2rem 0;
+  text-transform: capitalize;
+}
+p {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+[data-theme='light'] {
+  color-scheme: light;
+  --paper: #f3ead8;
+  --ink: #291e10;
+  --panel: #e8dcc4;
+  --accent: #8c5d19;
+  --line: #b69b6d;
+}
+[data-theme='halloween'] {
+  --paper: #05020a;
+  --ink: #f3e8ff;
+  --panel: #160a2c;
+  --accent: #b982ff;
+  --line: #7041a5;
+}
+[data-theme='christmas'] {
+  --paper: #061b12;
+  --ink: #f0fdf4;
+  --panel: #0d3022;
+  --accent: #ffd56b;
+  --line: #35724d;
+}
+[data-theme='valentine'] {
+  --paper: #1d050f;
+  --ink: #ffe4ed;
+  --panel: #380b20;
+  --accent: #ff8fb7;
+  --line: #994160;
+}
+[data-theme='easter'] {
+  --paper: #07160f;
+  --ink: #f2f5dc;
+  --panel: #153723;
+  --accent: #f5de65;
+  --line: #71914b;
+}

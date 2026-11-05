@@ -717,31 +717,55 @@ function _schedaFix(raw) {
   return out;
 }
 var _schedaSaveTimer = null;
+var _schedaPendingSaves = new Map();
+function flushPendingSchede() {
+  clearTimeout(_schedaSaveTimer);
+  _schedaSaveTimer = null;
+  var saves = Array.from(_schedaPendingSaves.values());
+  _schedaPendingSaves.clear();
+  return Promise.all(
+    saves.map(function (save) {
+      return save();
+    })
+  );
+}
 function fbSaveScheda(immediate) {
   if (
     !_campaignDb ||
     !state.currentUser ||
     !state.schedaAttivaId ||
     !state.scheda ||
-    Object.keys(state.scheda).length === 0
+    !Object.keys(state.scheda).length
   )
-    return;
+    return immediate === true ? flushPendingSchede() : undefined;
   clearTimeout(_schedaSaveTimer);
-  var _sid = state.schedaAttivaId;
+  var id = state.schedaAttivaId;
   var snapshot = JSON.parse(JSON.stringify(state.scheda));
   delete snapshot.id;
-  var username = state.currentUser.username;
-  var changes = SheetStore.prepare(username, _sid, snapshot);
-  var doSave = function () {
-    _schedaSaveTimer = null;
-    var saving = SheetStore.saveChanges(username, _sid, changes);
-    saving.catch(function () {
-      notify('Salvataggio della scheda non riuscito. Riprova.', 'err');
+  var username = state.currentUser.username,
+    key = username + '/' + id;
+  var changes = SheetStore.prepare(username, id, snapshot);
+  if (Object.keys(changes).length)
+    _schedaPendingSaves.set(key, function () {
+      var saving = SheetStore.saveChanges(username, id, changes);
+      saving.catch(function () {
+        notify('Salvataggio della scheda non riuscito. Riprova.', 'err');
+      });
+      return saving;
     });
-    return saving;
-  };
-  if (immediate === true) return doSave();
-  else _schedaSaveTimer = setTimeout(doSave, 600);
+  else _schedaPendingSaves.delete(key);
+  if (typeof OfflineSheets !== 'undefined') {
+    OfflineSheets.dirty = _schedaPendingSaves.size > 0;
+    if (!OfflineSheets.dirty) OfflineSheets.localError = '';
+    OfflineSheets.dirtyVersion = (OfflineSheets.dirtyVersion || 0) + 1;
+    OfflineSheets.notify();
+  }
+  if (immediate === true) return flushPendingSchede();
+  _schedaSaveTimer = _schedaPendingSaves.size
+    ? setTimeout(function () {
+        flushPendingSchede().catch(function () {});
+      }, 600)
+    : null;
 }
 function fbLoadSchede(cb) {
   if (!_campaignDb || !state.currentUser) {
@@ -807,10 +831,14 @@ function fbDeleteCompanion(charId, compId) {
 }
 function fbDeleteSchedaItem(id) {
   if (!_campaignDb || !state.currentUser) return;
-  clearTimeout(_schedaSaveTimer);
-  _schedaSaveTimer = null;
   var path = 'schedePG/' + state.currentUser.username + '/chars/' + id;
-  return SheetHistory.flush()
+  return flushPendingSchede()
+    .then(function () {
+      return SheetHistory.flush();
+    })
+    .then(function () {
+      if (typeof OfflineSheets !== 'undefined') return OfflineSheets.requireSynced();
+    })
     .then(function () {
       return _campaignDb.ref(path).remove();
     })

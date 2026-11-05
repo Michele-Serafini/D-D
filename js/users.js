@@ -476,6 +476,21 @@ var UserManager = {
   signOut: async function () {
     if (this._signingOut) return;
     this._signingOut = true;
+    if (typeof OfflineSheets !== 'undefined') {
+      try {
+        if (typeof _schedaSaveTimer !== 'undefined' && _schedaSaveTimer)
+          await this.withTimeout(fbSaveScheda(true));
+      } catch (_error) {
+        this._signingOut = false;
+        if (typeof notify === 'function')
+          notify(
+            'Salvataggio locale non riuscito. Controlla Telefono e offline prima di uscire.',
+            'err'
+          );
+        return;
+      }
+      await OfflineSheets.lock().catch(function () {});
+    }
     this.stopWatchingUsers();
     if (this._presenceRef && this._presenceHandler)
       this._presenceRef.off('value', this._presenceHandler);

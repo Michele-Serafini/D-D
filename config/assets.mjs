@@ -15,6 +15,8 @@ export const appSources = [
   'js/features/shop/tools.js',
   'js/features/sheets/history-model.js',
   'js/features/sheets/history-service.js',
+  'js/features/offline/service.js',
+  'js/features/offline/view.js',
   'js/features/sheets/history-view.js',
   'js/features/sheets/store.js',
   'js/features/shop/commerce-model.js',

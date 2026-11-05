@@ -15,6 +15,7 @@ function renderActiveSection() {
     dashboard: renderDashboard,
     diario: renderSessionJournal,
     contenuti: renderRevealedContent,
+    telefono: renderPhoneOffline,
     'storico-schede': renderSheetHistory,
     commercio: renderCommerce,
     emporio: renderEmporio,
@@ -125,6 +126,7 @@ function render() {
 
     var main = document.createElement('main');
     main.className = 'main-content';
+    main.appendChild(buildSheetSyncStatus());
     main.appendChild(renderActiveSection());
     contentWrap.appendChild(main);
 
@@ -174,6 +176,7 @@ function renderMain() {
   }
   cleanupActiveSection();
   main.innerHTML = '';
+  main.appendChild(buildSheetSyncStatus());
   main.appendChild(renderActiveSection());
 
   var sb = document.querySelector('.sidebar');

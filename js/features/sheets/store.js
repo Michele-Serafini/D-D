@@ -44,6 +44,8 @@ var SheetStore = (function () {
     return username + '/' + id;
   }
   function observe(username, id, raw) {
+    if (typeof OfflineSheets !== 'undefined' && OfflineSheets.ready)
+      raw = OfflineSheets.overlay(username, id, raw);
     raw = raw ? _schedaFix(raw) : raw;
     var token = key(username, id),
       before = baselines.get(token);
@@ -66,6 +68,10 @@ var SheetStore = (function () {
     }
   }
   function seed(username, sheet) {
+    if (typeof OfflineSheets !== 'undefined' && OfflineSheets.ready)
+      sheet = Object.assign(_schedaFix(OfflineSheets.overlay(username, sheet.id, sheet)), {
+        id: sheet.id,
+      });
     baselines.set(key(username, sheet.id), clone(sheet));
     return sheet;
   }
@@ -84,10 +90,22 @@ var SheetStore = (function () {
     // Advance the local baseline now so successive debounced edits only send their delta.
     var expected = applyPatch(clone(previous || {}), changes);
     baselines.set(token, expected);
-    return SheetHistory.save(username, id, changes).catch(function (error) {
-      if (baselines.get(token) === expected) baselines.set(token, previous);
-      throw error;
-    });
+    var saving =
+      typeof OfflineSheets !== 'undefined' && (OfflineSheets.ready || !OfflineSheets.connected)
+        ? OfflineSheets.stage(username, id, changes, previous)
+        : SheetHistory.save(username, id, changes);
+    return saving
+      .then(function (value) {
+        if (typeof OfflineSheets !== 'undefined' && !OfflineSheets.ready) {
+          OfflineSheets.dirty = false;
+          OfflineSheets.notify();
+        }
+        return value;
+      })
+      .catch(function (error) {
+        if (baselines.get(token) === expected) baselines.set(token, previous);
+        throw error;
+      });
   }
   function connect() {
     if (connect.started || !_campaignDb || !state.currentUser) return;
@@ -100,7 +118,11 @@ var SheetStore = (function () {
       });
       if (state.schedaLoaded)
         state.schedeList = Object.keys(chars).map(function (id) {
-          return Object.assign(_schedaFix(chars[id]), { id: id });
+          var raw =
+            typeof OfflineSheets !== 'undefined' && OfflineSheets.ready
+              ? OfflineSheets.overlay(username, id, chars[id])
+              : chars[id];
+          return Object.assign(_schedaFix(raw), { id: id });
         });
       subscribers.forEach(function (listener) {
         listener();

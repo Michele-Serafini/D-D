@@ -286,6 +286,7 @@ var CampaignManager = {
     }
     this.current = campaign;
     _campaignDb = createCampaignDatabase(id);
+    await OfflineSheets.connect();
     LS_KEY = this.storageKey();
     await new Promise(function (resolve) {
       loadFromStorageAsync(resolve);
@@ -309,13 +310,17 @@ var CampaignManager = {
       });
   },
   reloadForCampaign: async function (id) {
+    if (id === null && typeof OfflineSheets !== 'undefined') {
+      await OfflineStore.remove('snapshots', OfflineSheets.scope).catch(function () {});
+      await OfflineSheets.lock().catch(function () {});
+    }
     storiaFlushSave();
     if (id !== null) await UserManager.withTimeout(MasterDashboardNotes.flush());
     await flushStorage();
     if (id !== null) {
       // Flush debounced edits before the old page and its listeners are released.
-      if (_schedaSaveTimer) fbSaveScheda(true);
-      await UserManager.withTimeout(SheetHistory.flush());
+      if (_schedaSaveTimer) await fbSaveScheda(true);
+      if (OfflineSheets.connected) await UserManager.withTimeout(SheetHistory.flush());
       if (_fbSaveIniziativaTimer) {
         clearTimeout(_fbSaveIniziativaTimer);
         _doFbSaveIniziativa();
@@ -329,7 +334,7 @@ var CampaignManager = {
         clearTimeout(window._smSaveTimer);
         fbSaveStoriaMarkers();
       }
-      await UserManager.withTimeout(_campaignDb.flush());
+      if (OfflineSheets.connected) await UserManager.withTimeout(_campaignDb.flush());
     }
     var identity = firebase.auth().currentUser;
     try {
@@ -337,6 +342,11 @@ var CampaignManager = {
     } catch (_) {}
     // A fresh page releases every feature timer, map instance and cached sheet.
     location.reload();
+  },
+  watchConnection: function (handler) {
+    _db.ref('.info/connected').on('value', function (snapshot) {
+      handler(snapshot.val() === true);
+    });
   },
 };
 window.CampaignManager = CampaignManager;

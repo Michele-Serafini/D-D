@@ -10,6 +10,7 @@ const names = [
   'Dashboard',
   'SessionJournal',
   'RevealedContent',
+  'PhoneOffline',
   'SheetHistory',
   'Commerce',
   'Emporio',

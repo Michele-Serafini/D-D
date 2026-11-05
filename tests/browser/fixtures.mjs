@@ -12,6 +12,7 @@ export const test = base.extend({
   page: async ({ page }, use) => {
     // The simulated server lives in the test runner, not browser storage quotas.
     let serverSnapshot = null;
+    await page.exposeBinding('__loadTestDatabase', () => serverSnapshot);
     await page.exposeBinding('__persistTestDatabase', (_, data) => {
       serverSnapshot = data;
     });
@@ -51,6 +52,7 @@ export const test = base.extend({
         alessio: 'fixture-password',
       };
       const initialData = {
+        '.info': { connected: true },
         users,
         userAccess: Object.fromEntries(Object.keys(users).map((name) => [name, name])),
         meta: { partyResetVersion: '2026-10-26-party-v1', campaignMigration: { version: 1 } },
@@ -82,6 +84,8 @@ export const test = base.extend({
         Object.keys(data).forEach((key) => delete data[key]);
         Object.assign(data, snapshot);
       };
+      // Loading through a service worker can bypass request routing on WebKit.
+      const databaseReady = window.__loadTestDatabase().then(window.__restoreTestDatabase);
       const watchers = new Set();
       const value = (path) =>
         path
@@ -128,7 +132,8 @@ export const test = base.extend({
       function ref(path = '', query = {}) {
         return {
           key: path.split('/').at(-1),
-          once(event, success) {
+          async once(event, success) {
+            await databaseReady;
             let item = snapshot(path);
             if (query.orderKey || query.last) {
               let entries = Object.entries(value(path) || {});
@@ -143,7 +148,7 @@ export const test = base.extend({
           },
           on(event, callback) {
             watchers.add({ path, callback });
-            callback(snapshot(path));
+            databaseReady.then(() => callback(snapshot(path)));
             return callback;
           },
           off(event, callback) {
@@ -208,10 +213,11 @@ export const test = base.extend({
           ? identity(sessionStorage.getItem('__testIdentity'))
           : null,
         onAuthStateChanged(callback) {
-          queueMicrotask(() => callback(this.currentUser));
+          databaseReady.then(() => callback(this.currentUser));
           return () => {};
         },
         async signInWithEmailAndPassword(email, password) {
+          await databaseReady;
           const name = email.split('@')[0];
           if (passwords[name] !== password)
             throw Object.assign(new Error('Invalid credentials'), {
@@ -290,6 +296,6 @@ export async function login(page, username = 'michele', admin = false) {
       .locator('[data-campaign-id=principale]')
       .getByRole('button', { name: 'Entra', exact: true })
       .click();
-    await expect(page.locator('.main-content')).toBeVisible();
+    await expect(page.locator('.main-content')).toBeVisible({ timeout: 15000 });
   }
 }

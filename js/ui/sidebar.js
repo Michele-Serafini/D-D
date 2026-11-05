@@ -33,6 +33,7 @@ function renderSidebar() {
     },
     { id: 'diario', label: 'Diario della sessione', dmOnly: true, icon: ICON.scroll },
     { id: 'emporio', label: 'Emporio', icon: ICON.sword },
+    { id: 'telefono', label: 'Telefono e offline', icon: ICON.folder },
     { id: 'storico-schede', label: 'Storico e ripristino', icon: ICON.scroll },
     {
       id: 'commercio',

@@ -2,6 +2,45 @@
 
 Compendium per D&D con negozio, combattimento, mappe, libri, regia sonora e schede personaggio multi-sistema.
 
+## Installazione sul telefono e schede offline
+
+Apri **Telefono e offline** nel menu. Su Chrome/Edge puoi usare **Installa sul
+telefono** quando il browser propone l’installazione. Su iPhone/iPad apri il sito
+in Safari e scegli **Condividi → Aggiungi alla schermata Home**; sugli altri
+browser usa la voce di installazione del menu, se disponibile.
+
+Dall’app o dal browser in cui vuoi consultare le schede, accedi, entra nella
+campagna e premi **Prepara schede offline**. I giocatori salvano le proprie
+schede; i master possono salvare quelle della campagna. Prima di perdere la rete
+usa **Aggiorna schede offline** per una copia recente. La copia comprende dati,
+inventario e immagini già incorporate o presenti nella lavagna locale; le
+immagini ospitate su altri siti possono richiedere una connessione.
+
+Senza rete, riaprire il sito mostra un lettore autonomo in sola lettura, con data
+della copia e modifiche locali in attesa. Il lettore non richiede Firebase o font
+esterni. I dati sono conservati in IndexedDB sul dispositivo: usa solo telefoni
+personali. Un altro account non vede le copie dell’account precedente; uscire
+blocca l’accesso dal lettore finché non accedi nuovamente online.
+
+Le modifiche alle schede fatte nel sito aperto passano prima da una coda locale.
+La barra **Schede** distingue i dati sincronizzati da quelli sul dispositivo.
+La coda sopravvive a ricaricamenti e si svuota solo dopo la conferma di Firebase.
+Per sincronizzare dopo una riapertura offline, torna al sito con rete, accedi allo
+stesso account ed entra nella stessa campagna. Non serve ripetere la modifica.
+Se i campi sono cambiati anche online, **Telefono e offline** mostra un conflitto:
+puoi confrontare i valori, esportare la copia locale, mantenere quelli online
+oppure applicare esplicitamente i tuoi. Gli altri campi e gli acquisti restano
+intatti. Acquisti, ricompense, eliminazioni e ripristini richiedono connessione.
+La copia offline può essere rimossa quando non ci sono modifiche in attesa.
+
+Il service worker conserva solo le risorse del lettore (`scripts/pwa-assets.mjs`),
+con cache versionata e limitata al percorso del repository. Non conserva risposte
+Firebase, credenziali, pannello admin, cataloghi o bozze segrete. I moduli della
+coda e dell’interfaccia sono in `js/features/offline/`; l’archivio condiviso e il
+lettore indipendente sono in `js/pwa/`. Nessuna chiave o servizio aggiuntivo è
+necessario. Per i test browser, `DD_BROWSER_TEST=1` esclude gli SDK Firebase reali:
+il backend simulato viene ripristinato anche nelle pagine controllate dal worker.
+
 ## Contenuti segreti e rivelabili
 
 Nel menu **Contenuti e segreti**, il master prepara luoghi, NPC, immagini e indizi.
@@ -26,7 +65,8 @@ Le bozze modificate contemporaneamente richiedono di riaprire l’ultima version
 ## Account, temi e animazioni
 
 Il pulsante **Account e impostazioni**, all’inizio della sidebar, apre l’unico
-pannello per profilo, password, sei temi, animazioni e **Esci e cambia account**.
+pannello per profilo, password, animazioni e **Esci e cambia account**. I sei temi
+sono subito accessibili nella sidebar tramite **Tema del sito**.
 La stessa area ospita il **D20 rapido**. Sono state rimosse la barra flottante
 tema/animazioni, la coppia ingranaggio/badge e i pulsanti duplicati di logout.
 Su mobile i comandi sono nel menu laterale e non coprono schede o altri contenuti.

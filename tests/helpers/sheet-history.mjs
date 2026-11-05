@@ -28,7 +28,7 @@ export function historyContext(values, username = 'alice') {
         return {
           once: async () => {
             const value = read(path);
-            return { val: () => value };
+            return { val: () => value, exists: () => value !== null };
           },
           update: async (changes) => {
             for (const [key, value] of Object.entries(changes)) {
