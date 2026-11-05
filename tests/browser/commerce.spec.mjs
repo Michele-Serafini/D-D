@@ -80,7 +80,10 @@ test('purchase approval updates one inventory entry and the existing sheet coins
   await page.locator('.nav-item').filter({ hasText: 'Inventario e acquisti' }).click();
   await expect(page.locator('.commerce-order')).toContainText('In attesa');
   await login(page, 'sebastiano');
-  await page.getByRole('button', { name: 'Negozio e ricompense', exact: true }).click();
+  await page
+    .locator('.sidebar')
+    .getByRole('button', { name: 'Negozio e ricompense', exact: true })
+    .click();
   await page.getByRole('button', { name: 'Approva', exact: true }).click();
   await expect(page.locator('.commerce-order')).toContainText('Completata');
   const result = await page.evaluate(async () => {
@@ -175,7 +178,10 @@ test('master rewards update native currency fields and are isolated from other c
       .set({ schedaTipo: 'pokemon', nome: 'Allenatore', soldi: 5 })
   );
   await login(page, 'sebastiano');
-  await page.getByRole('button', { name: 'Negozio e ricompense', exact: true }).click();
+  await page
+    .locator('.sidebar')
+    .getByRole('button', { name: 'Negozio e ricompense', exact: true })
+    .click();
   await page.getByLabel('Personaggio del negozio').selectOption('michele/pokemon');
   await page.getByRole('button', { name: 'Assegna ricompensa', exact: true }).click();
   const dialog = page.getByRole('dialog', { name: 'Assegna ricompensa', exact: true });
@@ -198,6 +204,9 @@ test('master rewards update native currency fields and are isolated from other c
       .getByRole('button', { name: 'Entra', exact: true })
       .click(),
   ]);
-  await page.getByRole('button', { name: 'Negozio e ricompense', exact: true }).click();
+  await page
+    .locator('.sidebar')
+    .getByRole('button', { name: 'Negozio e ricompense', exact: true })
+    .click();
   await expect(page.locator('.commerce-order')).toHaveCount(0);
 });

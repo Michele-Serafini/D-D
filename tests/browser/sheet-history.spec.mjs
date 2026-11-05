@@ -35,7 +35,10 @@ test('the owner reviews exact changes, previews a restore and keeps both version
   await prepare(page);
   await page.locator('.nav-item').filter({ hasText: 'Scheda PG' }).click();
   await page.locator('.sium-pg-card').filter({ hasText: 'Aria' }).click();
-  await page.getByRole('button', { name: 'Storico e ripristino', exact: true }).click();
+  await page
+    .locator('.main-content')
+    .getByRole('button', { name: 'Storico e ripristino', exact: true })
+    .click();
   await expect(page.locator('.sheet-history-detail')).toContainText('Modifica di michele');
   await expect(page.locator('.sheet-history-detail')).toContainText('Nota originale');
   await expect(page.locator('.sheet-history-detail')).toContainText('Nota errata');
