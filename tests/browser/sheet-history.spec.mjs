@@ -22,6 +22,8 @@ async function prepare(page) {
       hpAttuali: '1',
       'annotations/note': 'Nota errata',
     });
+    // SheetStore confirms durable local storage before Firebase acknowledges the write.
+    await OfflineSheets.requireSynced();
   });
 }
 
