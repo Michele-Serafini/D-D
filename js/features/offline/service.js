@@ -69,8 +69,8 @@ var OfflineSheets = {
         return op.owner === owner && op.character === id;
       })
       .reduce(function (sheet, op) {
-        return OfflineModel.apply(sheet, op.patch);
-      }, OfflineModel.clone(raw));
+        return DataUtils.apply(sheet, op.patch);
+      }, DataUtils.clone(raw));
   },
   stage: async function (owner, id, patch, before) {
     if (!this.ready)
@@ -81,8 +81,8 @@ var OfflineSheets = {
       owner: owner,
       character: id,
       at: Date.now(),
-      patch: OfflineModel.clone(patch),
-      before: OfflineModel.clone(before || {}),
+      patch: DataUtils.clone(patch),
+      before: DataUtils.clone(before || {}),
       error: '',
       conflicts: [],
     };
@@ -134,7 +134,7 @@ var OfflineSheets = {
               op.conflicts = conflicts;
               op.remote = Object.fromEntries(
                 Object.keys(op.patch).map(function (path) {
-                  return [path, OfflineModel.value(_schedaFix(current.sheet), path)];
+                  return [path, DataUtils.value(_schedaFix(current.sheet), path)];
                 })
               );
               op.error = 'Alcuni campi sono cambiati online. Controlla prima di sincronizzare.';
@@ -210,12 +210,12 @@ var OfflineSheets = {
       if (
         op.remote &&
         Object.keys(op.patch).some(function (path) {
-          return !OfflineModel.equal(op.remote[path], OfflineModel.value(normalized, path));
+          return !DataUtils.equal(op.remote[path], DataUtils.value(normalized, path));
         })
       ) {
         op.remote = Object.fromEntries(
           Object.keys(op.patch).map(function (path) {
-            return [path, OfflineModel.value(normalized, path)];
+            return [path, DataUtils.value(normalized, path)];
           })
         );
         op.error =

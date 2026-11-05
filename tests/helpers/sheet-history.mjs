@@ -41,6 +41,7 @@ export function historyContext(values, username = 'alice') {
       },
     },
   });
+  vm.runInContext(fs.readFileSync('js/core/data.js', 'utf8'), ctx);
   for (const file of ['history-model', 'history-service'])
     vm.runInContext(fs.readFileSync('js/features/sheets/' + file + '.js', 'utf8'), ctx);
   return ctx;

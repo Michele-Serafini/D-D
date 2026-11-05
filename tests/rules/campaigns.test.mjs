@@ -73,6 +73,17 @@ test('campaign membership enforces isolation, scoped DM permissions and immediat
     await assertFails(update(ref(alice, 'users/alice'), { dmPriv: true }));
     await assertFails(get(ref(alice, 'state/notes')));
     await assertSucceeds(set(ref(dm1, 'campaigns/first/data/state/armi'), ['sword']));
+    await assertFails(set(ref(alice, 'campaigns/first/data/state/armi'), ['forbidden']));
+    await assertSucceeds(
+      set(ref(dm1, 'campaigns/first/data/state/incantesimiAggiuntivi'), [
+        { id: 'spell', nome: 'Luce' },
+      ])
+    );
+    await assertSucceeds(
+      set(ref(dm1, 'campaigns/first/data/state/incantesimiDeleted'), ['removed'])
+    );
+    await assertFails(set(ref(alice, 'campaigns/first/data/state/incantesimiAggiuntivi'), []));
+    await assertFails(set(ref(alice, 'campaigns/first/data/state/incantesimiDeleted'), []));
     await assertFails(get(ref(dm1, 'campaigns/second/data/state/notes')));
     await assertFails(set(ref(dm1, 'campaigns/second/members/dm1'), 'dm'));
     // A global DM can create a campaign, with membership and listing in one write.

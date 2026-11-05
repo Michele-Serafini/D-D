@@ -148,7 +148,7 @@ function renderEmporioArmiFuoco() {
     ';">ARMI DA FUOCO</div>';
   var hdrRight = document.createElement('div');
   hdrRight.style.cssText = 'display:flex;gap:0.75rem;flex-wrap:wrap;align-items:center;';
-  if (isAdmin()) {
+  if (isDM()) {
     var _subT = state.armiSubTab || 'armi';
     var addBtn = document.createElement('button');
     addBtn.style.cssText =
@@ -201,16 +201,7 @@ function renderEmporioArmiFuoco() {
     'width:100%;box-sizing:border-box;background:rgba(229,48,48,0.04);border:1px solid rgba(229,48,48,0.3);color:' +
     ACCENT +
     ";font-family:'Courier New',monospace;font-size:13px;padding:0.5rem 1rem;outline:none;";
-  srch.oninput = function () {
-    state.armiDaFuocoSearch = this.value;
-    renderMain();
-    var f = document.getElementById('srch-armifuoco');
-    if (f) {
-      f.focus();
-      var l = f.value.length;
-      f.setSelectionRange(l, l);
-    }
-  };
+  bindCatalogSearch(srch, 'armiDaFuocoSearch');
   if ((state.armiSubTab || 'armi') !== 'armi') srch.style.display = 'none';
   hdr.appendChild(srch);
   wrap.appendChild(hdr);
@@ -383,7 +374,7 @@ function renderEmporioArmiFuoco() {
     }
     if (arma.costo) row('// PREZZO', arma.costo + ' ' + (arma.valuta || 'mo'));
     sec2.appendChild(buildCommerceItemAction(arma, 'armifuoco'));
-    if (isAdmin()) {
+    if (isDM()) {
       var br = document.createElement('div');
       br.style.cssText =
         'display:flex;gap:0.5rem;margin-top:1rem;border-top:1px solid rgba(229,48,48,0.15);padding-top:1rem;';
@@ -868,7 +859,7 @@ function _renderArmiPotenziamenti() {
       ef.textContent = p.effetto;
       body.appendChild(ef);
     }
-    if (isAdmin()) {
+    if (isDM()) {
       var br2 = document.createElement('div');
       br2.style.cssText =
         'display:flex;gap:0.4rem;margin-top:0.5rem;border-top:1px solid rgba(229,48,48,0.1);padding-top:0.5rem;';
@@ -1110,7 +1101,7 @@ function _renderArmiMunizioni() {
       ef.textContent = m.effetto;
       card.appendChild(ef);
     }
-    if (isAdmin()) {
+    if (isDM()) {
       var br3 = document.createElement('div');
       br3.style.cssText =
         'display:flex;gap:0.4rem;margin-top:0.5rem;border-top:1px solid rgba(229,48,48,0.1);padding-top:0.5rem;';

@@ -34,6 +34,7 @@ function context(dm) {
   const ctx = {
     state: {},
     isDM: () => dm,
+    connectLibrary() {},
     document: {
       createDocumentFragment: () => ({ kind: 'empty' }),
       createElement: () => ({ style: {} }),
@@ -42,6 +43,7 @@ function context(dm) {
   };
   for (const name of names) ctx['render' + name] = () => ({ kind: name, style: {} });
   vm.createContext(ctx);
+  vm.runInContext(fs.readFileSync('js/ui/navigation.js', 'utf8'), ctx);
   vm.runInContext(route, ctx);
   return ctx;
 }
@@ -56,6 +58,7 @@ test('players cannot render master sections; sheet view and shared sections reta
     'storia',
     'archivio',
     'schedepg',
+    'generatore',
   ]) {
     player.state.section = section;
     assert.equal(player.renderActiveSection().kind, 'Dadi');
@@ -80,14 +83,14 @@ test('players cannot render master sections; sheet view and shared sections reta
 test('story rendering errors become text while other failures remain visible to the caller', () => {
   const ctx = context(true);
   ctx.state.section = 'storia';
-  ctx.renderStoria = () => {
+  ctx.AppNavigation.get('storia').render = () => {
     throw new Error('<img src=x onerror=alert(1)>');
   };
   const error = ctx.renderActiveSection();
   assert.match(error.textContent, /<img/);
   assert.equal(error.innerHTML, undefined);
   ctx.state.section = 'emporio';
-  ctx.renderEmporio = () => {
+  ctx.AppNavigation.get('emporio').render = () => {
     throw new Error('catalog failed');
   };
   assert.throws(() => ctx.renderActiveSection(), /catalog failed/);

@@ -7,8 +7,14 @@ export const appSources = [
   'js/core/state.js',
   'js/core/storage.js',
   'js/core/helpers.js',
+  'js/core/collections.js',
+  'js/ui/navigation.js',
   'js/ui/shell.js',
   'js/features/sheets/templates.js',
+  'js/features/sheets/model.js',
+  'js/features/sheets/persistence.js',
+  'js/features/catalogs/sync.js',
+  'js/features/catalogs/editor.js',
   'js/features/library.js',
   'js/features/tabletop.js',
   'js/ui/sidebar.js',
@@ -30,6 +36,7 @@ export const appSources = [
   'js/features/reveals/service.js',
   'js/features/reveals/view.js',
   'js/features/shop/catalog.js',
+  'js/features/shop/categories.js',
   'js/features/shop/consumables.js',
   'js/features/shop/vehicles.js',
   'js/features/shop/firearms.js',
@@ -62,6 +69,7 @@ export const appSources = [
   'js/features/sheets/party.js',
   'js/features/dice.js',
   'js/features/maps/flags.js',
+  'js/features/maps/realtime.js',
   'js/features/maps/overlays.js',
   'js/features/maps/view.js',
   'js/features/board.js',
@@ -72,4 +80,4 @@ export const appSources = [
   'js/core/globals.js',
 ];
 
-export const generatedAssets = ['js/app.js', 'js/firebase-config.js'];
+export const generatedAssets = ['js/app.js', 'js/firebase-config.js', 'data/catalog-data.js'];

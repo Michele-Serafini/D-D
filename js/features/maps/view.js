@@ -35,7 +35,7 @@ function renderMappa() {
     dmControls.className = 'mappa-dm-controls';
 
     // ---- FILTRO PERSONA (solo admin) ----
-    if (isAdmin()) {
+    if (isDM()) {
       var personaWrap = document.createElement('div');
       personaWrap.style.cssText =
         'display:inline-flex;align-items:center;flex-wrap:wrap;gap:0.35rem;';
@@ -343,7 +343,7 @@ function renderMappa() {
     dmControls.appendChild(delMapBtn);
 
     // ---- RIASSEGNA MAPPA (solo admin) ----
-    if (isAdmin()) {
+    if (isDM()) {
       var reassignBtn = document.createElement('button');
       reassignBtn.className = 'mappa-btn';
       reassignBtn.style.cssText = 'font-size:11px;padding:0.3rem 0.6rem;';

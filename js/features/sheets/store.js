@@ -2,43 +2,10 @@
 var SheetStore = (function () {
   var baselines = new Map();
   var subscribers = new Set();
-  function clone(value) {
-    return value == null ? value : JSON.parse(JSON.stringify(value));
-  }
-  function equal(a, b) {
-    return JSON.stringify(a) === JSON.stringify(b);
-  }
-  function patch(before, after, prefix, output) {
-    Array.from(new Set(Object.keys(before || {}).concat(Object.keys(after)))).forEach(
-      function (key) {
-        if (!prefix && (key === 'id' || key === 'trade' || key === '_rev')) return;
-        var path = prefix ? prefix + '/' + key : key;
-        var value = after[key],
-          old = before && before[key];
-        if (equal(old, value)) return;
-        if (
-          value &&
-          typeof value === 'object' &&
-          !Array.isArray(value) &&
-          old &&
-          typeof old === 'object' &&
-          !Array.isArray(old)
-        )
-          patch(old, value, path, output);
-        else output[path] = value == null ? null : clone(value);
-      }
-    );
-  }
-  function applyPatch(target, changes) {
-    Object.keys(changes).forEach(function (path) {
-      var keys = path.split('/'),
-        node = target;
-      keys.slice(0, -1).forEach(function (key) {
-        node = node[key] = node[key] || {};
-      });
-      node[keys[keys.length - 1]] = clone(changes[path]);
-    });
-    return target;
+  var clone = DataUtils.clone,
+    applyPatch = DataUtils.assign;
+  function changes(before, after) {
+    return DataUtils.diff(before, after, { exclude: ['id', 'trade', '_rev'] }).after;
   }
   function key(username, id) {
     return username + '/' + id;
@@ -52,12 +19,10 @@ var SheetStore = (function () {
     var mine = state.currentUser && state.currentUser.username === username;
     var current =
       mine && state.schedaAttivaId === id && !state.schedePGViewMode ? state.scheda : null;
-    var pending = {};
-    if (current && before) patch(before, current, '', pending);
+    var pending = current && before ? changes(before, current) : {};
     baselines.set(token, clone(raw));
     if (current && raw) {
-      var incoming = {};
-      patch(before || {}, raw, '', incoming);
+      var incoming = changes(before || {}, raw);
       applyPatch(current, incoming);
       if (raw.trade) current.trade = clone(raw.trade);
       applyPatch(current, pending);
@@ -76,9 +41,7 @@ var SheetStore = (function () {
     return sheet;
   }
   function prepare(username, id, snapshot) {
-    var changes = {};
-    patch(baselines.get(key(username, id)) || {}, snapshot, '', changes);
-    return changes;
+    return changes(baselines.get(key(username, id)) || {}, snapshot);
   }
   function save(username, id, snapshot) {
     return saveChanges(username, id, prepare(username, id, snapshot));

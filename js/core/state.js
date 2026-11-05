@@ -1,5 +1,5 @@
 var state = {
-  theme: 'dark',
+  theme: ThemePreferences.read(),
   section: 'emporio',
   sidebarOpen: false,
   lavagnaOpen: false,

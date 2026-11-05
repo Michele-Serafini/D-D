@@ -9,6 +9,8 @@ export const offlineFiles = [
   'pwa/icon-192.png',
   'pwa/icon-512.png',
   'js/pwa/offline-store.js',
+  'js/core/preferences.js',
+  'js/core/data.js',
   'js/pwa/install.js',
   'js/pwa/reader.js',
 ];

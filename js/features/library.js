@@ -1,3 +1,23 @@
+function connectLibrary() {
+  if (state.libriCustom === null) {
+    state.libriCustom = {};
+    _campaignDb &&
+      _campaignDb.ref('libri/books').on('value', function (snap) {
+        state.libriCustom = snap.val() || {};
+        if (state.section === 'libri') scheduleRenderMain();
+      });
+  }
+  if (state.libriPreferiti === undefined) {
+    state.libriPreferiti = {};
+    var u = state.currentUser ? state.currentUser.username : '_guest';
+    _campaignDb &&
+      _campaignDb.ref('libri/preferiti/' + u).on('value', function (snap) {
+        state.libriPreferiti = snap.val() || {};
+        if (state.section === 'libri') scheduleRenderMain();
+      });
+  }
+}
+
 /* ============================================================
    LIBRERIA
    ============================================================ */
@@ -29,7 +49,7 @@ function _libroCard(libro) {
 
   // DRAG & DROP per l'admin in vista predefinita
   if (
-    isAdmin() &&
+    isDM() &&
     state.libriSort === 'default' &&
     state.libriFilter === 'Tutte' &&
     state.libriSearch === ''
@@ -166,7 +186,7 @@ function _libroCard(libro) {
   }
   body.appendChild(edTagWrap);
 
-  if (isAdmin()) {
+  if (isDM()) {
     var adminRow = document.createElement('div');
     adminRow.style.cssText =
       'display:flex;gap:0.5rem;margin-top:0.6rem;padding-top:0.6rem;border-top:1px dashed rgba(245,166,35,0.2);';
@@ -242,7 +262,7 @@ function renderLibri() {
   hc.innerHTML =
     '<div><div class="header-eyebrow mb-2"><span>Risorse</span></div><h1 class="header-title">Libreria D&D</h1></div>';
 
-  if (isAdmin()) {
+  if (isDM()) {
     var addBtn = document.createElement('button');
     addBtn.className = 'btn-gold';
     addBtn.innerHTML = (ICON.plus || '+') + ' Aggiungi Libro';
@@ -262,7 +282,7 @@ function renderLibri() {
   main.style.cssText =
     'padding-top:1.5rem;padding-bottom:3rem;display:flex;flex-direction:column;gap:1.5rem;';
 
-  if (isAdmin() && state.libriShowForm) {
+  if (isDM() && state.libriShowForm) {
     var isEdit = !!state.libriEditId;
     var editBook = null;
     if (isEdit) {

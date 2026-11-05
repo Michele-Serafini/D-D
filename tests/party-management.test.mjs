@@ -1,3 +1,4 @@
+import { readCatalogSource } from '../scripts/catalog-data.mjs';
 import accountPolicy from '../config/accounts.json' with { type: 'json' };
 import test from 'node:test';
 import assert from 'node:assert/strict';
@@ -240,7 +241,12 @@ test('production assets include the new config, admin, catalogs and original med
   ]) {
     assert.ok(emitted.has(name), name);
     if (name !== 'js/firebase-config.js')
-      assert.deepEqual(emitted.get(name), fs.readFileSync(assetAliases[name] || name));
+      assert.deepEqual(
+        emitted.get(name),
+        name === 'data/catalog-data.js'
+          ? Buffer.from(readCatalogSource())
+          : fs.readFileSync(assetAliases[name] || name)
+      );
   }
   assert.equal(fs.existsSync('public/js/users.js'), false);
   assert.equal(fs.existsSync('scripts/reset-party.mjs'), false);

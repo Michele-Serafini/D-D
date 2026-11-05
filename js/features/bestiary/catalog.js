@@ -107,10 +107,7 @@ function renderBestiario() {
     swI.className = 'field';
     swI.placeholder = 'es. goblin, draconico, non-morto…';
     swI.value = state.bestSearch || '';
-    swI.oninput = function () {
-      state.bestSearch = this.value;
-      updateBestiarioGrid();
-    };
+    bindCatalogSearch(swI, 'bestSearch', updateBestiarioGrid);
     swW.appendChild(swI);
     sw.appendChild(swW);
     row.appendChild(sw);
@@ -184,7 +181,7 @@ function renderBestiario() {
         )
       );
     })();
-    if (isAdmin()) {
+    if (isDM()) {
       var abW = document.createElement('div');
       var ab = document.createElement('button');
       ab.className = 'btn-gold';
@@ -236,10 +233,7 @@ function renderBestiario() {
     swIP.className = 'field';
     swIP.placeholder = 'nome, tipo, proprietario…';
     swIP.value = state.petSearch || '';
-    swIP.oninput = function () {
-      state.petSearch = this.value;
-      updatePetGrid();
-    };
+    bindCatalogSearch(swIP, 'petSearch', updatePetGrid);
     swWP.appendChild(swIP);
     swP.appendChild(swWP);
     rowP.appendChild(swP);

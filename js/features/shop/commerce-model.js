@@ -105,8 +105,8 @@ var CommerceModel = (function () {
   function apply(raw, id, original, actor, now) {
     if (!raw) throw new Error('La scheda non esiste più.');
     if (original.status !== 'pending') throw new Error('Operazione già conclusa.');
-    var sheet = JSON.parse(JSON.stringify(raw));
-    var operation = JSON.parse(JSON.stringify(original));
+    var sheet = DataUtils.clone(raw);
+    var operation = DataUtils.clone(original);
     var trade = (sheet.trade = sheet.trade || {});
     trade.inventory = trade.inventory || {};
     var delta =

@@ -117,26 +117,14 @@ function buildDashboardShortcuts() {
   panel.innerHTML = '<h2>Comandi rapidi</h2>';
   var grid = document.createElement('div');
   grid.className = 'dashboard-shortcuts';
-  [
-    ['iniziativa', 'Iniziativa completa', ICON.swords],
-    ['commercio', 'Negozio e ricompense', ICON.folder],
-    ['diario', 'Diario della sessione', ICON.scroll],
-    ['mappa', 'Mappa della campagna', ICON.map],
-    ['schedepg', 'Schede dei personaggi', ICON.scroll],
-    ['generatore', 'Generatore PNG', ICON.npc],
-    ['dadi', 'Lancia dadi', ICON.skullDice],
-    ['libri', 'Libri e documenti', ICON.scroll],
-    ['regia', state.regiaActive ? 'Chiudi regia sonora' : 'Apri regia sonora', ICON.music],
-  ].forEach(function (shortcut) {
+  AppNavigation.shortcuts().forEach(function (shortcut) {
     var button = document.createElement('button');
     button.type = 'button';
     button.className = 'btn-dark';
-    button.innerHTML = (shortcut[2] || '') + '<span>' + shortcut[1] + '</span>';
+    button.innerHTML =
+      AppNavigation.icon(shortcut) + '<span>' + AppNavigation.label(shortcut, true) + '</span>';
     button.onclick = function () {
-      if (shortcut[0] === 'regia') state.regiaActive = !state.regiaActive;
-      else state.section = shortcut[0];
-      state.sidebarOpen = false;
-      render();
+      AppNavigation.open(shortcut.id);
     };
     grid.appendChild(button);
   });

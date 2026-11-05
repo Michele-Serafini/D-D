@@ -1,0 +1,641 @@
+{
+  "TIPI": [
+    "Spada lunga",
+    "Spada",
+    "Tridente",
+    "Pugnale",
+    "Bastone",
+    "Martello da guerra",
+    "Bacchetta/Bastone magico",
+    "Mazza",
+    "Falce",
+    "Ascia",
+    "Arco",
+    "Balestra",
+    "Lancia",
+    "Armature",
+    "Elmi",
+    "Pozioni",
+    "Oggetti magici"
+  ],
+  "VALUTE": [
+    {
+      "code": "mr",
+      "label": "Rame"
+    },
+    {
+      "code": "ma",
+      "label": "Argento"
+    },
+    {
+      "code": "mo",
+      "label": "Oro"
+    },
+    {
+      "code": "mp",
+      "label": "Platino"
+    }
+  ],
+  "RARITA": [
+    "Comune",
+    "Non comune",
+    "Raro",
+    "Molto raro",
+    "Leggendario",
+    "Arma unica",
+    "Arma divina"
+  ],
+  "TAGLIE_MOSTRO": ["Minuscola", "Piccola", "Media", "Grande", "Enorme", "Mastodontica"],
+  "TIPI_MOSTRO": [
+    "Aberrazione",
+    "Bestia",
+    "Celestiale",
+    "Costrutto",
+    "Drago",
+    "Elementale",
+    "Folletto",
+    "Gigante",
+    "Immondo",
+    "Melma",
+    "Mostruosità",
+    "Non Morto",
+    "Umanoide",
+    "Vegetale"
+  ],
+  "CATEGORIE": [
+    {
+      "id": "pg",
+      "label": "PG",
+      "cssClass": "combatant-type-pg",
+      "badgeClass": "cat-pg"
+    },
+    {
+      "id": "boss",
+      "label": "Boss",
+      "cssClass": "combatant-type-boss",
+      "badgeClass": "cat-boss"
+    },
+    {
+      "id": "npc",
+      "label": "NPC",
+      "cssClass": "combatant-type-npc",
+      "badgeClass": "cat-npc"
+    },
+    {
+      "id": "sgherri",
+      "label": "Sgherri",
+      "cssClass": "combatant-type-sgherri",
+      "badgeClass": "cat-sgherri"
+    }
+  ],
+  "CONDIZIONI": [
+    {
+      "id": "accecato",
+      "nome": "Accecato",
+      "icon": "👁",
+      "cssClass": "cond-accecato",
+      "descrizione": [
+        "Una creatura accecata non vede e fallisce automaticamente ogni prova di caratteristica che richiede la vista.",
+        "I tiri per colpire contro la creatura hanno vantaggio; i suoi tiri per colpire hanno svantaggio."
+      ]
+    },
+    {
+      "id": "affascinato",
+      "nome": "Affascinato",
+      "icon": "💗",
+      "cssClass": "cond-affascinato",
+      "descrizione": [
+        "Una creatura affascinata non puo' attaccare l'incantatore ne' bersagliarlo con abilita' o effetti magici dannosi.",
+        "L'incantatore ha vantaggio nelle prove di caratteristica per interazioni sociali con la creatura."
+      ]
+    },
+    {
+      "id": "afferrato",
+      "nome": "Afferrato",
+      "icon": "✊",
+      "cssClass": "cond-afferrato",
+      "descrizione": [
+        "Una creatura afferrata ha velocita' 0 e non puo' beneficiare di alcun bonus alla velocita'.",
+        "La condizione termina se chi afferra e' incapacitato, o se la creatura viene allontanata."
+      ]
+    },
+    {
+      "id": "assordato",
+      "nome": "Assordato",
+      "icon": "🔇",
+      "cssClass": "cond-assordato",
+      "descrizione": [
+        "Una creatura assordata non puo' sentire e fallisce automaticamente ogni prova di caratteristica che richiede l'udito."
+      ]
+    },
+    {
+      "id": "avvelenato",
+      "nome": "Avvelenato",
+      "icon": "☠",
+      "cssClass": "cond-avvelenato",
+      "descrizione": [
+        "Una creatura avvelenata ha svantaggio ai tiri per colpire e alle prove di caratteristica."
+      ]
+    },
+    {
+      "id": "incapacitato",
+      "nome": "Incapacitato",
+      "icon": "✕",
+      "cssClass": "cond-incapacitato",
+      "descrizione": ["Una creatura incapacitata non puo' eseguire azioni ne' reazioni."]
+    },
+    {
+      "id": "invisibile",
+      "nome": "Invisibile",
+      "icon": "◌",
+      "cssClass": "cond-invisibile",
+      "descrizione": [
+        "Una creatura invisibile non puo' essere vista senza l'ausilio di magia o di un senso speciale.",
+        "I tiri per colpire contro la creatura hanno svantaggio; i suoi tiri per colpire hanno vantaggio."
+      ]
+    },
+    {
+      "id": "paralizzato",
+      "nome": "Paralizzato",
+      "icon": "⚡",
+      "cssClass": "cond-paralizzato",
+      "descrizione": [
+        "Una creatura paralizzata e' incapacitata e non puo' muoversi ne' parlare.",
+        "Fallisce automaticamente i tiri salvezza su Forza e Destrezza.",
+        "I tiri per colpire contro di lei hanno vantaggio. Ogni attacco che la colpisce a 1,5 m o meno e' un colpo critico."
+      ]
+    },
+    {
+      "id": "pietrificato",
+      "nome": "Pietrificato",
+      "icon": "🗿",
+      "cssClass": "cond-pietrificato",
+      "descrizione": [
+        "Una creatura pietrificata e' trasformata in una sostanza inanimata solida. Il suo peso aumenta di dieci volte e cessa di invecchiare.",
+        "E' incapacitata, non puo' muoversi ne' parlare. Ha resistenza a tutti i danni ed e' immune a veleno e malattie."
+      ]
+    },
+    {
+      "id": "priv-di-sensi",
+      "nome": "Privo di Sensi",
+      "icon": "💤",
+      "cssClass": "cond-priv-di-sensi",
+      "descrizione": [
+        "Una creatura priva di sensi e' incapacitata, non puo' muoversi ne' parlare ed e' ignara di cio' che la circonda.",
+        "Lascia cadere qualsiasi cosa stia tenendo e cade prona.",
+        "Fallisce automaticamente i tiri salvezza su Forza e Destrezza."
+      ]
+    },
+    {
+      "id": "prono",
+      "nome": "Prono",
+      "icon": "⬇",
+      "cssClass": "cond-prono",
+      "descrizione": [
+        "L'unica opzione di movimento della creatura prona e' strisciare, a meno che non si rialzi.",
+        "Ha svantaggio ai tiri per colpire."
+      ]
+    },
+    {
+      "id": "spaventato",
+      "nome": "Spaventato",
+      "icon": "👻",
+      "cssClass": "cond-spaventato",
+      "descrizione": [
+        "Una creatura spaventata ha svantaggio ai tiri per colpire e alle prove di caratteristica finche' la fonte della paura e' nella sua linea di vista.",
+        "Non puo' avvicinarsi volontariamente alla fonte della sua paura."
+      ]
+    },
+    {
+      "id": "stordito",
+      "nome": "Stordito",
+      "icon": "✦",
+      "cssClass": "cond-stordito",
+      "descrizione": [
+        "Una creatura stordita e' incapacitata, non puo' muoversi e puo' parlare solo in modo confuso.",
+        "Fallisce automaticamente i tiri salvezza su Forza e Destrezza."
+      ]
+    },
+    {
+      "id": "trattenuto",
+      "nome": "Trattenuto",
+      "icon": "🕸",
+      "cssClass": "cond-trattenuto",
+      "descrizione": [
+        "Una creatura trattenuta ha velocita' 0 e non puo' beneficiare di bonus alla velocita'.",
+        "I tiri per colpire contro di lei hanno vantaggio; i suoi tiri per colpire hanno svantaggio."
+      ]
+    },
+    {
+      "id": "indebolito",
+      "nome": "Indebolito",
+      "icon": "↓",
+      "cssClass": "cond-indebolito",
+      "descrizione": [
+        "Una creatura indebolita infligge solo meta' danno con gli attacchi in armi che usano la Forza."
+      ]
+    }
+  ],
+  "SAMPLE_DATA": [
+    {
+      "id": "w4",
+      "nome": "Alabarda",
+      "descrizione": "Danno: 1d10 Taglienti. Peso: 3 kg. Due mani, Pesante, Portata",
+      "tipo": "Arma da mischia",
+      "rarita": "Comune",
+      "valuta": "mo",
+      "prezzo": 20,
+      "immagine": "https://dungeonedraghi.it/wp-content/uploads/2020/04/alabarda-1000x1000.png"
+    },
+    {
+      "id": "w5",
+      "nome": "Arco Corto",
+      "descrizione": "Danno: 1d6 Perforanti. Peso: 1 kg",
+      "tipo": "Arma a distanza",
+      "rarita": "Comune",
+      "valuta": "mo",
+      "prezzo": 25,
+      "immagine": "https://dungeonedraghi.it/wp-content/uploads/2020/04/arco-corto-1000x1000.png"
+    },
+    {
+      "id": "w6",
+      "nome": "Arco Lungo",
+      "descrizione": "Danno: 1d8 Perforanti. Peso: 1 kg",
+      "tipo": "Arma a distanza",
+      "rarita": "Comune",
+      "valuta": "mo",
+      "prezzo": 50,
+      "immagine": "https://dungeonedraghi.it/wp-content/webp-express/webp-images/doc-root/wp-content/uploads/2020/04/arco-lungo-1000x1000.png.webp"
+    },
+    {
+      "id": "w7",
+      "nome": "Ascia",
+      "descrizione": "Danno: 1d6 Taglienti. Peso: 1 kg",
+      "tipo": "Arma da mischia",
+      "rarita": "Comune",
+      "valuta": "mo",
+      "prezzo": 5,
+      "immagine": "https://dungeonedraghi.it/wp-content/webp-express/webp-images/doc-root/wp-content/uploads/2020/04/ascia-1000x1000.png.webp"
+    },
+    {
+      "id": "w8",
+      "nome": "Ascia Bipenne",
+      "descrizione": "Danno: 1d12 Taglienti. Peso: 3,5 kg. Due mani, Pesante",
+      "tipo": "Arma da mischia",
+      "rarita": "Comune",
+      "valuta": "mo",
+      "prezzo": 30,
+      "immagine": "https://dungeonedraghi.it/wp-content/webp-express/webp-images/doc-root/wp-content/uploads/2020/04/ascia-bipenne-1000x1000.png.webp"
+    },
+    {
+      "id": "w9",
+      "nome": "Ascia da Battaglia",
+      "descrizione": "Danno: 1d8 Taglienti. Peso: 2 kg",
+      "tipo": "Arma da mischia",
+      "rarita": "Comune",
+      "valuta": "mo",
+      "prezzo": 10,
+      "immagine": "https://dungeonedraghi.it/wp-content/webp-express/webp-images/doc-root/wp-content/uploads/2020/04/ascia-da-battaglia-1000x1000.png.webp"
+    },
+    {
+      "id": "w10",
+      "nome": "Balestra a Mano",
+      "descrizione": "Danno: 1d6 Perforanti. Peso: 1,5 kg",
+      "tipo": "Arma a distanza",
+      "rarita": "Comune",
+      "valuta": "mo",
+      "prezzo": 75,
+      "immagine": "https://dungeonedraghi.it/wp-content/uploads/2020/04/balestra-a-mano-1000x1000.png"
+    },
+    {
+      "id": "w11",
+      "nome": "Balestra Leggera",
+      "descrizione": "Danno: 1d8 Perforanti. Peso: 2,5 kg",
+      "tipo": "Arma a distanza",
+      "rarita": "Comune",
+      "valuta": "mo",
+      "prezzo": 25,
+      "immagine": "https://dungeonedraghi.it/wp-content/webp-express/webp-images/doc-root/wp-content/uploads/2020/04/balestra-leggera-1000x1000.png.webp"
+    },
+    {
+      "id": "w12",
+      "nome": "Balestra Pesante",
+      "descrizione": "Danno: 1d10 Perforanti. Peso: 9 kg",
+      "tipo": "Arma a distanza",
+      "rarita": "Comune",
+      "valuta": "mo",
+      "prezzo": 50,
+      "immagine": "https://dungeonedraghi.it/wp-content/uploads/2020/04/balestra-pesante-1000x1000.png"
+    },
+    {
+      "id": "w13",
+      "nome": "Bastone Ferrato",
+      "descrizione": "Danno: 1d6 Contundenti. Peso: 2 kg",
+      "tipo": "Arma da mischia",
+      "rarita": "Comune",
+      "valuta": "mo",
+      "prezzo": 0,
+      "immagine": "https://dungeonedraghi.it/wp-content/uploads/2020/04/bastone-ferrato-1000x1000.png"
+    },
+    {
+      "id": "w14",
+      "nome": "Cerbottana",
+      "descrizione": "Danno: 1 Perforanti. Peso: 0,5 kg",
+      "tipo": "Arma a distanza",
+      "rarita": "Comune",
+      "valuta": "mo",
+      "prezzo": 10,
+      "immagine": "https://dungeonedraghi.it/wp-content/webp-express/webp-images/doc-root/wp-content/uploads/2020/04/cerbottana-1000x1000.png.webp"
+    },
+    {
+      "id": "w15",
+      "nome": "Dardo",
+      "descrizione": "Danno: 1d4 Perforanti. Peso: 0,125 kg",
+      "tipo": "Arma a distanza",
+      "rarita": "Comune",
+      "valuta": "mr",
+      "prezzo": 5,
+      "immagine": "https://dungeonedraghi.it/wp-content/webp-express/webp-images/doc-root/wp-content/uploads/2020/04/dardo-1000x1000.png.webp"
+    },
+    {
+      "id": "w16",
+      "nome": "Falcetto",
+      "descrizione": "Danno: 1d4 Taglienti. Peso: 1 kg. Leggera",
+      "tipo": "Arma da mischia",
+      "rarita": "Comune",
+      "valuta": "mo",
+      "prezzo": 1,
+      "immagine": "https://dungeonedraghi.it/wp-content/uploads/2020/04/falcetto-1000x1000.png"
+    },
+    {
+      "id": "w17",
+      "nome": "Falcione",
+      "descrizione": "Danno: 1d10 Taglienti. Peso: 3 kg. Due mani, Pesante, Portata",
+      "tipo": "Arma da mischia",
+      "rarita": "Comune",
+      "valuta": "mo",
+      "prezzo": 20,
+      "immagine": "https://dungeonedraghi.it/wp-content/uploads/2020/04/falcione-1000x1000.png"
+    },
+    {
+      "id": "w18",
+      "nome": "Fionda",
+      "descrizione": "Danno: 1d4 Contundenti",
+      "tipo": "Arma a distanza",
+      "rarita": "Comune",
+      "valuta": "mo",
+      "prezzo": 0,
+      "immagine": "https://dungeonedraghi.it/wp-content/webp-express/webp-images/doc-root/wp-content/uploads/2020/04/fionda-1000x1000.png.webp"
+    },
+    {
+      "id": "w19",
+      "nome": "Frusta",
+      "descrizione": "Danno: 1d4 Taglienti. Peso: 1,5 kg. Accurata, Portata",
+      "tipo": "Arma da mischia",
+      "rarita": "Comune",
+      "valuta": "mo",
+      "prezzo": 2,
+      "immagine": "https://dungeonedraghi.it/wp-content/uploads/2020/04/frusta-1000x1000.png"
+    },
+    {
+      "id": "w20",
+      "nome": "Giavellotto",
+      "descrizione": "Danno: 1d6 Perforanti. Peso: 1 kg",
+      "tipo": "Arma da mischia",
+      "rarita": "Comune",
+      "valuta": "mo",
+      "prezzo": 0,
+      "immagine": "https://dungeonedraghi.it/wp-content/webp-express/webp-images/doc-root/wp-content/uploads/2020/04/giavellotto-1000x1000.png.webp"
+    },
+    {
+      "id": "w21",
+      "nome": "Lancia",
+      "descrizione": "Danno: 1d6 Perforanti. Peso: 1,5 kg",
+      "tipo": "Arma da mischia",
+      "rarita": "Comune",
+      "valuta": "mo",
+      "prezzo": 1,
+      "immagine": "https://dungeonedraghi.it/wp-content/uploads/2020/04/lancia-1000x1000.png"
+    },
+    {
+      "id": "w22",
+      "nome": "Lancia da Cavaliere",
+      "descrizione": "Danno: 1d12 Perforanti. Peso: 3 kg. Portata Speciale",
+      "tipo": "Arma da mischia",
+      "rarita": "Comune",
+      "valuta": "mo",
+      "prezzo": 10,
+      "immagine": "https://dungeonedraghi.it/wp-content/uploads/2020/04/lancia-da-cavaliere-1000x1000.png"
+    },
+    {
+      "id": "w23",
+      "nome": "Maglio",
+      "descrizione": "Danno: 2d6 Contundenti. Peso: 5 kg. Due mani, Pesante",
+      "tipo": "Arma da mischia",
+      "rarita": "Comune",
+      "valuta": "mo",
+      "prezzo": 10,
+      "immagine": "https://dungeonedraghi.it/wp-content/webp-express/webp-images/doc-root/wp-content/uploads/2020/04/maglio-1000x1000.png.webp"
+    },
+    {
+      "id": "w24",
+      "nome": "Martello da Guerra",
+      "descrizione": "Danno: 1d8 Contundenti. Peso: 1 kg",
+      "tipo": "Arma da mischia",
+      "rarita": "Comune",
+      "valuta": "mo",
+      "prezzo": 15,
+      "immagine": "https://dungeonedraghi.it/wp-content/uploads/2020/04/martello-da-guerra-1000x1000.png"
+    },
+    {
+      "id": "w25",
+      "nome": "Martello Leggero",
+      "descrizione": "Danno: 1d4 Contundenti. Peso: 1 kg",
+      "tipo": "Arma da mischia",
+      "rarita": "Comune",
+      "valuta": "mo",
+      "prezzo": 2,
+      "immagine": "https://dungeonedraghi.it/wp-content/webp-express/webp-images/doc-root/wp-content/uploads/2020/04/martello-leggero-1000x1000.png.webp"
+    },
+    {
+      "id": "w26",
+      "nome": "Mazza",
+      "descrizione": "Danno: 1d6 Contundenti. Peso: 2 kg",
+      "tipo": "Arma da mischia",
+      "rarita": "Comune",
+      "valuta": "mo",
+      "prezzo": 5,
+      "immagine": "https://dungeonedraghi.it/wp-content/webp-express/webp-images/doc-root/wp-content/uploads/2020/04/mazza-1000x1000.png.webp"
+    },
+    {
+      "id": "w27",
+      "nome": "Mazzafrusto",
+      "descrizione": "Danno: 1d8 Contundenti. Peso: 1 kg",
+      "tipo": "Arma da mischia",
+      "rarita": "Comune",
+      "valuta": "mo",
+      "prezzo": 10,
+      "immagine": "https://dungeonedraghi.it/wp-content/webp-express/webp-images/doc-root/wp-content/uploads/2020/04/mazzafrusto-1000x1000.png.webp"
+    },
+    {
+      "id": "w28",
+      "nome": "Morning Star",
+      "descrizione": "Danno: 1d8 Perforanti. Peso: 2 kg",
+      "tipo": "Arma da mischia",
+      "rarita": "Comune",
+      "valuta": "mo",
+      "prezzo": 15,
+      "immagine": "https://dungeonedraghi.it/wp-content/webp-express/webp-images/doc-root/wp-content/uploads/2020/04/morning-star-1000x1000.png.webp"
+    },
+    {
+      "id": "w29",
+      "nome": "Picca",
+      "descrizione": "Danno: 1d10 Perforanti. Peso: 9 kg. Due mani, Pesante, Portata",
+      "tipo": "Arma da mischia",
+      "rarita": "Comune",
+      "valuta": "mo",
+      "prezzo": 5,
+      "immagine": "https://dungeonedraghi.it/wp-content/uploads/2020/04/picca-1000x1000.png"
+    },
+    {
+      "id": "w30",
+      "nome": "Piccone da Guerra",
+      "descrizione": "Danno: 1d8 Perforanti. Peso: 1 kg",
+      "tipo": "Arma da mischia",
+      "rarita": "Comune",
+      "valuta": "mo",
+      "prezzo": 5,
+      "immagine": "https://dungeonedraghi.it/wp-content/uploads/2020/04/piccone-da-guerra-1000x1000.png"
+    },
+    {
+      "id": "w31",
+      "nome": "Pugnale",
+      "descrizione": "Danno: 1d4 Perforanti. Peso: 0,5 kg",
+      "tipo": "Arma da mischia",
+      "rarita": "Comune",
+      "valuta": "mo",
+      "prezzo": 2,
+      "immagine": "https://dungeonedraghi.it/wp-content/webp-express/webp-images/doc-root/wp-content/uploads/2020/04/pugnale-1000x1000.png.webp"
+    },
+    {
+      "id": "w32",
+      "nome": "Randello",
+      "descrizione": "Danno: 1d4 Perforanti. Peso: 1 kg. Leggera",
+      "tipo": "Arma da mischia",
+      "rarita": "Comune",
+      "valuta": "mo",
+      "prezzo": 0,
+      "immagine": "https://dungeonedraghi.it/wp-content/uploads/2020/04/randello-1000x1000.png"
+    },
+    {
+      "id": "w33",
+      "nome": "Randello Pesante",
+      "descrizione": "Danno: 1d8 Contundenti. Peso: 5 kg. Due Mani",
+      "tipo": "Arma da mischia",
+      "rarita": "Comune",
+      "valuta": "mo",
+      "prezzo": 0,
+      "immagine": "https://dungeonedraghi.it/wp-content/webp-express/webp-images/doc-root/wp-content/uploads/2020/04/randello-pesante-1000x1000.png.webp"
+    },
+    {
+      "id": "w34",
+      "nome": "Rete",
+      "descrizione": "Peso: 1,5 kg",
+      "tipo": "Arma a distanza",
+      "rarita": "Comune",
+      "valuta": "mo",
+      "prezzo": 1,
+      "immagine": "https://dungeonedraghi.it/wp-content/uploads/2020/04/rete-1000x1000.png"
+    },
+    {
+      "id": "w35",
+      "nome": "Scimitarra",
+      "descrizione": "Danno: 1d6 Taglienti. Peso: 1,5 kg. Accurata, Leggera",
+      "tipo": "Arma da mischia",
+      "rarita": "Comune",
+      "valuta": "mo",
+      "prezzo": 25,
+      "immagine": "https://dungeonedraghi.it/wp-content/webp-express/webp-images/doc-root/wp-content/uploads/2020/04/scimitarra-1000x1000.png.webp"
+    },
+    {
+      "id": "w36",
+      "nome": "Spada Corta",
+      "descrizione": "Danno: 1d6 Perforanti. Peso: 1 kg. Accurata, Leggera",
+      "tipo": "Arma da mischia",
+      "rarita": "Comune",
+      "valuta": "mo",
+      "prezzo": 10,
+      "immagine": "https://dungeonedraghi.it/wp-content/webp-express/webp-images/doc-root/wp-content/uploads/2020/04/spada-corta-1000x1000.png.webp"
+    },
+    {
+      "id": "w37",
+      "nome": "Spada Lunga",
+      "descrizione": "Danno: 1d8 Taglienti. Peso: 1,5 kg",
+      "tipo": "Arma da mischia",
+      "rarita": "Comune",
+      "valuta": "mo",
+      "prezzo": 15,
+      "immagine": "https://dungeonedraghi.it/wp-content/webp-express/webp-images/doc-root/wp-content/uploads/2020/04/spada-lunga-1000x1000.png.webp"
+    },
+    {
+      "id": "w38",
+      "nome": "Spadone",
+      "descrizione": "Danno: 2d6 Taglienti. Peso: 3 kg. Due mani, Pesante",
+      "tipo": "Arma da mischia",
+      "rarita": "Comune",
+      "valuta": "mo",
+      "prezzo": 50,
+      "immagine": "https://dungeonedraghi.it/wp-content/webp-express/webp-images/doc-root/wp-content/uploads/2020/04/spadone-1000x1000.png.webp"
+    },
+    {
+      "id": "w39",
+      "nome": "Stocco",
+      "descrizione": "Danno: 1d8 Perforanti. Peso: 1 kg. Accurata",
+      "tipo": "Arma da mischia",
+      "rarita": "Comune",
+      "valuta": "mo",
+      "prezzo": 25,
+      "immagine": "https://dungeonedraghi.it/wp-content/uploads/2020/04/stocco-1000x1000.png"
+    },
+    {
+      "id": "w40",
+      "nome": "Tridente",
+      "descrizione": "Danno: 1d6 Perforanti. Peso: 2 kg",
+      "tipo": "Arma da mischia",
+      "rarita": "Comune",
+      "valuta": "mo",
+      "prezzo": 5,
+      "immagine": "https://dungeonedraghi.it/wp-content/uploads/2020/04/tridente-1000x1000.png"
+    },
+    {
+      "id": "w1",
+      "nome": "Lama dell'Alba",
+      "descrizione": "Spada lunga forgiata nel cuore di una stella cadente. Brilla di luce dorata al primo raggio di sole.",
+      "tipo": "Spada lunga",
+      "rarita": "Leggendario",
+      "valuta": "mp",
+      "prezzo": 250,
+      "immagine": ""
+    },
+    {
+      "id": "w2",
+      "nome": "Pugnale del Ladro",
+      "descrizione": "Lama affilata ed elegante, ideale per attacchi furtivi. La sua impugnatura in cuoio nero non riflette la luce.",
+      "tipo": "Pugnale",
+      "rarita": "Comune",
+      "valuta": "mo",
+      "prezzo": 15,
+      "immagine": ""
+    },
+    {
+      "id": "w3",
+      "nome": "Pozione di Cura Maggiore",
+      "descrizione": "Liquido rosso scintillante che ripristina 4d4+4 punti ferita. Sapore di lampone e ferro.",
+      "tipo": "Pozioni",
+      "rarita": "Non comune",
+      "valuta": "mo",
+      "prezzo": 100,
+      "immagine": ""
+    }
+  ]
+}

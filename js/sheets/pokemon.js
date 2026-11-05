@@ -86,7 +86,6 @@ window._pokemonMonDefault = function () {
   };
 };
 window.renderPokemonSheet = function (scheda) {
-  console.log('[POKEMON LOAD] Dati recuperati:', JSON.parse(JSON.stringify(scheda)));
   function handleAvatarClick(currentAvatar, callback) {
     var fi = document.createElement('input');
     fi.type = 'file';

@@ -13,6 +13,7 @@ work/
 # Firebase web config is generated from deployment environment settings.
 js/firebase-config.js
 js/app.js
+data/catalog-data.js
 .aistudio/
 test-results/
 playwright-report/

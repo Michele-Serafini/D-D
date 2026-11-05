@@ -135,6 +135,14 @@ test('account, theme and animation controls have one location and never float ab
   await page.getByRole('button', { name: 'Lancia un dado D20 rapido' }).click();
   await expect(page.locator('#quick-d20-result')).toContainText(/D20|NATURALE|CRITICO/);
   await page.setViewportSize({ width: 390, height: 844 });
+  const savedInput = await page.getByLabel('Cerca contenuti').elementHandle();
+  await page.getByRole('button', { name: 'Apri menu', exact: true }).click();
+  await expect(page.locator('.sidebar-backdrop')).toHaveCount(1);
+  await expect(page.getByLabel('Cerca contenuti')).toHaveValue('Filtro conservato');
+  expect(await savedInput.evaluate((element) => element.isConnected)).toBe(true);
+  await page.locator('.sidebar [data-section=telefono]').click();
+  await expect(page.locator('.sidebar-backdrop')).toHaveCount(0);
+  await expect(page.getByRole('heading', { name: 'Telefono e offline' })).toBeVisible();
   await expectViewportFits(page);
   await expect(page.locator('body > #quick-d20')).toHaveCount(0);
   await page.screenshot({ path: info.outputPath('controls-mobile.png'), fullPage: true });

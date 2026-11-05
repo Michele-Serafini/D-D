@@ -79,7 +79,6 @@ window._narutoDefault = function (id) {
 };
 
 window.renderNarutoSheet = function (scheda) {
-  console.log('[NARUTO LOAD] Dati recuperati:', JSON.parse(JSON.stringify(scheda)));
   function handleAvatarClick(currentAvatar, callback) {
     var fi = document.createElement('input');
     fi.type = 'file';

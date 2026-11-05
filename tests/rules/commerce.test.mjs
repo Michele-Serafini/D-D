@@ -11,6 +11,7 @@ import { ref, set, get, update } from 'firebase/database';
 import { auditWrites } from '../helpers/sheet-history.mjs';
 
 const context = vm.createContext({});
+vm.runInContext(fs.readFileSync('js/core/data.js', 'utf8'), context);
 vm.runInContext(fs.readFileSync('js/features/shop/commerce-model.js', 'utf8'), context);
 const model = context.CommerceModel;
 const item = model.product({ id: 'potion', nome: 'Pozione' }, 'emporio');

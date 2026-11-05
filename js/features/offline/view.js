@@ -196,7 +196,7 @@ function renderPhoneOffline() {
       exportButton.textContent = 'Esporta copia locale';
       exportButton.onclick = function () {
         triggerDownload(
-          new Blob([JSON.stringify(OfflineModel.apply(op.before, op.patch), null, 2)], {
+          new Blob([JSON.stringify(DataUtils.apply(op.before, op.patch), null, 2)], {
             type: 'application/json',
           }),
           'scheda-locale.json'

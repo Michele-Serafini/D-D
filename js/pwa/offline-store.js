@@ -100,60 +100,20 @@ var OfflineStore = {
 };
 
 var OfflineModel = {
-  clone: function (value) {
-    return value == null ? value : JSON.parse(JSON.stringify(value));
-  },
-  value: function (object, path) {
-    return (
-      path.split('/').reduce(function (node, key) {
-        return node == null ? null : node[key];
-      }, object) ?? null
-    );
-  },
-  equal: function (a, b) {
-    if (a == null && b == null) return true;
-    if (a && b && typeof a === 'object' && typeof b === 'object') {
-      var keys = Array.from(new Set(Object.keys(a).concat(Object.keys(b))));
-      return keys.every(function (key) {
-        return OfflineModel.equal(a[key], b[key]);
-      });
-    }
-    return JSON.stringify(a) === JSON.stringify(b);
-  },
-  apply: function (sheet, patch) {
-    var copy = this.clone(sheet || {});
-    Object.entries(patch).forEach(function (entry) {
-      var keys = entry[0].split('/'),
-        node = copy;
-      if (
-        keys.some(function (key) {
-          return !key || ['__proto__', 'constructor', 'prototype'].includes(key);
-        })
-      )
-        throw new Error('Campo non valido.');
-      keys.slice(0, -1).forEach(function (key) {
-        if (!node[key] || typeof node[key] !== 'object') node[key] = {};
-        node = node[key];
-      });
-      if (entry[1] == null) delete node[keys.at(-1)];
-      else node[keys.at(-1)] = OfflineModel.clone(entry[1]);
-    });
-    return copy;
-  },
   conflicts: function (operation, current) {
     return Object.keys(operation.patch).filter(function (path) {
-      var actual = OfflineModel.value(current, path);
+      var actual = DataUtils.value(current, path);
       return (
-        !OfflineModel.equal(actual, OfflineModel.value(operation.before, path)) &&
-        !OfflineModel.equal(actual, operation.patch[path])
+        !DataUtils.equal(actual, DataUtils.value(operation.before, path)) &&
+        !DataUtils.equal(actual, operation.patch[path])
       );
     });
   },
   sheets: function (snapshot, operations) {
-    var sheets = this.clone(snapshot?.sheets || {});
+    var sheets = DataUtils.clone(snapshot?.sheets || {});
     operations.forEach(function (op) {
       var key = op.owner + '/' + op.character;
-      sheets[key] = OfflineModel.apply(sheets[key], op.patch);
+      sheets[key] = DataUtils.apply(sheets[key], op.patch);
     });
     return sheets;
   },

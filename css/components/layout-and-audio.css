@@ -932,6 +932,10 @@
 }
 
 .nav-item {
+  width: 100%;
+  appearance: none;
+  text-align: left;
+  background: transparent;
   display: flex;
   align-items: center;
   gap: 0.85rem;
@@ -947,6 +951,15 @@
   border: 1px solid transparent;
   transition: all 0.25s ease;
   position: relative;
+}
+.nav-item:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: -2px;
+}
+.sidebar-separator {
+  height: 1px;
+  background: var(--border-subtle);
+  margin: 0.5rem 0.75rem;
 }
 .nav-item:hover {
   color: var(--gold);

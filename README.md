@@ -195,6 +195,28 @@ Per verificare le regole con un database locale simulato: `npm run test:rules` (
 
 ---
 
+
+## Dove modificare una funzionalità
+
+| Modifica | Punto di intervento |
+| --- | --- |
+| Utenti, ruoli e password | `admin.html` e impostazioni dell'account; Firebase è l'elenco degli utenti |
+| Pagine, voci del menu, permessi e comandi rapidi | `js/ui/navigation.js` |
+| Inserimento, modifica e salvataggio di oggetti e incantesimi | `js/features/catalogs/editor.js` |
+| Categorie e collegamenti dell'emporio | `js/features/shop/categories.js` |
+| Temi disponibili e preferenze persistenti | `js/core/preferences.js`; colori in `css/variables.css` |
+| Percorsi delle collezioni Firebase | `js/core/collections.js` |
+| Oggetti, mostri, incantesimi e NPC base | Un JSON per catalogo in `data/database_*.json` |
+| Filtri e metadati dei cataloghi | `config/catalogs.json` |
+| Ricerca nei cataloghi | `bindCatalogSearch` in `js/ui/catalog-controls.js` |
+| Copie, confronti e modifiche dei dati JSON | `js/core/data.js`, condiviso anche con la vista offline |
+| Modello e salvataggi delle schede | `js/features/sheets/model.js` e `persistence.js` |
+| Sincronizzazione mappe e worldbuilding | `js/features/maps/realtime.js` |
+| Unione e aggiornamenti dei cataloghi | `js/features/catalogs/sync.js` |
+
+Il core realtime collega i servizi, mentre ogni area mantiene la propria logica. Per i cataloghi semplici, lettura e scrittura usano la stessa definizione: non duplicare i percorsi dentro i componenti. Per aggiungere una pagina, registra menu, renderer, accesso e collegamenti rapidi nella stessa voce della navigazione.
+
+
 ## Struttura del codice
 
 ```text
@@ -221,7 +243,7 @@ tests/                   Test funzionali e test browser con backend simulato
 data/, img/, audio/, schede/  Cataloghi e risorse originali conservati
 ```
 
-`js/app.js` è **generato**, escluso da Git e non va modificato. Vite unisce i file elencati in `config/assets.mjs` mantenendo l’ordine e le funzioni globali richieste dalle schede e dai controlli esistenti. Lo sviluppo usa i sorgenti leggibili; la produzione riceve un solo bundle compatto. Le parti del bundle non vengono copiate una seconda volta in `dist/`.
+`js/app.js` e `data/catalog-data.js` sono **generati**, esclusi da Git e non vanno modificati. Vite unisce i file elencati in `config/assets.mjs` mantenendo l’ordine e le funzioni globali richieste dalle schede e dai controlli esistenti. Lo sviluppo usa i sorgenti leggibili; la produzione riceve un solo bundle compatto. Le parti del bundle non vengono copiate una seconda volta in `dist/`.
 
 ---
 
@@ -279,23 +301,33 @@ npm run test:party
 
 Tutti i contenuti si trovano nella cartella `data/` e **ogni nuovo elemento eredita automaticamente lo stile, il bagliore di rarità e le animazioni 3D**.
 
+### Aggiungere contenuti dal sito
+
+Ogni master della campagna, inclusi i co-master, trova **Aggiungi oggetto** nell'Emporio e **Aggiungi incantesimo** nel Grimorio. Basta il nome; gli altri campi sono facoltativi. Gli oggetti includono prezzo e valuta per gli acquisti collegati alle schede. I contenuti aggiunti appartengono alla campagna corrente e sono consultabili dai suoi giocatori.
+
+Il modulo resta aperto se il salvataggio non viene confermato. Gli ID delle bozze restano gli stessi durante un nuovo tentativo, evitando duplicati. Le modifiche ricevute in tempo reale non cancellano quanto già scritto nel modulo. Le personalizzazioni del master e le eliminazioni degli incantesimi non vengono annullate dal successivo aggiornamento dei cataloghi base.
+
 ### Aggiungere un Oggetto o Arma all'Emporio
-Apri `data/catalog-data.js` e aggiungi un oggetto dentro `SRD_OGGETTI` (oppure usa il pulsante **"+ Nuovo Oggetto"** direttamente dal sito come DM):
-```javascript
+Apri `data/database_armi.json` e aggiungi una voce alla lista (oppure usa **+ Nuovo Oggetto** sul sito come master, per i contenuti della singola campagna):
+
+```json
 {
-  id: "custom_spada_1",
-  nome: "Lama dell'Eclissi",
-  tipo: "Spada lunga",
-  rarita: "Leggendario", // Comune | Non comune | Raro | Molto raro | Leggendario | Arma unica | Arma divina
-  prezzo: 5000,
-  valuta: "mo",          // mr | ma | mo | mp
-  immagine: "img/mia-spada.jpg",
-  descrizione: "Una lama forgiata nell'ombra che infligge +2d6 danni necrotici."
+  "id": "custom_spada_1",
+  "nome": "Lama dell'Eclissi",
+  "tipo": "Spada lunga",
+  "rarita": "Leggendario",
+  "prezzo": 5000,
+  "valuta": "mo",
+  "immagine": "img/mia-spada.jpg",
+  "descrizione": "Una lama forgiata nell'ombra che infligge +2d6 danni necrotici."
 }
 ```
 
-### Aggiungere un Mostro al Bestiario
-Apri `data/catalog-data.js` e aggiungi una voce in `SRD_BESTIARIO`.
+### Mostri, incantesimi e NPC
+
+Modifica rispettivamente `data/database_bestiario.json`, `data/database_incantesimi.json` e `data/database_npc.json`. Sono le uniche fonti dei cataloghi base e anche dei file JSON scaricabili: sviluppo e build generano automaticamente lo stesso script `data/catalog-data.js`. Non ci sono copie JavaScript da aggiornare.
+
+Le immagini del bestiario sono file in `img/catalog/`: i byte originali sono conservati, senza incorporarle nel JavaScript scaricato all'accesso. Un'immagine viene richiesta quando la relativa scheda entra nella zona visibile della pagina.
 
 ---
 
@@ -314,9 +346,11 @@ Apri **`css/variables.css`**: tutte le scelte cromatiche e tipografiche sono rac
 
 ## ✨ 4. Come Regolare le Animazioni (Portale Login, Dadi 3D, Transizioni Sezioni)
 
+Le animazioni sono riattivate dal preset di ripristino in `js/core/preferences.js`; dopo il primo avvio viene mantenuta la scelta del dispositivo. Il pulsante **Animazioni** è soltanto in **Account e impostazioni**. La richiesta di movimento ridotto del sistema continua a essere rispettata. Particelle, decorazioni dei sei temi, titoli, transizioni delle pagine e dadi 3D condividono lo stesso stato degli effetti.
+
 - **Cerimonia di Login ("Portale Runico & Doppio Battente")**: definita in `js/ui/account-panel.js` (`playLoginPortalCeremony`) e in `css/animations.css` (`.sium-login-portal`, `.portal-door-left`, `.portal-door-right`).
 - **Arena Dadi 3D Poliedrica**: nella sezione **Lanciatore Dadi** (`renderDadi` in `js/features/dice.js` + `build3DDieElement` in `js/animations.js`) tutti i dadi (`d4, d6, d8, d10, d12, d20, d100`) vengono lanciati in 3D con rimbalzo fisico, ombra dinamica sul velluto e onda d'urto runica all'impatto.
-- **Transizioni al Click sulle Sezioni**: ogni volta che clicchi su una sezione del menu laterale, compare l'**Araldo Runico** della sezione (`SECTION_HERALDS` in `js/animations.js`), la pagina si srotola in 3D (`siumSectionUnroll3D`) e tutti gli elementi entrano con animazione scaglionata (`sium-reveal`).
+- **Transizioni al Click sulle Sezioni**: ogni volta che clicchi su una sezione del menu laterale, compare l'**Araldo Runico** della sezione (`SECTION_HERALDS` in `js/ui/navigation.js`), la pagina si srotola in 3D (`siumSectionUnroll3D`) e tutti gli elementi entrano con animazione scaglionata (`sium-reveal`).
 - **Animazioni ON / OFF**: nel pannello **Account e impostazioni**, per disattivare gli effetti pesanti sui dispositivi lenti.
 
 ---

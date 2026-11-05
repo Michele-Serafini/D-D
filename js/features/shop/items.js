@@ -57,7 +57,7 @@ function renderWeaponCard(w) {
   var foot = document.createElement('div');
   foot.className = 'flex items-center justify-between pt-3 border-t';
   var priceDiv = '<div></div>';
-  if (isAdmin()) {
+  if (isDM()) {
     foot.innerHTML =
       priceDiv +
       '<div class="flex gap-1"><button class="btn-dark edit-btn" title="Modifica" style="padding:0.4rem 0.65rem;">' +
@@ -68,19 +68,17 @@ function renderWeaponCard(w) {
       '</button></div>';
     foot.querySelector('.edit-btn').onclick = function (e) {
       e.stopPropagation();
-      state.editingId = w.id;
-      state.showForm = true;
-      document.body.appendChild(renderWeaponForm());
+      CatalogEditor.open('object', w.id);
     };
-    foot.querySelector('.del-btn').onclick = function (e) {
+    foot.querySelector('.del-btn').onclick = async function (e) {
       e.stopPropagation();
-      if (confirm('Eliminare questa arma dal database?')) {
-        state.armi = state.armi.filter(function (x) {
-          return x.id !== w.id;
-        });
-        fbSaveArmi();
-        notify('Arma eliminata.');
+      if (!confirm('Eliminare questo oggetto dal catalogo della campagna?')) return;
+      try {
+        await CatalogEditor.remove('object', w);
+        notify('Oggetto eliminato.');
         updateResults();
+      } catch (error) {
+        notify(error.message, 'err');
       }
     };
   } else {
@@ -153,6 +151,7 @@ function triggerDownload(blob, filename) {
 }
 
 function renderWeaponForm() {
+  if (!isDM()) return document.createDocumentFragment();
   var editing = null;
   if (state.editingId) {
     state.armi.forEach(function (w) {
@@ -166,8 +165,13 @@ function renderWeaponForm() {
     rarita: editing ? editing.rarita : RARITA[0],
     immagine: editing ? editing.immagine : '',
     sintonia: editing ? !!editing.sintonia : false,
+    prezzo: editing ? Number(editing.prezzo) || 0 : 0,
+    valuta: editing ? editing.valuta || 'mo' : 'mo',
   };
 
+  var draft = CatalogEditor.draft('object', editing, form);
+  form = draft.value;
+  var draftId = draft.id;
   var back = document.createElement('div');
   back.className = 'modal-backdrop';
   back.id = 'modal-root';
@@ -177,6 +181,8 @@ function renderWeaponForm() {
 
   var panel = document.createElement('div');
   panel.className = 'modal-panel';
+  panel.setAttribute('role', 'dialog');
+  panel.setAttribute('aria-label', editing ? 'Modifica oggetto' : 'Aggiungi oggetto');
 
   var head = document.createElement('div');
   head.className = 'modal-head';
@@ -222,10 +228,13 @@ function renderWeaponForm() {
       inp.type = type;
       if (type === 'number') {
         inp.min = '0';
-        inp.step = '1';
+        inp.step = opts.step || '1';
       }
     }
     inp.className = 'field';
+    inp.id = 'object-form-' + key;
+    d.querySelector('label').htmlFor = inp.id;
+    if (key === 'nome') inp.required = true;
     if (type === 'checkbox') {
       inp.checked = !!form[key];
       inp.onchange = function () {
@@ -235,10 +244,10 @@ function renderWeaponForm() {
     } else {
       inp.value = form[key];
       inp.oninput = function () {
-        form[key] = this.value;
+        form[key] = type === 'number' ? Number(this.value) : this.value;
       };
       inp.onchange = function () {
-        form[key] = this.value;
+        form[key] = type === 'number' ? Number(this.value) : this.value;
       };
     }
     if (opts.placeholder) inp.placeholder = opts.placeholder;
@@ -284,6 +293,17 @@ function renderWeaponForm() {
       hint: 'Usa un percorso relativo come <code>img/nomearma.png</code>.',
     })
   );
+  var priceRow = document.createElement('div');
+  priceRow.className = 'form-row';
+  priceRow.appendChild(addField('Prezzo', 'number', 'prezzo', { step: '0.01' }));
+  priceRow.appendChild(
+    addField('Valuta', 'select', 'valuta', {
+      options: VALUTE.map(function (currency) {
+        return { value: currency.code, label: currency.label };
+      }),
+    })
+  );
+  body.appendChild(priceRow);
   body.appendChild(addField('Richiede Sintonia', 'checkbox', 'sintonia'));
   var actions = document.createElement('div');
   actions.className = 'flex gap-3 pt-3';
@@ -306,33 +326,35 @@ function renderWeaponForm() {
   panel.appendChild(body);
   back.appendChild(panel);
 
-  function submitForm() {
-    if (!form.nome.trim()) {
-      alert('Il nome è obbligatorio.');
-      return;
+  var message = document.createElement('p');
+  message.setAttribute('role', 'status');
+  body.appendChild(message);
+  async function submitForm() {
+    if (submit.disabled) return;
+    submit.disabled = true;
+    message.textContent = 'Salvataggio in corso…';
+    try {
+      await CatalogEditor.save('object', form, draftId, !!editing);
+      state.search = form.nome.trim();
+      state.filtroTipo = state.filtroValuta = state.filtroRarita = '';
+      state.emporioShowHomebrew = true;
+      state.showForm = false;
+      state.editingId = null;
+      delete CatalogEditor.drafts.object;
+      back.remove();
+      notify(editing ? 'Oggetto aggiornato.' : 'Oggetto aggiunto alla campagna.');
+      renderMain();
+    } catch (error) {
+      message.textContent = error.message;
+    } finally {
+      submit.disabled = false;
     }
-    if (editing) {
-      state.armi = state.armi.map(function (w) {
-        if (w.id !== state.editingId) return w;
-        var copy = {};
-        for (var k in w) copy[k] = w[k];
-        for (var k2 in form) copy[k2] = form[k2];
-        return copy;
-      });
-      notify('Arma aggiornata.');
-    } else {
-      var newW = { id: 'w_' + Date.now() };
-      for (var k in form) newW[k] = form[k];
-      state.armi = [newW].concat(state.armi);
-      notify('Arma aggiunta al database.');
-    }
-    fbSaveArmi();
-    closeForm();
   }
   return back;
 }
 
 function closeForm() {
+  delete CatalogEditor.drafts.object;
   state.showForm = false;
   state.editingId = null;
   var m = document.getElementById('modal-root');

@@ -766,7 +766,7 @@ function renderStoria() {
   wrap.appendChild(toolbar);
 
   /* ---- Barra filtro persona (solo admin) ---- */
-  if (isAdmin()) {
+  if (isDM()) {
     var storiaFilterBar = document.createElement('div');
     storiaFilterBar.style.cssText =
       'display:flex;align-items:center;flex-wrap:wrap;gap:0.4rem;padding:0.45rem 0.9rem;background:rgba(60,120,200,0.05);border-bottom:1px solid var(--border-subtle);flex-shrink:0;';

@@ -204,7 +204,7 @@ test('an optimistic source update remains pending until its write promise is ack
 });
 
 test('switching sheets before debounce expires preserves both edits and flushes even after leaving the editor', async () => {
-  const source = fs.readFileSync('js/core/realtime.js', 'utf8');
+  const source = fs.readFileSync('js/features/sheets/persistence.js', 'utf8');
   const schedule = source.slice(
     source.indexOf('var _schedaSaveTimer = null;'),
     source.indexOf('function fbLoadSchede(cb)')
@@ -222,6 +222,7 @@ test('switching sheets before debounce expires preserves both edits and flushes 
         writes.push({ owner, id, patch: JSON.parse(JSON.stringify(patch)) }),
     },
   });
+  vm.runInContext(fs.readFileSync('js/core/data.js', 'utf8'), ctx);
   vm.runInContext(schedule, ctx);
   ctx.fbSaveScheda();
   ctx.state.schedaAttivaId = 'two';

@@ -2,42 +2,12 @@
    SEZIONE 2: MOTORE DI RENDERING PRINCIPALE (render & renderMain)
    ============================================================================ */
 function renderActiveSection() {
-  var dmSections = ['dashboard', 'diario', 'worldbuilding', 'storia', 'archivio', 'schedepg'];
-  if (dmSections.indexOf(state.section) !== -1 && !isDM()) return renderDadi();
-  if (state.section === 'scheda' || (state.section === 'schedepg' && state.schedePGViewMode))
-    return _buildSchedaWithLavagna();
-  if (state.section === 'tavolo') {
-    var table = renderTavolo();
-    table.style.height = 'calc(100vh - 120px)';
-    return table;
-  }
-  var renderers = {
-    dashboard: renderDashboard,
-    diario: renderSessionJournal,
-    contenuti: renderRevealedContent,
-    telefono: renderPhoneOffline,
-    'storico-schede': renderSheetHistory,
-    commercio: renderCommerce,
-    emporio: renderEmporio,
-    iniziativa: renderIniziativa,
-    note: renderNote,
-    caos: renderCaos,
-    generatore: renderGeneratore,
-    dadi: renderDadi,
-    mappa: renderMappa,
-    bestiario: renderBestiario,
-    incantesimi: renderIncantesimiAggiuntivi,
-    worldbuilding: renderWorldbuilding,
-    bacheca: renderBacheca,
-    storia: renderStoria,
-    archivio: renderArchivio,
-    schedepg: renderSchedePG,
-    libri: renderLibri,
-  };
+  var section = AppNavigation.get(state.section);
+  if (!section || !section.render) return document.createDocumentFragment();
+  if (!AppNavigation.allowed(section)) return renderDadi();
   try {
-    return renderers[state.section]
-      ? renderers[state.section]()
-      : document.createDocumentFragment();
+    if (section.prepare) section.prepare();
+    return section.render();
   } catch (error) {
     if (state.section !== 'storia') throw error;
     var message = document.createElement('pre');
@@ -48,6 +18,27 @@ function renderActiveSection() {
 }
 
 var _sectionDisposers = [];
+function setSidebarOpen(open) {
+  state.sidebarOpen = !!open;
+  var sidebar = document.querySelector('.sidebar');
+  if (sidebar) sidebar.classList.toggle('open', state.sidebarOpen);
+  var toggle = document.querySelector('.sidebar-toggle');
+  if (toggle) {
+    toggle.setAttribute('aria-expanded', String(state.sidebarOpen));
+    toggle.setAttribute('aria-label', state.sidebarOpen ? 'Chiudi menu' : 'Apri menu');
+  }
+  var backdrop = document.querySelector('.sidebar-backdrop');
+  if (!state.sidebarOpen && backdrop) backdrop.remove();
+  if (state.sidebarOpen && !backdrop) {
+    backdrop = document.createElement('div');
+    backdrop.className = 'sidebar-backdrop';
+    backdrop.onclick = function () {
+      setSidebarOpen(false);
+    };
+    document.querySelector('.app-shell').appendChild(backdrop);
+  }
+}
+
 function onSectionCleanup(dispose) {
   _sectionDisposers.push(dispose);
 }
@@ -100,10 +91,11 @@ function render() {
 
     var mt = document.createElement('button');
     mt.className = 'sidebar-toggle';
+    mt.setAttribute('aria-label', state.sidebarOpen ? 'Chiudi menu' : 'Apri menu');
+    mt.setAttribute('aria-expanded', String(state.sidebarOpen));
     mt.innerHTML = ICON.menu;
     mt.onclick = function () {
-      state.sidebarOpen = !state.sidebarOpen;
-      render();
+      setSidebarOpen(!state.sidebarOpen);
     };
     shell.appendChild(mt);
 
@@ -114,8 +106,7 @@ function render() {
       var backdrop = document.createElement('div');
       backdrop.className = 'sidebar-backdrop';
       backdrop.onclick = function () {
-        state.sidebarOpen = false;
-        render();
+        setSidebarOpen(false);
       };
       shell.appendChild(backdrop);
     }

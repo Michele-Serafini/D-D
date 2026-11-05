@@ -4,6 +4,7 @@ import fs from 'node:fs';
 import vm from 'node:vm';
 
 const context = vm.createContext({});
+vm.runInContext(fs.readFileSync('js/core/data.js', 'utf8'), context);
 vm.runInContext(fs.readFileSync('js/features/shop/commerce-model.js', 'utf8'), context);
 const model = context.CommerceModel;
 const product = model.product({ id: 'potion', nome: 'Pozione' }, 'emporio');
@@ -88,6 +89,7 @@ test('ordinary sheet edits preserve remote purchases and nested input model iden
         }),
     },
   });
+  vm.runInContext(fs.readFileSync('js/core/data.js', 'utf8'), ctx);
   vm.runInContext(fs.readFileSync('js/features/sheets/store.js', 'utf8'), ctx);
   const store = ctx.SheetStore;
   store.seed('alice', ctx.state.scheda);
@@ -152,6 +154,7 @@ test('simultaneous purchases retry stale versions and repeated operation IDs onl
       },
     },
   });
+  vm.runInContext(fs.readFileSync('js/core/data.js', 'utf8'), ctx);
   vm.runInContext(fs.readFileSync('js/features/shop/commerce-model.js', 'utf8'), ctx);
   ctx.SessionJournal = {
     active: null,

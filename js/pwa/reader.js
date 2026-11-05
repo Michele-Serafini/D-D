@@ -1,44 +1,11 @@
 (async function () {
-  try {
-    var theme = localStorage.getItem('sium_theme_mode') || localStorage.getItem('theme') || 'dark';
-    if (['dark', 'light', 'halloween', 'christmas', 'valentine', 'easter'].includes(theme))
-      document.documentElement.dataset.theme = theme;
-  } catch (_error) {
-    /* The reader also works with browser storage restrictions. */
-  }
-
   var status = document.getElementById('status'),
     campaign = document.getElementById('campaign'),
     character = document.getElementById('character'),
     host = document.getElementById('sheet');
   var snapshots = [],
     current = null;
-  var labels = {
-    for: 'Forza',
-    des: 'Destrezza',
-    cos: 'Costituzione',
-    int: 'Intelligenza',
-    sag: 'Saggezza',
-    car: 'Carisma',
-    nomePersonaggio: 'Nome personaggio',
-    nome: 'Nome',
-    hpAttuali: 'Punti vita attuali',
-    hpMassimi: 'Punti vita massimi',
-    oro: 'Oro',
-    argento: 'Argento',
-    rame: 'Rame',
-    platino: 'Platino',
-    equipaggiamento: 'Equipaggiamento',
-    trade: 'Inventario del negozio',
-    inventory: 'Inventario',
-    annotations: 'Annotazioni',
-    boardImages: 'Immagini della lavagna',
-    schedaTipo: 'Sistema di gioco',
-    branca_data: 'Scheda Brancalonia',
-  };
-  function label(key) {
-    return labels[key] || key.replace(/([a-z])([A-Z])/g, '$1 $2').replaceAll('_', ' ');
-  }
+  var label = DataUtils.fieldLabel;
   function meaningful(value) {
     return (
       value != null &&

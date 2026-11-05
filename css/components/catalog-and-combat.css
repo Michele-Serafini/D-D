@@ -550,3 +550,45 @@
   height: 18px;
   flex-shrink: 0;
 }
+.shop-category-bar {
+  background: var(--bg-card);
+  border-bottom: 1px solid var(--border-subtle);
+}
+.shop-category-controls {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  padding-block: 0.4rem;
+}
+.shop-category {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.5rem 1rem;
+  background: transparent;
+  border: 1px solid rgba(200, 200, 200, 0.2);
+  color: rgba(200, 200, 200, 0.7);
+  font-family: var(--font-display);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  cursor: pointer;
+  white-space: nowrap;
+  transition:
+    color 0.2s,
+    border-color 0.2s;
+}
+.shop-category:hover,
+.shop-category:focus-visible {
+  color: var(--shop-accent);
+  border-color: var(--shop-accent);
+}
+.shop-category[aria-current] {
+  padding-inline: 1.1rem;
+  border: 0;
+  border-bottom: 2px solid var(--border-gold);
+  color: var(--gold);
+  cursor: default;
+}

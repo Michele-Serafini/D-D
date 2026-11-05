@@ -9,6 +9,7 @@ import { execFile } from 'node:child_process';
 import { promisify } from 'node:util';
 import { renderFirebaseConfig } from '../scripts/firebase-runtime.mjs';
 import { optimizeAsset } from '../scripts/optimize-assets.mjs';
+import { readCatalogSource } from '../scripts/catalog-data.mjs';
 import { secretLocations, protectedFileReason, scanRepository } from '../scripts/check-secrets.mjs';
 import { transform } from 'lightningcss';
 import { cssCompilerOptions } from '../config/browsers.mjs';
@@ -108,7 +109,7 @@ test('optimized classic scripts retain shared globals and all catalog values', (
   assert.equal(typeof context.isDM, 'function');
   assert.equal(context.window.UserManager, context.UserManager);
   assert.ok(compactUsers.length < users.length);
-  const originalCatalog = fs.readFileSync('data/catalog-data.js');
+  const originalCatalog = Buffer.from(readCatalogSource());
   const original = { window: { __ACCOUNT_POLICY__: accountPolicy } },
     compact = { window: { __ACCOUNT_POLICY__: accountPolicy } };
   vm.runInNewContext(originalCatalog.toString(), original);

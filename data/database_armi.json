@@ -1,5 +1,1555 @@
 [
   {
+    "id": "srd_o_001",
+    "nome": "Pozione di Cura",
+    "tipo": "Pozioni",
+    "rarita": "Comune",
+    "valuta": "mo",
+    "prezzo": 50,
+    "immagine": "https://www.dndbeyond.com/avatars/thumbnails/7/380/1000/1000/636284760641926500.png",
+    "descrizione": "Berla come azione: recupera 2d4+2 PF. Liquido rosso brillante dal sapore di lampone."
+  },
+  {
+    "id": "srd_o_002",
+    "nome": "Pozione di Cura Superiore",
+    "tipo": "Pozioni",
+    "rarita": "Non comune",
+    "valuta": "mo",
+    "prezzo": 150,
+    "immagine": "https://www.dndbeyond.com/avatars/thumbnails/7/382/1000/1000/636284760886743700.png",
+    "descrizione": "Berla come azione: recupera 4d4+4 PF."
+  },
+  {
+    "id": "srd_o_003",
+    "nome": "Pozione di Cura Eccellente",
+    "tipo": "Pozioni",
+    "rarita": "Raro",
+    "valuta": "mo",
+    "prezzo": 450,
+    "immagine": "https://www.dndbeyond.com/avatars/thumbnails/7/384/1000/1000/636284761090524400.png",
+    "descrizione": "Berla come azione: recupera 8d4+8 PF. Liquido rosso con striature dorate."
+  },
+  {
+    "id": "srd_o_004",
+    "nome": "Pozione di Cura Suprema",
+    "tipo": "Pozioni",
+    "rarita": "Molto raro",
+    "valuta": "mo",
+    "prezzo": 1350,
+    "immagine": "https://www.dndbeyond.com/avatars/thumbnails/7/390/1000/1000/636284762476337219.png",
+    "descrizione": "Berla come azione: recupera 10d4+20 PF."
+  },
+  {
+    "id": "srd_o_005",
+    "nome": "Pozione del Volo",
+    "tipo": "Pozioni",
+    "rarita": "Molto raro",
+    "valuta": "mo",
+    "prezzo": 500,
+    "immagine": "https://www.dndbeyond.com/avatars/thumbnails/7/354/1000/1000/636284755693048603.png",
+    "descrizione": "Per 1 ora: velocità volo 18 m e puoi librarsi. Se termina mentre sei in aria, cadi."
+  },
+  {
+    "id": "srd_o_006",
+    "nome": "Pozione della Velocità",
+    "tipo": "Pozioni",
+    "rarita": "Molto raro",
+    "valuta": "mo",
+    "prezzo": 400,
+    "immagine": "https://www.dndbeyond.com/avatars/thumbnails/7/386/1000/1000/636284761617162890.png",
+    "descrizione": "Per 1 minuto sei sotto Affretta senza concentrazione. Liquido giallo che vorteggia."
+  },
+  {
+    "id": "srd_o_007",
+    "nome": "Pozione della Forma Gassosa",
+    "tipo": "Pozioni",
+    "rarita": "Raro",
+    "valuta": "mo",
+    "prezzo": 300,
+    "immagine": "https://www.dndbeyond.com/avatars/thumbnails/7/376/1000/1000/636284759237244415.png",
+    "descrizione": "Come Forma Gassosa senza concentrazione per 1 ora. Liquido grigiastro fumoso."
+  },
+  {
+    "id": "srd_o_008",
+    "nome": "Pozione della Forza del Gigante della Collina",
+    "tipo": "Pozioni",
+    "rarita": "Non comune",
+    "valuta": "mo",
+    "prezzo": 200,
+    "immagine": "https://www.dndbeyond.com/avatars/thumbnails/7/358/1000/1000/636284756497942390.png",
+    "descrizione": "Per 1 ora: Forza diventa 21 (nessun effetto se già superiore)."
+  },
+  {
+    "id": "srd_o_009",
+    "nome": "Pozione della Forza del Gigante della Pietra",
+    "tipo": "Pozioni",
+    "rarita": "Raro",
+    "valuta": "mo",
+    "prezzo": 500,
+    "immagine": "https://www.dndbeyond.com/avatars/thumbnails/7/360/1000/1000/636284756701067800.png",
+    "descrizione": "Per 1 ora: Forza diventa 23 (nessun effetto se già superiore)."
+  },
+  {
+    "id": "srd_o_010",
+    "nome": "Pozione della Forza del Gigante del Fuoco",
+    "tipo": "Pozioni",
+    "rarita": "Raro",
+    "valuta": "mo",
+    "prezzo": 750,
+    "immagine": "https://www.dndbeyond.com/avatars/thumbnails/7/362/1000/1000/636284756907699500.png",
+    "descrizione": "Per 1 ora: Forza diventa 25 (nessun effetto se già superiore)."
+  },
+  {
+    "id": "srd_o_011",
+    "nome": "Pozione della Forza del Gigante delle Nuvole",
+    "tipo": "Pozioni",
+    "rarita": "Molto raro",
+    "valuta": "mo",
+    "prezzo": 1500,
+    "immagine": "https://www.dndbeyond.com/avatars/thumbnails/7/364/1000/1000/636284757150095900.png",
+    "descrizione": "Per 1 ora: Forza diventa 27 (nessun effetto se già superiore)."
+  },
+  {
+    "id": "srd_o_012",
+    "nome": "Pozione della Forza del Gigante della Tempesta",
+    "tipo": "Pozioni",
+    "rarita": "Leggendario",
+    "valuta": "mo",
+    "prezzo": 50000,
+    "immagine": "https://www.dndbeyond.com/avatars/thumbnails/7/366/1000/1000/636284757334800700.png",
+    "descrizione": "Per 1 ora: Forza diventa 29. Liquido azzurro con lampi interni."
+  },
+  {
+    "id": "srd_o_013",
+    "nome": "Pozione della Resistenza",
+    "tipo": "Pozioni",
+    "rarita": "Non comune",
+    "valuta": "mo",
+    "prezzo": 300,
+    "immagine": "https://www.dndbeyond.com/avatars/thumbnails/7/378/1000/1000/636284760417095000.png",
+    "descrizione": "Per 1 ora: resistenza a un tipo di danno (acido, freddo, fuoco, fulmine, necrotico, ecc.)."
+  },
+  {
+    "id": "srd_o_014",
+    "nome": "Pozione della Crescita",
+    "tipo": "Pozioni",
+    "rarita": "Non comune",
+    "valuta": "mo",
+    "prezzo": 150,
+    "immagine": "https://www.dndbeyond.com/avatars/thumbnails/7/346/1000/1000/636284754375018000.png",
+    "descrizione": "Come Ingrandisci/Riduci (solo Ingrandisci) per 1d4 ore senza concentrazione."
+  },
+  {
+    "id": "srd_o_015",
+    "nome": "Pozione della Diminuzione",
+    "tipo": "Pozioni",
+    "rarita": "Raro",
+    "valuta": "mo",
+    "prezzo": 270,
+    "immagine": "https://www.dndbeyond.com/avatars/thumbnails/7/348/1000/1000/636284754630555000.png",
+    "descrizione": "Come Ingrandisci/Riduci (solo Riduci) per 1d4 ore senza concentrazione."
+  },
+  {
+    "id": "srd_o_016",
+    "nome": "Pozione della Longevità",
+    "tipo": "Pozioni",
+    "rarita": "Molto raro",
+    "valuta": "mo",
+    "prezzo": 9000,
+    "immagine": "https://www.dndbeyond.com/avatars/thumbnails/7/368/1000/1000/636284757573481500.png",
+    "descrizione": "La tua età biologica diminuisce di 1d6+6 anni (min 13 anni). 10% cumulativo che aumenti invece."
+  },
+  {
+    "id": "srd_o_017",
+    "nome": "Pozione della Vitalità",
+    "tipo": "Pozioni",
+    "rarita": "Molto raro",
+    "valuta": "mo",
+    "prezzo": 960,
+    "immagine": "https://www.dndbeyond.com/avatars/thumbnails/7/392/1000/1000/636284762744046000.png",
+    "descrizione": "Cura tutte le malattie, rimuovi tutti i veleni e massimizza i PF recuperati con dadi vita per 24 ore."
+  },
+  {
+    "id": "srd_o_018",
+    "nome": "Pozione dell'Arrampicata",
+    "tipo": "Pozioni",
+    "rarita": "Comune",
+    "valuta": "mo",
+    "prezzo": 75,
+    "immagine": "https://www.dndbeyond.com/avatars/thumbnails/7/340/1000/1000/636284753153482000.png",
+    "descrizione": "Per 1 ora: velocità di arrampicata pari a quella a terra, vantaggio in Atletica per arrampicarti."
+  },
+  {
+    "id": "srd_o_019",
+    "nome": "Pozione dell'Eroismo",
+    "tipo": "Pozioni",
+    "rarita": "Raro",
+    "valuta": "mo",
+    "prezzo": 180,
+    "immagine": "https://www.dndbeyond.com/avatars/thumbnails/7/352/1000/1000/636284755480143000.png",
+    "descrizione": "Per 1 ora: 10 PF temporanei e sei sotto Benedizione senza concentrazione."
+  },
+  {
+    "id": "srd_o_020",
+    "nome": "Pozione dell'Invisibilità",
+    "tipo": "Pozioni",
+    "rarita": "Molto raro",
+    "valuta": "mo",
+    "prezzo": 180,
+    "immagine": "https://www.dndbeyond.com/avatars/thumbnails/7/356/1000/1000/636284756009637000.png",
+    "descrizione": "Per 1 ora: invisibile. Termina se attacchi o lanci un incantesimo."
+  },
+  {
+    "id": "srd_o_021",
+    "nome": "Pozione dell'Invulnerabilità",
+    "tipo": "Pozioni",
+    "rarita": "Raro",
+    "valuta": "mo",
+    "prezzo": 3000,
+    "immagine": "https://www.dndbeyond.com/avatars/thumbnails/7/370/1000/1000/636284757748131000.png",
+    "descrizione": "Per 1 minuto: resistenza a tutti i danni. Olio denso e viscoso."
+  },
+  {
+    "id": "srd_o_022",
+    "nome": "Pozione della Lettura della Mente",
+    "tipo": "Pozioni",
+    "rarita": "Raro",
+    "valuta": "mo",
+    "prezzo": 180,
+    "immagine": "https://www.dndbeyond.com/avatars/thumbnails/7/374/1000/1000/636284758981625000.png",
+    "descrizione": "Per 1 minuto: puoi lanciare Individua i Pensieri (CD 13) senza concentrazione."
+  },
+  {
+    "id": "srd_o_023",
+    "nome": "Pozione del Veleno",
+    "tipo": "Pozioni",
+    "rarita": "Comune",
+    "valuta": "mo",
+    "prezzo": 100,
+    "immagine": "https://www.dndbeyond.com/avatars/thumbnails/7/394/1000/1000/636284763026340000.png",
+    "descrizione": "Causa 3d6 danni da veleno e avvelenamento 24 ore (TS COS CD 19 per metà e nessun avvelenamento)."
+  },
+  {
+    "id": "srd_o_024",
+    "nome": "Pozione della Chiaroveggenza",
+    "tipo": "Pozioni",
+    "rarita": "Raro",
+    "valuta": "mo",
+    "prezzo": 960,
+    "immagine": "https://www.dndbeyond.com/avatars/thumbnails/7/344/1000/1000/636284754000869000.png",
+    "descrizione": "Berla per lanciare Chiaroveggenza senza concentrazione. Liquido turchese con occhio fluttuante."
+  },
+  {
+    "id": "srd_o_025",
+    "nome": "Pozione dell'Amicizia con gli Animali",
+    "tipo": "Pozioni",
+    "rarita": "Non comune",
+    "valuta": "mo",
+    "prezzo": 100,
+    "immagine": "https://www.dndbeyond.com/avatars/thumbnails/7/338/1000/1000/636284752754527000.png",
+    "descrizione": "Per 1 ora: lancia Amicizia con gli Animali (CD 13) a volontà."
+  },
+  {
+    "id": "srd_o_026",
+    "nome": "Pozione del Soffio di Fuoco",
+    "tipo": "Pozioni",
+    "rarita": "Non comune",
+    "valuta": "mo",
+    "prezzo": 150,
+    "immagine": "https://www.dndbeyond.com/avatars/thumbnails/7/372/1000/1000/636284758744578000.png",
+    "descrizione": "Per 1 ora: 3 volte come azione bonus, esali fuoco (cono 4,5 m, 4d6, CD DES 13)."
+  },
+  {
+    "id": "srd_o_027",
+    "nome": "Pozione per Respirare Sott'Acqua",
+    "tipo": "Pozioni",
+    "rarita": "Non comune",
+    "valuta": "mo",
+    "prezzo": 180,
+    "immagine": "https://www.dndbeyond.com/avatars/thumbnails/7/388/1000/1000/636284761970038000.png",
+    "descrizione": "Per 1 ora: respira sott'acqua. Non perdi la capacità di respirare aria."
+  },
+  {
+    "id": "srd_o_028",
+    "nome": "Unguento di Keoghtom",
+    "tipo": "Pozioni",
+    "rarita": "Non comune",
+    "valuta": "mo",
+    "prezzo": 3000,
+    "immagine": "https://www.dndbeyond.com/avatars/thumbnails/7/396/1000/1000/636284763312888000.png",
+    "descrizione": "1d4+1 dosi. Come azione: recupera 2d8+2 PF, cessa avvelenamento, cura malattie."
+  },
+  {
+    "id": "srd_o_030",
+    "nome": "Anello dell'Azione Libera",
+    "tipo": "Oggetti magici",
+    "rarita": "Raro",
+    "valuta": "mo",
+    "prezzo": 5000,
+    "immagine": "https://www.dndbeyond.com/avatars/thumbnails/7/352/1000/1000/636284760123325845.jpeg",
+    "descrizione": "Il terreno difficile non rallenta il movimento, non puoi essere paralizzato o rallentato magicamente."
+  },
+  {
+    "id": "srd_o_031",
+    "nome": "Anello dell'Ariete",
+    "tipo": "Oggetti magici",
+    "rarita": "Raro",
+    "valuta": "mo",
+    "prezzo": 5000,
+    "immagine": "https://www.dndbeyond.com/avatars/thumbnails/7/370/1000/1000/636284762552967774.jpeg",
+    "descrizione": "Ha 3 cariche. Come azione: forza d'ariete (1-3 cariche, 2d10 perforanti per carica, spinto). Ricarica 1d3 cariche/alba."
+  },
+  {
+    "id": "srd_o_032",
+    "nome": "Anello dell'Invisibilità",
+    "tipo": "Oggetti magici",
+    "rarita": "Leggendario",
+    "valuta": "mo",
+    "prezzo": 45000,
+    "immagine": "https://www.dndbeyond.com/avatars/thumbnails/7/354/1000/1000/636284760334340489.jpeg",
+    "descrizione": "Puoi diventare invisibile a volontà. Diventi visibile se attacchi o lanci incantesimi. Richiede sintonia."
+  },
+  {
+    "id": "srd_o_033",
+    "nome": "Anello della Caduta Morbida",
+    "tipo": "Oggetti magici",
+    "rarita": "Raro",
+    "valuta": "mo",
+    "prezzo": 2000,
+    "immagine": "https://www.dndbeyond.com/avatars/thumbnails/7/348/1000/1000/636284759713966326.jpeg",
+    "descrizione": "Immune ai danni da caduta e atterri sempre in piedi."
+  },
+  {
+    "id": "srd_o_034",
+    "nome": "Anello della Conservazione degli Incantesimi",
+    "tipo": "Oggetti magici",
+    "rarita": "Raro",
+    "valuta": "mo",
+    "prezzo": 24000,
+    "immagine": "https://www.dndbeyond.com/avatars/thumbnails/49751/581/1000/1000/638853493510092000.png",
+    "descrizione": "Contiene incantesimi lanciati nell'anello (fino a 5 livelli totali). Chi lo porta può lanciarli."
+  },
+  {
+    "id": "srd_o_035",
+    "nome": "Anello della Deviazione degli Incantesimi",
+    "tipo": "Oggetti magici",
+    "rarita": "Leggendario",
+    "valuta": "mo",
+    "prezzo": 50000,
+    "immagine": "https://www.dndbeyond.com/avatars/thumbnails/7/366/1000/1000/636284761726754004.jpeg",
+    "descrizione": "Vantaggio ai TS contro incantesimi 1°-7° che ti colpiscono. Con 20 sul dado, l'incantesimo si ritorce."
+  },
+  {
+    "id": "srd_o_036",
+    "nome": "Anello della Rigenerazione",
+    "tipo": "Oggetti magici",
+    "rarita": "Molto raro",
+    "valuta": "mo",
+    "prezzo": 5000,
+    "immagine": "https://www.dndbeyond.com/avatars/thumbnails/7/360/1000/1000/636284760984620165.jpeg",
+    "descrizione": "Recuperi 1d6 PF ogni 10 min se hai almeno 1 PF. Gli arti mozzati ricrescono in 1d6+1 giorni."
+  },
+  {
+    "id": "srd_o_037",
+    "nome": "Anello della Resistenza",
+    "tipo": "Oggetti magici",
+    "rarita": "Raro",
+    "valuta": "mo",
+    "prezzo": 5000,
+    "immagine": "https://www.dndbeyond.com/avatars/thumbnails/19/140/1000/1000/636382339094047219.jpeg",
+    "descrizione": "Resistenza a un tipo di danno (determinato dalla pietra incastonata nell'anello). Richiede sintonia."
+  },
+  {
+    "id": "srd_o_038",
+    "nome": "Anello della Telecinesi",
+    "tipo": "Oggetti magici",
+    "rarita": "Molto raro",
+    "valuta": "mo",
+    "prezzo": 4500,
+    "immagine": "https://www.dndbeyond.com/avatars/thumbnails/7/368/1000/1000/636284762291498239.jpeg",
+    "descrizione": "Puoi lanciare Telecinesi a volontà (CD 15), senza slot incantesimo."
+  },
+  {
+    "id": "srd_o_039",
+    "nome": "Anello delle Stelle Cadenti",
+    "tipo": "Oggetti magici",
+    "rarita": "Molto raro",
+    "valuta": "mo",
+    "prezzo": 50000,
+    "immagine": "https://www.dndbeyond.com/avatars/thumbnails/7/362/1000/1000/636284761242432825.jpeg",
+    "descrizione": "6 cariche. Di notte, lancia 1-3 stelle cadenti (1d6 radianti ciascuna). Ricarica 1d6 cariche/alba all'aperto."
+  },
+  {
+    "id": "srd_o_040",
+    "nome": "Anello dello Scudo Mentale",
+    "tipo": "Oggetti magici",
+    "rarita": "Non comune",
+    "valuta": "mo",
+    "prezzo": 1000,
+    "immagine": "https://www.dndbeyond.com/avatars/thumbnails/7/356/1000/1000/636284760571117587.jpeg",
+    "descrizione": "Immune alla lettura del pensiero, nessuno può sapere il tuo allineamento."
+  },
+  {
+    "id": "srd_o_041",
+    "nome": "Anello del Calore",
+    "tipo": "Oggetti magici",
+    "rarita": "Non comune",
+    "valuta": "mo",
+    "prezzo": 1000,
+    "immagine": "https://www.dndbeyond.com/avatars/thumbnails/12744/585/1000/1000/637357406877835038.jpeg",
+    "descrizione": "Resistenza al freddo. Sopporti temperature fino a -45°C senza equipaggiamento. Richiede sintonia."
+  },
+  {
+    "id": "srd_o_042",
+    "nome": "Anello del Nuoto",
+    "tipo": "Oggetti magici",
+    "rarita": "Non comune",
+    "valuta": "mo",
+    "prezzo": 1500,
+    "immagine": "https://www.dndbeyond.com/attachments/2/668/ring.jpg",
+    "descrizione": "Velocità di nuoto 9 m."
+  },
+  {
+    "id": "srd_o_043",
+    "nome": "Anello del Salto",
+    "tipo": "Oggetti magici",
+    "rarita": "Non comune",
+    "valuta": "mo",
+    "prezzo": 1000,
+    "immagine": "https://www.dndbeyond.com/attachments/2/668/ring.jpg",
+    "descrizione": "Lancia Salto su te stesso a volontà come azione bonus. Triplica la distanza di salto."
+  },
+  {
+    "id": "srd_o_044",
+    "nome": "Anello dei Tre Desideri",
+    "tipo": "Oggetti magici",
+    "rarita": "Leggendario",
+    "valuta": "mo",
+    "prezzo": 100000,
+    "immagine": "https://www.dndbeyond.com/avatars/thumbnails/7/372/1000/1000/636284762810625788.jpeg",
+    "descrizione": "3 cariche, ognuna per lanciare Desiderio. Non si ricarica. Esaurite le cariche, diventa non magico."
+  },
+  {
+    "id": "srd_o_045",
+    "nome": "Anello della Camminata sull'Acqua",
+    "tipo": "Oggetti magici",
+    "rarita": "Non comune",
+    "valuta": "mo",
+    "prezzo": 1500,
+    "immagine": "https://www.dndbeyond.com/avatars/thumbnails/7/374/1000/1000/636284763046262817.jpeg",
+    "descrizione": "Puoi stare e muoverti sulla superficie dei liquidi come terreno solido."
+  },
+  {
+    "id": "srd_o_046",
+    "nome": "Anello della Visione a Raggi X",
+    "tipo": "Oggetti magici",
+    "rarita": "Raro",
+    "valuta": "mo",
+    "prezzo": 6000,
+    "immagine": "https://www.dndbeyond.com/avatars/thumbnails/7/376/1000/1000/636284763516019515.jpeg",
+    "descrizione": "Vedi attraverso la materia solida entro 9 m (max 30 cm spessore, non oro/piombo/mithral). Richiede sintonia."
+  },
+  {
+    "id": "srd_o_047",
+    "nome": "Anello di Protezione",
+    "tipo": "Oggetti magici",
+    "rarita": "Raro",
+    "valuta": "mo",
+    "prezzo": 3500,
+    "immagine": "img/anello-di-protezione.jpeg",
+    "descrizione": "+1 alla CA e ai TS. Richiede sintonia."
+  },
+  {
+    "id": "srd_o_050",
+    "nome": "Arma +1",
+    "tipo": "Spada",
+    "rarita": "Non comune",
+    "valuta": "mo",
+    "prezzo": 500,
+    "immagine": "img/arma-1-2-o-3.png",
+    "descrizione": "+1 ai tiri per colpire e ai danni. Qualsiasi tipo di arma."
+  },
+  {
+    "id": "srd_o_051",
+    "nome": "Arma +2",
+    "tipo": "Spada",
+    "rarita": "Raro",
+    "valuta": "mo",
+    "prezzo": 2000,
+    "immagine": "img/spada+2.png",
+    "descrizione": "+2 ai tiri per colpire e ai danni. Qualsiasi tipo di arma."
+  },
+  {
+    "id": "srd_o_052",
+    "nome": "Arma +3",
+    "tipo": "Spada",
+    "rarita": "Molto raro",
+    "valuta": "mo",
+    "prezzo": 8000,
+    "immagine": "img/spada+3.png",
+    "descrizione": "+3 ai tiri per colpire e ai danni. Qualsiasi tipo di arma."
+  },
+  {
+    "id": "srd_o_053",
+    "nome": "Arma Feroce",
+    "tipo": "Spada",
+    "rarita": "Raro",
+    "valuta": "mo",
+    "prezzo": 1000,
+    "immagine": "https://www.dndbeyond.com/avatars/thumbnails/7/460/1000/1000/636284780329420913.jpeg",
+    "descrizione": "Quando ottieni un 20 sul dado del tiro per colpire, il bersaglio subisce 7 danni extra dello stesso tipo."
+  },
+  {
+    "id": "srd_o_054",
+    "nome": "Ammazzadraghi",
+    "tipo": "Spada",
+    "rarita": "Raro",
+    "valuta": "mo",
+    "prezzo": 1000,
+    "immagine": "img/ammazzadraghi.jpeg",
+    "descrizione": "+1 a colpire e danni. Contro draghi: +3 a colpire e 3d6 danni extra."
+  },
+  {
+    "id": "srd_o_055",
+    "nome": "Ammazzagiganti",
+    "tipo": "Spada",
+    "rarita": "Raro",
+    "valuta": "mo",
+    "prezzo": 1000,
+    "immagine": "img/ammazzagiganti.jpeg",
+    "descrizione": "+1 a colpire e danni. Contro giganti: +2 a colpire e 2d6 extra; il gigante supera CD FOR 15 o cade prono."
+  },
+  {
+    "id": "srd_o_056",
+    "nome": "Ascia del Berserker",
+    "tipo": "Ascia",
+    "rarita": "Raro",
+    "valuta": "mo",
+    "prezzo": 1000,
+    "immagine": "https://www.dndbeyond.com/avatars/thumbnails/7/132/1000/1000/636284712925694328.jpeg",
+    "descrizione": "+1 a colpire e danni. Se colpito sei tentato di entrare in furia berserk. Maledetta."
+  },
+  {
+    "id": "srd_o_057",
+    "nome": "Dardo dell'Uccisione",
+    "tipo": "Arco",
+    "rarita": "Molto raro",
+    "valuta": "mo",
+    "prezzo": 600,
+    "immagine": "https://www.dndbeyond.com/avatars/thumbnails/7/114/1000/1000/636284705050167886.jpeg",
+    "descrizione": "Freccia o dardo +1. Contro la categoria designata: 6d10 extra (CD COS 15 per dimezzare)."
+  },
+  {
+    "id": "srd_o_058",
+    "nome": "Giavellotto del Fulmine",
+    "tipo": "Lancia",
+    "rarita": "Non comune",
+    "valuta": "mo",
+    "prezzo": 1500,
+    "immagine": "https://www.dndbeyond.com/avatars/thumbnails/7/275/1000/1000/636284746259121503.jpeg",
+    "descrizione": "Quando lanciato diventa un fulmine (linea 1,5 m, 4d6 fulmine a tutte le creature, CD DES 13). +1 in mischia."
+  },
+  {
+    "id": "srd_o_059",
+    "nome": "La Difenditrice",
+    "tipo": "Spada lunga",
+    "rarita": "Leggendario",
+    "valuta": "mo",
+    "prezzo": 50000,
+    "immagine": "https://www.dndbeyond.com/avatars/thumbnails/7/182/1000/1000/636284726545050930.jpeg",
+    "descrizione": "+3 a colpire e danni. Trasferisci fino a +3 come bonus CA fino al prossimo turno. Richiede sintonia."
+  },
+  {
+    "id": "srd_o_060",
+    "nome": "Lingua di Fuoco",
+    "tipo": "Spada",
+    "rarita": "Raro",
+    "valuta": "mo",
+    "prezzo": 5000,
+    "immagine": "https://www.dndbeyond.com/avatars/thumbnails/7/219/1000/1000/636284733648450283.jpeg",
+    "descrizione": "Parola di comando: accende fiamma che aggiunge 2d6 fuoco e illumina 12 m brillante, 12 m fioca."
+  },
+  {
+    "id": "srd_o_061",
+    "nome": "Marchio del Gelo",
+    "tipo": "Spada",
+    "rarita": "Molto raro",
+    "valuta": "mo",
+    "prezzo": 6000,
+    "immagine": "https://www.dndbeyond.com/avatars/thumbnails/7/223/1000/1000/636284734857745454.jpeg",
+    "descrizione": "+1 a colpire e danni; +1d6 freddo extra. Resistenza al fuoco. Spegne fuochi non magici entro 9 m."
+  },
+  {
+    "id": "srd_o_062",
+    "nome": "Mazza della Frantumazione",
+    "tipo": "Mazza",
+    "rarita": "Raro",
+    "valuta": "mo",
+    "prezzo": 3000,
+    "immagine": "https://www.dndbeyond.com/avatars/thumbnails/7/285/1000/1000/636284749090385489.jpeg",
+    "descrizione": "+2d6 radianti a non-morti e aberrazioni. I non-morti fanno CD SAG 17 o sono distrutti."
+  },
+  {
+    "id": "srd_o_063",
+    "nome": "Mazza del Terrore",
+    "tipo": "Mazza",
+    "rarita": "Raro",
+    "valuta": "mo",
+    "prezzo": 2000,
+    "immagine": "https://www.dndbeyond.com/avatars/thumbnails/7/289/1000/1000/636284749968096380.jpeg",
+    "descrizione": "3 cariche. Parola di comando: creature entro 9 m (CD SAG 15) spaventate per 1 min. Ricarica 1d3/alba."
+  },
+  {
+    "id": "srd_o_064",
+    "nome": "Scimitarra della Velocità",
+    "tipo": "Spada",
+    "rarita": "Molto raro",
+    "valuta": "mo",
+    "prezzo": 6000,
+    "immagine": "https://www.dndbeyond.com/attachments/2/664/weapon.jpg",
+    "descrizione": "+2 a colpire e danni. Attacco aggiuntivo come azione bonus ogni turno. Richiede sintonia."
+  },
+  {
+    "id": "srd_o_065",
+    "nome": "Spada Danzante",
+    "tipo": "Spada",
+    "rarita": "Molto raro",
+    "valuta": "mo",
+    "prezzo": 6000,
+    "immagine": "https://www.dndbeyond.com/avatars/thumbnails/7/178/1000/1000/636284725246714619.jpeg",
+    "descrizione": "+1 a colpire. Come azione bonus: danza autonoma per 4 round (1 attacco/round con le tue statistiche)."
+  },
+  {
+    "id": "srd_o_066",
+    "nome": "Spada del Furto di Vita",
+    "tipo": "Spada",
+    "rarita": "Raro",
+    "valuta": "mo",
+    "prezzo": 3000,
+    "immagine": "https://www.dndbeyond.com/avatars/thumbnails/7/438/1000/1000/636284773757593723.jpeg",
+    "descrizione": "+1 a colpire e danni. Con un 20: guadagni 10 PF temporanei (non contro non-morti o costrutti). Richiede sintonia."
+  },
+  {
+    "id": "srd_o_067",
+    "nome": "Spada dell'Affilatura",
+    "tipo": "Spada",
+    "rarita": "Molto raro",
+    "valuta": "mo",
+    "prezzo": 6000,
+    "immagine": "https://www.dndbeyond.com/avatars/thumbnails/7/440/1000/1000/636284774073071216.jpeg",
+    "descrizione": "+3 a colpire e danni. Con un 20 che infligge taglienti: la creatura perde un arto (CD COS 15). Richiede sintonia."
+  },
+  {
+    "id": "srd_o_068",
+    "nome": "Spada delle Ferite",
+    "tipo": "Spada",
+    "rarita": "Raro",
+    "valuta": "mo",
+    "prezzo": 3000,
+    "immagine": "https://www.dndbeyond.com/attachments/2/664/weapon.jpg",
+    "descrizione": "+1 a colpire e danni. I danni causati non possono essere recuperati con riposo. Richiede sintonia."
+  },
+  {
+    "id": "srd_o_069",
+    "nome": "Spada Vorpal",
+    "tipo": "Spada",
+    "rarita": "Leggendario",
+    "valuta": "mo",
+    "prezzo": 50000,
+    "immagine": "img/spada-vorpal.png",
+    "descrizione": "+3 a colpire e danni. Ignora resistenza ai tagliente. Con un 20: decapita la creatura (CD COS 15). Richiede sintonia."
+  },
+  {
+    "id": "srd_o_070",
+    "nome": "Tridente del Comando sui Pesci",
+    "tipo": "Tridente",
+    "rarita": "Non comune",
+    "valuta": "mo",
+    "prezzo": 800,
+    "immagine": "https://www.dndbeyond.com/avatars/thumbnails/7/456/1000/1000/636284778789975330.jpeg",
+    "descrizione": "3 cariche. Parola di comando: controlla fino a 6 pesci entro 18 m per 1 ora (CD 15). Ricarica 1d3/alba."
+  },
+  {
+    "id": "srd_o_071",
+    "nome": "Vendicatore Sacro",
+    "tipo": "Spada",
+    "rarita": "Leggendario",
+    "valuta": "mo",
+    "prezzo": 50000,
+    "immagine": "https://www.dndbeyond.com/avatars/thumbnails/7/253/1000/1000/636284739956618526.jpeg",
+    "descrizione": "Solo paladini. +3 a colpire e danni; +2d10 a non-morti e aberrazioni. Aura 3 m: +proficiency ai TS magia. Richiede sintonia."
+  },
+  {
+    "id": "srd_o_080",
+    "nome": "Armatura +1",
+    "tipo": "Armature",
+    "rarita": "Raro",
+    "valuta": "mo",
+    "prezzo": 1500,
+    "immagine": "https://www.dndbeyond.com/attachments/2/666/armor.jpg",
+    "descrizione": "+1 alla CA. Qualsiasi tipo di armatura."
+  },
+  {
+    "id": "srd_o_081",
+    "nome": "Armatura +2",
+    "tipo": "Armature",
+    "rarita": "Molto raro",
+    "valuta": "mo",
+    "prezzo": 6000,
+    "immagine": "https://www.dndbeyond.com/attachments/2/666/armor.jpg",
+    "descrizione": "+2 alla CA. Qualsiasi tipo di armatura."
+  },
+  {
+    "id": "srd_o_082",
+    "nome": "Armatura +3",
+    "tipo": "Armature",
+    "rarita": "Leggendario",
+    "valuta": "mo",
+    "prezzo": 24000,
+    "immagine": "https://www.dndbeyond.com/attachments/2/666/armor.jpg",
+    "descrizione": "+3 alla CA. Qualsiasi tipo di armatura."
+  },
+  {
+    "id": "srd_o_083",
+    "nome": "Armatura di Adamantio",
+    "tipo": "Armature",
+    "rarita": "Non comune",
+    "valuta": "mo",
+    "prezzo": 500,
+    "immagine": "https://www.dndbeyond.com/attachments/2/666/armor.jpg",
+    "descrizione": "I colpi critici contro di te diventano colpi normali. Cotta di maglia, scaglie o piastre."
+  },
+  {
+    "id": "srd_o_084",
+    "nome": "Armatura di Invulnerabilità",
+    "tipo": "Armature",
+    "rarita": "Leggendario",
+    "valuta": "mo",
+    "prezzo": 50000,
+    "immagine": "https://www.dndbeyond.com/avatars/thumbnails/7/110/1000/1000/636284703543037516.jpeg",
+    "descrizione": "Resistenza ai danni non magici. Come azione 1/giorno: immunità ai danni non magici per 10 min."
+  },
+  {
+    "id": "srd_o_085",
+    "nome": "Armatura di Mithral",
+    "tipo": "Armature",
+    "rarita": "Non comune",
+    "valuta": "mo",
+    "prezzo": 400,
+    "immagine": "https://www.dndbeyond.com/attachments/2/666/armor.jpg",
+    "descrizione": "Non impone svantaggio ai TS DES furtività. Puoi dormirci senza penalità."
+  },
+  {
+    "id": "srd_o_086",
+    "nome": "Armatura di Resistenza",
+    "tipo": "Armature",
+    "rarita": "Raro",
+    "valuta": "mo",
+    "prezzo": 8000,
+    "immagine": "https://www.dndbeyond.com/avatars/thumbnails/7/112/1000/1000/636284703865068888.jpeg",
+    "descrizione": "Resistenza a un tipo di danno determinato dall'armatura. Richiede sintonia."
+  },
+  {
+    "id": "srd_o_087",
+    "nome": "Armatura Demoniaca",
+    "tipo": "Armature",
+    "rarita": "Molto raro",
+    "valuta": "mo",
+    "prezzo": 36000,
+    "immagine": "https://www.dndbeyond.com/avatars/thumbnails/7/184/1000/1000/636284726853706329.jpeg",
+    "descrizione": "CA 18, artigli 1d8+FOR. Maledetta: svantaggio contro demoni; demoni vantaggio su di te."
+  },
+  {
+    "id": "srd_o_088",
+    "nome": "Cotta di Maglia Elfica",
+    "tipo": "Armature",
+    "rarita": "Raro",
+    "valuta": "mo",
+    "prezzo": 4000,
+    "immagine": "https://www.dndbeyond.com/avatars/thumbnails/7/208/1000/1000/636284731937952010.jpeg",
+    "descrizione": "CA 14+DES (max 2). Non impone svantaggio a Furtività. Nessuna proficiency richiesta."
+  },
+  {
+    "id": "srd_o_089",
+    "nome": "Cotta di Scaglie di Drago",
+    "tipo": "Armature",
+    "rarita": "Molto raro",
+    "valuta": "mo",
+    "prezzo": 4000,
+    "immagine": "https://www.dndbeyond.com/avatars/thumbnails/7/188/1000/1000/636284728153996196.jpeg",
+    "descrizione": "CA 14+DES (max 1). Resistenza al danno del drago di origine. Vantaggio TS vs soffio di drago."
+  },
+  {
+    "id": "srd_o_090",
+    "nome": "Piastre del Nano",
+    "tipo": "Armature",
+    "rarita": "Molto raro",
+    "valuta": "mo",
+    "prezzo": 3000,
+    "immagine": "https://www.dndbeyond.com/avatars/thumbnails/7/198/1000/1000/636284729841147778.jpeg",
+    "descrizione": "CA 20. Quando vieni spinto, riduci lo spostamento di 3 m. Richiede sintonia."
+  },
+  {
+    "id": "srd_o_091",
+    "nome": "Scudo +1",
+    "tipo": "Armature",
+    "rarita": "Non comune",
+    "valuta": "mo",
+    "prezzo": 1000,
+    "immagine": "https://www.dndbeyond.com/attachments/2/666/armor.jpg",
+    "descrizione": "+1 alla CA in aggiunta al normale bonus dello scudo (+2). Totale +3 CA."
+  },
+  {
+    "id": "srd_o_092",
+    "nome": "Scudo +2",
+    "tipo": "Armature",
+    "rarita": "Raro",
+    "valuta": "mo",
+    "prezzo": 3000,
+    "immagine": "https://www.dndbeyond.com/attachments/2/666/armor.jpg",
+    "descrizione": "+2 alla CA in aggiunta al normale bonus dello scudo. Totale +4 CA."
+  },
+  {
+    "id": "srd_o_093",
+    "nome": "Scudo +3",
+    "tipo": "Armature",
+    "rarita": "Molto raro",
+    "valuta": "mo",
+    "prezzo": 6000,
+    "immagine": "https://www.dndbeyond.com/attachments/2/666/armor.jpg",
+    "descrizione": "+3 alla CA in aggiunta al normale bonus dello scudo. Totale +5 CA."
+  },
+  {
+    "id": "srd_o_094",
+    "nome": "Scudo Antimagia",
+    "tipo": "Armature",
+    "rarita": "Molto raro",
+    "valuta": "mo",
+    "prezzo": 36000,
+    "immagine": "https://www.dndbeyond.com/avatars/thumbnails/7/406/1000/1000/636284767978967614.jpeg",
+    "descrizione": "Vantaggio ai TS contro incantesimi. Le creature che usano magia hanno svantaggio contro di te."
+  },
+  {
+    "id": "srd_o_100",
+    "nome": "Bastone degli Insetti Sciamanti",
+    "tipo": "Bastone",
+    "rarita": "Raro",
+    "valuta": "mo",
+    "prezzo": 5000,
+    "immagine": "https://www.dndbeyond.com/avatars/thumbnails/7/418/1000/1000/636284769826755468.jpeg",
+    "descrizione": "10 cariche. Evoca sciami di insetti (2c) o fa ammalare creature con insetti (1c, CD 15). Ricarica 2d8+2/alba."
+  },
+  {
+    "id": "srd_o_101",
+    "nome": "Bastone dei Boschi",
+    "tipo": "Bastone",
+    "rarita": "Raro",
+    "valuta": "mo",
+    "prezzo": 5000,
+    "immagine": "https://www.dndbeyond.com/avatars/thumbnails/7/426/1000/1000/636284770809045580.jpeg",
+    "descrizione": "+2 ai tiri degli incantesimi divini. 6 cariche per incantesimi druidici vari."
+  },
+  {
+    "id": "srd_o_102",
+    "nome": "Bastone del Fuoco",
+    "tipo": "Bastone",
+    "rarita": "Molto raro",
+    "valuta": "mo",
+    "prezzo": 17000,
+    "immagine": "https://www.dndbeyond.com/avatars/thumbnails/7/410/1000/1000/636284768481526959.jpeg",
+    "descrizione": "10 cariche. Lancia Mani Ardenti (1c), Palla di Fuoco (3c) o Muro di Fuoco (4c), CD 13. Ricarica 2d6+4/alba."
+  },
+  {
+    "id": "srd_o_103",
+    "nome": "Bastone del Gelo",
+    "tipo": "Bastone",
+    "rarita": "Molto raro",
+    "valuta": "mo",
+    "prezzo": 17000,
+    "immagine": "https://www.dndbeyond.com/avatars/thumbnails/7/412/1000/1000/636284768650698292.jpeg",
+    "descrizione": "10 cariche. Lancia Cono di Freddo, Muro di Ghiaccio, Sfera Gelida o Tempesta di Grandine."
+  },
+  {
+    "id": "srd_o_104",
+    "nome": "Bastone del Mago",
+    "tipo": "Bastone",
+    "rarita": "Leggendario",
+    "valuta": "mo",
+    "prezzo": 168000,
+    "immagine": "https://www.dndbeyond.com/avatars/thumbnails/7/422/1000/1000/636284770290048212.jpeg",
+    "descrizione": "50 cariche. +2 CA, TS, tiri incantesimo. Decine di incantesimi. Se spezza: 50% che esploda (8d6 per carica rimanente)."
+  },
+  {
+    "id": "srd_o_105",
+    "nome": "Bastone del Potere",
+    "tipo": "Bastone",
+    "rarita": "Molto raro",
+    "valuta": "mo",
+    "prezzo": 90000,
+    "immagine": "https://www.dndbeyond.com/avatars/thumbnails/7/416/1000/1000/636284769169697823.jpeg",
+    "descrizione": "+2 CA, tiri incantesimo e TS. 20 cariche per molti incantesimi. Ricarica 2d8+4/alba."
+  },
+  {
+    "id": "srd_o_106",
+    "nome": "Bastone della Guarigione",
+    "tipo": "Bastone",
+    "rarita": "Raro",
+    "valuta": "mo",
+    "prezzo": 6000,
+    "immagine": "https://www.dndbeyond.com/avatars/thumbnails/7/414/1000/1000/636284768980904526.jpeg",
+    "descrizione": "10 cariche. Lancia Cura le Ferite (1c), Restaurazione Minore (2c), Cura le Ferite di Massa (5c). Ricarica 2d8+2/alba."
+  },
+  {
+    "id": "srd_o_107",
+    "nome": "Bastone dell'Ammaliamento",
+    "tipo": "Bastone",
+    "rarita": "Raro",
+    "valuta": "mo",
+    "prezzo": 6000,
+    "immagine": "https://www.dndbeyond.com/avatars/thumbnails/7/408/1000/1000/636284768308428008.jpeg",
+    "descrizione": "10 cariche. Lancia Ammaliare le Persone (1c), Comando (1c), Comprendi Linguaggi (1c). Ricarica 2d8+2/alba."
+  },
+  {
+    "id": "srd_o_108",
+    "nome": "Bastone dell'Avvizzimento",
+    "tipo": "Bastone",
+    "rarita": "Raro",
+    "valuta": "mo",
+    "prezzo": 4000,
+    "immagine": "https://www.dndbeyond.com/avatars/thumbnails/7/430/1000/1000/636284771278196881.jpeg",
+    "descrizione": "3 cariche. Dopo un colpo: +4d10+4 necrotici e CD COS 15 o -2d4 FOR e COS permanente. Ricarica 1d3/alba."
+  },
+  {
+    "id": "srd_o_109",
+    "nome": "Bastone dell'Impatto",
+    "tipo": "Bastone",
+    "rarita": "Molto raro",
+    "valuta": "mo",
+    "prezzo": 6000,
+    "immagine": "https://www.dndbeyond.com/attachments/2/662/staff.jpg",
+    "descrizione": "+3 a colpire e danni. 10 cariche: 1-3 per +1d6 forza extra per carica al prossimo colpo. Ricarica 2d6+4/alba."
+  },
+  {
+    "id": "srd_o_110",
+    "nome": "Bastone del Pitone",
+    "tipo": "Bastone",
+    "rarita": "Non comune",
+    "valuta": "mo",
+    "prezzo": 1000,
+    "immagine": "https://www.dndbeyond.com/avatars/thumbnails/7/424/1000/1000/636284770637974356.jpeg",
+    "descrizione": "Funziona come bastone. Parola di comando: si trasforma in cobra gigante per 1 ora."
+  },
+  {
+    "id": "srd_o_111",
+    "nome": "Bacchetta dei Dardi Magici",
+    "tipo": "Bacchetta/Bastone magico",
+    "rarita": "Non comune",
+    "valuta": "mo",
+    "prezzo": 1000,
+    "immagine": "https://www.dndbeyond.com/avatars/thumbnails/7/476/1000/1000/636284783144510537.jpeg",
+    "descrizione": "7 cariche. 1-3 cariche: lancia Dardo Magico creando 1+2 dardi per carica. Ricarica 1d6+1/alba."
+  },
+  {
+    "id": "srd_o_112",
+    "nome": "Bacchetta dei Fulmini",
+    "tipo": "Bacchetta/Bastone magico",
+    "rarita": "Raro",
+    "valuta": "mo",
+    "prezzo": 10000,
+    "immagine": "img/bacchetta-dei-fulmini.jpeg",
+    "descrizione": "7 cariche. Lancia Fulmine (3c, CD 15). Ricarica 1d6+1/alba."
+  },
+  {
+    "id": "srd_o_113",
+    "nome": "Bacchetta dei Segreti",
+    "tipo": "Bacchetta/Bastone magico",
+    "rarita": "Non comune",
+    "valuta": "mo",
+    "prezzo": 500,
+    "immagine": "https://www.dndbeyond.com/avatars/thumbnails/7/482/1000/1000/636284784050000845.jpeg",
+    "descrizione": "3 cariche. Come azione: individua passaggi segreti entro 9 m. Ricarica 1d3/alba."
+  },
+  {
+    "id": "srd_o_114",
+    "nome": "Bacchetta del Mago di Guerra +1",
+    "tipo": "Bacchetta/Bastone magico",
+    "rarita": "Non comune",
+    "valuta": "mo",
+    "prezzo": 500,
+    "immagine": "https://www.dndbeyond.com/avatars/thumbnails/7/468/1000/1000/636284782162745000.jpeg",
+    "descrizione": "+1 ai tiri per colpire con incantesimi. Ignora il 50% della copertura. Richiede sintonia."
+  },
+  {
+    "id": "srd_o_115",
+    "nome": "Bacchetta del Polimorfismo",
+    "tipo": "Bacchetta/Bastone magico",
+    "rarita": "Molto raro",
+    "valuta": "mo",
+    "prezzo": 10000,
+    "immagine": "https://www.dndbeyond.com/avatars/thumbnails/7/480/1000/1000/636284783799670435.jpeg",
+    "descrizione": "7 cariche. Lancia Polimorfismo (4c, CD 15). Ricarica 1d6+1/alba."
+  },
+  {
+    "id": "srd_o_116",
+    "nome": "Bacchetta della Paura",
+    "tipo": "Bacchetta/Bastone magico",
+    "rarita": "Raro",
+    "valuta": "mo",
+    "prezzo": 6000,
+    "immagine": "https://www.dndbeyond.com/avatars/thumbnails/7/468/1000/1000/636284781535007932.jpeg",
+    "descrizione": "7 cariche. Cono di paura 18 m (CD SAG 15). Ricarica 1d6+1/alba."
+  },
+  {
+    "id": "srd_o_117",
+    "nome": "Bacchetta della Paralisi",
+    "tipo": "Bacchetta/Bastone magico",
+    "rarita": "Raro",
+    "valuta": "mo",
+    "prezzo": 6000,
+    "immagine": "img/bacchetta-della-paralisi.jpeg",
+    "descrizione": "7 cariche. Una creatura entro 18 m è paralizzata per 1 minuto (CD COS 15 ogni turno). Ricarica 1d6+1/alba."
+  },
+  {
+    "id": "srd_o_118",
+    "nome": "Bacchetta della Ragnatela",
+    "tipo": "Bacchetta/Bastone magico",
+    "rarita": "Non comune",
+    "valuta": "mo",
+    "prezzo": 2000,
+    "immagine": "https://www.dndbeyond.com/avatars/thumbnails/7/484/1000/1000/636284784324774673.jpeg",
+    "descrizione": "7 cariche. Lancia Ragnatela (2c, CD 15). Ricarica 1d6+1/alba."
+  },
+  {
+    "id": "srd_o_119",
+    "nome": "Bacchetta delle Meraviglie",
+    "tipo": "Bacchetta/Bastone magico",
+    "rarita": "Raro",
+    "valuta": "mo",
+    "prezzo": 6000,
+    "immagine": "https://www.dndbeyond.com/avatars/thumbnails/7/486/1000/1000/636284784520399817.jpeg",
+    "descrizione": "7 cariche. Ogni uso: effetto casuale da tabella d100 (da polvere di fata a fulmine). Ricarica 1d6+1/alba."
+  },
+  {
+    "id": "srd_o_120",
+    "nome": "Bacchetta delle Palle di Fuoco",
+    "tipo": "Bacchetta/Bastone magico",
+    "rarita": "Raro",
+    "valuta": "mo",
+    "prezzo": 10000,
+    "immagine": "img/bacchetta-delle-palle-di-fuoco.jpeg",
+    "descrizione": "7 cariche. Lancia Palla di Fuoco (3c, CD 15). Ricarica 1d6+1/alba."
+  },
+  {
+    "id": "srd_o_121",
+    "nome": "Bacchetta dell'Assorbimento",
+    "tipo": "Bacchetta/Bastone magico",
+    "rarita": "Molto raro",
+    "valuta": "mo",
+    "prezzo": 50000,
+    "immagine": "https://www.dndbeyond.com/avatars/thumbnails/7/474/1000/1000/636284782882788348.jpeg",
+    "descrizione": "Assorbe incantesimi diretti su di te (reazione). Cariche = livello incantesimo, max 50 totali. Usale per potenziare i tuoi incantesimi."
+  },
+  {
+    "id": "srd_o_122",
+    "nome": "Bacchetta del Vincolo",
+    "tipo": "Bacchetta/Bastone magico",
+    "rarita": "Raro",
+    "valuta": "mo",
+    "prezzo": 4000,
+    "immagine": "https://www.dndbeyond.com/avatars/thumbnails/7/464/1000/1000/636284780976080198.jpeg",
+    "descrizione": "7 cariche. Lancia Blocca il Mostro (5c) o Blocca la Persona (2c), CD 17. Ricarica 1d6+1/alba."
+  },
+  {
+    "id": "srd_o_130",
+    "nome": "Elmo della Comprensione dei Linguaggi",
+    "tipo": "Elmi",
+    "rarita": "Non comune",
+    "valuta": "mo",
+    "prezzo": 500,
+    "immagine": "https://www.dndbeyond.com/avatars/thumbnails/7/247/1000/1000/636284739197700379.jpeg",
+    "descrizione": "Leggi e comprendi parlato e testo in qualsiasi lingua mentre lo indossi."
+  },
+  {
+    "id": "srd_o_131",
+    "nome": "Elmo della Telepatia",
+    "tipo": "Elmi",
+    "rarita": "Non comune",
+    "valuta": "mo",
+    "prezzo": 1000,
+    "immagine": "https://www.dndbeyond.com/avatars/thumbnails/7/249/1000/1000/636284739464427618.jpeg",
+    "descrizione": "Lancia Individua i Pensieri (CD 13) come azione. Comunica telepaticamente con creature entro 18 m."
+  },
+  {
+    "id": "srd_o_132",
+    "nome": "Elmo della Teletrasportazione",
+    "tipo": "Elmi",
+    "rarita": "Raro",
+    "valuta": "mo",
+    "prezzo": 8000,
+    "immagine": "https://www.dndbeyond.com/avatars/thumbnails/7/251/1000/1000/636284739707897018.jpeg",
+    "descrizione": "3 cariche. Lancia Teletrasporto. Ricarica 1d3/alba. Richiede sintonia da incantatore."
+  },
+  {
+    "id": "srd_o_133",
+    "nome": "Elmo dello Splendore",
+    "tipo": "Elmi",
+    "rarita": "Molto raro",
+    "valuta": "mo",
+    "prezzo": 36000,
+    "immagine": "https://www.dndbeyond.com/avatars/thumbnails/7/245/1000/1000/636284738793766992.jpeg",
+    "descrizione": "Gemme con vari effetti: luce brillante, fiamma sacra, muro di fuoco. Se tutti i gioielli si esauriscono, diventa non magico."
+  },
+  {
+    "id": "srd_o_140",
+    "nome": "Amuleto della Salute",
+    "tipo": "Oggetti magici",
+    "rarita": "Raro",
+    "valuta": "mo",
+    "prezzo": 8000,
+    "immagine": "https://www.dndbeyond.com/avatars/thumbnails/7/55/1000/1000/636283830597675547.jpeg",
+    "descrizione": "La tua Costituzione diventa 19 (nessun effetto se già 19+). Richiede sintonia."
+  },
+  {
+    "id": "srd_o_141",
+    "nome": "Amuleto dei Piani",
+    "tipo": "Oggetti magici",
+    "rarita": "Molto raro",
+    "valuta": "mo",
+    "prezzo": 160000,
+    "immagine": "https://www.dndbeyond.com/avatars/thumbnails/7/104/1000/1000/636284696312553001.jpeg",
+    "descrizione": "1/giorno: lancia Spostamento Planare (CD 15). Fallimento INT → piano casuale. Richiede sintonia."
+  },
+  {
+    "id": "srd_o_142",
+    "nome": "Amuleto di Protezione da Individuazione e Localizzazione",
+    "tipo": "Oggetti magici",
+    "rarita": "Non comune",
+    "valuta": "mo",
+    "prezzo": 20000,
+    "immagine": "https://www.dndbeyond.com/avatars/thumbnails/7/102/1000/1000/636284695629121668.jpeg",
+    "descrizione": "Non puoi essere bersaglio di magie di divinazione né percepito attraverso sfere di cristallo."
+  },
+  {
+    "id": "srd_o_143",
+    "nome": "Borsa dell'Infinito",
+    "tipo": "Oggetti magici",
+    "rarita": "Non comune",
+    "valuta": "mo",
+    "prezzo": 4000,
+    "immagine": "https://www.dndbeyond.com/avatars/thumbnails/7/120/1000/1000/636284708068284913.jpeg",
+    "descrizione": "Pesa sempre 5 kg. Contiene spazio extradimensionale (1,2m×0,6m, 250 kg/250 lt). Gli oggetti non occupano spazio."
+  },
+  {
+    "id": "srd_o_144",
+    "nome": "Borsa Divoratrice",
+    "tipo": "Oggetti magici",
+    "rarita": "Non comune",
+    "valuta": "mo",
+    "prezzo": 0,
+    "immagine": "https://www.dndbeyond.com/avatars/thumbnails/7/118/1000/1000/636284707844421733.jpeg",
+    "descrizione": "Simile alla Borsa dell'Infinito ma maledetta. 50% di inghiottire ogni oggetto inserito in un piano remoto."
+  },
+  {
+    "id": "srd_o_145",
+    "nome": "Bracciali del Tiratore",
+    "tipo": "Oggetti magici",
+    "rarita": "Non comune",
+    "valuta": "mo",
+    "prezzo": 1500,
+    "immagine": "https://www.dndbeyond.com/avatars/thumbnails/7/144/1000/1000/636284715992548759.jpeg",
+    "descrizione": "Competenza con archi; +2 ai danni con archi. Richiede sintonia da non-incantatore."
+  },
+  {
+    "id": "srd_o_146",
+    "nome": "Bracciali di Difesa",
+    "tipo": "Oggetti magici",
+    "rarita": "Raro",
+    "valuta": "mo",
+    "prezzo": 6000,
+    "immagine": "https://www.dndbeyond.com/avatars/thumbnails/7/146/1000/1000/636284716655660478.jpeg",
+    "descrizione": "+2 alla CA senza armatura né scudo. Richiede sintonia."
+  },
+  {
+    "id": "srd_o_147",
+    "nome": "Buca Portatile",
+    "tipo": "Oggetti magici",
+    "rarita": "Raro",
+    "valuta": "mo",
+    "prezzo": 8000,
+    "immagine": "https://www.dndbeyond.com/attachments/2/665/wondrousitem.jpg",
+    "descrizione": "Foglio di seta nera: apre spazio extradimensionale (1,8m×3m). Dal di dentro: buio, senza aria."
+  },
+  {
+    "id": "srd_o_148",
+    "nome": "Cappello del Travestimento",
+    "tipo": "Oggetti magici",
+    "rarita": "Non comune",
+    "valuta": "mo",
+    "prezzo": 1800,
+    "immagine": "https://www.dndbeyond.com/attachments/2/665/wondrousitem.jpg",
+    "descrizione": "Lancia Travestimento a volontà. Richiede sintonia."
+  },
+  {
+    "id": "srd_o_149",
+    "nome": "Cintura della Forza del Gigante",
+    "tipo": "Oggetti magici",
+    "rarita": "Molto raro",
+    "valuta": "mo",
+    "prezzo": 13000,
+    "immagine": "https://www.dndbeyond.com/avatars/thumbnails/18/897/1000/1000/636381754971745722.png",
+    "descrizione": "La tua Forza diventa un valore fisso (Collina 21, Pietra/Gelo 23, Fuoco 25, Nuvola 27, Tempesta 29). Richiede sintonia."
+  },
+  {
+    "id": "srd_o_150",
+    "nome": "Cintura del Popolo Nanico",
+    "tipo": "Oggetti magici",
+    "rarita": "Raro",
+    "valuta": "mo",
+    "prezzo": 6000,
+    "immagine": "https://www.dndbeyond.com/avatars/thumbnails/7/126/1000/1000/636284710052387600.jpeg",
+    "descrizione": "+2 COS (max 20), nanico, vantaggio TS veleno, resistenza veleno. Richiede sintonia."
+  },
+  {
+    "id": "srd_o_151",
+    "nome": "Collana dell'Adattamento",
+    "tipo": "Oggetti magici",
+    "rarita": "Non comune",
+    "valuta": "mo",
+    "prezzo": 1500,
+    "immagine": "https://www.dndbeyond.com/avatars/thumbnails/7/315/1000/1000/636284754852978679.jpeg",
+    "descrizione": "Respiri in qualsiasi ambiente con gas respirabile."
+  },
+  {
+    "id": "srd_o_152",
+    "nome": "Collana delle Palle di Fuoco",
+    "tipo": "Oggetti magici",
+    "rarita": "Raro",
+    "valuta": "mo",
+    "prezzo": 3000,
+    "immagine": "https://www.dndbeyond.com/avatars/thumbnails/7/317/1000/1000/636284755113118340.jpeg",
+    "descrizione": "1d6+3 sfere. Come azione bonus: lancia una sfera (Palla di Fuoco livello 3, CD 15) a 18 m."
+  },
+  {
+    "id": "srd_o_153",
+    "nome": "Corda dell'Arrampicata",
+    "tipo": "Oggetti magici",
+    "rarita": "Non comune",
+    "valuta": "mo",
+    "prezzo": 2000,
+    "immagine": "https://www.dndbeyond.com/attachments/2/665/wondrousitem.jpg",
+    "descrizione": "Corda magica 18 m. Obbedisce a comandi verbali: si ancora, si arrotola. Porta 900 kg."
+  },
+  {
+    "id": "srd_o_154",
+    "nome": "Fascia dell'Intelletto",
+    "tipo": "Oggetti magici",
+    "rarita": "Non comune",
+    "valuta": "mo",
+    "prezzo": 8000,
+    "immagine": "https://www.dndbeyond.com/avatars/thumbnails/7/243/1000/1000/636284738487464526.jpeg",
+    "descrizione": "La tua Intelligenza diventa 19 (nessun effetto se già 19+). Richiede sintonia."
+  },
+  {
+    "id": "srd_o_155",
+    "nome": "Guanti del Ladro",
+    "tipo": "Oggetti magici",
+    "rarita": "Non comune",
+    "valuta": "mo",
+    "prezzo": 1000,
+    "immagine": "https://www.dndbeyond.com/avatars/thumbnails/7/244/1000/1000/636284738218200000.jpeg",
+    "descrizione": "+5 alle prove di Rapidità di Mano. Apri serrature e disarma trappole senza strumenti (tiro 17+)."
+  },
+  {
+    "id": "srd_o_156",
+    "nome": "Guanti del Nuoto e dell'Arrampicata",
+    "tipo": "Oggetti magici",
+    "rarita": "Non comune",
+    "valuta": "mo",
+    "prezzo": 2000,
+    "immagine": "https://www.dndbeyond.com/attachments/2/665/wondrousitem.jpg",
+    "descrizione": "Nuoto 9 m e arrampicata 9 m. Puoi scalare superfici verticali e capovolte senza prove."
+  },
+  {
+    "id": "srd_o_157",
+    "nome": "Guanti del Potere dell'Ogre",
+    "tipo": "Oggetti magici",
+    "rarita": "Non comune",
+    "valuta": "mo",
+    "prezzo": 8000,
+    "immagine": "https://www.dndbeyond.com/avatars/thumbnails/7/225/1000/1000/636284735292684780.jpeg",
+    "descrizione": "La tua Forza diventa 19 (nessun effetto se già 19+). Richiede sintonia."
+  },
+  {
+    "id": "srd_o_158",
+    "nome": "Guanti per Bloccare i Proiettili",
+    "tipo": "Oggetti magici",
+    "rarita": "Non comune",
+    "valuta": "mo",
+    "prezzo": 1500,
+    "immagine": "https://www.dndbeyond.com/avatars/thumbnails/7/233/1000/1000/636284736601097596.jpeg",
+    "descrizione": "Reazione: quando sei colpito da un proiettile, riduci i danni di 1d10+modificatore DES."
+  },
+  {
+    "id": "srd_o_159",
+    "nome": "Lanterna della Rivelazione",
+    "tipo": "Oggetti magici",
+    "rarita": "Non comune",
+    "valuta": "mo",
+    "prezzo": 5000,
+    "immagine": "https://www.dndbeyond.com/avatars/thumbnails/7/281/1000/1000/636284748401322740.jpeg",
+    "descrizione": "Accesa: rivela automaticamente creature e oggetti invisibili entro 9 m nel suo cono di luce."
+  },
+  {
+    "id": "srd_o_160",
+    "nome": "Mantello del Pipistrello",
+    "tipo": "Oggetti magici",
+    "rarita": "Raro",
+    "valuta": "mo",
+    "prezzo": 6000,
+    "immagine": "https://www.dndbeyond.com/attachments/2/665/wondrousitem.jpg",
+    "descrizione": "Vantaggio Furtività. In oscurità: vola 9 m. 3 cariche: diventa pipistrello gigante per 1 ora. Ricarica 1d3/alba."
+  },
+  {
+    "id": "srd_o_161",
+    "nome": "Mantello del Popolo Elfico",
+    "tipo": "Oggetti magici",
+    "rarita": "Non comune",
+    "valuta": "mo",
+    "prezzo": 5000,
+    "immagine": "https://www.dndbeyond.com/avatars/thumbnails/7/166/1000/1000/636284723117325593.jpeg",
+    "descrizione": "Vantaggio Furtività. Percezione passiva contro di te ha svantaggio. Richiede sintonia."
+  },
+  {
+    "id": "srd_o_162",
+    "nome": "Mantello dell'Aracnide",
+    "tipo": "Oggetti magici",
+    "rarita": "Molto raro",
+    "valuta": "mo",
+    "prezzo": 20000,
+    "immagine": "https://www.dndbeyond.com/attachments/2/665/wondrousitem.jpg",
+    "descrizione": "Scalata 9 m, ragnatela 1/giorno, resistenza veleno, scurovisione 12 m, furtività su ragnatele. Richiede sintonia."
+  },
+  {
+    "id": "srd_o_163",
+    "nome": "Mantello dello Spostamento",
+    "tipo": "Oggetti magici",
+    "rarita": "Raro",
+    "valuta": "mo",
+    "prezzo": 6000,
+    "immagine": "https://www.dndbeyond.com/avatars/thumbnails/7/164/1000/1000/636284722823230171.jpeg",
+    "descrizione": "Chi attacca ha svantaggio. Si annulla se ti muovi il turno successivo. Richiede sintonia."
+  },
+  {
+    "id": "srd_o_164",
+    "nome": "Mantello della Manta",
+    "tipo": "Oggetti magici",
+    "rarita": "Non comune",
+    "valuta": "mo",
+    "prezzo": 6000,
+    "immagine": "https://www.dndbeyond.com/avatars/thumbnails/7/170/1000/1000/636284723816150463.jpeg",
+    "descrizione": "Respira sott'acqua. Nuoto 18 m. Dispiegato: rallenta caduta (Caduta Morbida)."
+  },
+  {
+    "id": "srd_o_165",
+    "nome": "Mantello di Protezione",
+    "tipo": "Oggetti magici",
+    "rarita": "Non comune",
+    "valuta": "mo",
+    "prezzo": 3500,
+    "immagine": "https://www.dndbeyond.com/avatars/thumbnails/7/168/1000/1000/636284723508326581.jpeg",
+    "descrizione": "+1 alla CA e ai TS. Richiede sintonia."
+  },
+  {
+    "id": "srd_o_166",
+    "nome": "Medaglione dei Pensieri",
+    "tipo": "Oggetti magici",
+    "rarita": "Non comune",
+    "valuta": "mo",
+    "prezzo": 3000,
+    "immagine": "https://www.dndbeyond.com/avatars/thumbnails/7/311/1000/1000/636284753409565037.jpeg",
+    "descrizione": "3 cariche. Lancia Individua i Pensieri (CD 13). Ricarica 1d3/alba. Richiede sintonia."
+  },
+  {
+    "id": "srd_o_167",
+    "nome": "Occhi dell'Aquila",
+    "tipo": "Oggetti magici",
+    "rarita": "Non comune",
+    "valuta": "mo",
+    "prezzo": 2500,
+    "immagine": "https://www.dndbeyond.com/avatars/thumbnails/7/214/1000/1000/636284732865554502.jpeg",
+    "descrizione": "Vantaggio alla Percezione visiva. Vedi dettagliatamente fino a 1,5 km. Richiede sintonia."
+  },
+  {
+    "id": "srd_o_168",
+    "nome": "Occhiali della Notte",
+    "tipo": "Oggetti magici",
+    "rarita": "Non comune",
+    "valuta": "mo",
+    "prezzo": 1000,
+    "immagine": "https://www.dndbeyond.com/avatars/thumbnails/7/235/1000/1000/636284736878181910.jpeg",
+    "descrizione": "Scurovisione 18 m (o +18 m se già presente). Richiede sintonia."
+  },
+  {
+    "id": "srd_o_169",
+    "nome": "Perla del Potere",
+    "tipo": "Oggetti magici",
+    "rarita": "Non comune",
+    "valuta": "mo",
+    "prezzo": 6000,
+    "immagine": "https://www.dndbeyond.com/attachments/2/665/wondrousitem.jpg",
+    "descrizione": "Come azione bonus 1/giorno: recupera un slot incantesimo speso di 3° livello o inferiore. Richiede sintonia da incantatore."
+  },
+  {
+    "id": "srd_o_170",
+    "nome": "Scarabeo di Protezione",
+    "tipo": "Oggetti magici",
+    "rarita": "Leggendario",
+    "valuta": "mo",
+    "prezzo": 36000,
+    "immagine": "https://www.dndbeyond.com/avatars/thumbnails/7/396/1000/1000/636284766551976147.jpeg",
+    "descrizione": "12 cariche. Immune necromanzia. Ogni TS contro non-morti: spendi 1 carica per superarlo auto. Richiede sintonia."
+  },
+  {
+    "id": "srd_o_171",
+    "nome": "Scopa Volante",
+    "tipo": "Oggetti magici",
+    "rarita": "Non comune",
+    "valuta": "mo",
+    "prezzo": 5000,
+    "immagine": "https://www.dndbeyond.com/avatars/thumbnails/7/152/1000/1000/636284717908019789.jpeg",
+    "descrizione": "Vola a 15 m (30 m senza passeggeri). Chiamabile telepaticamente entro 300 m."
+  },
+  {
+    "id": "srd_o_172",
+    "nome": "Sfera di Cristallo",
+    "tipo": "Oggetti magici",
+    "rarita": "Molto raro",
+    "valuta": "mo",
+    "prezzo": 50000,
+    "immagine": "https://www.dndbeyond.com/attachments/2/665/wondrousitem.jpg",
+    "descrizione": "Lancia Scrutare (CD 17) come azione. Richiede sintonia da incantatore."
+  },
+  {
+    "id": "srd_o_173",
+    "nome": "Sfera dell'Annientamento",
+    "tipo": "Oggetti magici",
+    "rarita": "Leggendario",
+    "valuta": "mo",
+    "prezzo": 200000,
+    "immagine": "https://www.dndbeyond.com/attachments/2/665/wondrousitem.jpg",
+    "descrizione": "Sfera fluttuante di puro vuoto. Distrugge qualsiasi cosa attraversi (CD COS 19). Controllabile con TS INT."
+  },
+  {
+    "id": "srd_o_174",
+    "nome": "Spilla dello Scudo",
+    "tipo": "Oggetti magici",
+    "rarita": "Non comune",
+    "valuta": "mo",
+    "prezzo": 1500,
+    "immagine": "https://www.dndbeyond.com/avatars/thumbnails/7/150/1000/1000/636284717470556783.jpeg",
+    "descrizione": "Resistenza ai danni da forza. Immune a Dardo Magico."
+  },
+  {
+    "id": "srd_o_175",
+    "nome": "Stivali Alati",
+    "tipo": "Oggetti magici",
+    "rarita": "Raro",
+    "valuta": "mo",
+    "prezzo": 8000,
+    "immagine": "img/stivali-alati-930x620.jpeg",
+    "descrizione": "Velocità di volo = velocità a piedi per max 4 ore/giorno. Richiede sintonia."
+  },
+  {
+    "id": "srd_o_176",
+    "nome": "Stivali del Popolo Elfico",
+    "tipo": "Oggetti magici",
+    "rarita": "Non comune",
+    "valuta": "mo",
+    "prezzo": 2500,
+    "immagine": "https://www.dndbeyond.com/avatars/thumbnails/7/134/1000/1000/636284714003984245.jpeg",
+    "descrizione": "I tuoi passi non emettono alcun suono. Vantaggio Furtività per muoversi silenziosamente."
+  },
+  {
+    "id": "srd_o_177",
+    "nome": "Stivali della Velocità",
+    "tipo": "Oggetti magici",
+    "rarita": "Raro",
+    "valuta": "mo",
+    "prezzo": 4000,
+    "immagine": "https://www.dndbeyond.com/avatars/thumbnails/7/136/1000/1000/636284714256851023.jpeg",
+    "descrizione": "Azione bonus: velocità raddoppiata, attacchi di opportunità con svantaggio. Dopo 10 min totali: richiede riposo lungo."
+  },
+  {
+    "id": "srd_o_178",
+    "nome": "Stivali dell'Andatura e del Balzo",
+    "tipo": "Oggetti magici",
+    "rarita": "Non comune",
+    "valuta": "mo",
+    "prezzo": 1500,
+    "immagine": "https://www.dndbeyond.com/avatars/thumbnails/7/138/1000/1000/636284714659292153.jpeg",
+    "descrizione": "Velocità minima 9 m. Salto in lungo triplo, salto in alto doppio. Richiede sintonia."
+  },
+  {
+    "id": "srd_o_179",
+    "nome": "Stivali delle Terre d'Inverno",
+    "tipo": "Oggetti magici",
+    "rarita": "Non comune",
+    "valuta": "mo",
+    "prezzo": 1000,
+    "immagine": "https://www.dndbeyond.com/avatars/thumbnails/7/140/1000/1000/636284715069548972.jpeg",
+    "descrizione": "Resistenza al freddo. Sopporti -45°C. Neve e ghiaccio non rallentano il movimento. Richiede sintonia."
+  },
+  {
+    "id": "srd_o_180",
+    "nome": "Stivali di Levitazione",
+    "tipo": "Oggetti magici",
+    "rarita": "Raro",
+    "valuta": "mo",
+    "prezzo": 4000,
+    "immagine": "https://www.dndbeyond.com/attachments/2/665/wondrousitem.jpg",
+    "descrizione": "1/giorno: lancia Levitazione su te stesso (azione, fino a 10 min). Richiede sintonia."
+  },
+  {
+    "id": "srd_o_181",
+    "nome": "Tappeto Volante",
+    "tipo": "Oggetti magici",
+    "rarita": "Molto raro",
+    "valuta": "mo",
+    "prezzo": 8000,
+    "immagine": "https://www.dndbeyond.com/attachments/2/665/wondrousitem.jpg",
+    "descrizione": "Vola a 18 m (piccolo, 1 pers.), 12 m (medio, 4 pers.) o 9 m (grande, 6 pers.). Parola di comando."
+  },
+  {
+    "id": "srd_o_182",
+    "nome": "Veste degli Occhi",
+    "tipo": "Oggetti magici",
+    "rarita": "Raro",
+    "valuta": "mo",
+    "prezzo": 5000,
+    "immagine": "https://www.dndbeyond.com/avatars/thumbnails/7/378/1000/1000/636284763771366253.jpeg",
+    "descrizione": "Vantaggio Percezione. Non puoi essere sorpreso. Vedi l'invisibile. Magia di Scurovisione può accecarti. Richiede sintonia."
+  },
+  {
+    "id": "srd_o_183",
+    "nome": "Veste dell'Arcimago",
+    "tipo": "Oggetti magici",
+    "rarita": "Leggendario",
+    "valuta": "mo",
+    "prezzo": 33000,
+    "immagine": "https://www.dndbeyond.com/avatars/thumbnails/7/382/1000/1000/636284764431963353.jpeg",
+    "descrizione": "+2 CA; +2 ai tiri incantesimo; +2 alla CD dei TS contro i tuoi incantesimi. Richiede sintonia da mago."
+  },
+  {
+    "id": "srd_o_184",
+    "nome": "Veste delle Stelle",
+    "tipo": "Oggetti magici",
+    "rarita": "Molto raro",
+    "valuta": "mo",
+    "prezzo": 33000,
+    "immagine": "https://www.dndbeyond.com/avatars/thumbnails/7/380/1000/1000/636284763972311694.jpeg",
+    "descrizione": "+1 TS. 6 stelle: ognuna vale come incantesimo di 4° livello. Tutte le stelle: Piano Astrale per 1 ora/giorno. Richiede sintonia."
+  },
+  {
     "descrizione": "Bonus di +2 ai tiri per colpire e ai danni. Infligge 2d8 danni radiosi extra. Quando colpisce, il bersaglio deve superare un TS su Forza (CD 15) o subire la condizione Prono",
     "id": "w_1778431422322",
     "immagine": "img/alabarda-del-giudice-di-ferro.jpg",
@@ -17,26 +1567,6 @@
     "prezzo": 3000,
     "rarita": "Raro",
     "tipo": "Oggetti meravigliosi",
-    "valuta": "mo"
-  },
-  {
-    "descrizione": "Bonus di +1 ai tiri per colpire e ai danni. Quando il personaggio colpisce un drago con quest'arma, il bersaglio subisce 3d6 danni extra del tipo inflitto dall'arma. Per 'drago' si intende qualsiasi creatura del tipo drago, incluse viverne e testuggini dragone.",
-    "id": "w_1778433652855",
-    "immagine": "img/ammazzadraghi.jpeg",
-    "nome": "Ammazzadraghi",
-    "prezzo": 90,
-    "rarita": "Raro",
-    "tipo": "Spada",
-    "valuta": "mo"
-  },
-  {
-    "descrizione": "Bonus di +1 ai tiri per colpire e ai danni. Quando il personaggio colpisce un gigante, il bersaglio subisce 2d6 danni extra del tipo inflitto e deve superare un TS su Forza CD 15 o cadere prono. 'Gigante' include ettin e troll.",
-    "id": "w_1778433652856",
-    "immagine": "img/ammazzagiganti.jpeg",
-    "nome": "Ammazzagiganti",
-    "prezzo": 85,
-    "rarita": "Raro",
-    "tipo": "Ascia",
     "valuta": "mo"
   },
   {
@@ -60,16 +1590,6 @@
     "valuta": "mo"
   },
   {
-    "descrizione": "1/giorno: lancia Spostamento Planare (CD 15). Fallimento INT → piano casuale. Richiede sintonia.",
-    "id": "srd_o_141",
-    "immagine": "https://www.dndbeyond.com/avatars/thumbnails/7/104/1000/1000/636284696312553001.jpeg",
-    "nome": "Amuleto dei Piani",
-    "prezzo": 160000,
-    "rarita": "Molto raro",
-    "tipo": "Oggetti magici",
-    "valuta": "mo"
-  },
-  {
     "descrizione": "Mentre indossa questo amuleto, il personaggio è immune agli incubi e alle magie di sogno di livello 1° o 2°. Non offre alcuna protezione contro effetti di livello superiore.",
     "id": "w_1778433652904",
     "immagine": "",
@@ -86,26 +1606,6 @@
     "nome": "Amuleto della Lama Riflessa",
     "prezzo": 600,
     "rarita": "Molto raro",
-    "tipo": "Oggetti magici",
-    "valuta": "mo"
-  },
-  {
-    "descrizione": "La tua Costituzione diventa 19 (nessun effetto se già 19+). Richiede sintonia.",
-    "id": "srd_o_140",
-    "immagine": "https://www.dndbeyond.com/avatars/thumbnails/7/55/1000/1000/636283830597675547.jpeg",
-    "nome": "Amuleto della Salute",
-    "prezzo": 8000,
-    "rarita": "Raro",
-    "tipo": "Oggetti magici",
-    "valuta": "mo"
-  },
-  {
-    "descrizione": "Non puoi essere bersaglio di magie di divinazione né percepito attraverso sfere di cristallo.",
-    "id": "srd_o_142",
-    "immagine": "https://www.dndbeyond.com/avatars/thumbnails/7/102/1000/1000/636284695629121668.jpeg",
-    "nome": "Amuleto di Protezione da Individuazione e Localizzazione",
-    "prezzo": 20000,
-    "rarita": "Non comune",
     "tipo": "Oggetti magici",
     "valuta": "mo"
   },
@@ -128,26 +1628,6 @@
     "rarita": "Comune",
     "tipo": "Oggetti magici",
     "valuta": "ma"
-  },
-  {
-    "descrizione": "3 cariche, ognuna per lanciare Desiderio. Non si ricarica. Esaurite le cariche, diventa non magico.",
-    "id": "srd_o_044",
-    "immagine": "https://www.dndbeyond.com/avatars/thumbnails/7/372/1000/1000/636284762810625788.jpeg",
-    "nome": "Anello dei Tre Desideri",
-    "prezzo": 100000,
-    "rarita": "Leggendario",
-    "tipo": "Oggetti magici",
-    "valuta": "mo"
-  },
-  {
-    "descrizione": "Resistenza al freddo. Sopporti temperature fino a -45°C senza equipaggiamento. Richiede sintonia.",
-    "id": "srd_o_041",
-    "immagine": "https://www.dndbeyond.com/avatars/thumbnails/12744/585/1000/1000/637357406877835038.jpeg",
-    "nome": "Anello del Calore",
-    "prezzo": 100,
-    "rarita": "Non comune",
-    "tipo": "Oggetti magici",
-    "valuta": "mo"
   },
   {
     "descrizione": "Mentre indossa questo anello, il personaggio può stare in piedi e camminare su qualsiasi superficie liquida come se fosse terreno solido.",
@@ -220,42 +1700,12 @@
     "valuta": "mo"
   },
   {
-    "descrizione": "Velocità di nuoto 9 m.",
-    "id": "srd_o_042",
-    "immagine": "https://www.dndbeyond.com/attachments/2/668/ring.jpg",
-    "nome": "Anello del Nuoto",
-    "prezzo": 1500,
-    "rarita": "Non comune",
-    "tipo": "Oggetti magici",
-    "valuta": "mo"
-  },
-  {
     "descrizione": "Il personaggio che indossa questo anello può lanciare con esso Saltare a volontà come azione bonus, ma può bersagliare solo se stesso.",
     "id": "w_1778433652869",
     "immagine": "img/anello-del-saltare.jpg",
     "nome": "Anello del Saltare",
     "prezzo": 25,
     "rarita": "Non comune",
-    "tipo": "Oggetti magici",
-    "valuta": "mo"
-  },
-  {
-    "descrizione": "Lancia Salto su te stesso a volontà come azione bonus. Triplica la distanza di salto.",
-    "id": "srd_o_043",
-    "immagine": "https://www.dndbeyond.com/attachments/2/668/ring.jpg",
-    "nome": "Anello del Salto",
-    "prezzo": 1000,
-    "rarita": "Non comune",
-    "tipo": "Oggetti magici",
-    "valuta": "mo"
-  },
-  {
-    "descrizione": "Ha 3 cariche. Come azione: forza d'ariete (1-3 cariche, 2d10 perforanti per carica, spinto). Ricarica 1d3 cariche/alba.",
-    "id": "srd_o_031",
-    "immagine": "https://www.dndbeyond.com/avatars/thumbnails/7/370/1000/1000/636284762552967774.jpeg",
-    "nome": "Anello dell'Ariete",
-    "prezzo": 50,
-    "rarita": "Raro",
     "tipo": "Oggetti magici",
     "valuta": "mo"
   },
@@ -270,132 +1720,12 @@
     "valuta": "mo"
   },
   {
-    "descrizione": "Il terreno difficile non rallenta il movimento, non puoi essere paralizzato o rallentato magicamente.",
-    "id": "srd_o_030",
-    "immagine": "https://www.dndbeyond.com/avatars/thumbnails/7/352/1000/1000/636284760123325845.jpeg",
-    "nome": "Anello dell'Azione Libera",
-    "prezzo": 5000,
-    "rarita": "Raro",
-    "tipo": "Oggetti magici",
-    "valuta": "mo"
-  },
-  {
-    "descrizione": "Puoi diventare invisibile a volontà. Diventi visibile se attacchi o lanci incantesimi. Richiede sintonia.",
-    "id": "srd_o_032",
-    "immagine": "https://www.dndbeyond.com/avatars/thumbnails/7/354/1000/1000/636284760334340489.jpeg",
-    "nome": "Anello dell'Invisibilità",
-    "prezzo": 45000,
-    "rarita": "Leggendario",
-    "tipo": "Oggetti magici",
-    "valuta": "mo"
-  },
-  {
-    "descrizione": "Immune ai danni da caduta e atterri sempre in piedi.",
-    "id": "srd_o_033",
-    "immagine": "https://www.dndbeyond.com/avatars/thumbnails/7/348/1000/1000/636284759713966326.jpeg",
-    "nome": "Anello della Caduta Morbida",
-    "prezzo": 2000,
-    "rarita": "Raro",
-    "tipo": "Oggetti magici",
-    "valuta": "mo"
-  },
-  {
-    "descrizione": "Puoi stare e muoverti sulla superficie dei liquidi come terreno solido.",
-    "id": "srd_o_045",
-    "immagine": "https://www.dndbeyond.com/avatars/thumbnails/7/374/1000/1000/636284763046262817.jpeg",
-    "nome": "Anello della Camminata sull'Acqua",
-    "prezzo": 1500,
-    "rarita": "Non comune",
-    "tipo": "Oggetti magici",
-    "valuta": "mo"
-  },
-  {
     "descrizione": "Anello forgiato apposta per interferire con i druidi:\n1) Quando cerchi di utilizzare la Forma Selvatica, il tuo legame con gli spiriti animali è disturbato dall'aura maligna. Tiri 1d6 e assumi quella forma selvatica al posto di quella desiderata:\n- canarino\n- cavallo\n- tartaruga\n- talpa\n- capra\n- cane\n2) discordia della natura: gli animali percepiscono l'aura maligna dell'anello e si tengono lontani, hai svantaggio a tutte le prove di natura e addestra animali\n\nl'unico modo per sopprimere la maledizione (solo l'effetto 2) è quello di applicare delle bende con sopra acqua santa ogni giorno prima che cali la notte (le bende devono essere applicate su tutto il petto, la schiena e le braccia)",
     "id": "w_1782552819778",
     "immagine": "",
     "nome": "anello della confusione naturale",
     "prezzo": 10,
     "rarita": "Molto raro",
-    "tipo": "Oggetti magici",
-    "valuta": "mo"
-  },
-  {
-    "descrizione": "Contiene incantesimi lanciati nell'anello (fino a 5 livelli totali). Chi lo porta può lanciarli.",
-    "id": "srd_o_034",
-    "immagine": "https://www.dndbeyond.com/avatars/thumbnails/49751/581/1000/1000/638853493510092000.png",
-    "nome": "Anello della Conservazione degli Incantesimi",
-    "prezzo": 24000,
-    "rarita": "Raro",
-    "tipo": "Oggetti magici",
-    "valuta": "mo"
-  },
-  {
-    "descrizione": "Vantaggio ai TS contro incantesimi 1°-7° che ti colpiscono. Con 20 sul dado, l'incantesimo si ritorce.",
-    "id": "srd_o_035",
-    "immagine": "https://www.dndbeyond.com/avatars/thumbnails/7/366/1000/1000/636284761726754004.jpeg",
-    "nome": "Anello della Deviazione degli Incantesimi",
-    "prezzo": 50000,
-    "rarita": "Leggendario",
-    "tipo": "Oggetti magici",
-    "valuta": "mo"
-  },
-  {
-    "descrizione": "Resistenza a un tipo di danno (determinato dalla pietra incastonata nell'anello). Richiede sintonia.",
-    "id": "srd_o_037",
-    "immagine": "https://www.dndbeyond.com/avatars/thumbnails/19/140/1000/1000/636382339094047219.jpeg",
-    "nome": "Anello della Resistenza",
-    "prezzo": 5000,
-    "rarita": "Raro",
-    "tipo": "Oggetti magici",
-    "valuta": "mo"
-  },
-  {
-    "descrizione": "Recuperi 1d6 PF ogni 10 min se hai almeno 1 PF. Gli arti mozzati ricrescono in 1d6+1 giorni.",
-    "id": "srd_o_036",
-    "immagine": "https://www.dndbeyond.com/avatars/thumbnails/7/360/1000/1000/636284760984620165.jpeg",
-    "nome": "Anello della Rigenerazione",
-    "prezzo": 5000,
-    "rarita": "Molto raro",
-    "tipo": "Oggetti magici",
-    "valuta": "mo"
-  },
-  {
-    "descrizione": "Puoi lanciare Telecinesi a volontà (CD 15), senza slot incantesimo.",
-    "id": "srd_o_038",
-    "immagine": "https://www.dndbeyond.com/avatars/thumbnails/7/368/1000/1000/636284762291498239.jpeg",
-    "nome": "Anello della Telecinesi",
-    "prezzo": 4500,
-    "rarita": "Molto raro",
-    "tipo": "Oggetti magici",
-    "valuta": "mo"
-  },
-  {
-    "descrizione": "Vedi attraverso la materia solida entro 9 m (max 30 cm spessore, non oro/piombo/mithral). Richiede sintonia.",
-    "id": "srd_o_046",
-    "immagine": "https://www.dndbeyond.com/avatars/thumbnails/7/376/1000/1000/636284763516019515.jpeg",
-    "nome": "Anello della Visione a Raggi X",
-    "prezzo": 6000,
-    "rarita": "Raro",
-    "tipo": "Oggetti magici",
-    "valuta": "mo"
-  },
-  {
-    "descrizione": "6 cariche. Di notte, lancia 1-3 stelle cadenti (1d6 radianti ciascuna). Ricarica 1d6 cariche/alba all'aperto.",
-    "id": "srd_o_039",
-    "immagine": "https://www.dndbeyond.com/avatars/thumbnails/7/362/1000/1000/636284761242432825.jpeg",
-    "nome": "Anello delle Stelle Cadenti",
-    "prezzo": 50000,
-    "rarita": "Molto raro",
-    "tipo": "Oggetti magici",
-    "valuta": "mo"
-  },
-  {
-    "descrizione": "Immune alla lettura del pensiero, nessuno può sapere il tuo allineamento.",
-    "id": "srd_o_040",
-    "immagine": "https://www.dndbeyond.com/avatars/thumbnails/7/356/1000/1000/636284760571117587.jpeg",
-    "nome": "Anello dello Scudo Mentale",
-    "prezzo": 1000,
-    "rarita": "Non comune",
     "tipo": "Oggetti magici",
     "valuta": "mo"
   },
@@ -427,16 +1757,6 @@
     "prezzo": 300,
     "rarita": "Non comune",
     "tipo": "Oggetti meravigliosi",
-    "valuta": "mo"
-  },
-  {
-    "descrizione": "Il personaggio che indossa questo anello ottiene un bonus di +1 alla CA e a tutti i tiri salvezza.",
-    "id": "w_1778433652867",
-    "immagine": "img/anello-di-protezione.jpeg",
-    "nome": "Anello di Protezione",
-    "prezzo": 95,
-    "rarita": "Raro",
-    "tipo": "Oggetti magici",
     "valuta": "mo"
   },
   {
@@ -580,16 +1900,6 @@
     "valuta": "mo"
   },
   {
-    "descrizione": "Quest'arma magica conferisce un bonus di +1 ai tiri per colpire e ai danni effettuati con essa.",
-    "id": "w_1778433652847",
-    "immagine": "img/arma-1-2-o-3.png",
-    "nome": "Arma +1",
-    "prezzo": 40,
-    "rarita": "Non comune",
-    "tipo": "Spada",
-    "valuta": "mo"
-  },
-  {
     "descrizione": "Hai un bonus ai tiri per colpire e ai tiri di danno effettuati con quest'arma. Il bonus è determinato dalla rarità dell'arma. Alcune armi magiche (in particolare le spade) possiedono delle ulteriori proprietà, come l'emettere luce.",
     "id": "srd_o_216",
     "immagine": "https://dungeonedraghi.it/wp-content/uploads/logo.png",
@@ -600,42 +1910,12 @@
     "valuta": "mo"
   },
   {
-    "descrizione": "Quest'arma magica conferisce un bonus di +2 ai tiri per colpire e ai danni effettuati con essa.",
-    "id": "w_1778433652848",
-    "immagine": "img/spada+2.png",
-    "nome": "Arma +2",
-    "prezzo": 90,
-    "rarita": "Raro",
-    "tipo": "Spada",
-    "valuta": "mo"
-  },
-  {
-    "descrizione": "Quest'arma magica conferisce un bonus di +3 ai tiri per colpire e ai danni effettuati con essa.",
-    "id": "w_1778433652849",
-    "immagine": "img/spada+3.png",
-    "nome": "Arma +3",
-    "prezzo": 700,
-    "rarita": "Molto raro",
-    "tipo": "Spada",
-    "valuta": "mo"
-  },
-  {
     "descrizione": "Quest'arma magica avverte il portatore del pericolo. Finché l'arma è sulla sua persona, il personaggio ottiene Vantaggio ai tiri per l'iniziativa e lui e gli alleati entro 9 metri non possono essere sorpresi.",
     "id": "w_1778433652850",
     "immagine": "img/arma_dell'avvertimento.jpg",
     "nome": "Arma dell'Avvertimento",
     "prezzo": 50,
     "rarita": "Non comune",
-    "tipo": "Spada",
-    "valuta": "mo"
-  },
-  {
-    "descrizione": "Quando ottieni un 20 sul dado del tiro per colpire, il bersaglio subisce 7 danni extra dello stesso tipo.",
-    "id": "srd_o_053",
-    "immagine": "https://www.dndbeyond.com/avatars/thumbnails/7/460/1000/1000/636284780329420913.jpeg",
-    "nome": "Arma Feroce",
-    "prezzo": 1000,
-    "rarita": "Raro",
     "tipo": "Spada",
     "valuta": "mo"
   },
@@ -650,16 +1930,6 @@
     "valuta": "mo"
   },
   {
-    "descrizione": "Il personaggio che indossa questa armatura (leggera, media o pesante) ottiene un bonus di +1 alla CA.",
-    "id": "w_1778433652861",
-    "immagine": "https://dungeonedraghi.it/wp-content/uploads/2020/03/armatura-1-2-3.jpg",
-    "nome": "Armatura +1",
-    "prezzo": 80,
-    "rarita": "Raro",
-    "tipo": "Armature",
-    "valuta": "mo"
-  },
-  {
     "descrizione": "Mentre indossi questa armatura ricevi un bonus alla tua Classe Armatura. Il bonus è determinato dalla rarità dell'armatura.",
     "id": "srd_o_217",
     "immagine": "https://dungeonedraghi.it/wp-content/uploads/2020/03/armatura-adamantina-1000x1000.png",
@@ -667,26 +1937,6 @@
     "prezzo": 300,
     "rarita": "Non comune",
     "tipo": "Oggetti meravigliosi",
-    "valuta": "mo"
-  },
-  {
-    "descrizione": "Il personaggio che indossa questa armatura ottiene un bonus di +2 alla CA.",
-    "id": "w_1778433652862",
-    "immagine": "https://dungeonedraghi.it/wp-content/uploads/2020/03/armatura-1-2-3.jpg",
-    "nome": "Armatura +2",
-    "prezzo": 600,
-    "rarita": "Molto raro",
-    "tipo": "Armature",
-    "valuta": "mo"
-  },
-  {
-    "descrizione": "+3 alla CA. Qualsiasi tipo di armatura.",
-    "id": "srd_o_082",
-    "immagine": "https://dungeonedraghi.it/wp-content/uploads/2020/03/armatura-1-2-3.jpg",
-    "nome": "Armatura +3",
-    "prezzo": 24000,
-    "rarita": "Leggendario",
-    "tipo": "Armature",
     "valuta": "mo"
   },
   {
@@ -790,26 +2040,6 @@
     "valuta": "mo"
   },
   {
-    "descrizione": "CA 18, artigli 1d8+FOR. Maledetta: svantaggio contro demoni; demoni vantaggio su di te.",
-    "id": "srd_o_087",
-    "immagine": "https://www.dndbeyond.com/avatars/thumbnails/7/184/1000/1000/636284726853706329.jpeg",
-    "nome": "Armatura Demoniaca",
-    "prezzo": 36000,
-    "rarita": "Molto raro",
-    "tipo": "Armature",
-    "valuta": "mo"
-  },
-  {
-    "descrizione": "I colpi critici contro di te diventano colpi normali. Cotta di maglia, scaglie o piastre.",
-    "id": "srd_o_083",
-    "immagine": "https://dungeonedraghi.it/wp-content/uploads/2020/03/armatura-adamantina-1000x1000.png",
-    "nome": "Armatura di Adamantio",
-    "prezzo": 500,
-    "rarita": "Non comune",
-    "tipo": "Armature",
-    "valuta": "mo"
-  },
-  {
     "descrizione": "Mentre la indossi, ottieni un bonus di +1 alla CA. Puoi anche usare un'azione bonus per pronunciare la parola di comando dell'armatura e far sì che l'armatura assuma l'aspetto di un comune abito o qualche altro tipo di armatura. Decidi tu l'aspetto, compreso il colore, lo stile e gli accessori, ma l'armatura mantiene il suo normale ingombro e peso. L'aspetto illusorio dura finché non usi di nuovo questa proprietà o ti togli l'armatura.",
     "id": "srd_o_221",
     "immagine": "https://dungeonedraghi.it/wp-content/uploads/2020/03/bacchetta-dei-dardi-incantati.jpeg",
@@ -817,36 +2047,6 @@
     "prezzo": 300,
     "rarita": "Non comune",
     "tipo": "Oggetti meravigliosi",
-    "valuta": "mo"
-  },
-  {
-    "descrizione": "Resistenza ai danni non magici. Come azione 1/giorno: immunità ai danni non magici per 10 min.",
-    "id": "srd_o_084",
-    "immagine": "https://www.dndbeyond.com/avatars/thumbnails/7/110/1000/1000/636284703543037516.jpeg",
-    "nome": "Armatura di Invulnerabilità",
-    "prezzo": 50000,
-    "rarita": "Leggendario",
-    "tipo": "Armature",
-    "valuta": "mo"
-  },
-  {
-    "descrizione": "Non impone svantaggio ai TS DES furtività. Puoi dormirci senza penalità.",
-    "id": "srd_o_085",
-    "immagine": "https://dungeonedraghi.it/wp-content/uploads/2020/03/armatura-in-mithral.jpg",
-    "nome": "Armatura di Mithral",
-    "prezzo": 400,
-    "rarita": "Non comune",
-    "tipo": "Armature",
-    "valuta": "mo"
-  },
-  {
-    "descrizione": "Resistenza a un tipo di danno determinato dall'armatura. Richiede sintonia.",
-    "id": "srd_o_086",
-    "immagine": "https://www.dndbeyond.com/avatars/thumbnails/7/112/1000/1000/636284703865068888.jpeg",
-    "nome": "Armatura di Resistenza",
-    "prezzo": 8000,
-    "rarita": "Raro",
-    "tipo": "Armature",
     "valuta": "mo"
   },
   {
@@ -866,16 +2066,6 @@
     "nome": "Ascetta del Boscaiolo",
     "prezzo": 15,
     "rarita": "Non comune",
-    "tipo": "Ascia",
-    "valuta": "mo"
-  },
-  {
-    "descrizione": "+1 a colpire e danni. Se colpito sei tentato di entrare in furia berserk. Maledetta.",
-    "id": "srd_o_056",
-    "immagine": "https://www.dndbeyond.com/avatars/thumbnails/7/132/1000/1000/636284712925694328.jpeg",
-    "nome": "Ascia del Berserker",
-    "prezzo": 1000,
-    "rarita": "Raro",
     "tipo": "Ascia",
     "valuta": "mo"
   },
@@ -970,62 +2160,12 @@
     "valuta": "mo"
   },
   {
-    "descrizione": "7 cariche. 1-3 cariche: lancia Dardo Magico creando 1+2 dardi per carica. Ricarica 1d6+1/alba.",
-    "id": "srd_o_111",
-    "immagine": "https://www.dndbeyond.com/avatars/thumbnails/7/476/1000/1000/636284783144510537.jpeg",
-    "nome": "Bacchetta dei Dardi Magici",
-    "prezzo": 1000,
-    "rarita": "Non comune",
-    "tipo": "Bacchetta/Bastone magico",
-    "valuta": "mo"
-  },
-  {
-    "descrizione": "Possiede 7 cariche. Spendendo cariche il personaggio lancia Fulmine (CD 15) — 3° livello base, +1 livello per ogni carica extra. Recupera 1d6+1 cariche all'alba. Spendendo l'ultima e ottenendo 1 al d20, si distrugge.",
-    "id": "w_1778433652859",
-    "immagine": "img/bacchetta-dei-fulmini.jpeg",
-    "nome": "Bacchetta dei Fulmini",
-    "prezzo": 90,
-    "rarita": "Raro",
-    "tipo": "Bacchetta/Bastone magico",
-    "valuta": "mo"
-  },
-  {
-    "descrizione": "3 cariche. Come azione: individua passaggi segreti entro 9 m. Ricarica 1d3/alba.",
-    "id": "srd_o_113",
-    "immagine": "https://www.dndbeyond.com/avatars/thumbnails/7/482/1000/1000/636284784050000845.jpeg",
-    "nome": "Bacchetta dei Segreti",
-    "prezzo": 500,
-    "rarita": "Non comune",
-    "tipo": "Bacchetta/Bastone magico",
-    "valuta": "mo"
-  },
-  {
     "descrizione": "Mentre il personaggio impugna questa bacchetta, ottiene un bonus di +2 ai tiri per colpire con incantesimo. Richiede sintonia con un incantatore.",
     "id": "w_1778433652923",
     "immagine": "",
     "nome": "Bacchetta del Filo Conduttore",
     "prezzo": 95,
     "rarita": "Raro",
-    "tipo": "Bacchetta/Bastone magico",
-    "valuta": "mo"
-  },
-  {
-    "descrizione": "+1 ai tiri per colpire con incantesimi. Ignora il 50% della copertura. Richiede sintonia.",
-    "id": "srd_o_114",
-    "immagine": "https://www.dndbeyond.com/avatars/thumbnails/7/468/1000/1000/636284782162745000.jpeg",
-    "nome": "Bacchetta del Mago di Guerra +1",
-    "prezzo": 500,
-    "rarita": "Non comune",
-    "tipo": "Bacchetta/Bastone magico",
-    "valuta": "mo"
-  },
-  {
-    "descrizione": "7 cariche. Lancia Polimorfismo (4c, CD 15). Ricarica 1d6+1/alba.",
-    "id": "srd_o_115",
-    "immagine": "https://www.dndbeyond.com/avatars/thumbnails/7/480/1000/1000/636284783799670435.jpeg",
-    "nome": "Bacchetta del Polimorfismo",
-    "prezzo": 10000,
-    "rarita": "Molto raro",
     "tipo": "Bacchetta/Bastone magico",
     "valuta": "mo"
   },
@@ -1038,16 +2178,6 @@
     "rarita": "Comune",
     "tipo": "Bacchetta/Bastone magico",
     "valuta": "ma"
-  },
-  {
-    "descrizione": "7 cariche. Lancia Blocca il Mostro (5c) o Blocca la Persona (2c), CD 17. Ricarica 1d6+1/alba.",
-    "id": "srd_o_122",
-    "immagine": "https://www.dndbeyond.com/avatars/thumbnails/7/464/1000/1000/636284780976080198.jpeg",
-    "nome": "Bacchetta del Vincolo",
-    "prezzo": 4000,
-    "rarita": "Raro",
-    "tipo": "Bacchetta/Bastone magico",
-    "valuta": "mo"
   },
   {
     "descrizione": "Mentre il personaggio impugna questa bacchetta, dispone di Vantaggio alle prove di Intelligenza (Arcano) effettuate per identificare un incantesimo che sta venendo lanciato.",
@@ -1070,16 +2200,6 @@
     "valuta": "mo"
   },
   {
-    "descrizione": "Assorbe incantesimi diretti su di te (reazione). Cariche = livello incantesimo, max 50 totali. Usale per potenziare i tuoi incantesimi.",
-    "id": "srd_o_121",
-    "immagine": "https://www.dndbeyond.com/avatars/thumbnails/7/474/1000/1000/636284782882788348.jpeg",
-    "nome": "Bacchetta dell'Assorbimento",
-    "prezzo": 50000,
-    "rarita": "Molto raro",
-    "tipo": "Bacchetta/Bastone magico",
-    "valuta": "mo"
-  },
-  {
     "descrizione": "Possiede 5 cariche. Spendendo 1 carica il personaggio lancia Blocca Persone (CD 16); spendendo 3 cariche lancia Blocca Mostri (CD 16). Recupera 1d4+1 cariche all'alba. Spendendo l'ultima e ottenendo 1 al d20, la bacchetta si distrugge. Richiede sintonia con un incantatore.",
     "id": "w_1778433652936",
     "immagine": "",
@@ -1090,62 +2210,12 @@
     "valuta": "mo"
   },
   {
-    "descrizione": "Possiede 7 cariche. Con un'azione il personaggio spende 1 carica per proiettare un raggio blu contro una creatura entro 18 m. Bersaglio: TS Costituzione CD 15 o paralizzato per 1 minuto (ripete il TS alla fine di ogni suo turno). Recupera 1d6+1 cariche all'alba.",
-    "id": "w_1778433652860",
-    "immagine": "img/bacchetta-della-paralisi.jpeg",
-    "nome": "Bacchetta della Paralisi",
-    "prezzo": 95,
-    "rarita": "Raro",
-    "tipo": "Bacchetta/Bastone magico",
-    "valuta": "mo"
-  },
-  {
-    "descrizione": "7 cariche. Cono di paura 18 m (CD SAG 15). Ricarica 1d6+1/alba.",
-    "id": "srd_o_116",
-    "immagine": "https://www.dndbeyond.com/avatars/thumbnails/7/468/1000/1000/636284781535007932.jpeg",
-    "nome": "Bacchetta della Paura",
-    "prezzo": 6000,
-    "rarita": "Raro",
-    "tipo": "Bacchetta/Bastone magico",
-    "valuta": "mo"
-  },
-  {
-    "descrizione": "7 cariche. Lancia Ragnatela (2c, CD 15). Ricarica 1d6+1/alba.",
-    "id": "srd_o_118",
-    "immagine": "https://www.dndbeyond.com/avatars/thumbnails/7/484/1000/1000/636284784324774673.jpeg",
-    "nome": "Bacchetta della Ragnatela",
-    "prezzo": 2000,
-    "rarita": "Non comune",
-    "tipo": "Bacchetta/Bastone magico",
-    "valuta": "mo"
-  },
-  {
     "descrizione": "Possiede 4 cariche. Spendendo cariche, il personaggio può lanciare uno dei seguenti incantesimi (CD 18): Polimorfismo (1 carica), Sciame di Meteore (4 cariche). Recupera 1d4 cariche all'alba. Spendendo l'ultima e ottenendo 1 al d20, la bacchetta si polverizza. Richiede sintonia con un incantatore.",
     "id": "w_1778433652952",
     "immagine": "",
     "nome": "Bacchetta della Realtà Modificata",
     "prezzo": 1900,
     "rarita": "Leggendario",
-    "tipo": "Bacchetta/Bastone magico",
-    "valuta": "mo"
-  },
-  {
-    "descrizione": "7 cariche. Ogni uso: effetto casuale da tabella d100 (da polvere di fata a fulmine). Ricarica 1d6+1/alba.",
-    "id": "srd_o_119",
-    "immagine": "https://www.dndbeyond.com/avatars/thumbnails/7/486/1000/1000/636284784520399817.jpeg",
-    "nome": "Bacchetta delle Meraviglie",
-    "prezzo": 6000,
-    "rarita": "Raro",
-    "tipo": "Bacchetta/Bastone magico",
-    "valuta": "mo"
-  },
-  {
-    "descrizione": "Possiede 7 cariche. Spendendo cariche il personaggio lancia Palla di Fuoco (CD 15) — 3° livello base, +1 livello per ogni carica oltre la prima. Recupera 1d6+1 cariche all'alba. Con l'ultima carica e 1 al d20, la bacchetta si distrugge.",
-    "id": "w_1778433652858",
-    "immagine": "img/bacchetta-delle-palle-di-fuoco.jpeg",
-    "nome": "Bacchetta delle Palle di Fuoco",
-    "prezzo": 90,
-    "rarita": "Raro",
     "tipo": "Bacchetta/Bastone magico",
     "valuta": "mo"
   },
@@ -1240,26 +2310,6 @@
     "valuta": "mo"
   },
   {
-    "descrizione": "10 cariche. Evoca sciami di insetti (2c) o fa ammalare creature con insetti (1c, CD 15). Ricarica 2d8+2/alba.",
-    "id": "srd_o_100",
-    "immagine": "https://www.dndbeyond.com/avatars/thumbnails/7/418/1000/1000/636284769826755468.jpeg",
-    "nome": "Bastone degli Insetti Sciamanti",
-    "prezzo": 5000,
-    "rarita": "Raro",
-    "tipo": "Bastone",
-    "valuta": "mo"
-  },
-  {
-    "descrizione": "+2 ai tiri degli incantesimi divini. 6 cariche per incantesimi druidici vari.",
-    "id": "srd_o_101",
-    "immagine": "https://www.dndbeyond.com/avatars/thumbnails/7/426/1000/1000/636284770809045580.jpeg",
-    "nome": "Bastone dei Boschi",
-    "prezzo": 5000,
-    "rarita": "Raro",
-    "tipo": "Bastone",
-    "valuta": "mo"
-  },
-  {
     "descrizione": "Il bastone può essere impugnato come un bastone da combattimento magico che conferisce un bonus di +2 ai tiri per colpire e danno effettuati con esso. Inoltre ha le seguenti proprietà. Quando viene usata una di queste proprietà, non se ne potrà più far uso fino all'alba successiva. Fulmine Quando colpisci con un attacco in mischia usando il bastone, puoi far sì che il bersaglio subisca 2d6 danni da fulmine aggiuntivi. Tuono Quando colpisci con un attacco in mischia usando il bastone, puoi far sì che il bastone emetta il suono di un tuono, udibile fino a 90 metri di distanza. Il bersaglio colpito deve superare un tiro salvezza di Costituzione con CD 17 o restare stordito fino al termine del tuo prossimo turno. Colpo del Fulmine Puoi usare un'azione per far sì che una fulmine balzi dalla pun",
     "id": "srd_o_224",
     "immagine": "https://dungeonedraghi.it/wp-content/uploads/2020/03/bastone-dei-tuoni-e-fulmini.jpeg",
@@ -1287,36 +2337,6 @@
     "prezzo": 3000,
     "rarita": "Raro",
     "tipo": "Oggetti meravigliosi",
-    "valuta": "mo"
-  },
-  {
-    "descrizione": "10 cariche. Lancia Mani Ardenti (1c), Palla di Fuoco (3c) o Muro di Fuoco (4c), CD 13. Ricarica 2d6+4/alba.",
-    "id": "srd_o_102",
-    "immagine": "https://www.dndbeyond.com/avatars/thumbnails/7/410/1000/1000/636284768481526959.jpeg",
-    "nome": "Bastone del Fuoco",
-    "prezzo": 17000,
-    "rarita": "Molto raro",
-    "tipo": "Bastone",
-    "valuta": "mo"
-  },
-  {
-    "descrizione": "10 cariche. Lancia Cono di Freddo, Muro di Ghiaccio, Sfera Gelida o Tempesta di Grandine.",
-    "id": "srd_o_103",
-    "immagine": "https://www.dndbeyond.com/avatars/thumbnails/7/412/1000/1000/636284768650698292.jpeg",
-    "nome": "Bastone del Gelo",
-    "prezzo": 17000,
-    "rarita": "Molto raro",
-    "tipo": "Bastone",
-    "valuta": "mo"
-  },
-  {
-    "descrizione": "50 cariche. +2 CA, TS, tiri incantesimo. Decine di incantesimi. Se spezza: 50% che esploda (8d6 per carica rimanente).",
-    "id": "srd_o_104",
-    "immagine": "https://www.dndbeyond.com/avatars/thumbnails/7/422/1000/1000/636284770290048212.jpeg",
-    "nome": "Bastone del Mago",
-    "prezzo": 168000,
-    "rarita": "Leggendario",
-    "tipo": "Bastone",
     "valuta": "mo"
   },
   {
@@ -1350,26 +2370,6 @@
     "valuta": "ma"
   },
   {
-    "descrizione": "Funziona come bastone. Parola di comando: si trasforma in cobra gigante per 1 ora.",
-    "id": "srd_o_110",
-    "immagine": "https://www.dndbeyond.com/avatars/thumbnails/7/424/1000/1000/636284770637974356.jpeg",
-    "nome": "Bastone del Pitone",
-    "prezzo": 1000,
-    "rarita": "Non comune",
-    "tipo": "Bastone",
-    "valuta": "mo"
-  },
-  {
-    "descrizione": "+2 CA, tiri incantesimo e TS. 20 cariche per molti incantesimi. Ricarica 2d8+4/alba.",
-    "id": "srd_o_105",
-    "immagine": "https://www.dndbeyond.com/avatars/thumbnails/7/416/1000/1000/636284769169697823.jpeg",
-    "nome": "Bastone del Potere",
-    "prezzo": 90000,
-    "rarita": "Molto raro",
-    "tipo": "Bastone",
-    "valuta": "mo"
-  },
-  {
     "descrizione": "Bonus di +3 ai tiri per colpire e ai danni in mischia. Possiede 3 cariche; spendendo tutte e 3 le cariche, il personaggio può lanciare Fermare il Tempo senza spendere slot. Recupera 1 carica all'alba. Richiede sintonia con un mago, stregone o warlock.",
     "id": "w_1778433652951",
     "immagine": "",
@@ -1390,52 +2390,12 @@
     "valuta": "mo"
   },
   {
-    "descrizione": "10 cariche. Lancia Ammaliare le Persone (1c), Comando (1c), Comprendi Linguaggi (1c). Ricarica 2d8+2/alba.",
-    "id": "srd_o_107",
-    "immagine": "https://www.dndbeyond.com/avatars/thumbnails/7/408/1000/1000/636284768308428008.jpeg",
-    "nome": "Bastone dell'Ammaliamento",
-    "prezzo": 6000,
-    "rarita": "Raro",
-    "tipo": "Bastone",
-    "valuta": "mo"
-  },
-  {
-    "descrizione": "3 cariche. Dopo un colpo: +4d10+4 necrotici e CD COS 15 o -2d4 FOR e COS permanente. Ricarica 1d3/alba.",
-    "id": "srd_o_108",
-    "immagine": "https://www.dndbeyond.com/avatars/thumbnails/7/430/1000/1000/636284771278196881.jpeg",
-    "nome": "Bastone dell'Avvizzimento",
-    "prezzo": 4000,
-    "rarita": "Raro",
-    "tipo": "Bastone",
-    "valuta": "mo"
-  },
-  {
     "descrizione": "Mentre il personaggio impugna questo bastone, dispone di Vantaggio alle prove di Intelligenza (Storia) effettuate per ricordare informazioni su luoghi visitati.",
     "id": "w_1778448273876",
     "immagine": "",
     "nome": "Bastone dell'Erudito Itinerante",
     "prezzo": 18,
     "rarita": "Non comune",
-    "tipo": "Bastone",
-    "valuta": "mo"
-  },
-  {
-    "descrizione": "+3 a colpire e danni. 10 cariche: 1-3 per +1d6 forza extra per carica al prossimo colpo. Ricarica 2d6+4/alba.",
-    "id": "srd_o_109",
-    "immagine": "https://dungeonedraghi.it/wp-content/uploads/2020/03/bastone-del-colpo-possente.jpg",
-    "nome": "Bastone dell'Impatto",
-    "prezzo": 6000,
-    "rarita": "Molto raro",
-    "tipo": "Bastone",
-    "valuta": "mo"
-  },
-  {
-    "descrizione": "10 cariche. Lancia Cura le Ferite (1c), Restaurazione Minore (2c), Cura le Ferite di Massa (5c). Ricarica 2d8+2/alba.",
-    "id": "srd_o_106",
-    "immagine": "https://www.dndbeyond.com/avatars/thumbnails/7/414/1000/1000/636284768980904526.jpeg",
-    "nome": "Bastone della Guarigione",
-    "prezzo": 6000,
-    "rarita": "Raro",
     "tipo": "Bastone",
     "valuta": "mo"
   },
@@ -1500,16 +2460,6 @@
     "valuta": "mo"
   },
   {
-    "descrizione": "Pesa sempre 5 kg. Contiene spazio extradimensionale (1,2m×0,6m, 250 kg/250 lt). Gli oggetti non occupano spazio.",
-    "id": "srd_o_143",
-    "immagine": "https://www.dndbeyond.com/avatars/thumbnails/7/120/1000/1000/636284708068284913.jpeg",
-    "nome": "Borsa dell'Infinito",
-    "prezzo": 4000,
-    "rarita": "Non comune",
-    "tipo": "Oggetti magici",
-    "valuta": "mo"
-  },
-  {
     "descrizione": "La borsa appare come una borsa conservante. Se la borsa viene rivolta le sue proprietà smettono di funzionare. La creatura extradimensionale attaccata alla borsa può percepire qualsiasi cosa vi venga posto all'interno. La materia animale o vegetale posta interamente dentro la borsa viene divorata ed è persa per sempre. Quando una parte di una creatura vivente viene posta nella borsa, c'è una probabilità del 50% che la creatura venga trascinata dentro la borsa. Una creatura all'interno della borsa può usare un'azione per cercare di fuggirne superando una prova di Forza con CD 15. Un'altra creatura può usare un'azione per afferrare la creatura all'interno della borsa e tirarla fuori, superando una prova di Forza con CD 20 (e sempre che non venga a sua volta trascinata dentro la borsa). Quals",
     "id": "srd_o_230",
     "immagine": "https://dungeonedraghi.it/wp-content/uploads/2020/03/bracciali-dell'arciere.jpeg",
@@ -1517,16 +2467,6 @@
     "prezzo": 15000,
     "rarita": "Molto raro",
     "tipo": "Oggetti meravigliosi",
-    "valuta": "mo"
-  },
-  {
-    "descrizione": "Simile alla Borsa dell'Infinito ma maledetta. 50% di inghiottire ogni oggetto inserito in un piano remoto.",
-    "id": "srd_o_144",
-    "immagine": "https://www.dndbeyond.com/avatars/thumbnails/7/118/1000/1000/636284707844421733.jpeg",
-    "nome": "Borsa Divoratrice",
-    "prezzo": 0,
-    "rarita": "Non comune",
-    "tipo": "Oggetti magici",
     "valuta": "mo"
   },
   {
@@ -1550,16 +2490,6 @@
     "valuta": "mo"
   },
   {
-    "descrizione": "Competenza con archi; +2 ai danni con archi. Richiede sintonia da non-incantatore.",
-    "id": "srd_o_145",
-    "immagine": "https://www.dndbeyond.com/avatars/thumbnails/7/144/1000/1000/636284715992548759.jpeg",
-    "nome": "Bracciali del Tiratore",
-    "prezzo": 1500,
-    "rarita": "Non comune",
-    "tipo": "Oggetti magici",
-    "valuta": "mo"
-  },
-  {
     "descrizione": "Mentre indossi questi bracciali, hai competenza con l'arco lungo e l'arco corto, e ottieni un bonus di +2 ai tiri di danno degli attacchi a distanza effettuati con queste armi.",
     "id": "srd_o_232",
     "immagine": "https://dungeonedraghi.it/wp-content/uploads/2020/03/campana-dell-apertura.jpeg",
@@ -1580,16 +2510,6 @@
     "valuta": "mo"
   },
   {
-    "descrizione": "+2 alla CA senza armatura né scudo. Richiede sintonia.",
-    "id": "srd_o_146",
-    "immagine": "https://www.dndbeyond.com/avatars/thumbnails/7/146/1000/1000/636284716655660478.jpeg",
-    "nome": "Bracciali di Difesa",
-    "prezzo": 6000,
-    "rarita": "Raro",
-    "tipo": "Oggetti magici",
-    "valuta": "mo"
-  },
-  {
     "descrizione": "Mentre il fuoco arde all'interno di questo braciere di ottone, puoi usare un'azione per pronunciare la parola di comando del braciere ed evocare un elementale del fuoco, come se avessi lanciato l'incantesimo evoca elementali. Il braciere non può di nuovo essere usato a questo modo, fino alla prossima alba. Il braciere pesa 2,5 chili.",
     "id": "srd_o_234",
     "immagine": "https://dungeonedraghi.it/wp-content/uploads/2020/04/cappello-del-camuffamento.png",
@@ -1597,16 +2517,6 @@
     "prezzo": 3000,
     "rarita": "Raro",
     "tipo": "Oggetti meravigliosi",
-    "valuta": "mo"
-  },
-  {
-    "descrizione": "Foglio di seta nera: apre spazio extradimensionale (1,8m×3m). Dal di dentro: buio, senza aria.",
-    "id": "srd_o_147",
-    "immagine": "https://dungeonedraghi.it/wp-content/uploads/2020/03/buco-portatile.jpg",
-    "nome": "Buca Portatile",
-    "prezzo": 8000,
-    "rarita": "Raro",
-    "tipo": "Oggetti magici",
     "valuta": "mo"
   },
   {
@@ -1667,16 +2577,6 @@
     "prezzo": 300,
     "rarita": "Non comune",
     "tipo": "Oggetti meravigliosi",
-    "valuta": "mo"
-  },
-  {
-    "descrizione": "Lancia Travestimento a volontà. Richiede sintonia.",
-    "id": "srd_o_148",
-    "immagine": "https://dungeonedraghi.it/wp-content/uploads/2020/04/cappello-del-camuffamento.png",
-    "nome": "Cappello del Travestimento",
-    "prezzo": 1800,
-    "rarita": "Non comune",
-    "tipo": "Oggetti magici",
     "valuta": "mo"
   },
   {
@@ -1780,16 +2680,6 @@
     "valuta": "mo"
   },
   {
-    "descrizione": "+2 COS (max 20), nanico, vantaggio TS veleno, resistenza veleno. Richiede sintonia.",
-    "id": "srd_o_150",
-    "immagine": "https://www.dndbeyond.com/avatars/thumbnails/7/126/1000/1000/636284710052387600.jpeg",
-    "nome": "Cintura del Popolo Nanico",
-    "prezzo": 6000,
-    "rarita": "Raro",
-    "tipo": "Oggetti magici",
-    "valuta": "mo"
-  },
-  {
     "descrizione": "Mentre indossa questa cintura, il personaggio non risente degli effetti del clima estremo non magico (caldo o freddo) e non ha bisogno di vestiario specifico per sopravvivere.",
     "id": "w_1778433652907",
     "immagine": "",
@@ -1806,16 +2696,6 @@
     "nome": "Cintura della Forza dei Giganti delle Colline",
     "prezzo": 250,
     "rarita": "Raro",
-    "tipo": "Oggetti magici",
-    "valuta": "mo"
-  },
-  {
-    "descrizione": "La tua Forza diventa un valore fisso (Collina 21, Pietra/Gelo 23, Fuoco 25, Nuvola 27, Tempesta 29). Richiede sintonia.",
-    "id": "srd_o_149",
-    "immagine": "https://www.dndbeyond.com/avatars/thumbnails/18/897/1000/1000/636381754971745722.png",
-    "nome": "Cintura della Forza del Gigante",
-    "prezzo": 13000,
-    "rarita": "Molto raro",
     "tipo": "Oggetti magici",
     "valuta": "mo"
   },
@@ -1847,26 +2727,6 @@
     "prezzo": 3000,
     "rarita": "Raro",
     "tipo": "Oggetti meravigliosi",
-    "valuta": "mo"
-  },
-  {
-    "descrizione": "Respiri in qualsiasi ambiente con gas respirabile.",
-    "id": "srd_o_151",
-    "immagine": "https://www.dndbeyond.com/avatars/thumbnails/7/315/1000/1000/636284754852978679.jpeg",
-    "nome": "Collana dell'Adattamento",
-    "prezzo": 1500,
-    "rarita": "Non comune",
-    "tipo": "Oggetti magici",
-    "valuta": "mo"
-  },
-  {
-    "descrizione": "1d6+3 sfere. Come azione bonus: lancia una sfera (Palla di Fuoco livello 3, CD 15) a 18 m.",
-    "id": "srd_o_152",
-    "immagine": "https://www.dndbeyond.com/avatars/thumbnails/7/317/1000/1000/636284755113118340.jpeg",
-    "nome": "Collana delle Palle di Fuoco",
-    "prezzo": 3000,
-    "rarita": "Raro",
-    "tipo": "Oggetti magici",
     "valuta": "mo"
   },
   {
@@ -1917,16 +2777,6 @@
     "prezzo": 15000,
     "rarita": "Molto raro",
     "tipo": "Oggetti meravigliosi",
-    "valuta": "mo"
-  },
-  {
-    "descrizione": "Corda magica 18 m. Obbedisce a comandi verbali: si ancora, si arrotola. Porta 900 kg.",
-    "id": "srd_o_153",
-    "immagine": "https://dungeonedraghi.it/wp-content/uploads/2020/03/corda-per-scalare-1000x1000.jpg",
-    "nome": "Corda dell'Arrampicata",
-    "prezzo": 2000,
-    "rarita": "Non comune",
-    "tipo": "Oggetti magici",
     "valuta": "mo"
   },
   {
@@ -2030,26 +2880,6 @@
     "valuta": "mo"
   },
   {
-    "descrizione": "CA 14+DES (max 2). Non impone svantaggio a Furtività. Nessuna proficiency richiesta.",
-    "id": "srd_o_088",
-    "immagine": "https://www.dndbeyond.com/avatars/thumbnails/7/208/1000/1000/636284731937952010.jpeg",
-    "nome": "Cotta di Maglia Elfica",
-    "prezzo": 4000,
-    "rarita": "Raro",
-    "tipo": "Armature",
-    "valuta": "mo"
-  },
-  {
-    "descrizione": "CA 14+DES (max 1). Resistenza al danno del drago di origine. Vantaggio TS vs soffio di drago.",
-    "id": "srd_o_089",
-    "immagine": "https://www.dndbeyond.com/avatars/thumbnails/7/188/1000/1000/636284728153996196.jpeg",
-    "nome": "Cotta di Scaglie di Drago",
-    "prezzo": 4000,
-    "rarita": "Molto raro",
-    "tipo": "Armature",
-    "valuta": "mo"
-  },
-  {
     "descrizione": "Bonus di +4 ai tiri per colpire e ai danni. Infligge 3d8 danni da forza extra. L'arma possiede 1 carica: il personaggio può spenderla per lanciare Imprigionare (9° livello, CD 22). La carica si rigenera solo dopo che il personaggio ha sconfitto un nemico di GS 18 o superiore.",
     "id": "w_1778433652954",
     "immagine": "",
@@ -2097,16 +2927,6 @@
     "prezzo": 4300,
     "rarita": "Arma unica",
     "tipo": "Spada",
-    "valuta": "mo"
-  },
-  {
-    "descrizione": "Freccia o dardo +1. Contro la categoria designata: 6d10 extra (CD COS 15 per dimezzare).",
-    "id": "srd_o_057",
-    "immagine": "https://www.dndbeyond.com/avatars/thumbnails/7/114/1000/1000/636284705050167886.jpeg",
-    "nome": "Dardo dell'Uccisione",
-    "prezzo": 600,
-    "rarita": "Molto raro",
-    "tipo": "Arco",
     "valuta": "mo"
   },
   {
@@ -2240,16 +3060,6 @@
     "valuta": "mo"
   },
   {
-    "descrizione": "Leggi e comprendi parlato e testo in qualsiasi lingua mentre lo indossi.",
-    "id": "srd_o_130",
-    "immagine": "https://www.dndbeyond.com/avatars/thumbnails/7/247/1000/1000/636284739197700379.jpeg",
-    "nome": "Elmo della Comprensione dei Linguaggi",
-    "prezzo": 500,
-    "rarita": "Non comune",
-    "tipo": "Elmi",
-    "valuta": "mo"
-  },
-  {
     "descrizione": "Questo elmo luminoso è incastonato con 1d10 diamanti, 2d10 rubini, 3d10 opali di fuoco e 4d10 opali. Qualsiasi gemma estratta dall'elmo si riduce in polvere. Quando tutte le gemme sono rimosse o distrutte, l'elmo perde la sua magia. Mentre lo indossi ottieni i seguenti benefici: Puoi usare un'azione per lanciare uno dei seguenti incantesimi (CD del tiro salvezza 18), usando una delle gemme dell'elmo del tipo specificato come componente: luce diurna (opale), muro di fuoco (rubino), palla di fuoco (opale di fuoco) o spruzzo prismatico (diamante). Quando l'incantesimo viene lanciato la gemma è distrutta e scompare dall'elmo. Finché possiede almeno un diamante, l'elmo emette luce fioca in un raggio di 9 metri quando almeno un non morto si trova entro quest'area. Qualsiasi non morto che inizi i",
     "id": "srd_o_253",
     "immagine": "https://dungeonedraghi.it/wp-content/uploads/2020/03/elmo-della-luminosità.jpeg",
@@ -2260,42 +3070,12 @@
     "valuta": "mo"
   },
   {
-    "descrizione": "Lancia Individua i Pensieri (CD 13) come azione. Comunica telepaticamente con creature entro 18 m.",
-    "id": "srd_o_131",
-    "immagine": "https://www.dndbeyond.com/avatars/thumbnails/7/249/1000/1000/636284739464427618.jpeg",
-    "nome": "Elmo della Telepatia",
-    "prezzo": 1000,
-    "rarita": "Non comune",
-    "tipo": "Elmi",
-    "valuta": "mo"
-  },
-  {
-    "descrizione": "3 cariche. Lancia Teletrasporto. Ricarica 1d3/alba. Richiede sintonia da incantatore.",
-    "id": "srd_o_132",
-    "immagine": "https://www.dndbeyond.com/avatars/thumbnails/7/251/1000/1000/636284739707897018.jpeg",
-    "nome": "Elmo della Teletrasportazione",
-    "prezzo": 8000,
-    "rarita": "Raro",
-    "tipo": "Elmi",
-    "valuta": "mo"
-  },
-  {
     "descrizione": "Mentre indossa questo elmo, il personaggio dispone di Vantaggio alle prove di Saggezza (Intuizione) e ai TS contro effetti di ammaliamento. Richiede sintonia.",
     "id": "w_1778448273837",
     "immagine": "",
     "nome": "Elmo dello Scrutatore d'Animi",
     "prezzo": 90,
     "rarita": "Raro",
-    "tipo": "Elmi",
-    "valuta": "mo"
-  },
-  {
-    "descrizione": "Gemme con vari effetti: luce brillante, fiamma sacra, muro di fuoco. Se tutti i gioielli si esauriscono, diventa non magico.",
-    "id": "srd_o_133",
-    "immagine": "https://www.dndbeyond.com/avatars/thumbnails/7/245/1000/1000/636284738793766992.jpeg",
-    "nome": "Elmo dello Splendore",
-    "prezzo": 36000,
-    "rarita": "Molto raro",
     "tipo": "Elmi",
     "valuta": "mo"
   },
@@ -2407,16 +3187,6 @@
     "prezzo": 3000,
     "rarita": "Raro",
     "tipo": "Oggetti meravigliosi",
-    "valuta": "mo"
-  },
-  {
-    "descrizione": "La tua Intelligenza diventa 19 (nessun effetto se già 19+). Richiede sintonia.",
-    "id": "srd_o_154",
-    "immagine": "https://www.dndbeyond.com/avatars/thumbnails/7/243/1000/1000/636284738487464526.jpeg",
-    "nome": "Fascia dell'Intelletto",
-    "prezzo": 8000,
-    "rarita": "Non comune",
-    "tipo": "Oggetti magici",
     "valuta": "mo"
   },
   {
@@ -2550,16 +3320,6 @@
     "valuta": "mo"
   },
   {
-    "descrizione": "Quando lanciato diventa un fulmine (linea 1,5 m, 4d6 fulmine a tutte le creature, CD DES 13). +1 in mischia.",
-    "id": "srd_o_058",
-    "immagine": "https://www.dndbeyond.com/avatars/thumbnails/7/275/1000/1000/636284746259121503.jpeg",
-    "nome": "Giavellotto del Fulmine",
-    "prezzo": 1500,
-    "rarita": "Non comune",
-    "tipo": "Lancia",
-    "valuta": "mo"
-  },
-  {
     "descrizione": "Questi guanti sembrano quasi fondersi con la tua pelle quando li indossi. Quando un attacco con arma a distanza ti colpisce mentre li indossi, puoi usare la tua reazione per ridurre il danno di 1d10 + il tuo modificatore di Destrezza, purché tu abbia una mano libera. Se riduci il danno a 0, e il proiettile è piccolo a sufficienza da essere tenuto in mano, puoi afferrarlo.",
     "id": "srd_o_264",
     "immagine": "",
@@ -2580,16 +3340,6 @@
     "valuta": "mo"
   },
   {
-    "descrizione": "+5 alle prove di Rapidità di Mano. Apri serrature e disarma trappole senza strumenti (tiro 17+).",
-    "id": "srd_o_155",
-    "immagine": "https://www.dndbeyond.com/avatars/thumbnails/7/244/1000/1000/636284738218200000.jpeg",
-    "nome": "Guanti del Ladro",
-    "prezzo": 1000,
-    "rarita": "Non comune",
-    "tipo": "Oggetti magici",
-    "valuta": "mo"
-  },
-  {
     "descrizione": "Mentre indossi queste manopole la tua Forza è 19. Le manopole non hanno effetto se la tua Forza è già 19 o più alta.",
     "id": "srd_o_265",
     "immagine": "",
@@ -2597,26 +3347,6 @@
     "prezzo": 300,
     "rarita": "Non comune",
     "tipo": "Oggetti meravigliosi",
-    "valuta": "mo"
-  },
-  {
-    "descrizione": "Nuoto 9 m e arrampicata 9 m. Puoi scalare superfici verticali e capovolte senza prove.",
-    "id": "srd_o_156",
-    "immagine": "https://dungeonedraghi.it/wp-content/uploads/2020/03/guanti-del-nuotare-e-scalare.jpg",
-    "nome": "Guanti del Nuoto e dell'Arrampicata",
-    "prezzo": 2000,
-    "rarita": "Non comune",
-    "tipo": "Oggetti magici",
-    "valuta": "mo"
-  },
-  {
-    "descrizione": "La tua Forza diventa 19 (nessun effetto se già 19+). Richiede sintonia.",
-    "id": "srd_o_157",
-    "immagine": "https://www.dndbeyond.com/avatars/thumbnails/7/225/1000/1000/636284735292684780.jpeg",
-    "nome": "Guanti del Potere dell'Ogre",
-    "prezzo": 8000,
-    "rarita": "Non comune",
-    "tipo": "Oggetti magici",
     "valuta": "mo"
   },
   {
@@ -2635,16 +3365,6 @@
     "immagine": "",
     "nome": "Guanti dell'Artigiano Preciso",
     "prezzo": 15,
-    "rarita": "Non comune",
-    "tipo": "Oggetti magici",
-    "valuta": "mo"
-  },
-  {
-    "descrizione": "Reazione: quando sei colpito da un proiettile, riduci i danni di 1d10+modificatore DES.",
-    "id": "srd_o_158",
-    "immagine": "https://dungeonedraghi.it/wp-content/uploads/2020/03/guanti-catturaproiettili.jpg",
-    "nome": "Guanti per Bloccare i Proiettili",
-    "prezzo": 1500,
     "rarita": "Non comune",
     "tipo": "Oggetti magici",
     "valuta": "mo"
@@ -2697,16 +3417,6 @@
     "prezzo": 4500,
     "rarita": "Arma unica",
     "tipo": "Spada",
-    "valuta": "mo"
-  },
-  {
-    "descrizione": "+3 a colpire e danni. Trasferisci fino a +3 come bonus CA fino al prossimo turno. Richiede sintonia.",
-    "id": "srd_o_059",
-    "immagine": "https://www.dndbeyond.com/avatars/thumbnails/7/182/1000/1000/636284726545050930.jpeg",
-    "nome": "La Difenditrice",
-    "prezzo": 50000,
-    "rarita": "Leggendario",
-    "tipo": "Spada lunga",
     "valuta": "mo"
   },
   {
@@ -2850,16 +3560,6 @@
     "valuta": "ma"
   },
   {
-    "descrizione": "Accesa: rivela automaticamente creature e oggetti invisibili entro 9 m nel suo cono di luce.",
-    "id": "srd_o_159",
-    "immagine": "https://www.dndbeyond.com/avatars/thumbnails/7/281/1000/1000/636284748401322740.jpeg",
-    "nome": "Lanterna della Rivelazione",
-    "prezzo": 5000,
-    "rarita": "Non comune",
-    "tipo": "Oggetti magici",
-    "valuta": "mo"
-  },
-  {
     "descrizione": "Mentre il personaggio guarda attraverso questa lente di cristallo, dispone di Vantaggio alle prove di Intelligenza (Indagare) effettuate per esaminare testi scritti, mappe o iscrizioni.",
     "id": "w_1778433652906",
     "immagine": "",
@@ -2920,16 +3620,6 @@
     "valuta": "mo"
   },
   {
-    "descrizione": "Parola di comando: accende fiamma che aggiunge 2d6 fuoco e illumina 12 m brillante, 12 m fioca.",
-    "id": "srd_o_060",
-    "immagine": "https://www.dndbeyond.com/avatars/thumbnails/7/219/1000/1000/636284733648450283.jpeg",
-    "nome": "Lingua di Fuoco",
-    "prezzo": 5000,
-    "rarita": "Raro",
-    "tipo": "Spada",
-    "valuta": "mo"
-  },
-  {
     "descrizione": "permette di lanciare 1 volta al giorno uno di questi 3 incantesimi: amicizia con gli animali, protezione dall'energia (solo fuoco), protezione dai veleni",
     "id": "w_1781797826573",
     "immagine": "",
@@ -2980,26 +3670,6 @@
     "valuta": "mo"
   },
   {
-    "descrizione": "Vantaggio Furtività. In oscurità: vola 9 m. 3 cariche: diventa pipistrello gigante per 1 ora. Ricarica 1d3/alba.",
-    "id": "srd_o_160",
-    "immagine": "https://dungeonedraghi.it/wp-content/uploads/2020/03/mantello-del-pipistrello.jpg",
-    "nome": "Mantello del Pipistrello",
-    "prezzo": 6000,
-    "rarita": "Raro",
-    "tipo": "Oggetti magici",
-    "valuta": "mo"
-  },
-  {
-    "descrizione": "Vantaggio Furtività. Percezione passiva contro di te ha svantaggio. Richiede sintonia.",
-    "id": "srd_o_161",
-    "immagine": "https://www.dndbeyond.com/avatars/thumbnails/7/166/1000/1000/636284723117325593.jpeg",
-    "nome": "Mantello del Popolo Elfico",
-    "prezzo": 5000,
-    "rarita": "Non comune",
-    "tipo": "Oggetti magici",
-    "valuta": "mo"
-  },
-  {
     "descrizione": "Questo mantello di lana non può essere sporcato da fango, sangue o polvere comune. Qualsiasi macchia scivola via dalla trama istantaneamente.",
     "id": "w_1778431175367",
     "immagine": "img/mantello-del-viandante-pulito.jpg",
@@ -3010,32 +3680,12 @@
     "valuta": "ma"
   },
   {
-    "descrizione": "Scalata 9 m, ragnatela 1/giorno, resistenza veleno, scurovisione 12 m, furtività su ragnatele. Richiede sintonia.",
-    "id": "srd_o_162",
-    "immagine": "https://dungeonedraghi.it/wp-content/uploads/2020/03/mantello-dell-aracnide.jpg",
-    "nome": "Mantello dell'Aracnide",
-    "prezzo": 20000,
-    "rarita": "Molto raro",
-    "tipo": "Oggetti magici",
-    "valuta": "mo"
-  },
-  {
     "descrizione": "Il personaggio può alzare il cappuccio con un'azione per diventare invisibile insieme a tutto ciò che indossa e trasporta. Abbassandolo torna visibile. Funziona per 2 ore totali (in frazioni da 1 minuto); recupera 1 ora ogni 12 ore di non utilizzo.",
     "id": "w_1778433652872",
     "immagine": "",
     "nome": "Mantello dell'Invisibilità",
     "prezzo": 1800,
     "rarita": "Leggendario",
-    "tipo": "Oggetti magici",
-    "valuta": "mo"
-  },
-  {
-    "descrizione": "Respira sott'acqua. Nuoto 18 m. Dispiegato: rallenta caduta (Caduta Morbida).",
-    "id": "srd_o_164",
-    "immagine": "https://www.dndbeyond.com/avatars/thumbnails/7/170/1000/1000/636284723816150463.jpeg",
-    "nome": "Mantello della Manta",
-    "prezzo": 6000,
-    "rarita": "Non comune",
     "tipo": "Oggetti magici",
     "valuta": "mo"
   },
@@ -3066,26 +3716,6 @@
     "nome": "Mantello dello Schermo Fantasma",
     "prezzo": 700,
     "rarita": "Molto raro",
-    "tipo": "Oggetti magici",
-    "valuta": "mo"
-  },
-  {
-    "descrizione": "Chi attacca ha svantaggio. Si annulla se ti muovi il turno successivo. Richiede sintonia.",
-    "id": "srd_o_163",
-    "immagine": "https://www.dndbeyond.com/avatars/thumbnails/7/164/1000/1000/636284722823230171.jpeg",
-    "nome": "Mantello dello Spostamento",
-    "prezzo": 6000,
-    "rarita": "Raro",
-    "tipo": "Oggetti magici",
-    "valuta": "mo"
-  },
-  {
-    "descrizione": "+1 alla CA e ai TS. Richiede sintonia.",
-    "id": "srd_o_165",
-    "immagine": "https://www.dndbeyond.com/avatars/thumbnails/7/168/1000/1000/636284723508326581.jpeg",
-    "nome": "Mantello di Protezione",
-    "prezzo": 3500,
-    "rarita": "Non comune",
     "tipo": "Oggetti magici",
     "valuta": "mo"
   },
@@ -3147,16 +3777,6 @@
     "prezzo": 90,
     "rarita": "Non comune",
     "tipo": "Pozioni",
-    "valuta": "mo"
-  },
-  {
-    "descrizione": "+1 a colpire e danni; +1d6 freddo extra. Resistenza al fuoco. Spegne fuochi non magici entro 9 m.",
-    "id": "srd_o_061",
-    "immagine": "https://www.dndbeyond.com/avatars/thumbnails/7/223/1000/1000/636284734857745454.jpeg",
-    "nome": "Marchio del Gelo",
-    "prezzo": 6000,
-    "rarita": "Molto raro",
-    "tipo": "Spada",
     "valuta": "mo"
   },
   {
@@ -3270,16 +3890,6 @@
     "valuta": "mo"
   },
   {
-    "descrizione": "3 cariche. Parola di comando: creature entro 9 m (CD SAG 15) spaventate per 1 min. Ricarica 1d3/alba.",
-    "id": "srd_o_063",
-    "immagine": "https://www.dndbeyond.com/avatars/thumbnails/7/289/1000/1000/636284749968096380.jpeg",
-    "nome": "Mazza del Terrore",
-    "prezzo": 2000,
-    "rarita": "Raro",
-    "tipo": "Mazza",
-    "valuta": "mo"
-  },
-  {
     "descrizione": "Bonus di +2 ai tiri per colpire e ai danni. Infligge 2d8 danni da tuono extra. Quando colpisce, il bersaglio deve superare un TS su Costituzione CD 16 o subire la condizione Assordato per 1 minuto.",
     "id": "w_1778433652929",
     "immagine": "",
@@ -3307,16 +3917,6 @@
     "prezzo": 3000,
     "rarita": "Raro",
     "tipo": "Oggetti meravigliosi",
-    "valuta": "mo"
-  },
-  {
-    "descrizione": "+2d6 radianti a non-morti e aberrazioni. I non-morti fanno CD SAG 17 o sono distrutti.",
-    "id": "srd_o_062",
-    "immagine": "https://www.dndbeyond.com/avatars/thumbnails/7/285/1000/1000/636284749090385489.jpeg",
-    "nome": "Mazza della Frantumazione",
-    "prezzo": 3000,
-    "rarita": "Raro",
-    "tipo": "Mazza",
     "valuta": "mo"
   },
   {
@@ -3360,16 +3960,6 @@
     "valuta": "mo"
   },
   {
-    "descrizione": "3 cariche. Lancia Individua i Pensieri (CD 13). Ricarica 1d3/alba. Richiede sintonia.",
-    "id": "srd_o_166",
-    "immagine": "https://www.dndbeyond.com/avatars/thumbnails/7/311/1000/1000/636284753409565037.jpeg",
-    "nome": "Medaglione dei Pensieri",
-    "prezzo": 3000,
-    "rarita": "Non comune",
-    "tipo": "Oggetti magici",
-    "valuta": "mo"
-  },
-  {
     "descrizione": "Hai un bonus ai tiri per colpire e ai tiri di danno effettuati con questo pezzo di munizione magica. Il bonus è determinato dalla rarità. Una volta che colpisce un bersaglio, la munizione perde la sua magia.",
     "id": "srd_o_285",
     "immagine": "https://dungeonedraghi.it/wp-content/uploads/logo.png",
@@ -3380,16 +3970,6 @@
     "valuta": "mo"
   },
   {
-    "descrizione": "Vantaggio alla Percezione visiva. Vedi dettagliatamente fino a 1,5 km. Richiede sintonia.",
-    "id": "srd_o_167",
-    "immagine": "https://www.dndbeyond.com/avatars/thumbnails/7/214/1000/1000/636284732865554502.jpeg",
-    "nome": "Occhi dell'Aquila",
-    "prezzo": 2500,
-    "rarita": "Non comune",
-    "tipo": "Oggetti magici",
-    "valuta": "mo"
-  },
-  {
     "descrizione": "Gli oggetti osservati con questi occhiali vengono scannerizzati in modo tale che il possessore capisca tutti i problemi che l'oggetto presenta",
     "id": "w_1782475442735_8889",
     "immagine": "",
@@ -3397,16 +3977,6 @@
     "prezzo": 178,
     "rarita": "Raro",
     "tipo": "Utensili magici",
-    "valuta": "mo"
-  },
-  {
-    "descrizione": "Scurovisione 18 m (o +18 m se già presente). Richiede sintonia.",
-    "id": "srd_o_168",
-    "immagine": "https://www.dndbeyond.com/avatars/thumbnails/7/235/1000/1000/636284736878181910.jpeg",
-    "nome": "Occhiali della Notte",
-    "prezzo": 1000,
-    "rarita": "Non comune",
-    "tipo": "Oggetti magici",
     "valuta": "mo"
   },
   {
@@ -3510,16 +4080,6 @@
     "valuta": "mo"
   },
   {
-    "descrizione": "Come azione bonus 1/giorno: recupera un slot incantesimo speso di 3° livello o inferiore. Richiede sintonia da incantatore.",
-    "id": "srd_o_169",
-    "immagine": "https://dungeonedraghi.it/wp-content/uploads/2020/03/perla-del-potere.jpg",
-    "nome": "Perla del Potere",
-    "prezzo": 6000,
-    "rarita": "Non comune",
-    "tipo": "Oggetti magici",
-    "valuta": "mo"
-  },
-  {
     "descrizione": "Questo pettorale di scaglie reca incise le insegne di una compagnia mercenaria estinta. Si adatta automaticamente al fisico di chi lo indossa, evitando sfregamenti. Nessun beneficio in combattimento.",
     "id": "w_1778448273850",
     "immagine": "",
@@ -3528,16 +4088,6 @@
     "rarita": "Comune",
     "tipo": "Oggetti magici",
     "valuta": "ma"
-  },
-  {
-    "descrizione": "CA 20. Quando vieni spinto, riduci lo spostamento di 3 m. Richiede sintonia.",
-    "id": "srd_o_090",
-    "immagine": "https://www.dndbeyond.com/avatars/thumbnails/7/198/1000/1000/636284729841147778.jpeg",
-    "nome": "Piastre del Nano",
-    "prezzo": 3000,
-    "rarita": "Molto raro",
-    "tipo": "Armature",
-    "valuta": "mo"
   },
   {
     "descrizione": "Quest'armatura di piastre annerite è incisa con sigilli infernali. Il personaggio ottiene un bonus di +2 alla CA e resistenza ai danni da fuoco. Una volta per riposo lungo, quando colpisce un nemico in mischia, può usare la sua reazione per costringerlo a un TS su Saggezza CD 16 o subire la condizione Spaventato dal personaggio fino alla fine del turno successivo. Richiede sintonia.",
@@ -3650,116 +4200,6 @@
     "valuta": "mo"
   },
   {
-    "descrizione": "Per 1 ora dopo aver bevuto la pozione, il personaggio può usare un'azione bonus per esalare fuoco contro un bersaglio entro 9 metri. Il bersaglio effettua un TS su Destrezza CD 13: fallendo subisce 4d6 danni da fuoco, dimezzati in caso di successo. L'effetto termina dopo tre soffi.",
-    "id": "w_1778433652846",
-    "immagine": "",
-    "nome": "Pozione del Soffio di Fuoco",
-    "prezzo": 90,
-    "rarita": "Non comune",
-    "tipo": "Pozioni",
-    "valuta": "mo"
-  },
-  {
-    "descrizione": "Causa 3d6 danni da veleno e avvelenamento 24 ore (TS COS CD 19 per metà e nessun avvelenamento).",
-    "id": "srd_o_023",
-    "immagine": "https://dungeonedraghi.it/wp-content/uploads/2020/03/pozione-velenosa-1000x1000.png",
-    "nome": "Pozione del Veleno",
-    "prezzo": 100,
-    "rarita": "Comune",
-    "tipo": "Pozioni",
-    "valuta": "mo"
-  },
-  {
-    "descrizione": "Per 1 ora: velocità volo 18 m e puoi librarsi. Se termina mentre sei in aria, cadi.",
-    "id": "srd_o_005",
-    "immagine": "https://dungeonedraghi.it/wp-content/uploads/2020/03/pozione-di-volare.png",
-    "nome": "Pozione del Volo",
-    "prezzo": 500,
-    "rarita": "Molto raro",
-    "tipo": "Pozioni",
-    "valuta": "mo"
-  },
-  {
-    "descrizione": "Per 1 ora: lancia Amicizia con gli Animali (CD 13) a volontà.",
-    "id": "srd_o_025",
-    "immagine": "https://dungeonedraghi.it/wp-content/uploads/2020/03/pozione-di-amicizia-con-gli-animali.jpg",
-    "nome": "Pozione dell'Amicizia con gli Animali",
-    "prezzo": 100,
-    "rarita": "Non comune",
-    "tipo": "Pozioni",
-    "valuta": "mo"
-  },
-  {
-    "descrizione": "Per 1 ora: velocità di arrampicata pari a quella a terra, vantaggio in Atletica per arrampicarti.",
-    "id": "srd_o_018",
-    "immagine": "https://dungeonedraghi.it/wp-content/uploads/2020/03/pozione-di-scalare.jpg",
-    "nome": "Pozione dell'Arrampicata",
-    "prezzo": 75,
-    "rarita": "Comune",
-    "tipo": "Pozioni",
-    "valuta": "mo"
-  },
-  {
-    "descrizione": "Per 1 ora: 10 PF temporanei e sei sotto Benedizione senza concentrazione.",
-    "id": "srd_o_019",
-    "immagine": "https://dungeonedraghi.it/wp-content/uploads/2020/03/pozione-di-eroismo.jpg",
-    "nome": "Pozione dell'Eroismo",
-    "prezzo": 180,
-    "rarita": "Raro",
-    "tipo": "Pozioni",
-    "valuta": "mo"
-  },
-  {
-    "descrizione": "Per 1 ora: invisibile. Termina se attacchi o lanci un incantesimo.",
-    "id": "srd_o_020",
-    "immagine": "https://dungeonedraghi.it/wp-content/uploads/2020/03/pozione-di-invisibilità.jpg",
-    "nome": "Pozione dell'Invisibilità",
-    "prezzo": 180,
-    "rarita": "Molto raro",
-    "tipo": "Pozioni",
-    "valuta": "mo"
-  },
-  {
-    "descrizione": "Per 1 minuto: resistenza a tutti i danni. Olio denso e viscoso.",
-    "id": "srd_o_021",
-    "immagine": "https://www.dndbeyond.com/attachments/2/667/potion.jpg",
-    "nome": "Pozione dell'Invulnerabilità",
-    "prezzo": 3000,
-    "rarita": "Raro",
-    "tipo": "Pozioni",
-    "valuta": "mo"
-  },
-  {
-    "descrizione": "Berla per lanciare Chiaroveggenza senza concentrazione. Liquido turchese con occhio fluttuante.",
-    "id": "srd_o_024",
-    "immagine": "https://dungeonedraghi.it/wp-content/uploads/2020/03/pozione-di-chiaroveggenza.jpg",
-    "nome": "Pozione della Chiaroveggenza",
-    "prezzo": 960,
-    "rarita": "Raro",
-    "tipo": "Pozioni",
-    "valuta": "mo"
-  },
-  {
-    "descrizione": "Come Ingrandisci/Riduci (solo Ingrandisci) per 1d4 ore senza concentrazione.",
-    "id": "srd_o_014",
-    "immagine": "https://dungeonedraghi.it/wp-content/uploads/2020/03/pozione-di-crescita.png",
-    "nome": "Pozione della Crescita",
-    "prezzo": 150,
-    "rarita": "Non comune",
-    "tipo": "Pozioni",
-    "valuta": "mo"
-  },
-  {
-    "descrizione": "Come Ingrandisci/Riduci (solo Riduci) per 1d4 ore senza concentrazione.",
-    "id": "srd_o_015",
-    "immagine": "https://dungeonedraghi.it/wp-content/uploads/2020/03/pozione-di-diminuzione.png",
-    "nome": "Pozione della Diminuzione",
-    "prezzo": 270,
-    "rarita": "Raro",
-    "tipo": "Pozioni",
-    "valuta": "mo"
-  },
-  {
     "descrizione": "Quando bevi questa pozione, per 1 ora il tuo punteggio di Forza cambia secondo il tipo di gigante (da 21 a 29 a seconda del tipo).",
     "id": "srd_o_300",
     "immagine": "",
@@ -3767,156 +4207,6 @@
     "prezzo": 300,
     "rarita": "Non comune",
     "tipo": "Oggetti meravigliosi",
-    "valuta": "mo"
-  },
-  {
-    "descrizione": "Come Forma Gassosa senza concentrazione per 1 ora. Liquido grigiastro fumoso.",
-    "id": "srd_o_007",
-    "immagine": "https://dungeonedraghi.it/wp-content/uploads/2020/03/pozione-della-forma-gassosa.png",
-    "nome": "Pozione della Forma Gassosa",
-    "prezzo": 300,
-    "rarita": "Raro",
-    "tipo": "Pozioni",
-    "valuta": "mo"
-  },
-  {
-    "descrizione": "Per 1 ora: Forza diventa 25 (nessun effetto se già superiore).",
-    "id": "srd_o_010",
-    "immagine": "https://dungeonedraghi.it/wp-content/uploads/2020/03/pozione-della-forma-dei-giganti.jpg",
-    "nome": "Pozione della Forza del Gigante del Fuoco",
-    "prezzo": 750,
-    "rarita": "Raro",
-    "tipo": "Pozioni",
-    "valuta": "mo"
-  },
-  {
-    "descrizione": "Per 1 ora: Forza diventa 21 (nessun effetto se già superiore).",
-    "id": "srd_o_008",
-    "immagine": "https://dungeonedraghi.it/wp-content/uploads/2020/03/pozione-della-forma-dei-giganti.jpg",
-    "nome": "Pozione della Forza del Gigante della Collina",
-    "prezzo": 200,
-    "rarita": "Non comune",
-    "tipo": "Pozioni",
-    "valuta": "mo"
-  },
-  {
-    "descrizione": "Per 1 ora: Forza diventa 23 (nessun effetto se già superiore).",
-    "id": "srd_o_009",
-    "immagine": "https://dungeonedraghi.it/wp-content/uploads/2020/03/pozione-della-forma-dei-giganti.jpg",
-    "nome": "Pozione della Forza del Gigante della Pietra",
-    "prezzo": 500,
-    "rarita": "Raro",
-    "tipo": "Pozioni",
-    "valuta": "mo"
-  },
-  {
-    "descrizione": "Per 1 ora: Forza diventa 29. Liquido azzurro con lampi interni.",
-    "id": "srd_o_012",
-    "immagine": "https://dungeonedraghi.it/wp-content/uploads/2020/03/pozione-della-forma-dei-giganti.jpg",
-    "nome": "Pozione della Forza del Gigante della Tempesta",
-    "prezzo": 50000,
-    "rarita": "Leggendario",
-    "tipo": "Pozioni",
-    "valuta": "mo"
-  },
-  {
-    "descrizione": "Per 1 ora: Forza diventa 27 (nessun effetto se già superiore).",
-    "id": "srd_o_011",
-    "immagine": "https://dungeonedraghi.it/wp-content/uploads/2020/03/pozione-della-forma-dei-giganti.jpg",
-    "nome": "Pozione della Forza del Gigante delle Nuvole",
-    "prezzo": 1500,
-    "rarita": "Molto raro",
-    "tipo": "Pozioni",
-    "valuta": "mo"
-  },
-  {
-    "descrizione": "Per 1 minuto: puoi lanciare Individua i Pensieri (CD 13) senza concentrazione.",
-    "id": "srd_o_022",
-    "immagine": "https://dungeonedraghi.it/wp-content/uploads/2020/03/pozione-di-lettura-della-mente.png",
-    "nome": "Pozione della Lettura della Mente",
-    "prezzo": 180,
-    "rarita": "Raro",
-    "tipo": "Pozioni",
-    "valuta": "mo"
-  },
-  {
-    "descrizione": "La tua età biologica diminuisce di 1d6+6 anni (min 13 anni). 10% cumulativo che aumenti invece.",
-    "id": "srd_o_016",
-    "immagine": "https://www.dndbeyond.com/attachments/2/667/potion.jpg",
-    "nome": "Pozione della Longevità",
-    "prezzo": 9000,
-    "rarita": "Molto raro",
-    "tipo": "Pozioni",
-    "valuta": "mo"
-  },
-  {
-    "descrizione": "Per 1 ora: resistenza a un tipo di danno (acido, freddo, fuoco, fulmine, necrotico, ecc.).",
-    "id": "srd_o_013",
-    "immagine": "https://dungeonedraghi.it/wp-content/uploads/2020/03/pozione-di-resistenza.png",
-    "nome": "Pozione della Resistenza",
-    "prezzo": 300,
-    "rarita": "Non comune",
-    "tipo": "Pozioni",
-    "valuta": "mo"
-  },
-  {
-    "descrizione": "Per 1 minuto sei sotto Affretta senza concentrazione. Liquido giallo che vorteggia.",
-    "id": "srd_o_006",
-    "immagine": "https://dungeonedraghi.it/wp-content/uploads/2020/03/pozione-di-velocità.jpg",
-    "nome": "Pozione della Velocità",
-    "prezzo": 400,
-    "rarita": "Molto raro",
-    "tipo": "Pozioni",
-    "valuta": "mo"
-  },
-  {
-    "descrizione": "Cura tutte le malattie, rimuovi tutti i veleni e massimizza i PF recuperati con dadi vita per 24 ore.",
-    "id": "srd_o_017",
-    "immagine": "https://www.dndbeyond.com/attachments/2/667/potion.jpg",
-    "nome": "Pozione della Vitalità",
-    "prezzo": 960,
-    "rarita": "Molto raro",
-    "tipo": "Pozioni",
-    "valuta": "mo"
-  },
-  {
-    "descrizione": "Berla come azione: recupera 2d4+2 PF. Liquido rosso brillante dal sapore di lampone.",
-    "id": "srd_o_001",
-    "immagine": "https://dungeonedraghi.it/wp-content/uploads/2020/03/pozione-di-guarigione.png",
-    "nome": "Pozione di Cura",
-    "prezzo": 50,
-    "rarita": "Comune",
-    "tipo": "Pozioni",
-    "valuta": "mo"
-  },
-  {
-    "descrizione": "Berla come azione: recupera 8d4+8 PF. Liquido rosso con striature dorate.",
-    "id": "srd_o_003",
-    "immagine": "https://dungeonedraghi.it/wp-content/uploads/2020/03/pozione-di-guarigione.png",
-    "nome": "Pozione di Cura Eccellente",
-    "prezzo": 450,
-    "rarita": "Raro",
-    "tipo": "Pozioni",
-    "valuta": "mo"
-  },
-  {
-    "descrizione": "Berla come azione: recupera 4d4+4 PF.",
-    "id": "srd_o_002",
-    "immagine": "https://dungeonedraghi.it/wp-content/uploads/2020/03/pozione-di-guarigione.png",
-    "nome": "Pozione di Cura Superiore",
-    "prezzo": 150,
-    "rarita": "Non comune",
-    "tipo": "Pozioni",
-    "valuta": "mo"
-  },
-  {
-    "descrizione": "Berla come azione: recupera 10d4+20 PF.",
-    "id": "srd_o_004",
-    "immagine": "https://dungeonedraghi.it/wp-content/uploads/2020/03/pozione-di-guarigione.png",
-    "nome": "Pozione di Cura Suprema",
-    "prezzo": 1350,
-    "rarita": "Molto raro",
-    "tipo": "Pozioni",
     "valuta": "mo"
   },
   {
@@ -4006,16 +4296,6 @@
     "nome": "Pozione di Volare",
     "prezzo": 500,
     "rarita": "Molto raro",
-    "tipo": "Pozioni",
-    "valuta": "mo"
-  },
-  {
-    "descrizione": "Per 1 ora: respira sott'acqua. Non perdi la capacità di respirare aria.",
-    "id": "srd_o_027",
-    "immagine": "https://dungeonedraghi.it/wp-content/uploads/2020/03/pozione-di-respirare-sott-acqua.jpg",
-    "nome": "Pozione per Respirare Sott'Acqua",
-    "prezzo": 180,
-    "rarita": "Non comune",
     "tipo": "Pozioni",
     "valuta": "mo"
   },
@@ -4130,16 +4410,6 @@
     "valuta": "ma"
   },
   {
-    "descrizione": "12 cariche. Immune necromanzia. Ogni TS contro non-morti: spendi 1 carica per superarlo auto. Richiede sintonia.",
-    "id": "srd_o_170",
-    "immagine": "https://www.dndbeyond.com/avatars/thumbnails/7/396/1000/1000/636284766551976147.jpeg",
-    "nome": "Scarabeo di Protezione",
-    "prezzo": 36000,
-    "rarita": "Leggendario",
-    "tipo": "Oggetti magici",
-    "valuta": "mo"
-  },
-  {
     "descrizione": "Mentre indossa queste scarpe leggere, il personaggio non inciampa né scivola sui pavimenti lustrati delle sale da ballo. Nessun beneficio in terreni veri o in combattimento.",
     "id": "w_1778433652888",
     "immagine": "",
@@ -4150,36 +4420,6 @@
     "valuta": "ma"
   },
   {
-    "descrizione": "+2 a colpire e danni. Attacco aggiuntivo come azione bonus ogni turno. Richiede sintonia.",
-    "id": "srd_o_064",
-    "immagine": "https://dungeonedraghi.it/wp-content/uploads/2020/04/scimitarra-della-velocità.jpg",
-    "nome": "Scimitarra della Velocità",
-    "prezzo": 6000,
-    "rarita": "Molto raro",
-    "tipo": "Spada",
-    "valuta": "mo"
-  },
-  {
-    "descrizione": "Vola a 15 m (30 m senza passeggeri). Chiamabile telepaticamente entro 300 m.",
-    "id": "srd_o_171",
-    "immagine": "https://www.dndbeyond.com/avatars/thumbnails/7/152/1000/1000/636284717908019789.jpeg",
-    "nome": "Scopa Volante",
-    "prezzo": 5000,
-    "rarita": "Non comune",
-    "tipo": "Oggetti magici",
-    "valuta": "mo"
-  },
-  {
-    "descrizione": "Quando il personaggio impugna questo scudo, ottiene un bonus di +1 alla CA cumulativo al normale bonus dello scudo.",
-    "id": "w_1778433652865",
-    "immagine": "https://dungeonedraghi.it/wp-content/uploads/2020/04/scudo-1-2-3-1000x1000.jpg",
-    "nome": "Scudo +1",
-    "prezzo": 50,
-    "rarita": "Non comune",
-    "tipo": "Oggetti magici",
-    "valuta": "mo"
-  },
-  {
     "descrizione": "Mentre impugni questo scudo, hai un bonus alla CA determinato dalla rarità dello scudo, in aggiunta al normale bonus dello scudo.",
     "id": "srd_o_304",
     "immagine": "https://dungeonedraghi.it/wp-content/uploads/2020/04/scudo-attiraproiettili.jpeg",
@@ -4187,26 +4427,6 @@
     "prezzo": 300,
     "rarita": "Non comune",
     "tipo": "Oggetti meravigliosi",
-    "valuta": "mo"
-  },
-  {
-    "descrizione": "Quando il personaggio impugna questo scudo, ottiene un bonus di +2 alla CA cumulativo al normale bonus dello scudo.",
-    "id": "w_1778433652866",
-    "immagine": "https://dungeonedraghi.it/wp-content/uploads/2020/04/scudo-1-2-3-1000x1000.jpg",
-    "nome": "Scudo +2",
-    "prezzo": 90,
-    "rarita": "Raro",
-    "tipo": "Oggetti magici",
-    "valuta": "mo"
-  },
-  {
-    "descrizione": "+3 alla CA in aggiunta al normale bonus dello scudo. Totale +5 CA.",
-    "id": "srd_o_093",
-    "immagine": "https://dungeonedraghi.it/wp-content/uploads/2020/04/scudo-1-2-3-1000x1000.jpg",
-    "nome": "Scudo +3",
-    "prezzo": 6000,
-    "rarita": "Molto raro",
-    "tipo": "Armature",
     "valuta": "mo"
   },
   {
@@ -4227,16 +4447,6 @@
     "prezzo": 15000,
     "rarita": "Molto raro",
     "tipo": "Oggetti meravigliosi",
-    "valuta": "mo"
-  },
-  {
-    "descrizione": "Vantaggio ai TS contro incantesimi. Le creature che usano magia hanno svantaggio contro di te.",
-    "id": "srd_o_094",
-    "immagine": "https://www.dndbeyond.com/avatars/thumbnails/7/406/1000/1000/636284767978967614.jpeg",
-    "nome": "Scudo Antimagia",
-    "prezzo": 36000,
-    "rarita": "Molto raro",
-    "tipo": "Armature",
     "valuta": "mo"
   },
   {
@@ -4277,26 +4487,6 @@
     "prezzo": 50000,
     "rarita": "Leggendario",
     "tipo": "Oggetti meravigliosi",
-    "valuta": "mo"
-  },
-  {
-    "descrizione": "Sfera fluttuante di puro vuoto. Distrugge qualsiasi cosa attraversi (CD COS 19). Controllabile con TS INT.",
-    "id": "srd_o_173",
-    "immagine": "https://dungeonedraghi.it/wp-content/uploads/2020/04/sfera-annientatrice.png",
-    "nome": "Sfera dell'Annientamento",
-    "prezzo": 200000,
-    "rarita": "Leggendario",
-    "tipo": "Oggetti magici",
-    "valuta": "mo"
-  },
-  {
-    "descrizione": "Lancia Scrutare (CD 17) come azione. Richiede sintonia da incantatore.",
-    "id": "srd_o_172",
-    "immagine": "https://dungeonedraghi.it/wp-content/uploads/2020/04/sfera-di-cristallo.jpg",
-    "nome": "Sfera di Cristallo",
-    "prezzo": 50000,
-    "rarita": "Molto raro",
-    "tipo": "Oggetti magici",
     "valuta": "mo"
   },
   {
@@ -4350,31 +4540,11 @@
     "valuta": "mo"
   },
   {
-    "descrizione": "+1 a colpire. Come azione bonus: danza autonoma per 4 round (1 attacco/round con le tue statistiche).",
-    "id": "srd_o_065",
-    "immagine": "https://www.dndbeyond.com/avatars/thumbnails/7/178/1000/1000/636284725246714619.jpeg",
-    "nome": "Spada Danzante",
-    "prezzo": 6000,
-    "rarita": "Molto raro",
-    "tipo": "Spada",
-    "valuta": "mo"
-  },
-  {
     "descrizione": "Bonus di +1 ai tiri per colpire e ai danni. Quando colpisce, l'arma infligge 2d6 danni da fuoco extra.",
     "id": "w_1778433652909",
     "immagine": "",
     "nome": "Spada del Falò Ardente",
     "prezzo": 80,
-    "rarita": "Raro",
-    "tipo": "Spada",
-    "valuta": "mo"
-  },
-  {
-    "descrizione": "+1 a colpire e danni. Con un 20: guadagni 10 PF temporanei (non contro non-morti o costrutti). Richiede sintonia.",
-    "id": "srd_o_066",
-    "immagine": "https://www.dndbeyond.com/avatars/thumbnails/7/438/1000/1000/636284773757593723.jpeg",
-    "nome": "Spada del Furto di Vita",
-    "prezzo": 3000,
     "rarita": "Raro",
     "tipo": "Spada",
     "valuta": "mo"
@@ -4397,16 +4567,6 @@
     "prezzo": 1700,
     "rarita": "Leggendario",
     "tipo": "Spada lunga",
-    "valuta": "mo"
-  },
-  {
-    "descrizione": "+3 a colpire e danni. Con un 20 che infligge taglienti: la creatura perde un arto (CD COS 15). Richiede sintonia.",
-    "id": "srd_o_067",
-    "immagine": "https://www.dndbeyond.com/avatars/thumbnails/7/440/1000/1000/636284774073071216.jpeg",
-    "nome": "Spada dell'Affilatura",
-    "prezzo": 6000,
-    "rarita": "Molto raro",
-    "tipo": "Spada",
     "valuta": "mo"
   },
   {
@@ -4446,16 +4606,6 @@
     "nome": "Spada delle Catene Spirituali",
     "prezzo": 700,
     "rarita": "Molto raro",
-    "tipo": "Spada",
-    "valuta": "mo"
-  },
-  {
-    "descrizione": "+1 a colpire e danni. I danni causati non possono essere recuperati con riposo. Richiede sintonia.",
-    "id": "srd_o_068",
-    "immagine": "https://dungeonedraghi.it/wp-content/uploads/2020/04/spada-del-ferimento-1000x1000.jpg",
-    "nome": "Spada delle Ferite",
-    "prezzo": 3000,
-    "rarita": "Raro",
     "tipo": "Spada",
     "valuta": "mo"
   },
@@ -4500,16 +4650,6 @@
     "valuta": "mo"
   },
   {
-    "descrizione": "Bonus di +3 ai tiri per colpire e ai danni. L'arma ignora la resistenza ai danni taglienti. Quando il personaggio ottiene 20 al tiro per colpire contro una creatura dotata di almeno una testa, recide la testa al bersaglio. Se la creatura non può sopravvivere senza, muore. Bersagli immuni: creature senza testa, con azioni leggendarie o con teste considerate troppo grandi dal DM (subiscono invece 6d8 danni taglienti extra).",
-    "id": "w_1778433652853",
-    "immagine": "img/spada-vorpal.png",
-    "nome": "Spada Vorpal",
-    "prezzo": 1900,
-    "rarita": "Leggendario",
-    "tipo": "Spada lunga",
-    "valuta": "mo"
-  },
-  {
     "descrizione": "Bonus di +3 ai tiri per colpire e ai danni. Infligge 3d10 danni da forza extra. Una volta per giorno, il possessore può lanciare l'incantesimo Fermare il Tempo senza spendere slot incantesimo",
     "id": "w_1778431760878",
     "immagine": "img/spadone-del-crepuscolo-cosmico.jpg",
@@ -4550,16 +4690,6 @@
     "valuta": "mo"
   },
   {
-    "descrizione": "Resistenza ai danni da forza. Immune a Dardo Magico.",
-    "id": "srd_o_174",
-    "immagine": "https://www.dndbeyond.com/avatars/thumbnails/7/150/1000/1000/636284717470556783.jpeg",
-    "nome": "Spilla dello Scudo",
-    "prezzo": 1500,
-    "rarita": "Non comune",
-    "tipo": "Oggetti magici",
-    "valuta": "mo"
-  },
-  {
     "descrizione": "Bonus di +4 ai tiri per colpire e ai danni. Infligge 3d8 danni da forza extra. Possiede 1 carica: spendendola, il personaggio lancia Forma del Cambiaforme (9° livello, vera polimorfismo) su una creatura entro 18 metri (CD 22). La carica si rigenera dopo 7 giorni.",
     "id": "w_1778433652963",
     "immagine": "",
@@ -4590,16 +4720,6 @@
     "valuta": "mo"
   },
   {
-    "descrizione": "Il personaggio che indossa questi stivali ottiene una velocità di volare pari alla sua velocità base. Capacità totale di 4 ore di volo (anche frazionate, minimo 1 minuto). Recuperano 2 ore di volo per ogni 12 ore inutilizzate.",
-    "id": "w_1778433652873",
-    "immagine": "img/stivali-alati-930x620.jpeg",
-    "nome": "Stivali Alati",
-    "prezzo": 150,
-    "rarita": "Non comune",
-    "tipo": "Oggetti magici",
-    "valuta": "mo"
-  },
-  {
     "descrizione": "Mentre indossa questi stivali, il personaggio dispone di Vantaggio alle prove di Destrezza (Furtività) effettuate per muoversi su superfici dure e rumorose (legno, pietra, ghiaia).",
     "id": "w_1778433652901",
     "immagine": "",
@@ -4620,31 +4740,11 @@
     "valuta": "mo"
   },
   {
-    "descrizione": "I tuoi passi non emettono alcun suono. Vantaggio Furtività per muoversi silenziosamente.",
-    "id": "srd_o_176",
-    "immagine": "https://www.dndbeyond.com/avatars/thumbnails/7/134/1000/1000/636284714003984245.jpeg",
-    "nome": "Stivali del Popolo Elfico",
-    "prezzo": 2500,
-    "rarita": "Non comune",
-    "tipo": "Oggetti magici",
-    "valuta": "mo"
-  },
-  {
     "descrizione": "Mentre indossa questi stivali, la distanza dei salti del personaggio è triplicata, fino a un massimo pari al suo movimento rimanente.",
     "id": "w_1778433652908",
     "immagine": "",
     "nome": "Stivali del Saltatore",
     "prezzo": 20,
-    "rarita": "Non comune",
-    "tipo": "Oggetti magici",
-    "valuta": "mo"
-  },
-  {
-    "descrizione": "Velocità minima 9 m. Salto in lungo triplo, salto in alto doppio. Richiede sintonia.",
-    "id": "srd_o_178",
-    "immagine": "https://www.dndbeyond.com/avatars/thumbnails/7/138/1000/1000/636284714659292153.jpeg",
-    "nome": "Stivali dell'Andatura e del Balzo",
-    "prezzo": 1500,
     "rarita": "Non comune",
     "tipo": "Oggetti magici",
     "valuta": "mo"
@@ -4657,36 +4757,6 @@
     "prezzo": 3000,
     "rarita": "Raro",
     "tipo": "Oggetti meravigliosi",
-    "valuta": "mo"
-  },
-  {
-    "descrizione": "Azione bonus: velocità raddoppiata, attacchi di opportunità con svantaggio. Dopo 10 min totali: richiede riposo lungo.",
-    "id": "srd_o_177",
-    "immagine": "https://www.dndbeyond.com/avatars/thumbnails/7/136/1000/1000/636284714256851023.jpeg",
-    "nome": "Stivali della Velocità",
-    "prezzo": 4000,
-    "rarita": "Raro",
-    "tipo": "Oggetti magici",
-    "valuta": "mo"
-  },
-  {
-    "descrizione": "Resistenza al freddo. Sopporti -45°C. Neve e ghiaccio non rallentano il movimento. Richiede sintonia.",
-    "id": "srd_o_179",
-    "immagine": "https://www.dndbeyond.com/avatars/thumbnails/7/140/1000/1000/636284715069548972.jpeg",
-    "nome": "Stivali delle Terre d'Inverno",
-    "prezzo": 1000,
-    "rarita": "Non comune",
-    "tipo": "Oggetti magici",
-    "valuta": "mo"
-  },
-  {
-    "descrizione": "1/giorno: lancia Levitazione su te stesso (azione, fino a 10 min). Richiede sintonia.",
-    "id": "srd_o_180",
-    "immagine": "https://dungeonedraghi.it/wp-content/uploads/2020/04/stivali-della-levitazione-1000x1000.png",
-    "nome": "Stivali di Levitazione",
-    "prezzo": 4000,
-    "rarita": "Raro",
-    "tipo": "Oggetti magici",
     "valuta": "mo"
   },
   {
@@ -4800,16 +4870,6 @@
     "valuta": "mo"
   },
   {
-    "descrizione": "Vola a 18 m (piccolo, 1 pers.), 12 m (medio, 4 pers.) o 9 m (grande, 6 pers.). Parola di comando.",
-    "id": "srd_o_181",
-    "immagine": "https://dungeonedraghi.it/wp-content/uploads/2020/04/tappetto-volante.jpg",
-    "nome": "Tappeto Volante",
-    "prezzo": 8000,
-    "rarita": "Molto raro",
-    "tipo": "Oggetti magici",
-    "valuta": "mo"
-  },
-  {
     "descrizione": "Dopo 48 ore di studio in 6 giorni, il tuo punteggio di Carisma aumenta di 2 (massimo +20). Poi il libro perde la sua magia per un secolo.",
     "id": "srd_o_323",
     "immagine": "",
@@ -4837,16 +4897,6 @@
     "prezzo": 15000,
     "rarita": "Molto raro",
     "tipo": "Oggetti meravigliosi",
-    "valuta": "mo"
-  },
-  {
-    "descrizione": "3 cariche. Parola di comando: controlla fino a 6 pesci entro 18 m per 1 ora (CD 15). Ricarica 1d3/alba.",
-    "id": "srd_o_070",
-    "immagine": "https://www.dndbeyond.com/avatars/thumbnails/7/456/1000/1000/636284778789975330.jpeg",
-    "nome": "Tridente del Comando sui Pesci",
-    "prezzo": 800,
-    "rarita": "Non comune",
-    "tipo": "Tridente",
     "valuta": "mo"
   },
   {
@@ -4970,16 +5020,6 @@
     "valuta": "mo"
   },
   {
-    "descrizione": "1d4+1 dosi. Come azione: recupera 2d8+2 PF, cessa avvelenamento, cura malattie.",
-    "id": "srd_o_028",
-    "immagine": "https://www.dndbeyond.com/avatars/thumbnails/7/396/1000/1000/636284763312888000.png",
-    "nome": "Unguento di Keoghtom",
-    "prezzo": 3000,
-    "rarita": "Non comune",
-    "tipo": "Pozioni",
-    "valuta": "mo"
-  },
-  {
     "descrizione": "Il possessore può usare un'azione per lanciare l'incantesimo Disintegrazione (CD 15). Una volta utilizzata, questa capacità non può essere riutilizzata fino all'alba successiva",
     "id": "w_1778431878931",
     "immagine": "img/mantello-della-disintegrazione-solare.jpg",
@@ -5017,16 +5057,6 @@
     "prezzo": 453,
     "rarita": "Raro",
     "tipo": "Spada lunga",
-    "valuta": "mo"
-  },
-  {
-    "descrizione": "Solo paladini. +3 a colpire e danni; +2d10 a non-morti e aberrazioni. Aura 3 m: +proficiency ai TS magia. Richiede sintonia.",
-    "id": "srd_o_071",
-    "immagine": "https://www.dndbeyond.com/avatars/thumbnails/7/253/1000/1000/636284739956618526.jpeg",
-    "nome": "Vendicatore Sacro",
-    "prezzo": 50000,
-    "rarita": "Leggendario",
-    "tipo": "Spada",
     "valuta": "mo"
   },
   {
@@ -5130,16 +5160,6 @@
     "valuta": "mo"
   },
   {
-    "descrizione": "Vantaggio Percezione. Non puoi essere sorpreso. Vedi l'invisibile. Magia di Scurovisione può accecarti. Richiede sintonia.",
-    "id": "srd_o_182",
-    "immagine": "https://www.dndbeyond.com/avatars/thumbnails/7/378/1000/1000/636284763771366253.jpeg",
-    "nome": "Veste degli Occhi",
-    "prezzo": 5000,
-    "rarita": "Raro",
-    "tipo": "Oggetti magici",
-    "valuta": "mo"
-  },
-  {
     "descrizione": "Questa veste è ordita con fili strappati al tessuto stesso della realtà. Il personaggio ottiene un bonus di +5 alla CA (sostituendo qualsiasi altra armatura), immunità alle condizioni Paralizzato, Pietrificato e Stordito, e resistenza a tutti i danni. Possiede 1 carica: spendendola, lancia Desiderio. La carica si rigenera solo se la veste viene posta per 24 ore al centro di un cerchio di sintonia tracciato sul Piano Astrale. Richiede sintonia con un incantatore.",
     "id": "w_1778448273867",
     "immagine": "",
@@ -5150,32 +5170,12 @@
     "valuta": "mo"
   },
   {
-    "descrizione": "+2 CA; +2 ai tiri incantesimo; +2 alla CD dei TS contro i tuoi incantesimi. Richiede sintonia da mago.",
-    "id": "srd_o_183",
-    "immagine": "https://www.dndbeyond.com/avatars/thumbnails/7/382/1000/1000/636284764431963353.jpeg",
-    "nome": "Veste dell'Arcimago",
-    "prezzo": 33000,
-    "rarita": "Leggendario",
-    "tipo": "Oggetti magici",
-    "valuta": "mo"
-  },
-  {
     "descrizione": "Quest'elegante veste è ricamata con simboli arcani che mutano lentamente. Mentre la indossa e non ha altre armature, la CA base del personaggio è 15 + il modificatore di Destrezza. Vantaggio ai TS contro incantesimi e altri effetti magici. Le sue CD del TS degli incantesimi e i bonus di attacco con incantesimo aumentano di 2. Richiede sintonia con un mago, stregone o warlock.",
     "id": "w_1778448273864",
     "immagine": "",
     "nome": "Veste dell'Arcimago Eremita",
     "prezzo": 1950,
     "rarita": "Leggendario",
-    "tipo": "Oggetti magici",
-    "valuta": "mo"
-  },
-  {
-    "descrizione": "+1 TS. 6 stelle: ognuna vale come incantesimo di 4° livello. Tutte le stelle: Piano Astrale per 1 ora/giorno. Richiede sintonia.",
-    "id": "srd_o_184",
-    "immagine": "https://www.dndbeyond.com/avatars/thumbnails/7/380/1000/1000/636284763972311694.jpeg",
-    "nome": "Veste delle Stelle",
-    "prezzo": 33000,
-    "rarita": "Molto raro",
     "tipo": "Oggetti magici",
     "valuta": "mo"
   },

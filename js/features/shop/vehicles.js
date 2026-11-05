@@ -203,7 +203,7 @@ function renderEmporioVeicoli() {
     ';">▶ VEICOLI</div>';
   var hdrRight = document.createElement('div');
   hdrRight.style.cssText = 'display:flex;align-items:center;gap:0.75rem;flex-wrap:wrap;';
-  if (isAdmin() && state.veicoliTab === 'catalogo') {
+  if (isDM() && state.veicoliTab === 'catalogo') {
     var addBtn = document.createElement('button');
     addBtn.style.cssText =
       'background:rgba(245,166,35,0.12);border:2px solid ' +
@@ -219,7 +219,7 @@ function renderEmporioVeicoli() {
     };
     hdrRight.appendChild(addBtn);
   }
-  if (isAdmin() && state.veicoliTab === 'party') {
+  if (isDM() && state.veicoliTab === 'party') {
     var addPartyBtn = document.createElement('button');
     addPartyBtn.style.cssText =
       'background:rgba(245,166,35,0.12);border:2px solid ' +
@@ -319,16 +319,7 @@ function renderEmporioVeicoli() {
       'width:100%;box-sizing:border-box;background:rgba(245,166,35,0.04);border:1px solid rgba(245,166,35,0.3);color:' +
       ACCENT +
       ";font-family:'Courier New',monospace;font-size:14px;padding:0.6rem 1rem;outline:none;";
-    srch.oninput = function () {
-      state.veicoliSearch = this.value;
-      renderMain();
-      var f = document.getElementById('srch-veicoli');
-      if (f) {
-        f.focus();
-        var l = f.value.length;
-        f.setSelectionRange(l, l);
-      }
-    };
+    bindCatalogSearch(srch, 'veicoliSearch');
     srchWrap.appendChild(srch);
     wrap.appendChild(srchWrap);
 
@@ -387,10 +378,7 @@ function renderEmporioVeicoli() {
       'width:100%;box-sizing:border-box;background:rgba(245,166,35,0.04);border:1px solid rgba(245,166,35,0.3);color:' +
       ACCENT +
       ";font-family:'Courier New',monospace;font-size:14px;padding:0.6rem 1rem;outline:none;";
-    srch2.oninput = function () {
-      state.veicoliPartySearch = this.value;
-      renderMain();
-    };
+    bindCatalogSearch(srch2, 'veicoliPartySearch');
     srchWrap2.appendChild(srch2);
     wrap.appendChild(srchWrap2);
 
@@ -562,7 +550,7 @@ function renderVeicoloCard(v, isParty) {
   if (isParty) {
     var actions = document.createElement('div');
     actions.style.cssText = 'display:flex;gap:0.4rem;';
-    if (isAdmin()) {
+    if (isDM()) {
       var editBtn = document.createElement('button');
       editBtn.style.cssText =
         'background:rgba(245,166,35,0.1);border:1px solid rgba(245,166,35,0.4);color:#f5a623;font-size:13px;padding:0.3rem 0.6rem;cursor:pointer;';
@@ -592,7 +580,7 @@ function renderVeicoloCard(v, isParty) {
   } else {
     var actions2 = document.createElement('div');
     actions2.style.cssText = 'display:flex;gap:0.4rem;flex-wrap:wrap;';
-    if (isAdmin()) {
+    if (isDM()) {
       var addParty = document.createElement('button');
       addParty.style.cssText =
         'background:rgba(245,166,35,0.08);border:1px solid rgba(245,166,35,0.35);color:#f5a623;font-size:11px;font-weight:700;letter-spacing:0.06em;padding:0.3rem 0.6rem;cursor:pointer;text-transform:uppercase;';

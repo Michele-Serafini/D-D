@@ -362,7 +362,7 @@ function adottaDalBestiario() {
         selBtn.onclick = function () {
           var prop = prompt('Chi nel party lo adotta? (nome personaggio, opzionale)', '');
           if (prop === null) return;
-          var clone = JSON.parse(JSON.stringify(monster));
+          var clone = DataUtils.clone(monster);
           clone.id = 'pet_' + Date.now() + '_' + Math.random().toString(36).slice(2, 5);
           clone.proprietario = prop.trim();
           clone.petImmagine = ''; // foto personale del pet, separata dall'immagine del bestiario

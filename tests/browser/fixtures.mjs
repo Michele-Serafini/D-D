@@ -188,7 +188,7 @@ export const test = base.extend({
           transaction(change) {
             const item = change(structuredClone(value(path)));
             if (item === undefined) return Promise.resolve({ committed: false });
-            return write(path, item).then(() => ({ committed: true }));
+            return write(path, item).then(() => ({ committed: true, snapshot: snapshot(path) }));
           },
           onDisconnect() {
             return { set: () => Promise.resolve() };

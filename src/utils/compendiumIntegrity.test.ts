@@ -1,5 +1,6 @@
 import accountPolicy from '../../config/accounts.json' with { type: 'json' };
 import { readAppSource } from '../../scripts/app-source.mjs';
+import { readCatalogSource } from '../../scripts/catalog-data.mjs';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
@@ -50,7 +51,7 @@ test('Phase 1 & Phase 5 Complete Inventory Checklist Verification', () => {
   assert.ok(fs.existsSync('css/theme.css'), 'css/theme.css exists');
   assert.ok(fs.existsSync('css/animations.css'), 'css/animations.css exists');
   assert.ok(fs.existsSync('css/legacy.css'), 'css/legacy.css exists');
-  assert.ok(fs.existsSync('data/catalog-data.js'), 'data/catalog-data.js exists');
+  assert.ok(fs.existsSync('config/catalogs.json'), 'catalog metadata exists');
   assert.ok(fs.existsSync('data/world-data.js'), 'data/world-data.js exists');
   assert.ok(readAppSource().length > 0, 'js/app.js exists');
   assert.ok(fs.existsSync('js/animations.js'), 'js/animations.js exists');
@@ -70,7 +71,7 @@ test('Phase 1 & Phase 5 Complete Inventory Checklist Verification', () => {
 
   // 4. Evaluate extracted data modules and verify item/spell/monster/NPC counts
   const ctx: Record<string, any> = {};
-  vm.runInNewContext(fs.readFileSync('data/catalog-data.js', 'utf8'), ctx);
+  vm.runInNewContext(readCatalogSource(), ctx);
   vm.runInNewContext(fs.readFileSync('data/world-data.js', 'utf8'), ctx);
 
   assert.ok(ctx.SRD_OGGETTI.length >= 522, 'All 522+ weapons/items present in SRD_OGGETTI');
@@ -210,7 +211,10 @@ test('Theme Selector Button (Dark / Light / Halloween) & Halloween Theme (Dark B
   assert.ok(appJs.includes('site-theme'), 'Sidebar contains the six-theme selector');
   assert.ok(!animJs.includes('sium-top-controls'), 'No duplicate floating toolbar');
   assert.ok(appJs.includes('account-settings-button'), 'Sidebar has a single settings entry');
-  assert.ok(appJs.includes('window.setAppTheme'), 'Central theme setter remains available');
+  assert.ok(
+    fs.readFileSync('js/core/preferences.js', 'utf8').includes('function setAppTheme'),
+    'Shared theme setter remains available'
+  );
 
   // 2. Halloween palette (abyssal black, dark gothic purple, pumpkin orange)
   assert.ok(
@@ -276,7 +280,10 @@ test('Theme Selector Button (Dark / Light / Halloween) & Halloween Theme (Dark B
     animCss.includes('@keyframes siumChristmasFloaterDrift'),
     'Christmas floating animation keyframe present'
   );
-  assert.ok(appJs.includes("'christmas'"), 'Christmas theme persisted and supported in js/app.js');
+  assert.ok(
+    fs.readFileSync('js/core/preferences.js', 'utf8').includes('christmas:'),
+    'Christmas theme persisted and supported in js/app.js'
+  );
 
   // 5. Valentine's Day Theme (San Valentino Amoroso: Cupid, Floating Hearts, Lace Canopy, Pierced Heart Borders & Love Shrine)
   assert.ok(
@@ -304,7 +311,10 @@ test('Theme Selector Button (Dark / Light / Halloween) & Halloween Theme (Dark B
     animCss.includes('@keyframes siumValentineFloaterDrift'),
     'Valentine floating animation keyframe present'
   );
-  assert.ok(appJs.includes("'valentine'"), 'Valentine theme persisted and supported in js/app.js');
+  assert.ok(
+    fs.readFileSync('js/core/preferences.js', 'utf8').includes('valentine:'),
+    'Valentine theme persisted and supported in js/app.js'
+  );
 
   // 6. Easter Theme (Pasqua Fiorita: Painted Easter Eggs, Bunnies, Chicks, Flowers & Spring Meadow Borders)
   assert.ok(
@@ -328,7 +338,10 @@ test('Theme Selector Button (Dark / Light / Halloween) & Halloween Theme (Dark B
     animCss.includes('@keyframes siumEasterFloaterHop'),
     'Easter floating animation keyframe present'
   );
-  assert.ok(appJs.includes("'easter'"), 'Easter theme persisted and supported in js/app.js');
+  assert.ok(
+    fs.readFileSync('js/core/preferences.js', 'utf8').includes('easter:'),
+    'Easter theme persisted and supported in js/app.js'
+  );
 
   // 7. No fixed control overlay; extra counters still delete immediately.
   assert.ok(

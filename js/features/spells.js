@@ -34,18 +34,7 @@ function renderIncantesimiAggiuntivi() {
   swI.id = 'inc-search-input';
   swI.placeholder = 'nome, scuola, descrizione...';
   swI.value = state.incSearch || '';
-  swI.oninput = function () {
-    var pos = this.selectionStart;
-    state.incSearch = this.value;
-    renderMain();
-    var ni = document.getElementById('inc-search-input');
-    if (ni) {
-      ni.focus();
-      try {
-        ni.setSelectionRange(pos, pos);
-      } catch (e) {}
-    }
-  };
+  bindCatalogSearch(swI, 'incSearch');
   swW.appendChild(swI);
   sw.appendChild(swW);
   row.appendChild(sw);
@@ -114,19 +103,8 @@ function renderIncantesimiAggiuntivi() {
   clW.appendChild(clSel);
   row.appendChild(clW);
 
-  if (isAdmin()) {
-    var abW = document.createElement('div');
-    var ab = document.createElement('button');
-    ab.className = 'btn-gold';
-    ab.innerHTML = ICON.plus + ' Nuovo Incantesimo';
-    ab.onclick = function () {
-      state.incEditingId = null;
-      state.incShowForm = true;
-      renderMain();
-    };
-    abW.appendChild(ab);
-    row.appendChild(abW);
-  }
+  var addSpell = CatalogEditor.button('spell');
+  if (addSpell) row.appendChild(addSpell);
   pg.appendChild(row);
   frag.appendChild(pg);
 
@@ -165,9 +143,7 @@ function renderIncantesimiAggiuntivi() {
     empty.style.cssText = 'margin:1.5rem;';
     empty.innerHTML =
       '<div class="rune">✨</div><h2>Nessun incantesimo</h2><p>' +
-      (isAdmin()
-        ? 'Aggiungi il primo incantesimo.'
-        : 'Nessun incantesimo aggiuntivo disponibile.') +
+      (isDM() ? 'Aggiungi il primo incantesimo.' : 'Nessun incantesimo aggiuntivo disponibile.') +
       '</p>';
     frag.appendChild(empty);
   } else {
@@ -395,9 +371,9 @@ function renderIncantatesimoCard(s) {
     'font-size:11px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--gold);border:1px solid var(--border-gold);padding:0.15rem 0.5rem;display:inline-block;margin-bottom:0.4rem;';
   lvlBadge.textContent = s.livello == 0 ? 'Trucchetto' : 'Livello ' + s.livello;
   nameCol.appendChild(lvlBadge);
-  var nameDiv = document.createElement('div');
+  var nameDiv = document.createElement('h3');
   nameDiv.style.cssText =
-    "font-family:'Cinzel',serif;font-size:18px;font-weight:700;color:var(--text-primary);line-height:1.2;";
+    "margin:0;font-family:'Cinzel',serif;font-size:18px;font-weight:700;color:var(--text-primary);line-height:1.2;";
   nameDiv.textContent = s.nome || 'Senza nome';
   nameCol.appendChild(nameDiv);
   topRow.appendChild(nameCol);
@@ -475,7 +451,7 @@ function renderIncantatesimoCard(s) {
   card.appendChild(body);
 
   // Footer Admin actions
-  if (isAdmin()) {
+  if (isDM()) {
     var foot = document.createElement('div');
     foot.style.cssText =
       'padding:0.5rem 1.2rem;border-top:1px solid var(--border-subtle);background:var(--bg-base);display:flex;justify-content:flex-end;gap:0.4rem;';
@@ -485,22 +461,22 @@ function renderIncantatesimoCard(s) {
     editB.innerHTML = ICON.edit || '✎';
     editB.textContent = '✎ Modifica';
     editB.onclick = function () {
-      state.incEditingId = s.id;
-      state.incShowForm = true;
-      renderMain();
+      CatalogEditor.open('spell', s.id);
     };
     var delB = document.createElement('button');
     delB.className = 'btn-blood';
     delB.style.cssText = 'padding:0.3rem 0.7rem;font-size:12px;';
     delB.innerHTML = ICON.trash || '✕';
     delB.textContent = '✕';
-    delB.onclick = function () {
-      if (confirm('Eliminare "' + (s.nome || 'questo incantesimo') + '"?')) {
-        state.incantesimiAggiuntivi = state.incantesimiAggiuntivi.filter(function (x) {
-          return x.id !== s.id;
-        });
-        fbSaveIncantesimiAggiuntivi();
+    delB.setAttribute('aria-label', 'Elimina incantesimo');
+    delB.onclick = async function () {
+      if (!confirm('Eliminare questo incantesimo dalla campagna?')) return;
+      try {
+        await CatalogEditor.remove('spell', s);
+        notify('Incantesimo eliminato.');
         renderMain();
+      } catch (error) {
+        notify(error.message, 'err');
       }
     };
     foot.appendChild(editB);
@@ -511,6 +487,7 @@ function renderIncantatesimoCard(s) {
 }
 
 function renderIncantesimoForm() {
+  if (!isDM()) return document.createDocumentFragment();
   var editing = null;
   if (state.incEditingId)
     (state.incantesimiAggiuntivi || []).forEach(function (x) {
@@ -544,11 +521,15 @@ function renderIncantesimoForm() {
     altiLivelli: editing ? editing.altiLivelli : '',
   };
 
+  var draft = CatalogEditor.draft('spell', editing, form);
+  form = draft.value;
+  var draftId = draft.id;
   var backdrop = document.createElement('div');
   backdrop.style.cssText =
     'position:fixed;inset:0;background:rgba(0,0,0,0.75);z-index:1000;display:flex;align-items:center;justify-content:center;padding:1rem;';
   backdrop.onclick = function (e) {
     if (e.target === backdrop) {
+      delete CatalogEditor.drafts.spell;
       state.incShowForm = false;
       state.incEditingId = null;
       renderMain();
@@ -556,6 +537,8 @@ function renderIncantesimoForm() {
   };
 
   var panel = document.createElement('div');
+  panel.setAttribute('role', 'dialog');
+  panel.setAttribute('aria-label', editing ? 'Modifica incantesimo' : 'Aggiungi incantesimo');
   panel.style.cssText =
     'background:var(--bg-card);border:1px solid var(--border-gold);max-width:560px;width:100%;max-height:90vh;overflow-y:auto;';
   panel.onclick = function (e) {
@@ -574,6 +557,7 @@ function renderIncantesimoForm() {
   closeB.style.cssText = 'padding:0.25rem 0.6rem;';
   closeB.textContent = '✕';
   closeB.onclick = function () {
+    delete CatalogEditor.drafts.spell;
     state.incShowForm = false;
     state.incEditingId = null;
     renderMain();
@@ -618,6 +602,9 @@ function renderIncantesimoForm() {
       el.onchange = el.oninput = function () {
         form[key] = type === 'number' ? Number(this.value) || 0 : this.value;
       };
+    el.id = 'spell-form-' + key;
+    l.htmlFor = el.id;
+    if (key === 'nome') el.required = true;
     g.appendChild(el);
     return g;
   }
@@ -751,24 +738,27 @@ function renderIncantesimoForm() {
   saveBtn.className = 'btn-gold';
   saveBtn.style.cssText = 'width:100%;margin-top:0.5rem;';
   saveBtn.textContent = editing ? 'Salva Modifiche' : 'Aggiungi Incantesimo';
-  saveBtn.onclick = function () {
-    if (!form.nome.trim()) {
-      notify("Inserisci il nome dell'incantesimo.", 'err');
-      return;
+  var message = document.createElement('p');
+  message.setAttribute('role', 'status');
+  mbody.appendChild(message);
+  saveBtn.onclick = async function () {
+    if (saveBtn.disabled) return;
+    saveBtn.disabled = true;
+    message.textContent = 'Salvataggio in corso…';
+    try {
+      await CatalogEditor.save('spell', form, draftId, !!editing);
+      state.incSearch = form.nome.trim();
+      state.incFilterLivello = state.incFilterClasse = '';
+      delete CatalogEditor.drafts.spell;
+      state.incShowForm = false;
+      state.incEditingId = null;
+      notify(editing ? 'Incantesimo aggiornato.' : 'Incantesimo aggiunto alla campagna.');
+      renderMain();
+    } catch (error) {
+      message.textContent = error.message;
+    } finally {
+      saveBtn.disabled = false;
     }
-    if (editing) {
-      state.incantesimiAggiuntivi = state.incantesimiAggiuntivi.map(function (x) {
-        return x.id === editing.id ? Object.assign({}, form, { id: editing.id }) : x;
-      });
-    } else {
-      if (!state.incantesimiAggiuntivi) state.incantesimiAggiuntivi = [];
-      state.incantesimiAggiuntivi.push(Object.assign({}, form, { id: 'inc_' + Date.now() }));
-    }
-    fbSaveIncantesimiAggiuntivi();
-    notify(editing ? 'Incantesimo aggiornato.' : 'Incantesimo aggiunto.');
-    state.incShowForm = false;
-    state.incEditingId = null;
-    renderMain();
   };
   mbody.appendChild(saveBtn);
   panel.appendChild(mbody);

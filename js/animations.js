@@ -18,35 +18,13 @@
   'use strict';
 
   var CONFIG = {
-    storageKeyTheme: 'sium_theme_mode',
-    storageKeyFx: 'sium_fx_enabled',
     maxParticlesDesktop: 44,
     maxParticlesMobile: 18,
     tiltMaxDeg: 6.5,
     cursorTrailLength: 8,
   };
 
-  var SECTION_META = {
-    regole: { title: 'Regolamento & Compendio', kicker: 'Tomo delle Leggi', icon: '📜' },
-    emporio: { title: 'Emporio delle Meraviglie', kicker: 'Mercato & Artefatti', icon: '⚔️' },
-    png: { title: 'Galleria dei PNG', kicker: 'Volti del Regno', icon: '🎭' },
-    'genera-png': { title: 'Forgia dei PNG', kicker: 'Creazione Assistita', icon: '✨' },
-    bestiario: { title: 'Bestiario dei Mostri', kicker: 'Creature & Leggende', icon: '🐉' },
-    'schede-pg': { title: 'Schede dei Personaggi', kicker: 'Eroi della Campagna', icon: '🛡️' },
-    iniziativa: { title: 'Tracker Iniziativa', kicker: 'Ordine di Combattimento', icon: '⚡' },
-    dadi: { title: 'Arena dei Dadi 4D', kicker: 'Lancio Iper-Poliedrico', icon: '🎲' },
-    caos: { title: 'Tabella del Caos', kicker: 'Fato Imprevedibile', icon: '🌀' },
-    incantesimi: { title: 'Grimorio degli Incantesimi', kicker: 'Arti Arcane', icon: '🔮' },
-    mappa: { title: 'Atlante & Mappa Tattica', kicker: 'Cartografia del Mondo', icon: '🗺️' },
-    bacheca: { title: 'Bacheca dei Ricercati', kicker: 'Taglie & Missioni', icon: '📌' },
-    fazioni: { title: 'Fazioni & Gilde', kicker: 'Poteri & Alleanze', icon: '🚩' },
-    'regia-audio': { title: 'Regia Audio & Atmosfera', kicker: 'Sinfonia del Master', icon: '🎵' },
-    'note-dm': {
-      title: 'Sanctum del Dungeon Master',
-      kicker: 'Segreti della Campagna',
-      icon: '👁️',
-    },
-  };
+  var SECTION_META = AppNavigation.heralds;
 
   /* Palette Scuole di Magia per gli Incantesimi Aggiuntivi */
   var SPELL_SCHOOL_THEMES = {
@@ -146,84 +124,23 @@
       });
 
     try {
-      var savedFx = localStorage.getItem(CONFIG.storageKeyFx);
-      if (savedFx !== null) {
-        state.fxEnabled = savedFx === '1';
-      } else {
-        state.fxEnabled = !state.reducedMotion;
-      }
+      state.fxEnabled = EffectPreferences.read();
 
-      var savedTheme =
-        (window.state && window.state.theme) ||
-        localStorage.getItem(CONFIG.storageKeyTheme) ||
-        localStorage.getItem('theme');
-      if (
-        savedTheme === 'light' ||
-        savedTheme === 'dark' ||
-        savedTheme === 'halloween' ||
-        savedTheme === 'christmas' ||
-        savedTheme === 'valentine' ||
-        savedTheme === 'easter'
-      ) {
-        state.theme = savedTheme;
-      }
+      state.theme = ThemePreferences.read(window.state && window.state.theme);
     } catch (e) {}
 
     applyFxClass();
   }
 
   function getCurrentTheme() {
-    var attr = document.documentElement.getAttribute('data-theme');
-    if (
-      attr === 'light' ||
-      attr === 'dark' ||
-      attr === 'halloween' ||
-      attr === 'christmas' ||
-      attr === 'valentine' ||
-      attr === 'easter'
-    ) {
-      state.theme = attr;
-    } else if (
-      window.state &&
-      (window.state.theme === 'light' ||
-        window.state.theme === 'dark' ||
-        window.state.theme === 'halloween' ||
-        window.state.theme === 'christmas' ||
-        window.state.theme === 'valentine' ||
-        window.state.theme === 'easter')
-    ) {
-      state.theme = window.state.theme;
-    }
-    return state.theme || 'dark';
+    var value = document.documentElement.getAttribute('data-theme');
+    state.theme = ThemePreferences.valid(value) ? value : ThemePreferences.read(state.theme);
+    return state.theme;
   }
 
-  function setTheme(newTheme) {
-    if (
-      newTheme !== 'dark' &&
-      newTheme !== 'light' &&
-      newTheme !== 'halloween' &&
-      newTheme !== 'christmas' &&
-      newTheme !== 'valentine' &&
-      newTheme !== 'easter'
-    ) {
-      newTheme = 'dark';
-    }
-    state.theme = newTheme;
-    document.documentElement.setAttribute('data-theme', newTheme);
-    try {
-      localStorage.setItem(CONFIG.storageKeyTheme, newTheme);
-      localStorage.setItem('theme', newTheme);
-    } catch (e) {}
-
-    if (typeof window.setAppTheme === 'function') {
-      window.setAppTheme(newTheme, true);
-    } else if (window.state) {
-      window.state.theme = newTheme;
-      if (typeof window.saveToStorage === 'function') window.saveToStorage();
-      if (typeof window.render === 'function') window.render();
-    }
-
-    onThemeChange(newTheme);
+  function setTheme(value) {
+    state.theme = setAppTheme(value, true);
+    onThemeChange(state.theme);
   }
 
   function onThemeChange(newTheme) {
@@ -249,10 +166,9 @@
 
   function toggleFx() {
     state.fxEnabled = !state.fxEnabled;
-    try {
-      localStorage.setItem(CONFIG.storageKeyFx, state.fxEnabled ? '1' : '0');
-    } catch (e) {}
+    EffectPreferences.set(state.fxEnabled);
     applyFxClass();
+    scanAndRevealNewNodes();
 
     if (state.fxEnabled && !state.reducedMotion) {
       startParticles();
@@ -272,7 +188,12 @@
         : 'Animazioni spente (clicca per riattivare le animazioni)';
       var label = btn.querySelector('.fx-label');
       if (label) {
-        label.textContent = state.fxEnabled ? 'Animazioni: ON' : 'Animazioni: OFF';
+        label.textContent =
+          state.fxEnabled && state.reducedMotion
+            ? 'Animazioni ridotte dal dispositivo'
+            : state.fxEnabled
+              ? 'Animazioni: ON'
+              : 'Animazioni: OFF';
       } else {
         btn.innerHTML = state.fxEnabled
           ? '<span>✨</span><span class="fx-label">Animazioni: ON</span>'
@@ -1293,7 +1214,7 @@
      ========================================================================== */
   function showSectionHerald(sectionId) {
     if (state.reducedMotion) return;
-    var meta = SECTION_META[sectionId];
+    var meta = AppNavigation.herald(sectionId);
     if (!meta) return;
 
     if (!state.heraldEl) {
@@ -1363,17 +1284,18 @@
       state.lastSection = curSec;
     }
 
-    if (main.firstElementChild && !main.firstElementChild.dataset.siumSecAnim) {
-      main.firstElementChild.dataset.siumSecAnim = '1';
-      main.firstElementChild.classList.add('sium-section-transition');
+    var content = Array.from(main.children).find(function (element) {
+      return !element.classList.contains('sheet-sync-status');
+    });
+    if (content && !content.dataset.siumSecAnim) {
+      content.dataset.siumSecAnim = '1';
+      content.classList.add('sium-section-transition');
     }
 
-    var headings = main.querySelectorAll(
-      'h1:not([data-sium-h]), .section-title:not([data-sium-h])'
-    );
+    var headings = main.querySelectorAll('h1, .section-title');
     headings.forEach(function (h) {
       h.dataset.siumH = '1';
-      if (state.fxEnabled && !state.reducedMotion) h.classList.add('sium-rune-title');
+      h.classList.toggle('sium-rune-title', state.fxEnabled && !state.reducedMotion);
     });
 
     var selector = [

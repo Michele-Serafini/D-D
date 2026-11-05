@@ -24,7 +24,7 @@ window.renderBrancaloniaSheet = function (scheda) {
     }
   }
   if (!layout || !layout.length) {
-    layout = JSON.parse(JSON.stringify(window.BRANCA_NATIVE || [[], []]));
+    layout = DataUtils.clone(window.BRANCA_NATIVE || [[], []]);
     var hasAvatar = layout[0] && layout[0].find((f) => f.type === 'image');
     if (!hasAvatar && layout[0]) {
       layout[0].push({ name: 'avatarBox', type: 'image', l: 6.5, t: 69, w: 27.5, h: 26 });

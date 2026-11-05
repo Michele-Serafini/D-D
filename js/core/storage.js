@@ -24,15 +24,8 @@ function _applySnapshot(raw) {
           Math.min(doomSegmentsForStage(state.doomStage), data.doomFilled)
         );
       if (typeof data.notes === 'string') state.notes = data.notes;
-      if (
-        data.theme === 'dark' ||
-        data.theme === 'light' ||
-        data.theme === 'halloween' ||
-        data.theme === 'christmas' ||
-        data.theme === 'valentine' ||
-        data.theme === 'easter'
-      )
-        state.theme = data.theme;
+      if (ThemePreferences.valid(data.theme))
+        ThemePreferences.apply(ThemePreferences.read(data.theme));
       if (typeof data.geminiKey === 'string') state.geminiKey = data.geminiKey;
       if (typeof data.groqKey === 'string') state.groqKey = data.groqKey;
       if (Array.isArray(data.personaggi)) state.personaggi = data.personaggi;

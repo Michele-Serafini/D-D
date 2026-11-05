@@ -5,6 +5,7 @@ import { optimizeAsset } from './optimize-assets.mjs';
 import { appSources } from '../config/assets.mjs';
 import { readAppSource } from './app-source.mjs';
 import { renderServiceWorker } from './pwa-assets.mjs';
+import { catalogPath, readCatalogSource } from './catalog-data.mjs';
 
 // Old download URLs are generated from the canonical sources; no second files to edit.
 export const assetAliases = Object.fromEntries([
@@ -82,11 +83,17 @@ export function staticAssets(root = process.cwd(), options = {}) {
           res.setHeader('Cache-Control', 'no-store');
           return res.end(renderServiceWorker(root));
         }
-        if (name === configPath || name === appPath) {
+        if (name === configPath || name === appPath || name === catalogPath) {
           try {
             res.setHeader('Content-Type', 'text/javascript');
             res.setHeader('Cache-Control', 'no-store');
-            return res.end(name === configPath ? runtimeConfig() : readAppSource(root));
+            return res.end(
+              name === configPath
+                ? runtimeConfig()
+                : name === catalogPath
+                  ? readCatalogSource(root)
+                  : readAppSource(root)
+            );
           } catch (error) {
             return next(error);
           }
@@ -114,7 +121,12 @@ export function staticAssets(root = process.cwd(), options = {}) {
       const sources = new Map();
       const config = runtimeConfig();
       const emit = (relative) => {
-        if (relative === configPath || relative === appPath || appSources.includes(relative))
+        if (
+          relative === configPath ||
+          relative === appPath ||
+          relative === catalogPath ||
+          appSources.includes(relative)
+        )
           return;
         const absolute = path.join(root, relative);
         if (!fs.existsSync(absolute)) throw new Error(`Risorsa mancante: ${relative}`);
@@ -143,6 +155,12 @@ export function staticAssets(root = process.cwd(), options = {}) {
       // The source-integrity check can still inspect the unprocessed admin page.
       if (options.optimize === false) emit('admin.html');
       this.emitFile({ type: 'asset', fileName: configPath, source: config });
+      const catalog = Buffer.from(readCatalogSource(root));
+      this.emitFile({
+        type: 'asset',
+        fileName: catalogPath,
+        source: options.optimize === false ? catalog : optimizeAsset(catalogPath, catalog),
+      });
       const app = Buffer.from(readAppSource(root));
       this.emitFile({
         type: 'asset',

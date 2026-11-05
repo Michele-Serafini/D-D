@@ -88,7 +88,7 @@ function renderScheda() {
     _bExport.onclick = function () {
       var bExportOrigText = _bExport.textContent;
       _bExport.textContent = '⏳ Preparazione...';
-      var schedaExport = JSON.parse(JSON.stringify(state.scheda));
+      var schedaExport = DataUtils.clone(state.scheda);
       var promises = [];
       if (schedaExport.boardImages) {
         schedaExport.boardImages.forEach(function (img) {

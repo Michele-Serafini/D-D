@@ -25,7 +25,7 @@ function renderEmporioCyber() {
     state.cyberEditingId = null;
     renderMain();
   };
-  if (isAdmin()) hdrRight.appendChild(addBtn);
+  if (isDM()) hdrRight.appendChild(addBtn);
 
   var backBtn = document.createElement('button');
   backBtn.className = 'cyber-back-btn';
@@ -52,16 +52,7 @@ function renderEmporioCyber() {
   srch.style.cssText = 'flex:1;min-width:200px;';
   srch.placeholder = '> RICERCA_IMPIANTI :: digita per filtrare...';
   srch.value = state.cyberSearch || '';
-  srch.oninput = function () {
-    state.cyberSearch = this.value;
-    renderMain();
-    var f = document.getElementById('srch-cyber');
-    if (f) {
-      f.focus();
-      var l = f.value.length;
-      f.setSelectionRange(l, l);
-    }
-  };
+  bindCatalogSearch(srch, 'cyberSearch');
   searchWrap.appendChild(srch);
 
   var selStyle =
@@ -255,7 +246,7 @@ function renderCyberCard(im) {
   priceDiv.textContent = im.costo ? im.costo + ' ' + (im.valuta || 'mo') : '— PREZZO N/D';
   foot.appendChild(priceDiv);
 
-  if (isAdmin()) {
+  if (isDM()) {
     var btnWrap = document.createElement('div');
     btnWrap.style.cssText = 'display:flex;gap:0.3rem;';
     var editBtn = document.createElement('button');

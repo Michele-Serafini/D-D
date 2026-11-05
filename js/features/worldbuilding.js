@@ -722,7 +722,7 @@ function renderWorldbuilding() {
               reabBtn.textContent = '⬆ Riabilita';
               (function (n, i) {
                 reabBtn.onclick = function () {
-                  var restored = JSON.parse(JSON.stringify(n));
+                  var restored = DataUtils.clone(n);
                   restored._id = restored._id || 'npc_ria_' + Date.now() + '_' + i;
                   state.personaggi.push(restored);
                   var fresh = c.npcChiave.filter(function (x) {

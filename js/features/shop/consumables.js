@@ -66,7 +66,7 @@ function renderEmporioDroghe() {
     ';">▶ DROGHE</div>';
   var hdrRight = document.createElement('div');
   hdrRight.style.cssText = 'display:flex;align-items:center;gap:0.75rem;flex-wrap:wrap;';
-  if (isAdmin()) {
+  if (isDM()) {
     var addBtn = document.createElement('button');
     addBtn.style.cssText =
       'background:rgba(127,255,127,0.12);border:2px solid ' +
@@ -110,16 +110,7 @@ function renderEmporioDroghe() {
     'flex:1;min-width:200px;background:rgba(127,255,127,0.04);border:1px solid rgba(127,255,127,0.3);color:' +
     ACCENT +
     ";font-family:'Courier New',monospace;font-size:14px;padding:0.6rem 1rem;outline:none;";
-  srch.oninput = function () {
-    state.drogheSearch = this.value;
-    renderMain();
-    var f = document.getElementById('srch-droghe');
-    if (f) {
-      f.focus();
-      var l = f.value.length;
-      f.setSelectionRange(l, l);
-    }
-  };
+  bindCatalogSearch(srch, 'drogheSearch');
   srchWrap.appendChild(srch);
   hdr.appendChild(srchWrap);
 
@@ -255,7 +246,7 @@ function renderDrogaCard(d, ACCENT) {
   price.style.cssText = 'font-size:17px;font-weight:700;color:#7fff7f;';
   price.textContent = d.costo ? d.costo + ' ' + (d.valuta || 'mo') : '— PREZZO N/D';
   foot.appendChild(price);
-  if (isAdmin()) {
+  if (isDM()) {
     var actions = document.createElement('div');
     actions.style.cssText = 'display:flex;gap:0.4rem;';
     var editBtn = document.createElement('button');

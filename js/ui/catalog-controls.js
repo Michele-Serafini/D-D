@@ -1,3 +1,36 @@
+/* Coalesce typing without rebuilding the grid for every keystroke or moving the caret. */
+function bindCatalogSearch(input, field, update) {
+  var timer = null;
+  var section = state.section;
+  input.dataset.searchField = field;
+  input.oninput = function () {
+    state[field] = input.value;
+    clearTimeout(timer);
+    timer = setTimeout(function () {
+      timer = null;
+      if (state.section !== section || !input.isConnected) return;
+      var focused = document.activeElement === input;
+      var start = input.selectionStart,
+        end = input.selectionEnd,
+        direction = input.selectionDirection;
+      (update || renderMain)();
+      if (focused && !input.isConnected) {
+        var replacement = document.querySelector('[data-search-field="' + field + '"]');
+        if (replacement) {
+          replacement.focus({ preventScroll: true });
+          try {
+            replacement.setSelectionRange(start, end, direction);
+          } catch (_error) {}
+        }
+      }
+    }, 120);
+  };
+  onSectionCleanup(function () {
+    clearTimeout(timer);
+  });
+  return input;
+}
+
 function makeSelectFilter(labelText, value, options, onChange, defaultLabel, displayFn) {
   var w = document.createElement('div');
   w.style.cssText = 'min-width:140px;flex:0 1 180px;';
@@ -128,8 +161,12 @@ function updateResults() {
       grid.innerHTML =
         '<div class="empty-state panel-glass"><div class="rune">\u2694</div><h2>Il compendio &egrave; vuoto</h2><p>Aggiungi la prima arma al tuo database.</p><button class="btn-gold" id="empty-add">' +
         ICON.plus +
-        ' Aggiungi prima arma</button></div>';
+        ' Aggiungi oggetto</button></div>';
       var ea = document.getElementById('empty-add');
+      if (ea && !isDM()) {
+        ea.remove();
+        ea = null;
+      }
       if (ea)
         ea.onclick = function () {
           state.editingId = null;

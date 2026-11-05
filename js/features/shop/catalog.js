@@ -1,11 +1,7 @@
 /* ============================================================================
    SEZIONE 4: EMPORIO DEL MERCANTE (Classico, Cyberware, Sostanze, Veicoli, Armi)
    ============================================================================ */
-function renderEmporio() {
-  if (state.emporioTab === 'cyber') return renderEmporioCyber();
-  if (state.emporioTab === 'droghe') return renderEmporioDroghe();
-  if (state.emporioTab === 'veicoli') return renderEmporioVeicoli();
-  if (state.emporioTab === 'armifuoco') return renderEmporioArmiFuoco();
+function renderEmporioClassic() {
   var wrap = document.createElement('div');
 
   var header = document.createElement('header');
@@ -60,6 +56,8 @@ function renderEmporio() {
   rightHead.appendChild(btnCoins);
 
   top.appendChild(rightHead);
+  var addObject = CatalogEditor.button('object');
+  if (addObject) rightHead.appendChild(addObject);
 
   hc.appendChild(top);
   if (!state._emporioNoticeDismissed) {
@@ -94,51 +92,7 @@ function renderEmporio() {
     wrap.appendChild(sidePanel);
   }
 
-  // --- TOGGLE BAR ---
-  var cyberBar = document.createElement('div');
-  cyberBar.style.cssText =
-    'background:var(--bg-card);border-bottom:1px solid var(--border-subtle);';
-  var cyberBarInner = document.createElement('div');
-  cyberBarInner.className = 'container-main';
-  cyberBarInner.style.cssText =
-    'display:flex;align-items:center;flex-wrap:wrap;gap:0.5rem;padding-top:0.4rem;padding-bottom:0.4rem;';
-
-  var tabNorm = document.createElement('button');
-  tabNorm.type = 'button';
-  tabNorm.style.cssText =
-    "padding:0.5rem 1.1rem;font-family:'Cinzel',serif;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;border:none;border-bottom:2px solid var(--border-gold);background:transparent;color:var(--gold);cursor:default;white-space:nowrap;";
-  tabNorm.textContent = '⚔ Emporio';
-  cyberBarInner.appendChild(tabNorm);
-
-  var emporioTabs = [
-    { id: 'veicoli', icon: '🚗', label: 'Veicoli', color: '#f5a623' },
-    { id: 'droghe', icon: '💊', label: 'Droghe', color: '#7fff7f' },
-    { id: 'cyber', icon: '🕷', label: 'Laboratorio Cibernetico', color: '#1af' },
-    { id: 'armifuoco', icon: '🔫', label: 'Armi da Fuoco', color: '#e53030' },
-  ];
-  emporioTabs.forEach(function (t) {
-    var btn = document.createElement('button');
-    btn.type = 'button';
-    btn.style.cssText =
-      "display:flex;align-items:center;gap:0.4rem;padding:0.5rem 1rem;background:transparent;border:1px solid rgba(200,200,200,0.2);color:rgba(200,200,200,0.7);font-family:'Cinzel',serif;font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;cursor:pointer;transition:all 0.2s;white-space:nowrap;";
-    btn.innerHTML = t.icon + ' ' + t.label;
-    btn.onmouseenter = function () {
-      this.style.color = t.color;
-      this.style.borderColor = t.color;
-    };
-    btn.onmouseleave = function () {
-      this.style.color = 'rgba(200,200,200,0.7)';
-      this.style.borderColor = 'rgba(200,200,200,0.2)';
-    };
-    btn.onclick = function () {
-      state.emporioTab = t.id;
-      renderMain();
-    };
-    cyberBarInner.appendChild(btn);
-  });
-
-  cyberBar.appendChild(cyberBarInner);
-  wrap.appendChild(cyberBar);
+  wrap.appendChild(renderShopCategories());
 
   var section = document.createElement('section');
   section.className = 'container-main';
@@ -160,10 +114,7 @@ function renderEmporio() {
   swInput.className = 'field';
   swInput.placeholder = 'es. spada, pozione, runico...';
   swInput.value = state.search;
-  swInput.oninput = function () {
-    state.search = this.value;
-    updateResults();
-  };
+  bindCatalogSearch(swInput, 'search', updateResults);
   swInputWrap.appendChild(swInput);
   sw.appendChild(swInputWrap);
   row.appendChild(sw);
@@ -236,18 +187,6 @@ function renderEmporio() {
   hbWrap.appendChild(hbChk);
   hbWrap.appendChild(hbLbl);
   row.appendChild(hbWrap);
-
-  var addBtnW = document.createElement('div');
-  var addBtn = document.createElement('button');
-  addBtn.className = 'btn-gold';
-  addBtn.innerHTML = ICON.plus + ' Nuova Arma';
-  addBtn.onclick = function () {
-    state.editingId = null;
-    state.showForm = true;
-    document.body.appendChild(renderWeaponForm());
-  };
-  addBtnW.appendChild(addBtn);
-  if (isAdmin()) row.appendChild(addBtnW);
 
   pg.appendChild(row);
 

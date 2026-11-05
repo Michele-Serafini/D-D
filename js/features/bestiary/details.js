@@ -59,7 +59,7 @@ function updateBestiarioGrid() {
     if (state.bestiario.length === 0) {
       grid.innerHTML =
         '<div class="empty-state panel-glass"><div class="rune">🐉</div><h2>Il bestiario è vuoto</h2><p>Aggiungi il primo mostro con il pulsante "Nuovo Mostro".</p>' +
-        (isAdmin()
+        (isDM()
           ? '<button class="btn-gold" id="best-add-empty">' +
             ICON.plus +
             ' Aggiungi primo mostro</button>'
@@ -509,7 +509,7 @@ function renderBestiarCard(m) {
   body.appendChild(nameEl);
 
   /* Bottoni admin (nascosti nel footer) */
-  if (isAdmin()) {
+  if (isDM()) {
     var foot = document.createElement('div');
     foot.className = 'flex items-center justify-end pt-2 border-t';
     foot.style.cssText = 'margin-top:0.5rem;';
@@ -584,7 +584,7 @@ function renderBestiarCard(m) {
   } else {
     foot.appendChild(document.createElement('span'));
   }
-  if (isAdmin()) {
+  if (isDM()) {
     var btnRow = document.createElement('div');
     btnRow.className = 'flex gap-1';
     var editBtn = document.createElement('button');

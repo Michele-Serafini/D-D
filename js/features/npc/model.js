@@ -129,7 +129,7 @@ function salvaNpcInArchivio() {
   NPC_FIELDS.forEach(function (f) {
     snapshot[f] = state.npc[f] || '';
   });
-  snapshot.attacchi = JSON.parse(JSON.stringify(state.npc.attacchi || []));
+  snapshot.attacchi = DataUtils.clone(state.npc.attacchi || []);
   // Salva tutti i campi dinamici (proficiency, spell prepared, tiri salvezza, ecc.)
   Object.keys(state.npc).forEach(function (k) {
     if (
@@ -219,7 +219,7 @@ function caricaNpcDaArchivio(p) {
   });
   state.npc.attacchi =
     p.attacchi && p.attacchi.length
-      ? JSON.parse(JSON.stringify(p.attacchi))
+      ? DataUtils.clone(p.attacchi)
       : [{ nome: '', bonus: '', danno: '' }];
   // Ripristina i campi dinamici salvati col personaggio
   Object.keys(p).forEach(function (k) {
@@ -307,7 +307,7 @@ function archivaNpcInCitta(npc) {
   confirmBtn.onclick = function () {
     var chosen = cities[parseInt(sel.value)];
     if (!chosen) return;
-    var snapshot = JSON.parse(JSON.stringify(npc));
+    var snapshot = DataUtils.clone(npc);
     if (!chosen.city.npcChiave) chosen.city.npcChiave = [];
     chosen.city.npcChiave.push(snapshot);
     state.personaggi = state.personaggi.filter(function (p) {
@@ -329,7 +329,7 @@ function archivaNpcInCitta(npc) {
 }
 
 function _snapshotNpc() {
-  return JSON.parse(JSON.stringify(state.npc));
+  return DataUtils.clone(state.npc);
 }
 
 function _restoreNpc(snap) {
