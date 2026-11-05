@@ -25,6 +25,8 @@ jobs:
       - run: npm run test:rules
   verify:
     runs-on: ubuntu-latest
+    outputs:
+      playwright_version: ${{ steps.playwright.outputs.version }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -32,6 +34,9 @@ jobs:
           node-version: '24'
           cache: npm
       - run: npm ci
+      - name: Read the installed Playwright version
+        id: playwright
+        run: node -p "'version=' + require('playwright/package.json').version" >> "$GITHUB_OUTPUT"
       - run: npm run check:secrets
       - run: npm test
       - run: npm run lint
@@ -41,8 +46,14 @@ jobs:
         env:
           FIREBASE_WEB_API_KEY: ci-placeholder-not-a-credential
   browsers:
-    # Keep Playwright on its supported image as ubuntu-latest moves to Ubuntu 26.
+    needs: verify
     runs-on: ubuntu-24.04
+    # Browser binaries and OS libraries ship together; the lockfile selects the image version.
+    container:
+      image: mcr.microsoft.com/playwright:v${{ needs.verify.outputs.playwright_version }}-noble
+      options: --ipc=host
+    env:
+      PLAYWRIGHT_BROWSERS_PATH: /ms-playwright
     timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
@@ -51,11 +62,6 @@ jobs:
           node-version: '24'
           cache: npm
       - run: npm ci
-      - uses: actions/cache@v4
-        with:
-          path: ~/.cache/ms-playwright
-          key: playwright-${{ runner.os }}-${{ hashFiles('package-lock.json') }}
-      - run: npx playwright install --with-deps --only-shell chromium firefox webkit
       - run: npm run test:browsers
       - uses: actions/upload-artifact@v4
         if: failure()
