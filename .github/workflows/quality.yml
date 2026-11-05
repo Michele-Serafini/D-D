@@ -41,7 +41,8 @@ jobs:
         env:
           FIREBASE_WEB_API_KEY: ci-placeholder-not-a-credential
   browsers:
-    runs-on: ubuntu-latest
+    # Keep Playwright on its supported image as ubuntu-latest moves to Ubuntu 26.
+    runs-on: ubuntu-24.04
     timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
@@ -54,7 +55,7 @@ jobs:
         with:
           path: ~/.cache/ms-playwright
           key: playwright-${{ runner.os }}-${{ hashFiles('package-lock.json') }}
-      - run: npx playwright install --with-deps chromium firefox webkit
+      - run: npx playwright install --with-deps --only-shell chromium firefox webkit
       - run: npm run test:browsers
       - uses: actions/upload-artifact@v4
         if: failure()
